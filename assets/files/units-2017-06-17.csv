@@ -1,0 +1,48 @@
+id,compareunit_id,name,equivalent
+1,1,Kg,2.2046226
+2,1,g,0.002204623
+3,1,lb,1
+4,2,ml,1
+5,3,boîte,1
+6,4,unité,1
+7,4,ch,1
+8,5,rouleau,1
+9,2,litre,1000
+10,6,sachet,1
+11,2,Canettes 355 ml,355
+12,2,Canettes 330 ml,330
+13,2,Canettes 341 ml,341
+14,2,Canettes 500 ml,500
+15,2,Canettes 440 ml,440
+16,2,Canettes 473 ml,473
+17,2,Canettes 375 ml,375
+18,2,Canettes 236 ml,236
+19,2,Canettes 310 ml,310
+20,2,Canettes 591 ml,591
+21,2,Canettes 222 ml,222
+22,2,Canettes 237 ml,237
+23,2,Canettes 355 ml,355
+24,2,Bouteilles 355 ml,355
+25,2,Bouteilles 330 ml,330
+26,2,Bouteilles 341 ml,341
+27,2,Bouteilles 500 ml,500
+28,2,Bouteilles 440 ml,440
+29,2,Bouteilles 473 ml,473
+30,2,Bouteilles 750 ml,750
+31,2,Bouteilles 375,375
+32,2,Bouteilles 1L,1000
+33,2,Bouteilles 236 ml,236
+34,2,Bouteilles 700 ml,700
+35,2,Bouteilles 2L,2000
+36,2,Bouteilles 1.5 ml,1500
+37,2,Bouteilles 187.5 ml,187.5
+38,2,Bouteilles 4L,4000
+39,2,Bouteilles 710 ml,710
+40,2,Bouteilles 310 ml,310
+41,2,Bouteilles 591 ml,591
+42,2,Bouteilles 222 ml,222
+43,2,Bouteilles 237 ml,237
+44,2,Bouteilles 370 ml,370
+45,2,Bouteilles 473 ml,473
+46,2,Bouteilles 1.25L,1250
+47,2,Bouteilles 695 ml,695

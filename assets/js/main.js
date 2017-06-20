@@ -1,0 +1,375 @@
+jQuery(document).ready(function($){
+    
+    // jQuery sticky Menu
+    $(".mainmenu-area").sticky({topSpacing:0});
+    
+    $('.product-carousel').owlCarousel({
+        loop:true,
+        nav:true,
+        margin:20,
+        responsiveClass:true,
+        responsive:{
+            0:{
+                items:1,
+            },
+            600:{
+                items:3,
+            },
+            1000:{
+                items:5,
+            }
+        }
+    });  
+    
+    $('.related-products-carousel').owlCarousel({
+        loop:true,
+        nav:true,
+        margin:20,
+        responsiveClass:true,
+        responsive:{
+            0:{
+                items:1,
+            },
+            600:{
+                items:2,
+            },
+            1000:{
+                items:2,
+            },
+            1200:{
+                items:3,
+            }
+        }
+    });  
+    
+    $('.brand-list').owlCarousel({
+        loop:true,
+        nav:true,
+        margin:20,
+        responsiveClass:true,
+        responsive:{
+            0:{
+                items:1,
+            },
+            600:{
+                items:3,
+            },
+            1000:{
+                items:4,
+            }
+        }
+    });    
+    
+    // Bootstrap Mobile Menu fix
+    $(".navbar-nav li a").click(function(){
+        $(".navbar-collapse").removeClass('in');
+    });    
+    
+    // jQuery Scroll effect
+    $('.navbar-nav li a, .scroll-to-up').bind('click', function(event) {
+        var $anchor = $(this);
+        var headerH = $('.header-area').outerHeight();
+        $('html, body').stop().animate({
+            scrollTop : $($anchor.attr('href')).offset().top - headerH + "px"
+        }, 1200, 'easeInOutExpo');
+
+        event.preventDefault();
+    });    
+    
+    // Bootstrap ScrollPSY
+    $('body').scrollspy({ 
+        target: '.navbar-collapse',
+        offset: 95
+    });
+    
+    // Slider
+    $("#distance-slider").slider({tooltip: 'always'});
+    
+});
+
+// Define the `eapp Application` module
+var eappApp = angular.module('eappApp', ['ngMaterial', 'lfNgMdFileInput', 'angularCountryState', 'ngNotificationsBar']);
+
+eappApp.factory('Form', [ '$http', 'notifications', function($http, notifications) 
+{
+    this.postForm = function (formID, url, success_message, error_message) 
+    {
+        var form = document.getElementById(formID);
+        
+        var formData = new FormData(form);
+        
+        $http({
+            url: url,
+            method: 'POST',
+            data: formData,
+            //assign content-type as undefined, the browser
+            //will assign the correct boundary for us
+            headers: { 'Content-Type': undefined},
+            //prevents serializing payload.  don't do it.
+            transformRequest: angular.identity
+        }).
+        then(
+        function successCallback(response) 
+        {
+            notifications.showSuccess(success_message);
+        }, 
+        function errorCallback(response) 
+        {
+            notifications.showError(error_message);
+        });
+    };
+    
+    return this;
+}]);
+
+eappApp.controller('ProductsController', ['$scope','$rootScope', function($scope, $rootScope) {
+  
+    /**
+     * This are the products displayed on the home page. The most recent products.
+     */
+    $scope.products = [];
+    
+    /**
+     * Products currently in the cart
+     */
+    $scope.cart_items = [];
+    
+    $scope.add_to_cart = function(product_id)
+    {
+        
+    };
+    
+    $scope.remove_to_cart = function(product_id)
+    {
+        
+    };
+    
+    $scope.cart_total = function()
+    {
+        
+    };
+  
+}]);
+
+eappApp.controller('AdminController', ['$scope', 'Form', '$http', 'notifications', function($scope, Form, $http, notifications) {
+      
+    $scope.store_product = 
+    {
+        organic : -1,
+        format : "1x1",
+        is_organic: 1,
+        country : 'Canada',
+        state: 'Quebec',
+        quantity: 1,
+        unit_price : 1
+    };
+    
+    $scope.product = null;
+    
+    $scope.product_selected = function()
+    {
+        $scope.product = $scope.products[$scope.store_product.product_id];
+        
+        var image_url = "http://" + $scope.base_url.concat("/assets/img/products/") + $scope.product.image;
+        
+        $scope.api.removeAll();
+        
+        $scope.api.addRemoteFile(image_url, $scope.product.image,'image');
+    };
+    
+    $scope.organic_select = 
+    [
+        {
+            id: -1,
+            name: "NA"
+        },
+        {
+            id: 1,
+            name: "No"
+        },
+        {
+            id: 2,
+            name: "Yes"
+        }
+        
+    ];
+    
+    $scope.createNewBrand = function(brand_name)
+    {
+        //upload the image here
+        var formData = new FormData();
+        
+        formData.append("name", brand_name);
+        
+        $http.post("http://" + $scope.site_url.concat("/admin/create_new_brand"), formData, {
+            transformRequest: angular.identity,
+            headers: {'Content-Type': undefined}
+        }).then(function(result)
+        {
+            $scope.brands[result.data] = { id : result.data, name : brand_name } ;
+            
+            notifications.showSuccess("Brand " + brand_name + " created!!!");
+            
+            // do sometingh                   
+        },function(err){
+            // do sometingh
+        });
+    };
+    
+    $scope.create_store_product = function()
+    {
+        //upload the image here
+        var formData = new FormData();
+        angular.forEach($scope.files,function(obj){
+            if(!obj.isRemote){
+                formData.append('image', obj.lfFile);
+            }
+        });
+        
+        if($scope.files.length > 0)
+        {
+            formData.append("product_id", $scope.store_product.product_id);
+        
+            $http.post("http://" + $scope.site_url.concat("/admin/upload_product_image"), formData, {
+                transformRequest: angular.identity,
+                headers: {'Content-Type': undefined}
+            }).then(function(result)
+            {
+                notifications.showSuccess("New Image Uploaded!!!");
+                // do sometingh                   
+            },function(err){
+                // do sometingh
+            });
+            
+        }
+        
+        var url = "http://" + $scope.site_url.concat("/admin/create_store_product");
+        Form.postForm("create_store_product_form", url, "Store Created!", "An error occured while trying to create form. Please try again later. ");
+    };
+    
+    $scope.updateQuantity = function()
+    {
+        if($scope.store_product.format === 'undefined' || $scope.store_product.format === null)
+        {
+            return 1;
+        }
+        
+        var format = $scope.store_product.format.toLowerCase().split("x");
+        
+        $scope.store_product.quantity = 1;
+        
+        if(format.length === 1)
+        {
+            $scope.store_product.quantity = parseFloat(format[0]);
+        }
+        
+        if(format.length === 2)
+        {
+            $scope.store_product.quantity = parseFloat(format[0]) * parseFloat(format[1]);
+        }
+        
+        if(parseInt($scope.store_product.unit_id) > 0 && parseInt($scope.store_product.compareunit_id) > 0)
+        {
+            $scope.store_product.quantity = $scope.store_product.quantity * $scope.getEquivalent(parseInt($scope.store_product.unit_id), parseInt($scope.store_product.compareunit_id));
+            return $scope.store_product.quantity;
+        }
+    };
+    
+    $scope.updateUnitPrice = function()
+    {
+        $scope.store_product.unit_price =  $scope.store_product.price / $scope.updateQuantity();
+    };
+    
+    $scope.getEquivalent = function(unit_id, compareunit_id)
+    {
+        for(var key in $scope.units)
+        {
+            var unit = $scope.units[key];
+            
+            if(parseInt(unit.id) === parseInt(unit_id))
+            {
+                if(parseInt(unit.compareunit_id) === parseInt(compareunit_id))
+                {
+                    return parseFloat(unit.equivalent);
+                }
+            }
+        }
+        
+        return 1;
+    };
+    
+    $scope.selected_store = 1;
+    
+    $scope.create_store = function()
+    {
+        var url = "http://" + $scope.site_url.concat("/admin/create_store");
+        Form.postForm("create_store_form", url, "Store Created!", "An error occured while trying to create form. Please try again later. ");
+    };
+    
+    $scope.upload_products = function()
+    {
+        var url = "http://" + $scope.site_url.concat("/admin/upload_products");
+        Form.postForm("upload_products_form", url, "Products uploaded!", "An error occured while trying to upload products. Please try again later. ");
+    };
+    
+    $scope.upload_chains = function()
+    {
+        var url = "http://" + $scope.site_url.concat("/admin/upload_chains");
+        Form.postForm("upload_chains_form", url, "Chains uploaded!", "An error occured while trying to upload chains. Please try again later. ");
+    };
+    
+    $scope.upload_stores = function()
+    {
+        var url = "http://" + $scope.site_url.concat("/admin/upload_stores");
+        Form.postForm("upload_stores_form", url, "Stores uploaded!", "An error occured while trying to upload stores. Please try again later. ");
+    };
+    
+    $scope.upload_categories = function()
+    {
+        var url = "http://" + $scope.site_url.concat("/admin/upload_categories");
+        Form.postForm("upload_categories_form", url, "Categories uploaded!", "An error occured while trying to upload categories. Please try again later. ");  
+    };
+    
+    $scope.upload_categories = function()
+    {
+        var url = "http://" + $scope.site_url.concat("/admin/upload_categories");
+        Form.postForm("upload_categories_form", url, "Categories uploaded!", "An error occured while trying to upload categories. Please try again later. ");  
+    };
+    
+    $scope.upload_units = function()
+    {
+        var url = "http://" + $scope.site_url.concat("/admin/upload_units");
+        Form.postForm("upload_units_form", url, "Units uploaded!", "An error occured while trying to upload units. Please try again later. ");  
+    };
+        
+    $scope.getBrandMatches  = function(query)
+    {
+        var brands_array = $.map($scope.brands, function(value, index) {
+            return [value];
+        });
+        
+        var results = query ? brands_array.filter( createFilterFor(query) ) : $scope.brands;
+          
+        return  results;
+        
+    };
+    
+    /**
+     * Create filter function for a query string
+     */
+    function createFilterFor(query) 
+    {
+      var lowercaseQuery = angular.lowercase(query);
+
+      return function filterFn(brand) 
+      {
+        return (angular.lowercase(brand.name).indexOf(lowercaseQuery) === 0);
+      };
+
+    };
+   
+    
+}]);
+
+
+

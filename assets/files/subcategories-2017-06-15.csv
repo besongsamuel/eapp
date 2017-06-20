@@ -1,0 +1,203 @@
+id,product_category_id,name
+1,15,Accessoires pour animaux
+2,16,Accompagnements
+3,22,Agneau
+4,12,Agrumes
+5,12,"Ail, oignons, échalotes "
+6,12,Ananas
+7,8,Antipasti et trempettes
+8,2,Arrachide
+9,3,Autre boisson alcoolisée
+10,15,Autres animaux de compagnie
+11,18,Autres déjeuners cuisinés
+12,8,Autres fromages et craquelins
+13,12,Autres fruits 
+14,17,Autres mets internationaux
+15,5,Autres produits boulangerie
+16,18,Autres produits laitiers 
+17,20,Autres produits surgelés
+18,5,Bagels
+19,12,Bananes
+20,2,Barres tendres 
+21,5,Beignes
+22,18,Beurre et margarine
+23,3,Bière
+24,2,Biscuits et galettes
+25,14,Bistro
+26,12,Bleuets
+27,22,Boeuf
+28,16,Boissons bio
+29,4,Boissons de soya 
+30,4,Boissons énergisantes 
+31,4,Boissons gazeuses
+32,4,Boissons pour sportifs
+33,12,Brocoli
+34,13,Bûche
+35,5,Buffets plateaux de réception
+36,6,Café
+37,12,Canneberges
+38,12,Cantaloup
+39,12,Carottes
+40,12,Céleri branche
+41,7,Céréales
+42,12,Champignons
+43,8,Charcuteries emballées
+44,8,Charcuteries tranchées au comptoir
+45,15,Chats
+46,15,Chiens
+47,2,Chocolat
+48,6,Chocolat chaud
+49,12,Chou
+50,3,Cidre
+51,12,Citrons
+52,3,Cocktail
+53,2,Collation
+54,16,Collations biologiques
+55,2,Collations salées
+56,12,Compote de pomme
+57,12,Concombres
+58,9,Condiments
+59,2,Confiseries
+60,16,Confiseries biologiques
+61,2,Craquelins
+62,18,Crème 
+63,20,Crème glacée 
+64,18,Crème sûre et fromages 
+65,18,Crèmes à cuisson et à café 
+66,2,Croustilles
+67,11,Crustacés frais 
+68,16,Déjeuners bio
+69,5,Déjeuners et pains
+70,20,Desserts
+71,20,Desserts Glacés 
+72,19,Détergent à vaisselle
+73,22,Dinde
+74,9,Épices et assaisonement
+75,13,Farine 
+76,12,Fraises
+77,12,Framboise
+78,18,Fromages
+79,18,Fromages fins à la coupe
+80,18,Fromages fins préemballés à poids fixe
+81,12,Fruits en conserve
+82,20,Fruits et jus 
+83,12,Fruits et légumes biologiques
+84,20,Fruits surgelés
+85,13,Gâteaux
+86,12,Haricots
+87,7,Huiles
+88,13,Ingrédients de pâtisserie
+89,13,Ingrédients pour dessert
+90,22,Jambon
+91,4,Jus
+92,4,Jus de légumes
+93,4,Jus et boissons aux fruits
+94,12,Kiwi
+95,18,Lait
+96,12,Laitue
+97,12,Légume à cuisson 
+98,20,Légumes
+99,12,Légumes en conserve
+100,12,Maïs
+101,12,Mandarines
+102,12,Mangue
+103,18,Margarine
+104,21,Marinades et condiments
+105,12,Melon
+106,17,Mets asiatiques
+107,17,Mets indiens
+108,17,Mets mexicains 
+109,11,Mollusques et crustacés
+110,11,Mollusques frais
+111,13,Muffins
+112,12,Mûres
+113,19,Nettoyants 
+114,19,Nettoyeurs et purificateurs d'air
+115,15,Nourriture pour oiseaux sauvages
+116,2,NPF - Barre tendre
+117,18,Oeufs
+118,12,Oignons
+119,12,Oranges
+120,5,Pain
+121,5,Pains
+122,5,Pains plats
+123,12,Pamplemousses
+124,12,Papaye
+125,19,Papier
+126,7,Pâtes
+127,8,Pâtés à la viande et quiches
+128,7,Pates alimentaires
+129,14,Pâtes et sauces fraîches 
+130,8,Pâtés et terrines
+131,5,Pâtisseries
+132,16,Pâtisseries biologiques
+133,12,Pêches
+134,5,Petits pains
+135,14,Pizza fraîche 
+136,20,Pizzas
+137,8,Plateaux de réception
+138,12,Poireaux
+139,12,Poires
+140,12,Poires en conserve
+141,22,Poisson
+142,16,Poissons et fruits de mer biologiques et naturels
+143,11,Poissons et fruits de mer en boîte
+144,11,Poissons frais
+145,11,Poissons fumés et salés 
+146,20,Poissons surgelés
+147,12,Poivrons
+148,12,Poivrons et piments forts 
+149,12,Pommes
+150,12,Pommes de terre
+151,12,Pommes et poires
+152,22,Porc
+153,22,Poulet
+154,22,Poulet surgelés
+155,20,Prêt à manger 
+156,19,Produits de lessive
+157,19,Produits de papier
+158,20,Produits emballés - réfrigérés et de longue conservation
+159,16,Produits ménagers bio
+160,20,Produits naturels et biologiques
+161,12,Produits réfrigérés
+162,12,Produits secs
+163,5,Produits surgelés
+164,12,Prunes
+165,12,Radis
+166,12,Raisins
+167,12,Raisins rouges
+168,14,Réchaud libre-service
+169,20,Repas
+170,14,Repas cuisinés
+171,8,Repas frais
+172,7,Riz
+173,19,Sacs à poubelle
+174,19,Sacs et pelllicules d'emballage
+175,12,Salade de fruits
+176,12,Salades
+177,14,"Sandwichs, sous-marins et combos"
+178,7,Sauce pour pâtes
+179,21,Sauces
+180,8,Saucisse
+181,15,Soins des cheveux 
+182,21,Soupes
+183,3,Spiritueux
+184,2,Sucre
+185,11,Sushis
+186,5,Tartes
+187,2,Tartinades et sirops
+188,6,Thé
+189,6,Tisanes 
+190,12,Tomates
+191,12,Trempette
+192,19,Vaisselle jetable
+193,22,Veau
+194,22,Viande cashère
+195,22,Viande de spécialité
+196,22,Viande surgelée en boîte
+197,22,Viande transformée
+198,22,Viandes préparées 
+199,3,Vin
+200,9,Vinaigrettes
+201,18,Yogourts
+202,12,Zucchinis
