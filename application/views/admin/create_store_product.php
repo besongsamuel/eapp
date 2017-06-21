@@ -136,7 +136,8 @@
          </md-input-container>
             
         <div class="form-group eapp-create">
-            <input type="submit" value="Create">
+            <input type="submit" value="Create" ng-click="continue = false">
+            <input type="submit" value="Create and Continue" ng-click="continue = true">
         </div>
     </form>
 </div>
@@ -144,9 +145,6 @@
 <script>
 $(document).ready(function()
 {
-    $("#phonenumber").intlTelInput(
-    {
-    });
     
     var scope = angular.element($("#admin-container")).scope();
     

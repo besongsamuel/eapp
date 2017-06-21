@@ -119,4 +119,20 @@ class Admin_model extends CI_Model
         
         return $result;
     }
+    
+    public function get_all_limit($table_name, $limit, $offset)
+    {
+        $result = array();
+        
+        $this->db->limit($limit, $offset);
+        
+        $query =  $this->db->get($table_name);
+        
+        foreach ($query->result() as $value) 
+        {
+            $result[$value->id] = $value;
+        }
+        
+        return $result;
+    }
 }

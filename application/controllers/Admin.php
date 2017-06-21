@@ -32,6 +32,8 @@ class Admin extends CI_Controller
         
         $this->initialize_upload_library(ASSETS_DIR_PATH.'img/products/', uniqid().".png");
         
+        $response = array();
+        
         if($this->upload->do_upload('image'))
         {
             $upload_data = $this->upload->data();
@@ -40,14 +42,30 @@ class Admin extends CI_Controller
             $product_data['image'] = $upload_data['file_name'];
             $product_data['id'] = $this->input->post("product_id");
             $this->admin_model->create(PRODUCT_TABLE, $product_data);
+            
+            $response['success'] = true;
+            $response['message'] = "Image ".$upload_data['file_name']." was uploaded successfully. ";
         }
+        else
+        {
+            $response['success'] = false;
+            $response['message'] = $this->upload->display_errors();
+        }
+        
+        echo json_encode($response);
     }
 
     public function create_new_brand()
     {
+        $response = array();
         $data = array();
         $data['name'] = $this->input->post('name');
-        echo $this->admin_model->create(BRANDS_TABLE, $data);
+        $this->admin_model->create(BRANDS_TABLE, $data);
+        
+        $response['success'] = true;
+        $response['message'] = "Brand ".$data['name']." was created successfully. ";
+        
+        echo json_encode($response);
         
     }
 
@@ -60,8 +78,12 @@ class Admin extends CI_Controller
             $store_product['country'] = $this->input->post('country');
             $store_product['state'] = $this->input->post('state');
             
-            
             $this->admin_model->create(STORE_PRODUCT_TABLE, $store_product);
+            
+            $response = array();
+            $response['success'] = true;
+            $response['message'] = "Product was created successfully. ";
+            echo json_encode($response);
         }
         else
         {
@@ -76,11 +98,37 @@ class Admin extends CI_Controller
         }
     }
     
+    public function store_products() 
+    {
+        $this->data['store_products'] = addslashes(json_encode($this->admin_model->get_all(STORE_PRODUCT_TABLE)));
+        $this->data['products'] = addslashes(json_encode($this->admin_model->get_all(PRODUCT_TABLE)));
+        $this->data['retailers'] = addslashes(json_encode($this->admin_model->get_all(CHAIN_TABLE)));
+        $this->data['units'] = addslashes(json_encode($this->admin_model->get_all(UNITS_TABLE)));
+        
+        $this->data['body'] = $this->load->view('admin/store_products', $this->data, TRUE);
+            $this->parser->parse('eapp_template', $this->data);
+    }
+    
+    public function get_store_products()
+    {
+        $limit = $this->input->post('limit');
+        
+        $page = $this->input->post('page');
+        
+        echo json_encode($this->admin_model->get_all_limit(STORE_PRODUCT_TABLE, $limit, $limit * $page));
+    }
+
+
     public function upload_chains() 
     {
         if ($this->input->method(TRUE) === 'POST') 
         {
             $this->upload_csv_database('chains', CHAIN_TABLE, null);
+            
+            $response = array();
+            $response['success'] = true;
+            $response['message'] = "Retailer were uploaded successfully. ";
+            echo json_encode($response);
         }
     }
     
@@ -89,6 +137,11 @@ class Admin extends CI_Controller
         if ($this->input->method(TRUE) === 'POST') 
         {
             $this->upload_csv_database('stores', CHAIN_STORE_TABLE, null);
+            
+            $response = array();
+            $response['success'] = true;
+            $response['message'] = "Retailer stores were uploaded successfully. ";
+            echo json_encode($response);
         }
     }
     
@@ -97,6 +150,11 @@ class Admin extends CI_Controller
         if ($this->input->method(TRUE) === 'POST') 
         {
             $this->upload_csv_database('units', UNITS_TABLE, null);
+            
+            $response = array();
+            $response['success'] = true;
+            $response['message'] = "Units were uploaded successfully. ";
+            echo json_encode($response);
         }
     }
     
@@ -108,6 +166,11 @@ class Admin extends CI_Controller
         if ($this->input->method(TRUE) === 'POST') 
         {
             $this->upload_csv_database('products', PRODUCT_TABLE, null);
+            
+            $response = array();
+            $response['success'] = true;
+            $response['message'] = "Products were uploaded successfully. ";
+            echo json_encode($response);
         }
     }
     
@@ -116,6 +179,11 @@ class Admin extends CI_Controller
         if ($this->input->method(TRUE) === 'POST') 
         {
             $this->upload_csv_database('categories', CATEGORY_TABLE, null);
+            
+            $response = array();
+            $response['success'] = true;
+            $response['message'] = "Categories were uploaded successfully. ";
+            echo json_encode($response);
         }
     }
     
@@ -124,6 +192,11 @@ class Admin extends CI_Controller
         if ($this->input->method(TRUE) === 'POST') 
         {
             $this->upload_csv_database('subcategories', SUB_CATEGORY_TABLE, null);
+            
+            $response = array();
+            $response['success'] = true;
+            $response['message'] = "Sub Categories were uploaded successfully. ";
+            echo json_encode($response);
         }
     }
     

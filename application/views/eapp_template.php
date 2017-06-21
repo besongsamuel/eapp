@@ -44,8 +44,8 @@
     <link rel="stylesheet" href="http://<?php echo base_url("assets/css/ngNotificationsBar.min.css")?>">
     <!-- Bootstrap Select CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/css/bootstrap-select.min.css">
-    
-    
+    <!-- MD Table CSS -->
+    <link rel="stylesheet" href="http://<?php echo base_url("assets/css/md-data-table.css")?>">
     
     
     
@@ -85,6 +85,7 @@
     <!-- International Phone Number Angular Module -->
     <script src="http://<?php echo base_url("assets/js/utils.js")?>"></script>
     <script src="http://<?php echo base_url("assets/js/intlTelInput.js")?>"></script>
+    <script src="http://<?php echo base_url("assets/js/md-data-table.js")?>"></script>
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->

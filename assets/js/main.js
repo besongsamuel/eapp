@@ -88,11 +88,11 @@ jQuery(document).ready(function($){
 });
 
 // Define the `eapp Application` module
-var eappApp = angular.module('eappApp', ['ngMaterial', 'lfNgMdFileInput', 'angularCountryState', 'ngNotificationsBar']);
+var eappApp = angular.module('eappApp', ['ngMaterial', 'md.data.table', 'lfNgMdFileInput', 'angularCountryState', 'ngNotificationsBar']);
 
 eappApp.factory('Form', [ '$http', 'notifications', function($http, notifications) 
 {
-    this.postForm = function (formID, url, success_message, error_message) 
+    this.postForm = function (formID, url, redirect_url) 
     {
         var form = document.getElementById(formID);
         
@@ -111,11 +111,25 @@ eappApp.factory('Form', [ '$http', 'notifications', function($http, notification
         then(
         function successCallback(response) 
         {
-            notifications.showSuccess(success_message);
+            
+            if(response.data.success)
+            {
+                if(redirect_url != null)
+                {
+                    window.location.href = redirect_url;
+                }
+                
+                notifications.showSuccess(response.data.message);
+            }
+            else
+            {
+                notifications.showError(response.data.message);
+            }
+            
         }, 
         function errorCallback(response) 
         {
-            notifications.showError(error_message);
+            notifications.showError("An unexpected server error occured. Please try again later. ");
         });
     };
     
@@ -151,8 +165,48 @@ eappApp.controller('ProductsController', ['$scope','$rootScope', function($scope
   
 }]);
 
+eappApp.controller('ProductsTableController', ['$scope', '$q', '$http', function($scope, $q, $http) 
+{
+    $scope.selected = [];
+
+    $scope.query = {
+      order: 'name',
+      limit: 5,
+      page: 1
+    };
+    
+  
+  $scope.getProducts = function () 
+  {
+    
+    var formData = new FormData();
+        
+    formData.append("limit", $scope.query.limit);
+    
+    formData.append("page", $scope.query.page);
+    
+    $scope.promise = $http.post("http://"+ $scope.site_url.concat("/admin/get_store_products"), formData, {
+            transformRequest: angular.identity,
+            headers: {'Content-Type': undefined}});
+    
+    $scope.promise.then(function(payload)
+    {
+        $scope.query_products = payload.data;
+    });
+      
+  };
+    
+  
+}]);
+
 eappApp.controller('AdminController', ['$scope', 'Form', '$http', 'notifications', function($scope, Form, $http, notifications) {
       
+    /**
+     * When true, the user will continue creating other
+     * products after creating te current one. 
+     */  
+    $scope.continue = false;
+    
     $scope.store_product = 
     {
         organic : -1,
@@ -243,8 +297,30 @@ eappApp.controller('AdminController', ['$scope', 'Form', '$http', 'notifications
             
         }
         
+        var redirect_url = null;
+        
+        if($scope.continue)
+        {
+            $scope.store_product.compareunit_id = $scope.compareunits[1].id;
+            $scope.store_product.unit_id = $scope.units[1].id;
+            $scope.store_product.format = "1x1";
+            $scope.store_product.product_id = $scope.products[1].id;
+            $scope.store_product.price = 0;
+            $scope.store_product.brand = "";
+            
+            $scope.product_selected();
+            $scope.updateQuantity();
+            $scope.updateUnitPrice();
+            
+            window.location.hash = "admin-container";
+        }
+        else
+        {
+            redirect_url = "http://" + $scope.site_url.concat("/admin/store_products");
+        }
+        
         var url = "http://" + $scope.site_url.concat("/admin/create_store_product");
-        Form.postForm("create_store_product_form", url, "Store Created!", "An error occured while trying to create form. Please try again later. ");
+        Form.postForm("create_store_product_form", url, redirect_url);
     };
     
     $scope.updateQuantity = function()
@@ -303,43 +379,43 @@ eappApp.controller('AdminController', ['$scope', 'Form', '$http', 'notifications
     $scope.create_store = function()
     {
         var url = "http://" + $scope.site_url.concat("/admin/create_store");
-        Form.postForm("create_store_form", url, "Store Created!", "An error occured while trying to create form. Please try again later. ");
+        Form.postForm("create_store_form", url, null);
     };
     
     $scope.upload_products = function()
     {
         var url = "http://" + $scope.site_url.concat("/admin/upload_products");
-        Form.postForm("upload_products_form", url, "Products uploaded!", "An error occured while trying to upload products. Please try again later. ");
+        Form.postForm("upload_products_form", url, null);
     };
     
     $scope.upload_chains = function()
     {
         var url = "http://" + $scope.site_url.concat("/admin/upload_chains");
-        Form.postForm("upload_chains_form", url, "Chains uploaded!", "An error occured while trying to upload chains. Please try again later. ");
+        Form.postForm("upload_chains_form", url, null);
     };
     
     $scope.upload_stores = function()
     {
         var url = "http://" + $scope.site_url.concat("/admin/upload_stores");
-        Form.postForm("upload_stores_form", url, "Stores uploaded!", "An error occured while trying to upload stores. Please try again later. ");
+        Form.postForm("upload_stores_form", url, null);
     };
     
     $scope.upload_categories = function()
     {
         var url = "http://" + $scope.site_url.concat("/admin/upload_categories");
-        Form.postForm("upload_categories_form", url, "Categories uploaded!", "An error occured while trying to upload categories. Please try again later. ");  
+        Form.postForm("upload_categories_form", url, null);  
     };
     
     $scope.upload_categories = function()
     {
         var url = "http://" + $scope.site_url.concat("/admin/upload_categories");
-        Form.postForm("upload_categories_form", url, "Categories uploaded!", "An error occured while trying to upload categories. Please try again later. ");  
+        Form.postForm("upload_categories_form", url, null);  
     };
     
     $scope.upload_units = function()
     {
         var url = "http://" + $scope.site_url.concat("/admin/upload_units");
-        Form.postForm("upload_units_form", url, "Units uploaded!", "An error occured while trying to upload units. Please try again later. ");  
+        Form.postForm("upload_units_form", url, null);  
     };
         
     $scope.getBrandMatches  = function(query)
