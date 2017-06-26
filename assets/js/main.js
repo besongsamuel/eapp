@@ -215,6 +215,20 @@ eappApp.controller('ProductsTableController', ['$scope', '$q', '$http', function
   
 }]);
 
+eappApp.controller('HomeController', ["$scope","$rootScope", function($scope, $rootScope) 
+{
+  	$scope.addProductToCart = function(id)
+	{
+	
+	}
+	
+	$scope.viewProductDetails = function(id)
+	{
+	
+	}
+  
+}]);
+
 eappApp.controller('AdminController', ['$scope', 'Form', '$http', 'notifications', function($scope, Form, $http, notifications) {
       
     /**
