@@ -20,9 +20,14 @@ class Admin_model extends CI_Model
 		
 	public function GetLatestProducts($store_id = -1)
 	{
+		
 		$get = sprintf("%s.*, %s.name, %s.image", STORE_PRODUCTS_TABLE, PRODUCTS_TABLE, PRODUCTS_TABLE);
 		$join = sprintf("%s.product_id = %s.id", STORE_PRODUCTS_TABLE, PRODUCTS_TABLE);
 		$array = array('period_from <=' => date("Y-m-d"), 'date >=' => date("Y-m-d"));
+		if($store_id > -1)
+		{
+			$array['store_id = '] = $store_id;
+		}
 		$this->db->select($get);
 		$this->db->from(STORE_PRODUCTS_TABLE);
 		$this->db->join(PRODUCTS_TABLE, $join);
