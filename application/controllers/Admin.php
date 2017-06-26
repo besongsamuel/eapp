@@ -92,11 +92,23 @@ class Admin extends CI_Controller
             $this->data['compareunits'] = addslashes(json_encode($this->admin_model->get_all(COMPAREUNITS_TABLE)));
             $this->data['units'] = addslashes(json_encode($this->admin_model->get_all(UNITS_TABLE)));
             $this->data['brands'] = addslashes(json_encode($this->admin_model->get_all(BRANDS_TABLE)));
-			
-			if(isset($id))
-			{
-				$this->data['store_product'] = json_encode($this->admin_model->get(STORE_PRODUCT_TABLE, $id));
-			}
+		
+		// Define default store product
+		$this->data['store_product'] = array
+		(
+			'organic' => 1,
+			'format' => '1x1',
+			'country' => 'Canada'
+			'state' => 'Quebec'
+			'quantity' => '1',
+			'unit_price' => '1',
+		);
+		
+		
+		if(isset($id))
+		{
+			$this->data['store_product'] = json_encode($this->admin_model->get(STORE_PRODUCT_TABLE, $id));
+		}
             
             $this->data['body'] = $this->load->view('admin/create_store_product', $this->data, TRUE);
             $this->parser->parse('eapp_template', $this->data);
