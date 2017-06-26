@@ -207,17 +207,6 @@ eappApp.controller('AdminController', ['$scope', 'Form', '$http', 'notifications
      */  
     $scope.continue = false;
     
-    $scope.store_product = 
-    {
-        organic : -1,
-        format : "1x1",
-        is_organic: 1,
-        country : 'Canada',
-        state: 'Quebec',
-        quantity: 1,
-        unit_price : 1
-    };
-    
     $scope.product = null;
     
     $scope.product_selected = function()
