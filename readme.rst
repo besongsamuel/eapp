@@ -6,7 +6,6 @@ What is EAPP
    :alt: Codacy Badge
    :target: https://www.codacy.com/app/besongsamuel/eapp?utm_source=github.com&utm_medium=referral&utm_content=besongsamuel/eapp&utm_campaign=badger
 	
-	https://travis-ci.org/besongsamuel/eapp.svg?branch=master
 
 EAPP (Epicerie a petit prix) is a web project that allows you to compare store prices and produce the user a better
 grocery shopping list. You add grocery items to a cart and at 'Checkout', the system computes an optimized list of 
