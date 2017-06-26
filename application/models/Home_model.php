@@ -12,14 +12,21 @@
  */
 class Admin_model extends CI_Model 
 {
-    public function __construct()
-    {
-        parent::__construct();
-        // Your own constructor code
-    }
+	    public function __construct()
+	    {
+		parent::__construct();
+		// Your own constructor code
+	    }
 		
-		public function GetLatestProducts($store_id = -1)
-		{
-			
-		}
+	public function GetLatestProducts($store_id = -1)
+	{
+		$get = sprintf("%s.*, %s.name, %s.image", STORE_PRODUCTS_TABLE, PRODUCTS_TABLE, PRODUCTS_TABLE);
+		$join = sprintf("%s.product_id = %s.id", STORE_PRODUCTS_TABLE, PRODUCTS_TABLE);
+		$array = array('period_from <=' => date("Y-m-d"), 'date >=' => date("Y-m-d"));
+		$this->db->select($get);
+		$this->db->from(STORE_PRODUCTS_TABLE);
+		$this->db->join(PRODUCTS_TABLE, $join);
+		$this->db->where($array);
+		return $this->db->get();
+	}
 }
