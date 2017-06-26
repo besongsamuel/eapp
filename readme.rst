@@ -2,6 +2,10 @@
 What is EAPP
 ###################
 
+
+.. image:: https://travis-ci.org/besongsamuel/eapp.svg?branch=master
+    :target: https://travis-ci.org/besongsamuel/eapp
+
 .. image:: https://api.codacy.com/project/badge/Grade/f717b5cc95f344448a20c2c20aad2c7f
    :alt: Codacy Badge
    :target: https://www.codacy.com/app/besongsamuel/eapp?utm_source=github.com&utm_medium=referral&utm_content=besongsamuel/eapp&utm_campaign=badger
