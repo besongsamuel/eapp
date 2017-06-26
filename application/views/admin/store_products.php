@@ -26,7 +26,7 @@
             <tbody>
                 <tr  md-row md-select="store_product"  md-select-id="name" md-auto-select class="cart_item" ng-repeat="store_product in query_products">
                     <td md-cell>
-                        <a title="Remove this item" class="remove" href="#">×</a> 
+                        <a title="Remove this item" class="remove" href ng-click="delete_store_product(store_product.id)">×</a> 
                     </td>
 
                     <td md-cell>
