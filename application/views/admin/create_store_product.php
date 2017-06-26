@@ -22,9 +22,6 @@
             >
                 <option ng-repeat="product in products" value="{{product.id}}">{{product.name}}</option>
             </select>
-            <div ng-messages="create_store_product_form.product[product_id].$error"  ng-show="create_store_product_form.product[product_id].$dirty">
-                <div ng-message="required">This is required!</div>
-            </div>
         </div>
         
         <!-- Section to upload product image-->
@@ -74,7 +71,7 @@
         <country-state-select country-label="Country of origin" state-label="State of origin" country="store_product.country" state="store_product.state"></country-state-select>
         
         <!-- Section to select if product is organic -->
-        <md-radio-group name="product[organic]" ng-model="store_product.is_organic">
+        <md-radio-group name="product[organic]" ng-model="store_product.organic">
             <label>Is Organic</label>
             <md-radio-button   ng-repeat="value in organic_select" ng-value="value.id" aria-label="{{ value.name }}">
                 {{ value.name }}
@@ -150,16 +147,29 @@ $(document).ready(function()
     
     scope.$apply(function()
     {
+		
+		scope.store_product = JSON.parse('<?php echo $store_product; ?>');
         scope.products = JSON.parse('<?php echo $products; ?>');
-        scope.store_product.product_id = scope.products[1].id;
+		if(scope.store_product.product_id === null || scope.store_product.product_id === 'undefined')
+		{
+			scope.store_product.product_id = scope.products[1].id;
+		}
         scope.retailers = JSON.parse('<?php echo $retailers; ?>');
-        scope.store_product.retailer_id = scope.retailers[1].id;
+		if(scope.store_product.retailer_id === null || scope.store_product.retailer_id === 'undefined')
+		{
+			scope.store_product.retailer_id = scope.retailers[1].id;
+		}
         scope.units = JSON.parse('<?php echo $units; ?>');
-        scope.store_product.unit_id = scope.units[1].id;
+		if(scope.store_product.unit_id === null || scope.store_product.unit_id === 'undefined')
+		{
+			scope.store_product.unit_id = scope.units[1].id;
+		}
         scope.compareunits = JSON.parse('<?php echo $compareunits; ?>');
-        scope.store_product.compareunit_id = scope.compareunits[1].id;
+		if(scope.store_product.compareunit_id === null || scope.store_product.compareunit_id === 'undefined')
+		{
+			scope.store_product.compareunit_id = scope.compareunits[1].id;
+		}
         scope.brands = JSON.parse('<?php echo $brands; ?>');
-        
         
         scope.product_selected();
         scope.updateQuantity();
