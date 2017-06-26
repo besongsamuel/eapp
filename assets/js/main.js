@@ -175,7 +175,23 @@ eappApp.controller('ProductsTableController', ['$scope', '$q', '$http', function
       page: 1
     };
     
-  
+  $scope.delete_store_product = function(store_product_id)
+  {
+	   	var formData = new FormData();
+        
+		formData.append("id", store_product_id);
+
+		$scope.promise = $http.post("http://"+ $scope.site_url.concat("/admin/delete_store_product"), formData, {
+				transformRequest: angular.identity,
+				headers: {'Content-Type': undefined}});
+
+		$scope.promise.then(function(payload)
+		{
+			// Refresh list
+  			$scope.getProducts();
+		});
+  }
+	
   $scope.getProducts = function () 
   {
     
