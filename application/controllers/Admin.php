@@ -114,6 +114,12 @@ class Admin extends CI_Controller
             $this->parser->parse('eapp_template', $this->data);
         }
     }
+	
+	public function delete_store_product()
+	{
+		$id = $this->input->post('id');
+		$this->admin_model->delete(STORE_PRODUCT_TABLE, $id);
+	}
     
     public function store_products() 
     {
