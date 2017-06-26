@@ -69,7 +69,7 @@ class Admin extends CI_Controller
         
     }
 
-    public function create_store_product()
+    public function create_store_product($id)
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') 
         {
@@ -92,6 +92,11 @@ class Admin extends CI_Controller
             $this->data['compareunits'] = addslashes(json_encode($this->admin_model->get_all(COMPAREUNITS_TABLE)));
             $this->data['units'] = addslashes(json_encode($this->admin_model->get_all(UNITS_TABLE)));
             $this->data['brands'] = addslashes(json_encode($this->admin_model->get_all(BRANDS_TABLE)));
+			
+			if(isset($id))
+			{
+				$this->data['store_product'] = json_encode($this->admin_model->get(STORE_PRODUCT_TABLE, $id));
+			}
             
             $this->data['body'] = $this->load->view('admin/create_store_product', $this->data, TRUE);
             $this->parser->parse('eapp_template', $this->data);
