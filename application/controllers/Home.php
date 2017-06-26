@@ -21,6 +21,7 @@ class Home extends CI_Controller {
 	public function index()
 	{
             $this->data['body'] = $this->load->view('home/index', '', TRUE);
+	    $this->data['latest_products'] = $this->home_model->GetLatestProducts(-1);
             $this->parser->parse('eapp_template', $this->data);
 	}
 }
