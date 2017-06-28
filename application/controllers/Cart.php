@@ -38,20 +38,32 @@ class Cart extends CI_Controller {
      */
     public function insert()
     {
-        $item = json_decode($this->input->post("item"));
+        $product_id = json_decode($this->input->post("product_id"));
+	    
+        $store_product = $this->admin_model->get(STORE_PRODUCT_TABLE, $product_id);
+	$product = $this->admin_model->get(PRODUCT_TABLE, $store_product->product_id);
+	
+	$data = array(
+		'id'      => $store_product->product_id,
+		'qty'     => $store_product->quantity,
+		'price'   => $store_product->price,
+		'name'    => $product->name
+	);	    
         
-        $rowid = $this->cart->insert($item);
+        $rowid = $this->cart->insert($data);
 		
-		$result = array
-		(
-			"success" => false,
-			"rowid" => $rowid
-		);
-		
-		if($rowid)
-		{
-			$result["success"] = "true";
-		}
+	$result = array
+	(
+		"success" => false,
+		"rowid" => $rowid
+	);
+
+	if($rowid)
+	{
+		$result["success"] = true;
+		$result["store_product"] = $store_product;
+		$result["product"] = $product;
+	}
 		
         echo json_encode($result);
     }
