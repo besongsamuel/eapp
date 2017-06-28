@@ -88,16 +88,12 @@ jQuery(document).ready(function($){
 });
 
 // Define the `eapp Application` module
-var eappApp = angular.module('eappApp', ['ngMaterial', 'md.data.table', 'lfNgMdFileInput', 'angularCountryState', 'ngNotificationsBar']);
+var eappApp = angular.module('eappApp', ['ngMaterial', 'md.data.table', 'lfNgMdFileInput', 'mdCountrySelect', 'ngNotificationsBar']);
 
 eappApp.factory('Form', [ '$http', 'notifications', function($http, notifications) 
 {
-    this.postForm = function (formID, url, redirect_url) 
-    {
-        var form = document.getElementById(formID);
-        
-        var formData = new FormData(form);
-        
+    this.postForm = function (formData, url, redirect_url) 
+    {       
         $http({
             url: url,
             method: 'POST',
@@ -234,10 +230,20 @@ eappApp.controller('AdminController', ['$scope', 'Form', '$http', 'notifications
     /**
      * When true, the user will continue creating other
      * products after creating te current one. 
-     */  
+     */ 
+    
+    $scope.store_product = 
+    {
+        id : -1
+    };
+    
     $scope.continue = false;
     
     $scope.product = null;
+    
+    $scope.default_country = 'CA';
+    
+    $scope.getSaveLabel = function(){ return parseInt($scope.store_product.id) > -1 ? "Edit" : "Create"};
     
     $scope.product_selected = function()
     {
@@ -249,23 +255,6 @@ eappApp.controller('AdminController', ['$scope', 'Form', '$http', 'notifications
         
         $scope.api.addRemoteFile(image_url, $scope.product.image,'image');
     };
-    
-    $scope.organic_select = 
-    [
-        {
-            id: -1,
-            name: "NA"
-        },
-        {
-            id: 1,
-            name: "No"
-        },
-        {
-            id: 2,
-            name: "Yes"
-        }
-        
-    ];
     
     $scope.createNewBrand = function(brand_name)
     {
@@ -308,9 +297,13 @@ eappApp.controller('AdminController', ['$scope', 'Form', '$http', 'notifications
                 headers: {'Content-Type': undefined}
             }).then(function(result)
             {
-                notifications.showSuccess("New Image Uploaded!!!");
-                // do sometingh                   
-            },function(err){
+                if(result.data.success)
+                {
+                    notifications.showSuccess(result.data.message);
+                }
+                
+            },function(err)
+            {
                 // do sometingh
             });
             
@@ -320,18 +313,8 @@ eappApp.controller('AdminController', ['$scope', 'Form', '$http', 'notifications
         
         if($scope.continue)
         {
-            $scope.store_product.compareunit_id = $scope.compareunits[1].id;
-            $scope.store_product.unit_id = $scope.units[1].id;
-            $scope.store_product.format = "1x1";
-            $scope.store_product.product_id = $scope.products[1].id;
-            $scope.store_product.price = 0;
-            $scope.store_product.brand = "";
-            
-            $scope.product_selected();
-            $scope.updateQuantity();
-            $scope.updateUnitPrice();
-            
-            window.location.hash = "admin-container";
+            redirect_url = "http://" + $scope.site_url.concat("/admin/create_store_product");
+            redirect_url = redirect_url.concat("#admin-container");
         }
         else
         {
@@ -339,7 +322,20 @@ eappApp.controller('AdminController', ['$scope', 'Form', '$http', 'notifications
         }
         
         var url = "http://" + $scope.site_url.concat("/admin/create_store_product");
-        Form.postForm("create_store_product_form", url, redirect_url);
+        var form = document.getElementById("create_store_product_form");
+        var formData = new FormData(form);
+        // Manually add organic and in flyer form fields
+        formData.append("product[organic]", $scope.store_product.organic ? 1 : 0);
+        formData.append("product[in_flyer]", $scope.store_product.in_flyer ? 1 : 0);
+        formData.append("product[country]", $scope.store_product.country);
+        Form.postForm(formData, url, redirect_url);
+        
+        if($scope.continue)
+        {
+            sessionStorage.setItem("retailer_id", $scope.store_product.retailer_id);
+            sessionStorage.setItem("period_from", $scope.store_product.period_from);
+            sessionStorage.setItem("period_to", $scope.store_product.period_to);
+        }
     };
     
     $scope.updateQuantity = function()
@@ -398,43 +394,57 @@ eappApp.controller('AdminController', ['$scope', 'Form', '$http', 'notifications
     $scope.create_store = function()
     {
         var url = "http://" + $scope.site_url.concat("/admin/create_store");
-        Form.postForm("create_store_form", url, null);
+        var form = document.getElementById("create_store_form");
+        var formData = new FormData(form);
+        Form.postForm(formData, url, null);
     };
     
     $scope.upload_products = function()
     {
         var url = "http://" + $scope.site_url.concat("/admin/upload_products");
-        Form.postForm("upload_products_form", url, null);
+        var form = document.getElementById("upload_products_form");
+        var formData = new FormData(form);
+        Form.postForm(formData, url, null);
     };
     
     $scope.upload_chains = function()
     {
         var url = "http://" + $scope.site_url.concat("/admin/upload_chains");
-        Form.postForm("upload_chains_form", url, null);
+        var form = document.getElementById("upload_chains_form");
+        var formData = new FormData(form);
+        Form.postForm(formData, url, null);
     };
     
     $scope.upload_stores = function()
     {
         var url = "http://" + $scope.site_url.concat("/admin/upload_stores");
-        Form.postForm("upload_stores_form", url, null);
+        var form = document.getElementById("upload_stores_form");
+        var formData = new FormData(form);
+        Form.postForm(formData, url, null);
     };
     
     $scope.upload_categories = function()
     {
         var url = "http://" + $scope.site_url.concat("/admin/upload_categories");
-        Form.postForm("upload_categories_form", url, null);  
+        var form = document.getElementById("upload_categories_form");
+        var formData = new FormData(form);
+        Form.postForm(formData, url, null);  
     };
     
-    $scope.upload_categories = function()
+    $scope.upload_subcategories = function()
     {
-        var url = "http://" + $scope.site_url.concat("/admin/upload_categories");
-        Form.postForm("upload_categories_form", url, null);  
+        var url = "http://" + $scope.site_url.concat("/admin/upload_subcategories");
+        var form = document.getElementById("upload_categories_form");
+        var formData = new FormData(form);
+        Form.postForm(formData, url, null);  
     };
     
     $scope.upload_units = function()
     {
         var url = "http://" + $scope.site_url.concat("/admin/upload_units");
-        Form.postForm("upload_units_form", url, null);  
+        var form = document.getElementById("upload_units_form");
+        var formData = new FormData(form);
+        Form.postForm(formData, url, null);  
     };
         
     $scope.getBrandMatches  = function(query)

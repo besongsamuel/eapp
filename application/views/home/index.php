@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 
-<div class="slider-area" ng-controller="HomeController">
+<div id="admin-container" ng-controller="HomeController">
+
+    <div id="admin-container" class="slider-area" >
         <div class="zigzag-bottom"></div>
         <div id="slide-list" class="carousel carousel-fade slide" data-ride="carousel">
             <div class="slide-bulletz">
@@ -124,21 +126,25 @@
                 <div class="col-md-12">
                     <div class="latest-product">
                         <h2 class="section-title">Latest Products</h2>
-                        <div class="product-carousel" ng-repeat="product in latestProducts">
+                        <div class="product-carousel">
                             <div class="single-product">
+                                <?php foreach($latestProducts as $product): ?>
                                 <div class="product-f-image">
-                                    <img ng-src="http://<?php echo base_url("assets/img/products/");?>{{product.image}}" alt="">
+                                    
+                                    <img ng-src="http://<?php echo base_url("assets/img/products/").$product->image;?>" style="height: 100%;" alt="">
                                     <div class="product-hover">
-                                        <a href class="add-to-cart-link" ng-click="addProductToCart(product.id)"><i class="fa fa-shopping-cart"></i> Add to cart</a>
-                                        <a href ng-click="viewProductDetails(product.id)" class="view-details-link"><i class="fa fa-link"></i> See details</a>
+                                        <a href class="add-to-cart-link" onclick="addProductToCart(<?php echo $product->id; ?>)"><i class="fa fa-shopping-cart"></i> Add to cart</a>
+                                        <a href onclick="viewProductDetails(<?php echo $product->id; ?>)" class="view-details-link"><i class="fa fa-link"></i> See details</a>
                                     </div>
+                                    
                                 </div>
                                 
-                                <h2><a href ng-click="viewProductDetails(product.id)">{{product.name}}</a></h2>
+                                <h2><a href ng-click="viewProductDetails(<?php echo $product->id; ?>)"><?php echo $product->name; ?></a></h2>
                                 
                                 <div class="product-carousel-price">
-                                    <ins>CAD{{product.price}}</ins>
+                                    <ins>CAD <?php echo $product->price; ?></ins><del>CAD <?php echo $product->regular_price; ?></del>
                                 </div> 
+                                <?php endforeach; ?>
                             </div>
                         </div>
                     </div>
@@ -154,8 +160,10 @@
                 <div class="col-md-12">
                     <div class="brand-wrapper">
                         <h2 class="section-title">Stores</h2>
-                        <div class="brand-list" ng-repeat="store in stores">
-                            <img ng-src="http://<?php echo base_url("assets/img/stores/");?>{{store.image}}" alt="">                           
+                        <div class="brand-list">
+                            <?php foreach($stores as $store): ?>
+                            <img src="http://<?php echo base_url("assets/img/stores/").$store->image; ?>" style="width: 270px; height: 120px;" width="270" height="120" alt="">    
+                            <?php endforeach; ?>
                         </div>
                     </div>
                 </div>
@@ -314,4 +322,16 @@
             </div>
         </div>
     </div> <!-- End product widget area -->
+    
+ </div>   
+    <script>
+    $(document).ready(function()
+    {
+        var scope = angular.element($("#admin-container")).scope();
 
+        scope.$apply(function()
+        {
+            
+        });
+    });
+    </script>

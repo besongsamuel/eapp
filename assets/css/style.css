@@ -264,8 +264,10 @@ z-index: 9;
 }
 
 
-.product-f-image {
+.product-f-image 
+{
     position: relative;
+    height: 270px;
 }
 .product-hover {
     height: 100%;
@@ -330,7 +332,8 @@ z-index: 9;
     font-weight: 700;
 }
 
-.single-product {
+.single-product 
+{
   overflow: hidden;
 }
 .single-product:hover {}

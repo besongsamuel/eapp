@@ -69,19 +69,18 @@ class Admin extends CI_Controller
         
     }
 
-    public function create_store_product($id)
+    public function create_store_product($id = null)
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') 
         {
 
             $store_product = $this->input->post('product');
-            $store_product['country'] = $this->input->post('country');
-            $store_product['state'] = $this->input->post('state');
             
             $this->admin_model->create(STORE_PRODUCT_TABLE, $store_product);
             
             $response = array();
             $response['success'] = true;
+            $response['id'] = $store_product['id'];
             $response['message'] = "Product was created successfully. ";
             echo json_encode($response);
         }
@@ -93,33 +92,43 @@ class Admin extends CI_Controller
             $this->data['units'] = addslashes(json_encode($this->admin_model->get_all(UNITS_TABLE)));
             $this->data['brands'] = addslashes(json_encode($this->admin_model->get_all(BRANDS_TABLE)));
 		
-		// Define default store product
-		$this->data['store_product'] = array
-		(
-			'organic' => 1,
-			'format' => '1x1',
-			'country' => 'Canada'
-			'state' => 'Quebec'
-			'quantity' => '1',
-			'unit_price' => '1',
-		);
+            // Define default store product
+            $this->data['store_product'] = array
+            (
+                    'id' => -1,
+                    'organic' => 0,
+                    'in_flyer' => 0,
+                    'format' => '1x1',
+                    'country' => 'CA',
+                    'quantity' => '1',
+                    'unit_price' => 1,
+                    'price' => 0,
+                    'regular_price' => 0,
+                    'period_from' => date("Y-m-d"),
+                    'period_to' => date("Y-m-d")
+            );
 		
-		
-		if(isset($id))
-		{
-			$this->data['store_product'] = json_encode($this->admin_model->get(STORE_PRODUCT_TABLE, $id));
-		}
+            $this->data['id'] = $id;
+            
+            if(isset($id) && $id > -1)
+            {
+                $this->data['store_product'] = json_encode($this->admin_model->get(STORE_PRODUCT_TABLE, $id));
+            }
+            else
+            {
+                $this->data['store_product'] = json_encode($this->data['store_product']);
+            }
             
             $this->data['body'] = $this->load->view('admin/create_store_product', $this->data, TRUE);
             $this->parser->parse('eapp_template', $this->data);
         }
     }
 	
-	public function delete_store_product()
-	{
-		$id = $this->input->post('id');
-		$this->admin_model->delete(STORE_PRODUCT_TABLE, $id);
-	}
+    public function delete_store_product()
+    {
+            $id = $this->input->post('id');
+            $this->admin_model->delete(STORE_PRODUCT_TABLE, $id);
+    }
     
     public function store_products() 
     {
@@ -136,7 +145,7 @@ class Admin extends CI_Controller
     {
         $limit = $this->input->post('limit');
         
-        $page = $this->input->post('page');
+        $page = $this->input->post('page') - 1;
         
         echo json_encode($this->admin_model->get_all_limit(STORE_PRODUCT_TABLE, $limit, $limit * $page));
     }

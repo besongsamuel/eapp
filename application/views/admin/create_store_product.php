@@ -1,7 +1,88 @@
 <!DOCTYPE html>
 
+<script>
+$(document).ready(function()
+{
+    
+    var scope = angular.element($("#admin-container")).scope();
+    
+    scope.$apply(function()
+    {
+        scope.store_product = JSON.parse('<?php echo $store_product; ?>');
+        if(sessionStorage.getItem("retailer_id"))
+        {
+            scope.store_product.retailer_id = parseInt(sessionStorage.getItem("retailer_id"));
+            sessionStorage.removeItem("retailer_id");
+        }
+
+        if(sessionStorage.getItem("period_from"))
+        {
+            scope.store_product.period_from = sessionStorage.getItem("period_from");
+            sessionStorage.removeItem("period_from");
+        }
+
+        if(sessionStorage.getItem("period_to"))
+        {
+            scope.store_product.period_to = sessionStorage.getItem("period_to");
+            sessionStorage.removeItem("period_to");
+        }
+        scope.store_product.period_from = new Date(scope.store_product.period_from.toString().replace("-", "/"));
+        scope.store_product.period_to = new Date(scope.store_product.period_to.toString().replace("-", "/"));
+        scope.store_product.price = parseFloat(scope.store_product.price);
+        scope.store_product.unit_price = parseFloat(scope.store_product.unit_price);
+        scope.store_product.regular_price = parseFloat(scope.store_product.regular_price);
+        scope.store_product.organic = Boolean(scope.store_product.organic);
+        scope.store_product.in_flyer = Boolean(scope.store_product.in_flyer);
+        scope.products = JSON.parse('<?php echo $products; ?>');
+                
+        if(scope.store_product.product_id == null || scope.store_product.product_id == 'undefined')
+        {
+            scope.store_product.product_id = scope.products[1].id;
+        }
+        else
+        {
+            scope.store_product.product_id = scope.products[parseInt(scope.store_product.product_id)].id;  
+        }
+        scope.retailers = JSON.parse('<?php echo $retailers; ?>');
+        if(scope.store_product.retailer_id == null || scope.store_product.retailer_id == 'undefined')
+        {
+            scope.store_product.retailer_id = scope.retailers[1].id;
+        }
+        else
+        {
+            scope.store_product.retailer_id = scope.retailers[parseInt(scope.store_product.retailer_id)].id;  
+        }
+        scope.units = JSON.parse('<?php echo $units; ?>');
+        if(scope.store_product.unit_id == null || scope.store_product.unit_id == 'undefined')
+        {
+            scope.store_product.unit_id = scope.units[1].id;
+        }
+        else
+        {
+            scope.store_product.unit_id = scope.units[parseInt(scope.store_product.unit_id)].id;  
+        }
+        scope.compareunits = JSON.parse('<?php echo $compareunits; ?>');
+        if(scope.store_product.compareunit_id == null || scope.store_product.compareunit_id == 'undefined')
+        {
+            scope.store_product.compareunit_id = scope.compareunits[1].id;
+        }
+        else
+        {
+            scope.store_product.compareunit_id = scope.compareunits[parseInt(scope.store_product.compareunit_id)].id;  
+        }
+        scope.brands = JSON.parse('<?php echo $brands; ?>');
+
+        scope.product_selected();
+        scope.updateQuantity();
+        scope.updateUnitPrice();
+    });
+});
+</script>
+
 <div id="admin-container" class="container admin-container" ng-controller="AdminController">
     <form id="create_store_product_form" name="create_store_product_form" ng-submit="create_store_product()">
+        
+        <input type="hidden" name="product[id]" value="<?php echo $id; ?>">
         
         <!-- Select Product-->
         <div class="form-group">
@@ -66,17 +147,22 @@
             </md-not-found>
         </md-autocomplete>
        
-        
         <!--Select the country and state origin of the product-->
-        <country-state-select country-label="Country of origin" state-label="State of origin" country="store_product.country" state="store_product.state"></country-state-select>
+        <md-country-select country="store_product.country"></md-country-select>
         
-        <!-- Section to select if product is organic -->
-        <md-radio-group name="product[organic]" ng-model="store_product.organic">
-            <label>Is Organic</label>
-            <md-radio-button   ng-repeat="value in organic_select" ng-value="value.id" aria-label="{{ value.name }}">
-                {{ value.name }}
-            </md-radio-button>
-        </md-radio-group>
+        <!-- Section to select if product is organic -->        
+        <div flex-gt-sm="50">
+          <md-checkbox name="product[organic]" ng-model="store_product.organic" aria-label="Organic">
+            Organic
+          </md-checkbox>
+        </div>
+        
+        <!-- Section to select if product is present in the flyer -->
+        <div flex-gt-sm="50">
+          <md-checkbox name="product[in_flyer]" ng-model="store_product.in_flyer" aria-label="In Flyer">
+            In Flyer
+          </md-checkbox>
+        </div>
 
         <!-- Section to select Format -->
         <md-input-container style="width: 100%;">
@@ -108,7 +194,13 @@
             <label>Quantity</label>
             <input type="text" id="quantity" name="product[quantity]" ng-model="store_product.quantity" ng-change="updateUnitPrice()" readonly="true">
         </md-input-container>
-
+        
+        <!-- Price Section -->
+        <md-input-container style="width: 100%;">
+            <label>Regular Price</label>
+            <input type="number" step="0.01" id="regular_price" name="product[regular_price]" ng-model="store_product.regular_price" required>
+        </md-input-container>
+        
         <!-- Price Section -->
         <md-input-container style="width: 100%;">
             <label>Price</label>
@@ -122,74 +214,21 @@
         </md-input-container>
              
          <!-- Period Validity Section -->   
-         <md-input-container style="width: 100%;">
+         <div class="form-group">
             <label>Period From</label>
-            <md-datepicker name="product[period_from]" ng-model="store_product.period_from" required></md-datepicker>
-         </md-input-container>
+            <input type="date" class="form-control" name="product[period_from]" ng-model="store_product.period_from" required>
+         </div>
             
-         <md-input-container style="width: 100%;">
+         <div class="form-group">
             <label>Period To</label>
-            <md-datepicker md-min-date="store_product.period_from" name="product[period_to]" ng-model="store_product.period_to" required mindate></md-datepicker>>
-         </md-input-container>
+            <input type="date" class="form-control" name="product[period_to]" ng-model="store_product.period_to" required>
+         </div>
             
         <div class="form-group eapp-create">
-            <input type="submit" value="Create" ng-click="continue = false">
-            <input type="submit" value="Create and Continue" ng-click="continue = true">
+            <input type="submit" value="{{getSaveLabel()}}" ng-click="continue = false">
+            <input type="submit" value="{{getSaveLabel()}} and Continue" ng-click="continue = true">
         </div>
     </form>
 </div>
 
-<script>
-$(document).ready(function()
-{
-    
-    var scope = angular.element($("#admin-container")).scope();
-    
-    scope.$apply(function()
-    {
-		
-		scope.store_product = JSON.parse('<?php echo $store_product; ?>');
-        	scope.products = JSON.parse('<?php echo $products; ?>');
-		if(scope.store_product.product_id === null || scope.store_product.product_id === 'undefined')
-		{
-			scope.store_product.product_id = scope.products[1].id;
-		}
-	       else
-	        {
-		  	scope.store_product.product_id = scope.products[parseInt(scope.store_product.product_id)].id;  
-	        }
-        	scope.retailers = JSON.parse('<?php echo $retailers; ?>');
-		if(scope.store_product.retailer_id === null || scope.store_product.retailer_id === 'undefined')
-		{
-			scope.store_product.retailer_id = scope.retailers[1].id;
-		}
-	    	else
-	    	{
-		  	scope.store_product.retailer_id = scope.retailers[parseInt(scope.store_product.retailer_id)].id;  
-	    	}
-        	scope.units = JSON.parse('<?php echo $units; ?>');
-		if(scope.store_product.unit_id === null || scope.store_product.unit_id === 'undefined')
-		{
-			scope.store_product.unit_id = scope.units[1].id;
-		}
-	    	else
-	    	{
-		  	scope.store_product.unit_id = scope.units[parseInt(scope.store_product.unit_id)].id;  
-	    	}
-        	scope.compareunits = JSON.parse('<?php echo $compareunits; ?>');
-		if(scope.store_product.compareunit_id === null || scope.store_product.compareunit_id === 'undefined')
-		{
-			scope.store_product.compareunit_id = scope.compareunits[1].id;
-		}
-	    	else
-	    	{
-		  	scope.store_product.compareunit_id = scope.compareunits[parseInt(scope.store_product.compareunit_id)].id;  
-	    	}
-        	scope.brands = JSON.parse('<?php echo $brands; ?>');
-        
-        	scope.product_selected();
-        	scope.updateQuantity();
-        	scope.updateUnitPrice();
-    });
-});
-</script>
+

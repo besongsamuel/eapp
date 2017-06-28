@@ -20,8 +20,10 @@ class Home extends CI_Controller {
 	 */
 	public function index()
 	{
-            $this->data['body'] = $this->load->view('home/index', '', TRUE);
-	    $this->data['latest_products'] = $this->home_model->GetLatestProducts(-1);
+            
+            $this->data['stores'] = $this->admin_model->get_all(CHAIN_TABLE);
+	    $this->data['latestProducts'] = $this->home_model->GetLatestProducts(-1);
+            $this->data['body'] = $this->load->view('home/index', $this->data, TRUE);
             $this->parser->parse('eapp_template', $this->data);
 	}
 }
