@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<div id="admin-container" ng-controller="HomeController">
+<div id="home-container">
 
     <div id="admin-container" class="slider-area" >
         <div class="zigzag-bottom"></div>
@@ -124,7 +124,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
-                    <div class="latest-product">
+                    <div class="latest-product" ng-controller="CartController">
                         <h2 class="section-title">Latest Products</h2>
                         <div class="product-carousel">
                             <div class="single-product">
@@ -134,7 +134,7 @@
                                     <img ng-src="http://<?php echo base_url("assets/img/products/").$product->image;?>" style="height: 100%;" alt="">
                                     <div class="product-hover">
                                         <a href class="add-to-cart-link" onclick="addProductToCart(<?php echo $product->id; ?>)"><i class="fa fa-shopping-cart"></i> Add to cart</a>
-                                        <a href onclick="viewProductDetails(<?php echo $product->id; ?>)" class="view-details-link"><i class="fa fa-link"></i> See details</a>
+                                        <a href ng-click="viewProductDetails(<?php echo $product->id; ?>)" class="view-details-link"><i class="fa fa-link"></i> See details</a>
                                     </div>
                                     
                                 </div>
@@ -327,56 +327,7 @@
     <script>
     $(document).ready(function()
     {
-        window.addProductToCart = function(product_id)
-        {
-			
-			var data = 
-			{
-				product_id : product_id
-			};
-			
-            $.ajax({
-			  type: 'POST',
-			  url: "http://<?php echo site_url("cart/insert"); ?>",
-			  data: data,
-			  success: function(response)
-			  {
-				  var response_data = JSON.parse(response);
-				  
-				  if(Boolean(data.response_data.success))
-				  {
-				  		// Add Global Cart list
-					  	var cart_item = 
-						{
-							rowid : data.response_data.rowid,
-							store_product : data.response_data.store_product,
-							product : data.response_data.product
-						}
-						
-						// Get the root scope. That's where the cart will reside. 
-						var scope = angular.element($("html")).scope();
-
-						scope.$apply(function()
-						{
-							if (typeof scope.cart === 'undefined') 
-							{
-								// Create new cart. 
-								scope.cart = {};
-							}
-							
-							scope.cart.push(cart_item);
-						});
-				  }
-			  },
-			  dataType: dataType,
-			  async:true
-			});
-        };
-
-        window.viewProductDetails = function(product_id)
-        {
-            
-        };
+        
         var scope = angular.element($("#home-container")).scope();
 
         scope.$apply(function()
