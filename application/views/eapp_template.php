@@ -125,7 +125,7 @@
                         <ul>
                             <li><a href="#"><i class="fa fa-user"></i>{header_my_account}</a></li>
                             <li><a href="#"><i class="fa fa-heart"></i>{header_my_list}</a></li>
-                            <li><a href="cart.html"><i class="fa fa-user"></i>{header_my_cart}</a></li>
+                            <li><a href="http://<?php echo site_url("cart"); ?>"><i class="fa fa-user"></i>{header_my_cart}</a></li>
                             <li><a href="#"><i class="fa fa-user"></i> {header_login}</a></li>
                         </ul>
                     </div>
@@ -160,7 +160,7 @@
     <!-- End header area -->
     
     <!-- Begin Site Branding Section -->
-    <div class="site-branding-area">
+    <div class="site-branding-area" ng-controller="CartController">
         <div class="container">
             <div class="row">
                 <div class="col-sm-6">
@@ -171,7 +171,7 @@
                 
                 <div class="col-sm-6">
                     <div class="shopping-item">
-                        <a href="cart.html">Cart - <span class="cart-amunt">CAD800</span> <i class="fa fa-shopping-cart"></i> <span class="product-count">5</span></a>
+                        <a href="http://<?php echo site_url("cart"); ?>">Cart - <span class="cart-amunt">CAD {{getCartTotal()}}</span> <i class="fa fa-shopping-cart"></i> <span class="product-count">{{cart.length}}</span></a>
                     </div>
                 </div>
             </div>
