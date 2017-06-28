@@ -327,6 +327,15 @@
     <script>
     $(document).ready(function()
     {
+        window.addProductToCart = function(product_id)
+        {
+            
+        };
+
+        window.viewProductDetails = function(product_id)
+        {
+            
+        };
         var scope = angular.element($("#admin-container")).scope();
 
         scope.$apply(function()
