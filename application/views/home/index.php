@@ -133,7 +133,8 @@
                                     
                                     <img ng-src="http://<?php echo base_url("assets/img/products/").$product->image;?>" style="height: 100%;" alt="">
                                     <div class="product-hover">
-                                        <a href class="add-to-cart-link" onclick="addProductToCart(<?php echo $product->id; ?>)"><i class="fa fa-shopping-cart"></i> Add to cart</a>
+                                        <a href ng-show="canAddToCart()" class="add-to-cart-link" ng-click="addProductToCart(<?php echo $product->id; ?>)"><i class="fa fa-shopping-cart"></i> Add to cart</a>
+										<a href ng-hide="canAddToCart()" class="add-to-cart-link" ng-click="removeProductFromCart(<?php echo $product->id; ?>)"><i class="fa fa-shopping-cart"></i> Remove from cart</a>
                                         <a href ng-click="viewProductDetails(<?php echo $product->id; ?>)" class="view-details-link"><i class="fa fa-link"></i> See details</a>
                                     </div>
                                     
