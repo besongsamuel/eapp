@@ -41,8 +41,19 @@ class Cart extends CI_Controller {
         $item = json_decode($this->input->post("item"));
         
         $rowid = $this->cart->insert($item);
-        
-        echo json_encode($rowid);
+		
+		$result = array
+		(
+			"success" => false,
+			"rowid" => $rowid
+		);
+		
+		if($rowid)
+		{
+			$result["success"] = "true";
+		}
+		
+        echo json_encode($result);
     }
     
     public function update()
