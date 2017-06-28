@@ -329,14 +329,55 @@
     {
         window.addProductToCart = function(product_id)
         {
-            
+			
+			var data = 
+			{
+				product_id : product_id
+			};
+			
+            $.ajax({
+			  type: 'POST',
+			  url: "http://<?php echo site_url("cart/insert"); ?>",
+			  data: data,
+			  success: function(response)
+			  {
+				  var response_data = JSON.parse(response);
+				  
+				  if(Boolean(data.response_data.success))
+				  {
+				  		// Add Global Cart list
+					  	var cart_item = 
+						{
+							rowid : data.response_data.rowid,
+							store_product : data.response_data.store_product,
+							product : data.response_data.product
+						}
+						
+						// Get the root scope. That's where the cart will reside. 
+						var scope = angular.element($("html")).scope();
+
+						scope.$apply(function()
+						{
+							if (typeof scope.cart === 'undefined') 
+							{
+								// Create new cart. 
+								scope.cart = {};
+							}
+							
+							scope.cart.push(cart_item);
+						});
+				  }
+			  },
+			  dataType: dataType,
+			  async:true
+			});
         };
 
         window.viewProductDetails = function(product_id)
         {
             
         };
-        var scope = angular.element($("#admin-container")).scope();
+        var scope = angular.element($("#home-container")).scope();
 
         scope.$apply(function()
         {
