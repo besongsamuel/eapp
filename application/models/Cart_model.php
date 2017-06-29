@@ -36,7 +36,7 @@ class Cart_model extends CI_Model
           return $this->db->get()->result();
       }
       
-      public function getClosestDepartmentStore($department_stores, $user_address, $distance)
+      public function getClosestDepartmentStores($department_stores, $user_address, $distance)
       {
             
             $closestStores = array();
