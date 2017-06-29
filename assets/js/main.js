@@ -175,27 +175,45 @@ eappApp.controller('CartController', ['$scope','$rootScope', '$q', function($sco
     
     $scope.optimized_cart = false;
     
+    // Here we define the default desired distance of the user	
+    $scope.distance = 10;
+    
     $rootScope.getCart = function()
     {
         var deferred = $q.defer();
         
         if($scope.optimized_cart)
         {
+            // Create array with selected store_product id's
+	    var store_products = [];
             // Get optimized list here
+	    for(var index in $rootScope.cart)
+	    {
+	    	var cartItem = $rootScope.cart[index];
+		store_products.push(cartItem.store_product.id);
+	    }
+	    
+	    FormData formData = new FormData();
+	    formData.append("store_products", JSON.stringify(store_products));
+	    formData.append("distance", $scope.distance);
+	    // Send request to server to get optimized list 	
+	    $scope.promise = $http.post("http://"+ $scope.site_url.concat("/cart/getOptimizedList"), formData, {
+				transformRequest: angular.identity,
+				headers: {'Content-Type': undefined}});
         }
         else
         {
+	    // In this case the user did not request an optimized list, return the cart list	
             deferred.resolve($rootScope.cart);
+	    $scope.promise = deferred.promise;
         }
-        
-        $scope.promise = deferred.promise;
-        
+	    
         $scope.promise.then(function(cart)
         {
             $rootScope.cart = cart;
         });
         
-        return deferred.promise;
+        return $scope.promise;
     };
     
     $rootScope.getCartTotal = function()
