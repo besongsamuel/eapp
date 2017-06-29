@@ -190,7 +190,13 @@ eappApp.controller('CartController', ['$scope','$rootScope', '$q', function($sco
 	    for(var index in $rootScope.cart)
 	    {
 	    	var cartItem = $rootScope.cart[index];
-		store_products.push(cartItem.store_product.id);
+		var data = 
+		{
+			id : cartItem.store_product.id,
+			rowid : cartItem.rowid,
+			quantity : cartItem.quantity,
+		};
+		store_products.push(data);
 	    }
 	    
 	    FormData formData = new FormData();
