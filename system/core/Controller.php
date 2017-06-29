@@ -80,6 +80,7 @@ class CI_Controller {
 		$this->load =& load_class('Loader', 'core');
 		$this->load->library('parser', 'router');
 		$this->load->helper('url');
+                $this->load->library('cart');
 		$this->load->initialize();
 		log_message('info', 'Controller Class Initialized');
                 
@@ -100,7 +101,8 @@ class CI_Controller {
                     'base_url' => base_url(),
                     'site_url' => site_url(),
                     'controller' => $this->router->fetch_class(),
-                    'method' => $this->router->fetch_method()
+                    'method' => $this->router->fetch_method(),
+                    'cart' => addslashes(json_encode($this->getCartItems()))
                 );
 	}
 
@@ -116,5 +118,35 @@ class CI_Controller {
 	{
 		return self::$instance;
 	}
+        
+        private function getCartItems()
+        {
+            $cart = array();
+
+            foreach ($this->cart->contents() as $item) 
+            {
+                $cart_item = array();
+
+                $product_id = $item['id'];
+                $rowid = $item['rowid'];
+                $store_product = $this->admin_model->get(STORE_PRODUCT_TABLE, $product_id);
+                
+                if($store_product === null)
+                    continue;
+                
+                $retailer = $this->admin_model->get(CHAIN_TABLE, $store_product->retailer_id);
+                $product = $this->admin_model->get(PRODUCT_TABLE, $store_product->product_id);
+
+                $cart_item['store_product'] = $store_product;
+                $cart_item['product'] = $product;
+                $cart_item['rowid'] = $rowid;
+                $cart_item['retailer'] = $retailer;
+                $cart_item['quantity'] = 1;
+
+                array_push($cart, $cart_item);
+            }
+
+            return $cart;
+        }
 
 }

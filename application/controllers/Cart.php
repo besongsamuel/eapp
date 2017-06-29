@@ -38,13 +38,14 @@ class Cart extends CI_Controller {
      */
     public function insert()
     {
-        $product_id = json_decode($this->input->post("product_id"));
+        $product_id = $this->input->post("product_id");
 	    
         $store_product = $this->admin_model->get(STORE_PRODUCT_TABLE, $product_id);
 	$product = $this->admin_model->get(PRODUCT_TABLE, $store_product->product_id);
+        $retailer = $this->admin_model->get(CHAIN_TABLE, $store_product->retailer_id);
 	
 	$data = array(
-		'id'      => $store_product->product_id,
+		'id'      => $store_product->id,
 		'qty'     => $store_product->quantity,
 		'price'   => $store_product->price,
 		'name'    => $product->name
@@ -63,6 +64,7 @@ class Cart extends CI_Controller {
 		$result["success"] = true;
 		$result["store_product"] = $store_product;
 		$result["product"] = $product;
+                $result["retailer"] = $retailer;
 	}
 		
         echo json_encode($result);
@@ -77,11 +79,22 @@ class Cart extends CI_Controller {
         echo json_encode($return);
     }
     
-    public function remove($rowid) 
+    public function remove() 
     {
-        $return = $this->cart->remove($rowid);
         
-        echo json_encode($return);
+        $rowid = $this->input->post("rowid");
+        
+        $result = array
+	(
+            "success" => false,
+	);
+        
+        if($this->cart->remove($rowid))
+        {
+            $result["success"] = true;
+        }
+        
+        echo json_encode($result);
     }
     
     /**

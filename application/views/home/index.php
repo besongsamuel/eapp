@@ -127,26 +127,25 @@
                     <div class="latest-product" ng-controller="CartController">
                         <h2 class="section-title">Latest Products</h2>
                         <div class="product-carousel">
-                            <div class="single-product">
-                                <?php foreach($latestProducts as $product): ?>
-                                <div class="product-f-image">
-                                    
-                                    <img ng-src="http://<?php echo base_url("assets/img/products/").$product->image;?>" style="height: 100%;" alt="">
-                                    <div class="product-hover">
-                                        <a href ng-show="canAddToCart()" class="add-to-cart-link" ng-click="addProductToCart(<?php echo $product->id; ?>)"><i class="fa fa-shopping-cart"></i> Add to cart</a>
-										<a href ng-hide="canAddToCart()" class="add-to-cart-link" ng-click="removeProductFromCart(<?php echo $product->id; ?>)"><i class="fa fa-shopping-cart"></i> Remove from cart</a>
-                                        <a href ng-click="viewProductDetails(<?php echo $product->id; ?>)" class="view-details-link"><i class="fa fa-link"></i> See details</a>
+                            <?php foreach($latestProducts as $product): ?>
+                                <div class="single-product">
+                                    <div class="product-f-image">
+                                        <img ng-src="http://<?php echo base_url("assets/img/products/").$product->image;?>" style="height: 100%;" alt="">
+                                        <div class="product-hover">
+                                            <a href ng-show="canAddToCart(<?php echo $product->id; ?>)" class="add-to-cart-link" ng-click="addProductToCart(<?php echo $product->id; ?>)"><i class="fa fa-shopping-cart"></i> Add to cart</a>
+                                                <a href ng-hide="canAddToCart(<?php echo $product->id; ?>)" class="add-to-cart-link" ng-click="removeProductFromCart(<?php echo $product->id; ?>)"><i class="fa fa-shopping-cart"></i> Remove</a>
+                                            <a href ng-click="viewProductDetails(<?php echo $product->id; ?>)" class="view-details-link"><i class="fa fa-link"></i> See details</a>
+                                        </div>
                                     </div>
-                                    
+
+                                    <h2><a href ng-click="viewProductDetails(<?php echo $product->id; ?>)"><?php echo $product->name; ?></a></h2>
+
+                                    <div class="product-carousel-price">
+                                        <ins>CAD <?php echo $product->price; ?></ins><del>CAD <?php echo $product->regular_price; ?></del>
+                                    </div>
                                 </div>
-                                
-                                <h2><a href ng-click="viewProductDetails(<?php echo $product->id; ?>)"><?php echo $product->name; ?></a></h2>
-                                
-                                <div class="product-carousel-price">
-                                    <ins>CAD <?php echo $product->price; ?></ins><del>CAD <?php echo $product->regular_price; ?></del>
-                                </div> 
-                                <?php endforeach; ?>
-                            </div>
+                            <?php endforeach; ?>
+                            
                         </div>
                     </div>
                 </div>

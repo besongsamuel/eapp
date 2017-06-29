@@ -107,6 +107,7 @@
             rootScope.controller = "<?php echo $controller; ?>";
             rootScope.method = "<?php echo $method; ?>";
             rootScope.is_loading = false;
+            rootScope.cart = JSON.parse("<?php echo $cart; ?>");
             rootScope.valid = true;
             rootScope.success_message = "";
             rootScope.error_message = "";

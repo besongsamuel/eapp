@@ -161,9 +161,42 @@ eappApp.controller('ProductsController', ['$scope','$rootScope', function($scope
   
 }]);
 
-eappApp.controller('CartController', ['$scope','$rootScope', function($scope, $rootScope) {
+eappApp.controller('CartController', ['$scope','$rootScope', '$q', function($scope, $rootScope, $q) {
   
-    $rootScope.cart = {};
+    $scope.selected = [];
+
+    $scope.query = {
+      order: 'nameToLower',
+      limit: 5,
+      page: 1
+    };
+    
+    $rootScope.cart = [];
+    
+    $scope.optimized_cart = false;
+    
+    $rootScope.getCart = function()
+    {
+        var deferred = $q.defer();
+        
+        if($scope.optimized_cart)
+        {
+            // Get optimized list here
+        }
+        else
+        {
+            deferred.resolve($rootScope.cart);
+        }
+        
+        $scope.promise = deferred.promise;
+        
+        $scope.promise.then(function(cart)
+        {
+            $rootScope.cart = cart;
+        });
+        
+        return deferred.promise;
+    };
     
     $rootScope.getCartTotal = function()
     {
@@ -171,11 +204,11 @@ eappApp.controller('CartController', ['$scope','$rootScope', function($scope, $r
 	    
     	for(var key in $rootScope.cart)
 	{
-		total += parseFloat($rootScope.cart[key].product.price);
+            total += parseFloat($rootScope.cart[key].store_product.price);
 	}
 	    
 	return total;
-    }
+    };
     
     $rootScope.addProductToCart = function(product_id)
     {
@@ -186,64 +219,128 @@ eappApp.controller('CartController', ['$scope','$rootScope', function($scope, $r
 	};
 
 	$.ajax({
-	  type: 'POST',
-	  url: "http://<?php echo site_url("cart/insert"); ?>",
-	  data: data,
-	  success: function(response)
-	  {
-		  var response_data = JSON.parse(response);
+            type: 'POST',
+            url:  "http://" + $scope.site_url.concat("/cart/insert"),
+            data: data,
+            success: function(response)
+            {
+                var response_data = JSON.parse(response);
 
-		  if(Boolean(data.response_data.success))
-		  {
-				// Add Global Cart list
-				var cart_item = 
-				{
-					rowid : data.response_data.rowid,
-					store_product : data.response_data.store_product,
-					product : data.response_data.product
-				}
+                if(Boolean(response_data.success))
+                {
+                    // Add Global Cart list
+                    var cart_item = 
+                    {
+                        rowid : response_data.rowid,
+                        store_product : response_data.store_product,
+                        product : response_data.product,
+                        retailer : response_data.retailer,
+                        quantity : 1
+                    };
 
-				// Get the root scope. That's where the cart will reside. 
-				var scope = angular.element($("html")).scope();
+                    // Get the root scope. That's where the cart will reside. 
+                    var scope = angular.element($("html")).scope();
 
-				scope.$apply(function()
-				{
-					if (typeof scope.cart === 'undefined') 
-					{
-						// Create new cart. 
-						scope.cart = {};
-					}
+                    scope.$apply(function()
+                    {
+                        if (typeof scope.cart === 'undefined') 
+                        {
+                            // Create new cart. 
+                            scope.cart = [];
+                        }
 
-					scope.cart.push(cart_item);
-				});
-		  }
-	  },
-	  dataType: dataType,
-	  async:true
+                        scope.cart.push(cart_item);
+                    });
+                }
+            },
+            async:true
 	});
      };
      
-     $rootScope.viewProductDetails = function(product_id)
-     {
+    $rootScope.viewProductDetails = function(product_id)
+    {
 
-     };
+    };
     
-      $rootScope.removeProductFromCart = function(product_id)
-      {
-      }
+    $scope.getRowID = function(product_id)
+    {
+        var rowid = -1;
+        
+        for(var key in $rootScope.cart)
+	{
+            if(parseInt($rootScope.cart[key].store_product.id) === parseInt(product_id))
+            {
+                rowid = $rootScope.cart[key].rowid;
+                break;
+            }
+	}
+        
+        return rowid;
+    };
+    
+    $scope.removeItemFromCart = function(product_id)
+    {
+        var index = -1;
+        
+        for(var key in $rootScope.cart)
+	{
+            if(parseInt($rootScope.cart[key].store_product.id) === parseInt(product_id))
+            {
+                index = key;
+                break;
+            }
+	}
+        
+        if(index > -1)
+        {
+            $rootScope.cart.splice(index, 1);
+        }
+    };
+    
+    $rootScope.removeProductFromCart = function(product_id)
+    {
+        
+        var data = 
+	{
+            rowid : $scope.getRowID(product_id)
+	};
+
+	$.ajax({
+            type: 'POST',
+            url:  "http://" + $scope.site_url.concat("/cart/remove"),
+            data: data,
+            success: function(response)
+            {
+                var response_data = JSON.parse(response);
+
+                if(Boolean(response_data.success))
+                {
+                    // Remove from Global Cart list
+                    // Get the root scope. That's where the cart will reside. 
+                    var scope = angular.element($("html")).scope();
+
+                    scope.$apply(function()
+                    {
+                        $scope.removeItemFromCart(product_id);
+                    });
+                }
+            },
+            async:true
+	});
+    };
 				      
      $rootScope.canAddToCart = function(product_id)
      {
-         for(var key in $rootScope.cart)
+        for(var key in $rootScope.cart)
 	{
-	  	if(parseInt($rootScope.cart[key].store_product.id) === parseInt(product_id))
-		{
-			return false;
-		}
+            if(parseInt($rootScope.cart[key].store_product.id) === parseInt(product_id))
+            {
+                return false;
+            }
 	}
 	
 	return true;
-     }
+     };
   
 }]);
 
@@ -274,25 +371,25 @@ eappApp.controller('ProductsTableController', ['$scope', '$q', '$http', function
 		});
   }
 	
-  $scope.getProducts = function () 
-  {
-    
-    var formData = new FormData();
-        
-    formData.append("limit", $scope.query.limit);
-    
-    formData.append("page", $scope.query.page);
-    
-    $scope.promise = $http.post("http://"+ $scope.site_url.concat("/admin/get_store_products"), formData, {
-            transformRequest: angular.identity,
-            headers: {'Content-Type': undefined}});
-    
-    $scope.promise.then(function(payload)
+    $scope.getProducts = function () 
     {
-        $scope.query_products = payload.data;
-    });
+    
+        var formData = new FormData();
+
+        formData.append("limit", $scope.query.limit);
+
+        formData.append("page", $scope.query.page);
+
+        $scope.promise = $http.post("http://"+ $scope.site_url.concat("/admin/get_store_products"), formData, {
+                transformRequest: angular.identity,
+                headers: {'Content-Type': undefined}});
+
+        $scope.promise.then(function(payload)
+        {
+            $scope.query_products = payload.data;
+        });
       
-  };
+    };
     
   
 }]);
@@ -386,6 +483,10 @@ eappApp.controller('AdminController', ['$scope', 'Form', '$http', 'notifications
                 if(result.data.success)
                 {
                     notifications.showSuccess(result.data.message);
+                }
+                else
+                {
+                    notifications.showError(result.data.message);
                 }
                 
             },function(err)
