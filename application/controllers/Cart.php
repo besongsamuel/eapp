@@ -8,6 +8,7 @@ class Cart extends CI_Controller {
     {
         parent::__construct();
         $this->load->library('cart');
+        $this->load->library('geo');
     }
     
     /**
@@ -111,6 +112,65 @@ class Cart extends CI_Controller {
     public function get_contents() 
     {
         echo json_encode($this->cart->contents(TRUE));
+    }
+    
+    public function getOptimizedList()
+    {
+	$optimizedList = array();    
+    	$distance = $this->input->post("distance");
+	$store_products = json_decode($this->input->post("store_products"));
+	    
+	foreach($store_products as $s_product)
+	{
+		// Get the store product
+		$store_product = $this->admin_model->get(STORE_PRODUCT, $s_product->id);
+		// Get all store products created with the same product
+		$available_store_products = $this->cart_model->getProducts($store_product->product_id);
+		// Get chepeast withing required distance
+		$optimized_store_product = $this->optimizeProductList($available_store_products, $distance);
+		
+		$retailer = $this->admin_model->get(CHAIN_TABLE, $optimized_store_product->retailer_id);
+                $product = $this->admin_model->get(PRODUCT_TABLE, $optimized_store_product->product_id);
+                $cart_item['store_product'] = $optimized_store_product;
+                $cart_item['product'] = $product;
+                $cart_item['rowid'] = $s_product->rowid;
+                $cart_item['retailer'] = $retailer;
+                $cart_item['quantity'] = $s_product->quantity;
+                array_push($optimizedList, $cart_item);
+		
+	}
+	
+	echo addslashes(json_encode($optimizedList));
+    }
+	
+    private function optimizeProductList($available_store_products, $distance)
+    {
+	 $best_match = null;
+	 
+	 foreach($available_store_products as $store_product)
+	 {
+	 	if($best_match === null)
+		{
+			$best_match = $store_product;
+		}
+		else
+		{
+			if($store_product->price < $best_match->price)
+			{
+				// Get the department stores related to this product
+				$department_stores = $this->cart_model->getDepartmentStores($store_product->retailer_id);
+
+				$department_store = $this->cart_model->getClosestDepartmentStores($department_stores, $this->userAddress, $distance);
+
+				if(sizeof($department_store) > 0)
+				{
+					$best_match = $store_product;
+				}
+			}
+			
+		}
+	 }
+    	
     }
         
         
