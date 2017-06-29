@@ -59,6 +59,8 @@ class CI_Controller {
 	private static $instance;
         
         public $data;
+	
+	public $user_address;
 
         /**
 	 * Class constructor
@@ -76,7 +78,7 @@ class CI_Controller {
 		{
 			$this->$var =& load_class($class);
 		}
-
+		$this->user_address = "2310 Rue L.-O.-David, Montreal, Quebec, H2E1M1";
 		$this->load =& load_class('Loader', 'core');
 		$this->load->library('parser', 'router');
 		$this->load->helper('url');
