@@ -76,5 +76,37 @@ class CI_Model {
 		//	most likely a typo in your model code.
 		return get_instance()->$key;
 	}
+        
+        public function eapp_get($table_name, $id)
+        {
+            $this->db->select("*");
+            $this->db->from($table_name);
+            $this->db->where('id', $id);
+            $query = $this->db->get();
+            if($query != null)
+            {
+                return $query->row();
+            }
+            else
+            {
+                return null;
+            }
+        }
+        
+    public function get($table_name, $id)
+    {
+        $this->db->select("*");
+        $this->db->from($table_name);
+        $this->db->where('id', $id);
+        $query = $this->db->get();
+        if($query != null)
+        {
+            return $query->row();
+        }
+        else
+        {
+            return null;
+        }
+    }
 
 }

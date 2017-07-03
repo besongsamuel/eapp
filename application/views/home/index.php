@@ -93,26 +93,26 @@
             <div class="row">
                 <div class="col-md-3 col-sm-6">
                     <div class="single-promo">
-                        <i class="fa fa-refresh"></i>
-                        <p>30 Days return</p>
+                        <i class="fa fa-binoculars"></i>
+                        <p>Find products</p>
                     </div>
                 </div>
                 <div class="col-md-3 col-sm-6">
                     <div class="single-promo">
-                        <i class="fa fa-truck"></i>
-                        <p>Free shipping</p>
+                        <i class="fa fa-heart"></i>
+                        <p>Easy to use</p>
                     </div>
                 </div>
                 <div class="col-md-3 col-sm-6">
                     <div class="single-promo">
-                        <i class="fa fa-lock"></i>
-                        <p>Secure payments</p>
+                        <i class="fa fa-unlock"></i>
+                        <p>Free</p>
                     </div>
                 </div>
                 <div class="col-md-3 col-sm-6">
                     <div class="single-promo">
-                        <i class="fa fa-gift"></i>
-                        <p>New products</p>
+                        <i class="fa fa-calendar"></i>
+                        <p>Weekly Updates</p>
                     </div>
                 </div>
             </div>
@@ -134,7 +134,7 @@
                                         <div class="product-hover">
                                             <a href ng-show="canAddToCart(<?php echo $product->id; ?>)" class="add-to-cart-link" ng-click="addProductToCart(<?php echo $product->id; ?>)"><i class="fa fa-shopping-cart"></i> Add to cart</a>
                                                 <a href ng-hide="canAddToCart(<?php echo $product->id; ?>)" class="add-to-cart-link" ng-click="removeProductFromCart(<?php echo $product->id; ?>)"><i class="fa fa-shopping-cart"></i> Remove</a>
-                                            <a href ng-click="viewProductDetails(<?php echo $product->id; ?>)" class="view-details-link"><i class="fa fa-link"></i> See details</a>
+                                                <a href="http://<?php echo site_url("cart/product/").$product->id; ?>" class="view-details-link"><i class="fa fa-link"></i> See details</a>
                                         </div>
                                     </div>
 

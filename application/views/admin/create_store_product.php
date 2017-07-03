@@ -82,6 +82,37 @@ $(document).ready(function()
 <div id="admin-container" class="container admin-container" ng-controller="AdminController">
     <form id="create_store_product_form" name="create_store_product_form" ng-submit="create_store_product()">
         
+        <!--Section to select retailer-->
+        <div class="form-group">
+            <label>Select Retailer</label>
+            <select 
+            data-style="btn-info"
+            data-dropupAuto="true" 
+            data-header="Search Merchand" 
+            data-live-search="true" 
+            data-live-search-normalize="true"
+            data-live-search-placeholder = "Type here" 
+            data-actions-box="true"
+            class="form-control selectpicker" 
+            id="merchand" 
+            name="product[retailer_id]"
+            ng-model="store_product.retailer_id"
+            >
+                <option ng-repeat="retailer in retailers" value="{{retailer.id}}">{{retailer.name}}</option>
+        </select>
+        </div>
+        
+         <!-- Period Validity Section -->   
+         <div class="form-group col-sm-6">
+            <label>Period From</label>
+            <input type="date" class="form-control" name="product[period_from]" ng-model="store_product.period_from" required>
+         </div>
+            
+         <div class="form-group col-sm-6">
+            <label>Period To</label>
+            <input type="date" class="form-control" name="product[period_to]" ng-model="store_product.period_to" required>
+         </div>
+        
         <input type="hidden" name="product[id]" value="<?php echo $id; ?>">
         
         <!-- Select Product-->
@@ -110,28 +141,8 @@ $(document).ready(function()
             <lf-ng-md-file-input lf-files="files" lf-api="api" preview></lf-ng-md-file-input>
         </div>
         
-        <!--Section to select retailer-->
-        <div class="form-group">
-            <label>Select Retailer</label>
-            <select 
-            data-style="btn-info"
-            data-dropupAuto="true" 
-            data-header="Search Merchand" 
-            data-live-search="true" 
-            data-live-search-normalize="true"
-            data-live-search-placeholder = "Type here" 
-            data-actions-box="true"
-            class="form-control selectpicker" 
-            id="merchand" 
-            name="product[retailer_id]"
-            ng-model="store_product.retailer_id"
-            >
-                <option ng-repeat="retailer in retailers" value="{{retailer.id}}">{{retailer.name}}</option>
-        </select>
-        </div>
-        
         <!--Section to enter the brand of the product-->
-        <md-autocomplete  style="width: 100%;" 
+        <md-autocomplete class="col-sm-6"
                           md-input-name="product[brand]" 
                           md-selected-item="store_product.brand" 
                           md-search-text="searchText" 
@@ -148,7 +159,7 @@ $(document).ready(function()
         </md-autocomplete>
        
         <!--Select the country and state origin of the product-->
-        <md-country-select country="store_product.country"></md-country-select>
+        <md-country-select class="col-sm-6" country="store_product.country"></md-country-select>
         
         <!-- Section to select if product is organic -->        
         <div flex-gt-sm="50">
@@ -174,7 +185,7 @@ $(document).ready(function()
         </md-input-container>
             
         <!-- Section to select product unit-->
-        <md-input-container style="width: 100%;">
+        <md-input-container class="col-sm-6">
             <label>Select Unit</label>
             <md-select name="product[unit_id]" ng-change="updateUnitPrice()" ng-model="store_product.unit_id">
                 <md-option ng-value="unit.id" ng-repeat="unit in units">{{ unit.name }}</md-option>
@@ -182,7 +193,7 @@ $(document).ready(function()
         </md-input-container>
         
         <!-- Section to select compare unit-->
-        <md-input-container style="width: 100%;">
+        <md-input-container  class="col-sm-6">
             <label>Select Compare Unit</label>
             <md-select name="product[compareunit_id]" ng-change="updateUnitPrice()" ng-model="store_product.compareunit_id"  placeholder="Select compare unit">
                 <md-option ng-value="unit.id" ng-repeat="unit in compareunits">{{ unit.name }}</md-option>
@@ -196,33 +207,22 @@ $(document).ready(function()
         </md-input-container>
         
         <!-- Price Section -->
-        <md-input-container style="width: 100%;">
+        <md-input-container  class="col-sm-4">
             <label>Regular Price</label>
-            <input type="number" step="0.01" id="regular_price" name="product[regular_price]" ng-model="store_product.regular_price" required>
+            <input type="number" step="0.01" id="regular_price" name="product[regular_price]" ng-model="store_product.regular_price">
         </md-input-container>
         
         <!-- Price Section -->
-        <md-input-container style="width: 100%;">
+        <md-input-container  class="col-sm-4">
             <label>Price</label>
             <input type="number" step="0.01" id="price" name="product[price]" ng-model="store_product.price" ng-change="updateUnitPrice()" required>
         </md-input-container>
-            
+        
         <!-- Unit Price Section -->
-        <md-input-container style="width: 100%;">
-            <lable>Unit Price</label>
-             <input type="number" step="0.0001" name="product[unit_price]" ng-model="store_product.unit_price" readonly>
+        <md-input-container  class="col-sm-4">
+            <label>Unit Price</label>
+            <input type="number" step="0.01" id="price" name="product[unit_price]" ng-model="store_product.unit_price" readonly>
         </md-input-container>
-             
-         <!-- Period Validity Section -->   
-         <div class="form-group">
-            <label>Period From</label>
-            <input type="date" class="form-control" name="product[period_from]" ng-model="store_product.period_from" required>
-         </div>
-            
-         <div class="form-group">
-            <label>Period To</label>
-            <input type="date" class="form-control" name="product[period_to]" ng-model="store_product.period_to" required>
-         </div>
             
         <div class="form-group eapp-create">
             <input type="submit" value="{{getSaveLabel()}}" ng-click="continue = false">

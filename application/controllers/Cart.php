@@ -33,6 +33,17 @@ class Cart extends CI_Controller {
         $this->parser->parse('eapp_template', $this->data);
     }
     
+    public function product($id)
+    {
+        $storeProduct = $this->cart_model->getStoreProduct($id);
+        $data["relatedProducts"] = $storeProduct->related_products;
+        $data["retailer"] = $storeProduct->retailer;
+        $data['store_product'] = addslashes(json_encode($storeProduct));
+        $data['products'] = addslashes(json_encode($this->admin_model->get_all(PRODUCT_TABLE)));
+        $this->data['body'] = $this->load->view('cart/product', $data, TRUE);
+        $this->parser->parse('eapp_template', $this->data);
+    }
+    
     /**
      * Inserts a well formated item to the cart
      * and returns the rowid of the item inserted
@@ -123,7 +134,7 @@ class Cart extends CI_Controller {
 	foreach($store_products as $s_product)
 	{
 		// Get the store product
-		$store_product = $this->admin_model->get(STORE_PRODUCT, $s_product->id);
+		$store_product = $this->admin_model->get(STORE_PRODUCT_TABLE, $s_product->id);
 		// Get all store products created with the same product
 		$available_store_products = $this->cart_model->getProducts($store_product->product_id);
 		// Get chepeast withing required distance
@@ -140,7 +151,7 @@ class Cart extends CI_Controller {
 		
 	}
 	
-	echo addslashes(json_encode($optimizedList));
+	echo json_encode($optimizedList);
     }
 	
     private function optimizeProductList($available_store_products, $distance)
@@ -149,27 +160,30 @@ class Cart extends CI_Controller {
 	 
 	 foreach($available_store_products as $store_product)
 	 {
-	 	if($best_match === null)
-		{
-			$best_match = $store_product;
-		}
-		else
-		{
-			if($store_product->price < $best_match->price)
-			{
-				// Get the department stores related to this product
-				$department_stores = $this->cart_model->getDepartmentStores($store_product->retailer_id);
+            if($best_match === null)
+            {
+                $best_match = $store_product;
+            }
+            else
+            {
+                if($store_product->price < $best_match->price)
+                {
+                    // Get the department stores related to this product
+                    $department_stores = $this->cart_model->getDepartmentStores($store_product->retailer_id);
 
-				$department_store = $this->cart_model->getClosestDepartmentStores($department_stores, $this->userAddress, $distance);
+                    $closestDepartmentStore = $this->cart_model->findCloseDepartmentStore($department_stores, $this->user_address, $distance);
 
-				if(sizeof($department_store) > 0)
-				{
-					$best_match = $store_product;
-				}
-			}
-			
-		}
+                    if($closestDepartmentStore != null)
+                    {
+                        $best_match = $store_product;
+                        $best_match->departmentStore = $closestDepartmentStore;
+                    }
+                }
+
+            }
 	 }
+         
+         return $best_match;
     	
     }
         

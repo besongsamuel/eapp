@@ -58,7 +58,7 @@ class Admin_model extends CI_Model
         $this->db->update($table_name, $data);
     }
 	
-	public function delete($table_name, $id)
+    public function delete($table_name, $id)
     {
         $this->db->where('id', $id);
 		$this->db->delete($table_name);
@@ -96,22 +96,6 @@ class Admin_model extends CI_Model
         }
     }
     
-    public function get($table_name, $id)
-    {
-        $this->db->select("*");
-        $this->db->from($table_name);
-        $this->db->where('id', $id);
-        $query = $this->db->get();
-        if($query != null)
-        {
-            return $query->row();
-        }
-        else
-        {
-            return null;
-        }
-    }
-
     public function get_all($table_name)
     {
         $result = array();
@@ -140,5 +124,21 @@ class Admin_model extends CI_Model
         }
         
         return $result;
+    }
+    
+    public function get($table_name, $id)
+    {
+        $this->db->select("*");
+        $this->db->from($table_name);
+        $this->db->where('id', $id);
+        $query = $this->db->get();
+        if($query != null)
+        {
+            return $query->row();
+        }
+        else
+        {
+            return null;
+        }
     }
 }

@@ -161,7 +161,7 @@
     <!-- End header area -->
     
     <!-- Begin Site Branding Section -->
-    <div class="site-branding-area" ng-controller="CartController">
+    <div class="site-branding-area" ng-controller="CartController" ng-hide="controller == 'admin'">
         <div class="container">
             <div class="row">
                 <div class="col-sm-6">
@@ -180,7 +180,7 @@
     </div> 
     <!-- End site branding area -->
     
-    <div class="container search-box">
+    <div class="container search-box"  ng-hide="controller == 'admin'">
         <div class="row">
             <form action="#">
                 <div class="col-md-11 single-sidebar">
@@ -194,7 +194,7 @@
     </div>
     
     <!-- Begin mainmenu area -->
-    <div class="mainmenu-area">
+    <div class="mainmenu-area" ng-controller="CartController">
         <div class="container">
             <div class="row">
                 <div class="navbar-header">
@@ -207,15 +207,18 @@
                 </div> 
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
-                        <li class="active"><a href="index.html">{menu_home}</a></li>
-                        <li><a href="shop.html">{menu_shoppage}</a></li>
-                        <li><a href="single-product.html">{menu_searchproduct}</a></li>
-                        <li><a href="cart.html">{menu_cart}</a></li>
-                        <li><a href="#">{menu_categories}</a></li>
-                        <li><a href="#">{menu_flyers}</a></li>
-                        <li><a href="#">{menu_contact}</a></li>
+                        <li class="active" ng-hide="controller == 'admin'"><a href="index.html">{menu_home}</a></li>
+                        <li ng-hide="controller == 'admin'"><a href="shop.html">{menu_shoppage}</a></li>
+                        <li ng-hide="controller == 'admin'"><a href="single-product.html">{menu_searchproduct}</a></li>
+                        <li ng-hide="controller == 'admin'"><a href="http://<?php echo site_url("cart"); ?>">{menu_cart}</a></li>
+                        <li ng-hide="controller == 'admin'"><a href="#">{menu_categories}</a></li>
+                        <li ng-hide="controller == 'admin'"><a href="#">{menu_flyers}</a></li>
+                        <li ng-hide="controller == 'admin'"><a href="#">{menu_contact}</a></li>
+                        <li ng-show="controller == 'admin'" class="active"><a  href="http://<?php echo site_url("admin/uploads"); ?>">Uploads</a></li>
+                        <li ng-show="controller == 'admin'"><a href="http://<?php echo site_url("admin/create_store_product"); ?>">Create Product</a></li>
+                        <li ng-show="controller == 'admin'"><a href="http://<?php echo site_url("admin/store_products"); ?>">View Products</a></li>
                     </ul>
-                </div>  
+                </div>
             </div>
         </div>
     </div> 

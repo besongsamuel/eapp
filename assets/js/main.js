@@ -161,7 +161,24 @@ eappApp.controller('ProductsController', ['$scope','$rootScope', function($scope
   
 }]);
 
-eappApp.controller('CartController', ['$scope','$rootScope', '$q', function($scope, $rootScope, $q) {
+eappApp.controller("ShopController", ["$scope", "$rootScope", function($scope, $rootScope)
+{
+    $scope.filteredProducts = []
+    ,$scope.currentPage = 1
+    ,$scope.numPerPage = 10
+    ,$scope.maxSize = 25;
+    
+    $scope.products = [];
+
+    $scope.$watch("currentPage + numPerPage", function() {
+      var begin = (($scope.currentPage - 1) * $scope.numPerPage)
+      , end = begin + $scope.numPerPage;
+
+      $scope.filteredProducts = $scope.products.slice(begin, end);
+    });
+}]);
+
+eappApp.controller('CartController', ['$scope','$rootScope', '$q', '$http', function($scope, $rootScope, $q, $http) {
   
     $scope.selected = [];
 
@@ -173,13 +190,64 @@ eappApp.controller('CartController', ['$scope','$rootScope', '$q', function($sco
     
     $rootScope.cart = [];
     
-    $scope.optimized_cart = false;
-    
+    $scope.optimized_cart = 0;
+        
     // Here we define the default desired distance of the user	
     $scope.distance = 10;
     
+    $scope.updateCartList = function()
+    {
+        var deferred = $q.defer();
+        
+        var optimized_cart= Boolean(parseInt($scope.optimized_cart));
+        
+        if(optimized_cart)
+        {
+            // Create array with selected store_product id's
+	    var store_products = [];
+            // Get optimized list here
+	    for(var index in $rootScope.cart)
+	    {
+	    	var cartItem = $rootScope.cart[index];
+		var data = 
+		{
+			id : cartItem.store_product.id,
+			rowid : cartItem.rowid,
+			quantity : cartItem.quantity
+		};
+		store_products.push(data);
+	    }
+	    
+	    var formData = new FormData();
+	    formData.append("store_products", JSON.stringify(store_products));
+	    formData.append("distance", $scope.distance);
+	    // Send request to server to get optimized list 	
+	    $scope.promise = 
+                $http.post("http://"+ $scope.site_url.concat("/cart/getOptimizedList"), 
+                formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}}).then(
+                function(response)
+                {
+                    $scope.cart = response.data;
+                });
+        }
+        else
+        {
+            // In this case the user did not request an optimized list, return the cart list	
+            deferred.resolve($rootScope.cart);
+	    $scope.promise = deferred.promise;
+            $scope.promise.then(function(cart)
+            {
+                // assign rootscope cart to isolate scope
+                $scope.cart = cart;
+            });
+        }
+    }
+    
     $rootScope.getCart = function()
     {
+        
+        return $scope.cart;
+        
         var deferred = $q.defer();
         
         if($scope.optimized_cart)
@@ -194,30 +262,34 @@ eappApp.controller('CartController', ['$scope','$rootScope', '$q', function($sco
 		{
 			id : cartItem.store_product.id,
 			rowid : cartItem.rowid,
-			quantity : cartItem.quantity,
+			quantity : cartItem.quantity
 		};
 		store_products.push(data);
 	    }
 	    
-	    FormData formData = new FormData();
+	    var formData = new FormData();
 	    formData.append("store_products", JSON.stringify(store_products));
 	    formData.append("distance", $scope.distance);
 	    // Send request to server to get optimized list 	
 	    $scope.promise = $http.post("http://"+ $scope.site_url.concat("/cart/getOptimizedList"), formData, {
 				transformRequest: angular.identity,
-				headers: {'Content-Type': undefined}});
+				headers: {'Content-Type': undefined}}).then(
+                            function(response)
+                            {
+                                $rootScope.cart = response.data;
+                            });
         }
         else
         {
 	    // In this case the user did not request an optimized list, return the cart list	
             deferred.resolve($rootScope.cart);
 	    $scope.promise = deferred.promise;
+            $scope.promise.then(function(cart)
+            {
+                // assign rootscope cart to isolate scope
+                $scope.cart = cart;
+            });
         }
-	    
-        $scope.promise.then(function(cart)
-        {
-            $rootScope.cart = cart;
-        });
         
         return $scope.promise;
     };
@@ -281,10 +353,18 @@ eappApp.controller('CartController', ['$scope','$rootScope', '$q', function($sco
 	});
      };
      
-    $rootScope.viewProductDetails = function(product_id)
+    $scope.relatedProductsAvailable = function()
     {
-
-    };
+        if(typeof $scope.storeProduct !== 'undefined')
+        {
+            if(typeof $scope.storeProduct.related_products !== 'undefined' && $scope.storeProduct.related_products.length > 0)
+            {
+                return true;
+            }
+        }
+        
+        return false;
+    }
     
     $scope.getRowID = function(product_id)
     {
@@ -510,7 +590,7 @@ eappApp.controller('AdminController', ['$scope', 'Form', '$http', 'notifications
                 }
                 else
                 {
-                    notifications.showError(result.data.message);
+                    //notifications.showError(result.data.message);
                 }
                 
             },function(err)

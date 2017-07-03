@@ -15,10 +15,10 @@ class Geo {
      * @param type $province the province
      * @return array
      */
-    function get_coordinates($city, $street, $province, $country)
+    function get_coordinates($postcode)
     {
-        $address = urlencode($city.','.$street.','.$province);
-        $url = "http://maps.google.com/maps/api/geocode/json?address=".$address."&sensor=false&region=".$country;
+        $postcode = str_replace(" ", "", $postcode);
+        $url = "http://maps.google.com/maps/api/geocode/json?address=".$postcode."&sensor=false";
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -36,7 +36,7 @@ class Geo {
         }
         else
         {
-            $return = array('lat' => $response_a->results[0]->geometry->location->lat, 'long' => $long = $response_a->results[0]->geometry->location->lng);
+            $return = array('lat' => $response_a->results[0]->geometry->location->lat, 'long' => $long = $response_a->results[0]->geometry->location->lng, 'address' => $response_a->results[0]->formatted_address);
             return $return;
         }
     }
@@ -75,16 +75,21 @@ class Geo {
      */
     public function distance_time_between($source, $destination) 
     {
-        $coordinates1 = $this->get_coordinates($source['city'], $source['street'].' '.$source['postcode'], $source['state'], $source['country']);
-        $coordinates2 = $this->get_coordinates($destination['city'], $destination['street'].' '.$destination['postcode'], $destination['state'], $source['country']); 
+        set_error_handler(function(){ });
+        
+        $coordinates1 = $this->get_coordinates($source);
+        $coordinates2 = $this->get_coordinates($destination); 
         
         if ( !$coordinates1 || !$coordinates2 )
         {
+            restore_error_handler();
             return array('distance' => 0, 'time' => 0);
+            
         }
         else
         {
             $dist = $this->GetDrivingDistance($coordinates1['lat'], $coordinates2['lat'], $coordinates1['long'], $coordinates2['long']);
+            restore_error_handler();
             return $dist;
         }
     }

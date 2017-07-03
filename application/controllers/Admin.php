@@ -99,11 +99,9 @@ class Admin extends CI_Controller
                     'organic' => 0,
                     'in_flyer' => 0,
                     'format' => '1x1',
-                    'country' => 'CA',
                     'quantity' => '1',
                     'unit_price' => 1,
                     'price' => 0,
-                    'regular_price' => 0,
                     'period_from' => date("Y-m-d"),
                     'period_to' => date("Y-m-d")
             );
