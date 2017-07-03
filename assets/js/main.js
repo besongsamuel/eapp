@@ -514,6 +514,32 @@ eappApp.controller('HomeController', ["$scope","$rootScope", function($scope, $r
 
 eappApp.controller('AdminController', ['$scope', 'Form', '$http', 'notifications', function($scope, Form, $http, notifications) {
       
+    $scope.selectedProduct = null;
+    $scope.searchProductText = "";
+    $scope.queryProducts = [];
+	
+    $scope.querySearch - function(searchProductText)
+    {
+	var formData = new FormData();
+	formData.append("name", searchProductText);
+
+	var httpPromise = $http.post("http://" + $scope.site_url.concat("/admin/searchProducts"), formData, {
+	    transformRequest: angular.identity,
+	    headers: {'Content-Type': undefined}
+	}).then(function(result)
+	{
+	    $scope.queryProducts = result.data;
+
+	},function(err)
+	{
+	    $scope.queryProducts = [];
+	});
+
+	return httpPromise;
+	    
+    };
+    
+    	
     /**
      * When true, the user will continue creating other
      * products after creating te current one. 
