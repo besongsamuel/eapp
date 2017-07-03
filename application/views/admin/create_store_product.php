@@ -114,6 +114,21 @@ $(document).ready(function()
          </div>
         
         <input type="hidden" name="product[id]" value="<?php echo $id; ?>">
+		
+		<md-autocomplete
+          	md-selected-item="selectedProduct"
+          	md-search-text="searchProductText"
+          	md-items="product in querySearch(searchProductText)"
+          	md-item-text="product.name"
+          	md-min-length="0"
+          	placeholder="Type in the name of the product">
+        <md-item-template>
+          <span md-highlight-text="searchProductText" md-highlight-flags="^i">{{product.name}}</span>
+        </md-item-template>
+        <md-not-found>
+          No products matching "{{searchProductText}}" were found.
+        </md-not-found>
+      </md-autocomplete>
         
         <!-- Select Product-->
         <div class="form-group">
