@@ -29,7 +29,7 @@ class Admin extends CI_Controller
     public function searchProducts()
     {
     	$product_name = $this->input->post("name");
-	return json_encode($this->db->searchProducts($product_name));
+	echo json_encode($this->db->searchProducts($product_name));
     }
     
     public function upload_product_image()
