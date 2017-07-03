@@ -109,6 +109,20 @@ class Admin_model extends CI_Model
         
         return $result;
     }
+	
+    public function searchProducts($name)
+    {
+        $result = array();
+        $this->db->like('name', $name);
+        $query =  $this->db->get(PRODUCTS_TABLE);
+	    
+        foreach ($query->result() as $value) 
+        {
+            $result[$value->id] = $value;
+        }
+        
+        return $result;
+    }
     
     public function get_all_limit($table_name, $limit, $offset)
     {
