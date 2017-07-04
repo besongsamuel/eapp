@@ -181,17 +181,28 @@ class CI_Model {
     
     public function get_store_products_limit($limit, $offset)
     {
-        $result = array();
-        
-        $this->db->limit($limit, $offset);
-        
-        $query =  $this->db->get(STORE_PRODUCT_TABLE);
-        
-        foreach ($query->result() as $value) 
-        {
-            $result[$value->id] = $value;
-        }
-        
+	 $result = array();
+	    
+	// Get the distinct product id's present 
+	$this->db->limit($limit, $offset);
+	$product_ids = $this->get_distinc(STORE_PRODUCT_TABLE, "product_id", null);
+	
+	$this->db->reset_query();
+	
+	// Get cheapest store product for each product
+	foreach($product_ids as $product_id)
+	{
+		$this->db->limit(1);
+		$this->db->select("id");
+        	$this->db->from(STORE_PRODUCT_TABLE);
+        	$this->db->where("product_id", $product_id);
+		$this->db->order_by("price", "ASC");
+		$store_prodoct_id = $this->db->get()->id;
+		$this->db->reset_query();
+        	$store_product = getStoreProduct($store_prodoct_id, false);
+		$result[$store_product->id] = $store_product;
+	}
+                
         return $result;
     }
 
@@ -200,8 +211,11 @@ class CI_Model {
     	$this->db->distinct();
 
 	$this->db->select($columns);
-
-	$this->db->where($where); 
+	    
+	if($where !== null)
+	{
+	    $this->db->where($where);
+	}
 
 	$this->db->get($table_name)->result();
     }
