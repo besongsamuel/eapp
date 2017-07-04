@@ -109,9 +109,15 @@ class CI_Model {
         }
     }
     
-    public function getStoreProduct($id, $includeRelatedProducts = true) 
+    public function getStoreProduct($id, $includeRelatedProducts = true, $latestProduct = true) 
     {
         // Get the store product object
+	if($latestProduct)
+	{
+		$array = array('period_from <=' => date("Y-m-d"), 'period_to >=' => date("Y-m-d"));
+		$this->db->where($array);
+	}
+	
         $store_product = $this->get(STORE_PRODUCT_TABLE, $id);
 
         if($store_product != null)
@@ -147,10 +153,16 @@ class CI_Model {
      * This method gets the other store products related to this store product
      * @param type $storeProduct
      */
-    private function getRelatedProducts($store_product_id) 
+    private function getRelatedProducts($store_product_id, $latestProduct = true) 
     {
-		// Get the store product
-		$storeProduct = $this->get(STORE_PRODUCT_TABLE, $store_product_id);
+	    // Get the store product object
+	if($latestProduct)
+	{
+		$where = array('period_from <=' => date("Y-m-d"), 'period_to >=' => date("Y-m-d"));
+		$this->db->where($where);
+	}
+	// Get the store product
+	$storeProduct = $this->get(STORE_PRODUCT_TABLE, $store_product_id);
         $array = array("product_id" => $storeProduct->product_id, STORE_PRODUCT_TABLE.".id !=" => $storeProduct->id);
         $get = sprintf("%s.*, %s.name, %s.image, %s.name as retailer_name", STORE_PRODUCT_TABLE, PRODUCT_TABLE, PRODUCT_TABLE, CHAIN_TABLE);
         $join = sprintf("%s.product_id = %s.id", STORE_PRODUCT_TABLE, PRODUCT_TABLE);
@@ -179,7 +191,7 @@ class CI_Model {
         return $result;
     }
     
-    public function get_store_products_limit($limit, $offset)
+    public function get_store_products_limit($limit, $offset, $latest_products = true)
     {
 	 $result = array();
 	    
@@ -199,7 +211,7 @@ class CI_Model {
 		$this->db->order_by("price", "ASC");
 		$store_prodoct_id = $this->db->get()->id;
 		$this->db->reset_query();
-        	$store_product = getStoreProduct($store_prodoct_id, false);
+        	$store_product = getStoreProduct($store_prodoct_id, false, $latest_products);
 		$result[$store_product->id] = $store_product;
 	}
                 
