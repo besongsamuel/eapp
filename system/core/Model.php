@@ -195,4 +195,15 @@ class CI_Model {
         return $result;
     }
 
+    public function get_distinct($table_name, $columns, $where)
+    {
+    	$this->db->distinct();
+
+	$this->db->select($columns);
+
+	$this->db->where($where); 
+
+	$this->db->get($table_name)->result();
+    }
+
 }
