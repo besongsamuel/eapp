@@ -4,19 +4,9 @@ To change this license header, choose License Headers in Project Properties.
 To change this template file, choose Tools | Templates
 and open the template in the editor.
 -->
-
-<script>
-    $(document).ready(function()
-    {
-        var shopScope = angular.element($("#shop-container")).scope();
-        
-        shopScope.$apply(function()
-        {
-            shopScope.products = JSON.parse('<?php echo $products; ?>');
-        });
-    });
-</script>
-<div ng-controller="ShopController" id="shop-container">
+<!-- Main Script -->
+<script src="http://<?php echo base_url("assets/js/shop-controller.js")?>"></script>
+<div id="shop-container">
 	
 	<md-toolbar>
   		<div class="md-toolbar-tools" layout-align="space-between">
