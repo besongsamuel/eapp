@@ -130,7 +130,7 @@
                             <?php foreach($latestProducts as $product): ?>
                                 <div class="single-product">
                                     <div class="product-f-image">
-                                        <img ng-src="http://<?php echo base_url("assets/img/products/").$product->image;?>" style="height: 100%;" alt="">
+                                        <img ng-src="http://<?php echo base_url("assets/img/products/").$product->product->image;?>" style="height: 100%;" alt="">
                                         <div class="product-hover">
                                             <a href ng-show="canAddToCart(<?php echo $product->id; ?>)" class="add-to-cart-link" ng-click="addProductToCart(<?php echo $product->id; ?>)"><i class="fa fa-shopping-cart"></i> Add to cart</a>
                                                 <a href ng-hide="canAddToCart(<?php echo $product->id; ?>)" class="add-to-cart-link" ng-click="removeProductFromCart(<?php echo $product->id; ?>)"><i class="fa fa-shopping-cart"></i> Remove</a>
