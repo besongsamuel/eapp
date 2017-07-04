@@ -1,6 +1,5 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-
 class Admin extends CI_Controller 
 {
     public function __construct()
@@ -29,7 +28,7 @@ class Admin extends CI_Controller
     public function searchProducts()
     {
     	$product_name = $this->input->post("name");
-	echo json_encode($this->db->searchProducts($product_name));
+	echo json_encode($this->admin_model->searchProducts($product_name));
     }
     
     public function upload_product_image()
@@ -43,7 +42,6 @@ class Admin extends CI_Controller
         if($this->upload->do_upload('image'))
         {
             $upload_data = $this->upload->data();
-
             $product_data = array();
             $product_data['image'] = $upload_data['file_name'];
             $product_data['id'] = $this->input->post("product_id");
@@ -60,7 +58,6 @@ class Admin extends CI_Controller
         
         echo json_encode($response);
     }
-
     public function create_new_brand()
     {
         $response = array();
@@ -74,12 +71,10 @@ class Admin extends CI_Controller
         echo json_encode($response);
         
     }
-
     public function create_store_product($id = null)
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') 
         {
-
             $store_product = $this->input->post('product');
             
             $this->admin_model->create(STORE_PRODUCT_TABLE, $store_product);
@@ -153,8 +148,6 @@ class Admin extends CI_Controller
         
         echo json_encode($this->admin_model->get_all_limit(STORE_PRODUCT_TABLE, $limit, $limit * $page));
     }
-
-
     public function upload_chains() 
     {
         if ($this->input->method(TRUE) === 'POST') 
@@ -289,7 +282,6 @@ class Admin extends CI_Controller
                 }
             }
     }
-
     public function uploads() 
     {
         $this->data['body'] = $this->load->view('admin/uploads', $this->data, TRUE);

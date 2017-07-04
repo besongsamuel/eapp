@@ -9,18 +9,17 @@ $(document).ready(function()
     scope.$apply(function()
     {
         scope.store_product = JSON.parse('<?php echo $store_product; ?>');
+        
         if(sessionStorage.getItem("retailer_id"))
         {
             scope.store_product.retailer_id = parseInt(sessionStorage.getItem("retailer_id"));
             sessionStorage.removeItem("retailer_id");
         }
-
         if(sessionStorage.getItem("period_from"))
         {
             scope.store_product.period_from = sessionStorage.getItem("period_from");
             sessionStorage.removeItem("period_from");
         }
-
         if(sessionStorage.getItem("period_to"))
         {
             scope.store_product.period_to = sessionStorage.getItem("period_to");
@@ -31,17 +30,19 @@ $(document).ready(function()
         scope.store_product.price = parseFloat(scope.store_product.price);
         scope.store_product.unit_price = parseFloat(scope.store_product.unit_price);
         scope.store_product.regular_price = parseFloat(scope.store_product.regular_price);
-        scope.store_product.organic = Boolean(scope.store_product.organic);
-        scope.store_product.in_flyer = Boolean(scope.store_product.in_flyer);
+        scope.store_product.organic = parseInt(scope.store_product.organic) === 0 ? false : true;
+        scope.store_product.in_flyer = parseInt(scope.store_product.in_flyer) === 0 ? false : true;
         scope.products = JSON.parse('<?php echo $products; ?>');
                 
         if(scope.store_product.product_id == null || scope.store_product.product_id == 'undefined')
         {
             scope.store_product.product_id = scope.products[1].id;
+            scope.selectedProduct= scope.products[1];
         }
         else
         {
             scope.store_product.product_id = scope.products[parseInt(scope.store_product.product_id)].id;  
+            scope.selectedProduct= scope.products[parseInt(scope.store_product.product_id)];
         }
         scope.retailers = JSON.parse('<?php echo $retailers; ?>');
         if(scope.store_product.retailer_id == null || scope.store_product.retailer_id == 'undefined')
@@ -71,7 +72,6 @@ $(document).ready(function()
             scope.store_product.compareunit_id = scope.compareunits[parseInt(scope.store_product.compareunit_id)].id;  
         }
         scope.brands = JSON.parse('<?php echo $brands; ?>');
-
         scope.product_selected();
         scope.updateQuantity();
         scope.updateUnitPrice();
@@ -82,6 +82,7 @@ $(document).ready(function()
 <div id="admin-container" class="container admin-container" ng-controller="AdminController">
     <form id="create_store_product_form" name="create_store_product_form" ng-submit="create_store_product()">
         
+        <input type="hidden" name="product[id]" value="<?php echo $id; ?>">
         <!--Section to select retailer-->
         <div class="form-group">
             <label>Select Retailer</label>
@@ -112,50 +113,24 @@ $(document).ready(function()
             <label>Period To</label>
             <input type="date" class="form-control" name="product[period_to]" ng-model="store_product.period_to" required>
          </div>
-        
-        <input type="hidden" name="product[id]" value="<?php echo $id; ?>">
-		
-		<md-autocomplete
+        	
+	<md-autocomplete class="col-sm-6"
           	md-selected-item="selectedProduct"
           	md-search-text="searchProductText"
-          	md-items="product in querySearch(searchProductText)"
-          	md-item-text="product.name"
-          	md-min-length="0"
+          	md-selected-item-change="product_selected(item)"
+          	md-items="item in querySearch(searchProductText)"
+          	md-item-text="item.name"
+          	md-min-length="2"
+          	md-floating-label="Search products"
           	placeholder="Type in the name of the product">
-        <md-item-template>
-          <span md-highlight-text="searchProductText" md-highlight-flags="^i">{{product.name}}</span>
-        </md-item-template>
-        <md-not-found>
-          No products matching "{{searchProductText}}" were found.
-        </md-not-found>
-      </md-autocomplete>
-        
-        <!-- Select Product-->
-        <div class="form-group">
-            <label>Select Product</label>
-            <select 
-                data-style="btn-primary"
-                data-dropupAuto="true" 
-                data-live-search="true" 
-                data-live-search-normalize="true"
-                data-live-search-placeholder = "Type product name" 
-                class="form-control selectpicker" 
-                id="product" 
-                name="product[product_id]"
-                ng-init="store_product.product_id = products[0].id"
-                ng-model="store_product.product_id"
-                ng-change="product_selected()"
-                required
-            >
-                <option ng-repeat="product in products" value="{{product.id}}">{{product.name}}</option>
-            </select>
-        </div>
-        
-        <!-- Section to upload product image-->
-        <div class="form-group">
-            <lf-ng-md-file-input lf-files="files" lf-api="api" preview></lf-ng-md-file-input>
-        </div>
-        
+	        <md-item-template>
+	          	<span md-highlight-text="searchProductText" md-highlight-flags="^i">{{item.name}}</span>
+	        </md-item-template>
+	        <md-not-found>
+	          	No products matching "{{searchProductText}}" were found.
+	        </md-not-found>
+      	</md-autocomplete>
+           
         <!--Section to enter the brand of the product-->
         <md-autocomplete class="col-sm-6"
                           md-input-name="product[brand]" 
@@ -172,6 +147,11 @@ $(document).ready(function()
                 <a ng-click="createNewBrand(searchText)">Create a new one!</a>
             </md-not-found>
         </md-autocomplete>
+        
+        <!-- Section to upload product image-->
+        <lf-ng-md-file-input lf-files="files" lf-api="api" style="width:100%" preview>
+        </lf-ng-md-file-input>
+        
        
         <!--Select the country and state origin of the product-->
         <md-country-select class="col-sm-6" country="store_product.country"></md-country-select>
@@ -245,5 +225,3 @@ $(document).ready(function()
         </div>
     </form>
 </div>
-
-

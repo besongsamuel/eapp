@@ -27,9 +27,26 @@ class Shop extends CI_Controller {
     {
         $this->data['stores'] = addslashes(json_encode($this->admin_model->get_all(CHAIN_TABLE))) ;
         $this->data['products'] = addslashes(json_encode($this->admin_model->get_all(STORE_PRODUCT_TABLE)));
+        
         $this->data['body'] = $this->load->view('shop/index', $this->data, TRUE);
         
         $this->parser->parse('eapp_template', $this->data);
+    }
+    
+    public function get_store_products()
+    {
+        $limit = $this->input->post('limit');
+        
+        $page = $this->input->post('page') - 1;
+        
+        $products = $this->shop_model->get_store_products_limit(STORE_PRODUCT_TABLE, $limit, $limit * $page);
+        $product_array = array();
+        
+        foreach ($products as $product) 
+        {
+            $product_array[$product->id] = $this->shop_model->getStoreProduct($product, false);
+        }
+        echo json_encode($product_array);
     }
     
     

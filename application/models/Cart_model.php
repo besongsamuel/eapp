@@ -58,42 +58,9 @@ class Cart_model extends CI_Model
           return null;
     }
       
-    public function getStoreProduct($id) 
-    {
-        // Get the store product object
-        $store_product = $this->get(STORE_PRODUCT_TABLE, $id);
-
-        if($store_product != null)
-        {
-            // Get associated product
-            $store_product->product = $this->get(PRODUCT_TABLE, $store_product->product_id);
-            // Get product store
-            $store_product->retailer = $this->get(CHAIN_TABLE, $store_product->retailer_id);
-            // Get subcategory
-            if($store_product->product != null)
-            {
-                $store_product->subcategory = $this->get(SUB_CATEGORY_TABLE, $store_product->product->subcategory_id);
-                // Get category
-                if($store_product->subcategory != null)
-                {
-                    $store_product->category = $this->get(CATEGORY_TABLE, $store_product->subcategory->product_category_id);
-                }
-                // Get associated store products
-                $array = array("product_id" => $store_product->product->id, STORE_PRODUCT_TABLE.".id !=" => $store_product->id);
-                $get = sprintf("%s.*, %s.name, %s.image, %s.name as retailer_name", STORE_PRODUCT_TABLE, PRODUCT_TABLE, PRODUCT_TABLE, CHAIN_TABLE);
-		$join = sprintf("%s.product_id = %s.id", STORE_PRODUCT_TABLE, PRODUCT_TABLE);
-                $join2 = sprintf("%s.retailer_id = %s.id", STORE_PRODUCT_TABLE, CHAIN_TABLE);
-                $this->db->select($get);
-                $this->db->from(STORE_PRODUCT_TABLE);
-                $this->db->join(PRODUCT_TABLE, $join);
-                $this->db->join(CHAIN_TABLE, $join2);
-                $this->db->where($array);
-                $store_product->related_products = $this->db->get()->result();
-            }
-        }
-        
-        return $store_product;
-    }
+    
+    
+    
     
 
 }

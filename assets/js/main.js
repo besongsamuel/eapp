@@ -512,30 +512,31 @@ eappApp.controller('HomeController', ["$scope","$rootScope", function($scope, $r
   
 }]);
 
-eappApp.controller('AdminController', ['$scope', 'Form', '$http', 'notifications', function($scope, Form, $http, notifications) {
+eappApp.controller('AdminController', ["$scope", "Form", "$http", "notifications", "$q", function($scope, Form, $http, notifications, $q) {
       
     $scope.selectedProduct = null;
     $scope.searchProductText = "";
     $scope.queryProducts = [];
 	
-    $scope.querySearch - function(searchProductText)
+    $scope.querySearch = function(searchProductText)
     {
+    	var q = $q.defer();
 	var formData = new FormData();
 	formData.append("name", searchProductText);
 
-	var httpPromise = $http.post("http://" + $scope.site_url.concat("/admin/searchProducts"), formData, {
+	$http.post("http://" + $scope.site_url.concat("/admin/searchProducts"), formData, {
 	    transformRequest: angular.identity,
 	    headers: {'Content-Type': undefined}
-	}).then(function(result)
+	}).then(function(response)
 	{
-	    $scope.queryProducts = result.data;
-
-	},function(err)
-	{
-	    $scope.queryProducts = [];
+		var array = $.map(response.data, function(value, index) {
+		    return [value];
+		});
+		q.resolve( array );
+		
 	});
-
-	return httpPromise;
+	
+	return q.promise;
 	    
     };
     
@@ -558,15 +559,18 @@ eappApp.controller('AdminController', ['$scope', 'Form', '$http', 'notifications
     
     $scope.getSaveLabel = function(){ return parseInt($scope.store_product.id) > -1 ? "Edit" : "Create"};
     
-    $scope.product_selected = function()
+    $scope.product_selected = function(item)
     {
-        $scope.product = $scope.products[$scope.store_product.product_id];
         
-        var image_url = "http://" + $scope.base_url.concat("/assets/img/products/") + $scope.product.image;
+        if(typeof item === 'undefined')
+        	return;
+        
+        var image_url = "http://" + $scope.base_url.concat("/assets/img/products/") + item.image;
         
         $scope.api.removeAll();
         
-        $scope.api.addRemoteFile(image_url, $scope.product.image,'image');
+        $scope.api.addRemoteFile(image_url, item.image,'image'); 
+
     };
     
     $scope.createNewBrand = function(brand_name)
@@ -645,6 +649,10 @@ eappApp.controller('AdminController', ['$scope', 'Form', '$http', 'notifications
         formData.append("product[organic]", $scope.store_product.organic ? 1 : 0);
         formData.append("product[in_flyer]", $scope.store_product.in_flyer ? 1 : 0);
         formData.append("product[country]", $scope.store_product.country);
+        if($scope.selectedProduct != null)
+        {
+        	formData.append("product[product_id]", $scope.selectedProduct.id);
+        }
         Form.postForm(formData, url, redirect_url);
         
         if($scope.continue)
@@ -792,6 +800,3 @@ eappApp.controller('AdminController', ['$scope', 'Form', '$http', 'notifications
    
     
 }]);
-
-
-
