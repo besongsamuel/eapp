@@ -147,8 +147,10 @@ class CI_Model {
      * This method gets the other store products related to this store product
      * @param type $storeProduct
      */
-    private function getRelatedProducts($storeProduct) 
+    private function getRelatedProducts($store_product_id) 
     {
+		// Get the store product
+		$storeProduct = $this->get(STORE_PRODUCT_TABLE, $store_product_id);
         $array = array("product_id" => $storeProduct->product_id, STORE_PRODUCT_TABLE.".id !=" => $storeProduct->id);
         $get = sprintf("%s.*, %s.name, %s.image, %s.name as retailer_name", STORE_PRODUCT_TABLE, PRODUCT_TABLE, PRODUCT_TABLE, CHAIN_TABLE);
         $join = sprintf("%s.product_id = %s.id", STORE_PRODUCT_TABLE, PRODUCT_TABLE);
