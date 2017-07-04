@@ -126,8 +126,6 @@ class CI_Model {
             $store_product->product = $this->get(PRODUCT_TABLE, $store_product->product_id);
             // Get product store
             $store_product->retailer = $this->get(CHAIN_TABLE, $store_product->retailer_id);
-            // Get product brand
-            $store_product->brand = $this->get(BRANDS_TABLE, $store_product->brand_id);
             // Get subcategory
             if($store_product->product != null)
             {
@@ -197,21 +195,18 @@ class CI_Model {
 	    
 	// Get the distinct product id's present 
 	$this->db->limit($limit, $offset);
-	$product_ids = $this->get_distinc(STORE_PRODUCT_TABLE, "product_id", null);
-	
-	$this->db->reset_query();
+	$product_ids = $this->get_distinct(STORE_PRODUCT_TABLE, "product_id", null);
 	
 	// Get cheapest store product for each product
 	foreach($product_ids as $product_id)
 	{
 		$this->db->limit(1);
-		$this->db->select("id");
+                $this->db->order_by("price", "ASC");
+		$this->db->select("id, price");
         	$this->db->from(STORE_PRODUCT_TABLE);
-        	$this->db->where("product_id", $product_id);
-		$this->db->order_by("price", "ASC");
-		$store_prodoct_id = $this->db->get()->id;
-		$this->db->reset_query();
-        	$store_product = getStoreProduct($store_prodoct_id, false, $latest_products);
+        	$this->db->where("product_id", $product_id->product_id);
+		$store_prodoct_id = $this->db->get()->row()->id;
+        	$store_product = $this->getStoreProduct($store_prodoct_id, false, $latest_products);
 		$result[$store_product->id] = $store_product;
 	}
                 
@@ -228,8 +223,8 @@ class CI_Model {
 	{
 	    $this->db->where($where);
 	}
-
-	$this->db->get($table_name)->result();
+        
+	return $this->db->get($table_name)->result();
     }
 
 }

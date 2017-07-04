@@ -138,7 +138,7 @@
                                         </div>
                                     </div>
 
-                                    <h2><a href ng-click="viewProductDetails(<?php echo $product->id; ?>)"><?php echo $product->name; ?></a></h2>
+                                    <h2><a href ng-click="viewProductDetails(<?php echo $product->id; ?>)"><?php echo $product->product->name; ?></a></h2>
 
                                     <div class="product-carousel-price">
                                         <ins>CAD <?php echo $product->price; ?></ins><del>CAD <?php echo $product->regular_price; ?></del>
