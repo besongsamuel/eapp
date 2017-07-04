@@ -40,13 +40,8 @@ class Shop extends CI_Controller {
         $page = $this->input->post('page') - 1;
         
         $products = $this->shop_model->get_store_products_limit($limit, $limit * $page);
-        $product_array = array();
         
-        foreach ($products as $product) 
-        {
-            $product_array[$product->id] = $this->shop_model->getStoreProduct($product, false);
-        }
-        echo json_encode($product_array);
+        echo json_encode($products);
     }
     
     
