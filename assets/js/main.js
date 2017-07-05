@@ -649,7 +649,7 @@ eappApp.controller('AdminController', ["$scope", "Form", "$http", "notifications
         }
 	    
         Form.postForm(formData, url, redirect_url);
-    }
+    };
 	
     $scope.create_store_product = function()
     {
@@ -663,34 +663,34 @@ eappApp.controller('AdminController', ["$scope", "Form", "$http", "notifications
         
         if($scope.files.length > 0)
         {
-		if($scope.selectedProduct !== null)
-		{
-			formData.append("product_id", $scope.selectedProduct.product_id);
+			if($scope.selectedProduct !== null)
+			{
+				formData.append("product_id", $scope.selectedProduct.product_id);
 
-			$http.post("http://" + $scope.site_url.concat("/admin/upload_product_image"), formData, {
-				transformRequest: angular.identity,
-				headers: {'Content-Type': undefined}
-			}).then(function(result)
-			{
-			if(result.data.success)
-			{
-			    notifications.showSuccess(result.data.message);
-			    $scope.post_create_product();
+				$http.post("http://" + $scope.site_url.concat("/admin/upload_product_image"), formData, {
+					transformRequest: angular.identity,
+					headers: {'Content-Type': undefined}
+				}).then(
+				function(result)
+				{
+					if(result.data.success)
+					{
+						notifications.showSuccess(result.data.message);
+						$scope.post_create_product();
+					}
+					else
+					{
+						$scope.post_create_product();
+						//notifications.showError(result.data.message);
+					}		
+		        },function(err)
+		        {
+					// do sometingh
+					$scope.post_create_product();
+		        })
 			}
-			else
-			{
-			    $scope.post_create_product();
-			    //notifications.showError(result.data.message);
-			}
-		}
-                
-            },function(err)
-            {
-                // do sometingh
-		$scope.post_create_product();
-            });
             
-        }
+		}
     };
     
     $scope.updateQuantity = function()
