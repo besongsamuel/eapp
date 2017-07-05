@@ -9,24 +9,41 @@ $(document).ready(function()
     scope.$apply(function()
     {
         scope.store_product = JSON.parse('<?php echo $store_product; ?>');
+	scope.retailers = JSON.parse('<?php echo $retailers; ?>');
+	scope.units = JSON.parse('<?php echo $units; ?>');
+	scope.compareunits = JSON.parse('<?php echo $compareunits; ?>');
+	scope.brands = JSON.parse('<?php echo $brands; ?>');
         
         if(sessionStorage.getItem("retailer_id"))
         {
-            scope.store_product.retailer_id = parseInt(sessionStorage.getItem("retailer_id"));
+	    scope.store_product.retailer_id = scope.retailers[parseInt(sessionStorage.getItem("retailer_id"))].id;
             sessionStorage.removeItem("retailer_id");
         }
+	else
+	{
+	    scope.store_product.retailer_id = scope.retailers[parseInt(scope.store_product.retailer_id)].id; 
+	}
+	    
         if(sessionStorage.getItem("period_from"))
         {
-            scope.store_product.period_from = sessionStorage.getItem("period_from");
+            scope.store_product.period_from = new Date(sessionStorage.getItem("period_from").toString().replace("-", "/"));
             sessionStorage.removeItem("period_from");
         }
+	else
+	{
+	    scope.store_product.period_from = new Date(scope.store_product.period_from.toString().replace("-", "/"));
+	}
+	    
         if(sessionStorage.getItem("period_to"))
         {
-            scope.store_product.period_to = sessionStorage.getItem("period_to");
+            scope.store_product.period_to = new Date(sessionStorage.getItem("period_to").toString().replace("-", "/"));
             sessionStorage.removeItem("period_to");
         }
-        scope.store_product.period_from = new Date(scope.store_product.period_from.toString().replace("-", "/"));
-        scope.store_product.period_to = new Date(scope.store_product.period_to.toString().replace("-", "/"));
+        else
+	{
+	    scope.store_product.period_to = new Date(scope.store_product.period_to.toString().replace("-", "/"));
+	}
+        
         scope.store_product.price = parseFloat(scope.store_product.price);
         scope.store_product.unit_price = parseFloat(scope.store_product.unit_price);
         scope.store_product.regular_price = parseFloat(scope.store_product.regular_price);
@@ -42,36 +59,19 @@ $(document).ready(function()
         else
         {
             scope.store_product.product_id = scope.products[parseInt(scope.store_product.product_id)].id;  
-            scope.selectedProduct= scope.products[parseInt(scope.store_product.product_id)];
+            scope.selectedProduct = scope.products[parseInt(scope.store_product.product_id)];
         }
-        scope.retailers = JSON.parse('<?php echo $retailers; ?>');
-        if(scope.store_product.retailer_id == null || scope.store_product.retailer_id == 'undefined')
-        {
-            scope.store_product.retailer_id = scope.retailers[1].id;
-        }
-        else
-        {
-            scope.store_product.retailer_id = scope.retailers[parseInt(scope.store_product.retailer_id)].id;  
-        }
-        scope.units = JSON.parse('<?php echo $units; ?>');
-        if(scope.store_product.unit_id == null || scope.store_product.unit_id == 'undefined')
-        {
-            scope.store_product.unit_id = scope.units[1].id;
-        }
-        else
+        
+        if(typeof scope.store_product.unit_id !== "undefined")
         {
             scope.store_product.unit_id = scope.units[parseInt(scope.store_product.unit_id)].id;  
         }
-        scope.compareunits = JSON.parse('<?php echo $compareunits; ?>');
-        if(scope.store_product.compareunit_id == null || scope.store_product.compareunit_id == 'undefined')
-        {
-            scope.store_product.compareunit_id = scope.compareunits[1].id;
-        }
-        else
+	    
+	if(typeof scope.store_product.compareunit_id !== "undefined")
         {
             scope.store_product.compareunit_id = scope.compareunits[parseInt(scope.store_product.compareunit_id)].id;  
         }
-        scope.brands = JSON.parse('<?php echo $brands; ?>');
+        
         scope.product_selected();
         scope.updateQuantity();
         scope.updateUnitPrice();
