@@ -51,12 +51,7 @@ $(document).ready(function()
         scope.store_product.in_flyer = parseInt(scope.store_product.in_flyer) === 0 ? false : true;
         scope.products = JSON.parse('<?php echo $products; ?>');
                 
-        if(scope.store_product.product_id == null || scope.store_product.product_id == 'undefined')
-        {
-            scope.store_product.product_id = scope.products[1].id;
-            scope.selectedProduct= scope.products[1];
-        }
-        else
+        if(typeof scope.store_product.product_id !== "undefined")
         {
             scope.store_product.product_id = scope.products[parseInt(scope.store_product.product_id)].id;  
             scope.selectedProduct = scope.products[parseInt(scope.store_product.product_id)];
