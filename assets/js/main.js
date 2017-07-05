@@ -666,13 +666,19 @@ eappApp.controller('AdminController', ["$scope", "Form", "$http", "notifications
             sessionStorage.setItem("period_from", convert_to_string_date($scope.store_product.period_from));
             sessionStorage.setItem("period_to", convert_to_string_date($scope.store_product.period_to));
 		
-	    $scope.store_product = 
+	    $scope.selectedProduct = null;
+	    var tmp = 
 	    {
 	    	id : -1,
 		organic : 0,
 		in_flyer : 0,
-		format : "1x1"
+		format : "1x1",
+		retailer_id : $scope.store_product.retailer_id,
+		period_from : $scope.store_product.period_from,
+		period_to : $scope.store_product.period_to,
 	    }
+	    $scope.store_product = tmp;
+	    
         }
 	    
         Form.postForm(formData, url, redirect_url);
