@@ -665,7 +665,7 @@ eappApp.controller('AdminController', ["$scope", "Form", "$http", "notifications
         {
 			if($scope.selectedProduct !== null)
 			{
-				formData.append("product_id", $scope.selectedProduct.product_id);
+				formData.append("product_id", $scope.selectedProduct.id);
 
 				$http.post("http://" + $scope.site_url.concat("/admin/upload_product_image"), formData, {
 					transformRequest: angular.identity,
