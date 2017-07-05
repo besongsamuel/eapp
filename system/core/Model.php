@@ -126,6 +126,8 @@ class CI_Model {
             $store_product->product = $this->get(PRODUCT_TABLE, $store_product->product_id);
             // Get product store
             $store_product->retailer = $this->get(CHAIN_TABLE, $store_product->retailer_id);
+            // Get product unit
+            $store_product->unit = $this->get(UNITS_TABLE, $store_product->unit_id);
             // Get subcategory
             if($store_product->product != null)
             {
@@ -189,25 +191,36 @@ class CI_Model {
         return $result;
     }
     
-    public function get_store_products_limit($limit, $offset, $latest_products = true)
+    public function get_store_products_limit($limit, $offset, $latest_products = true, $filter = null)
     {
-	 $result = array();
-	    
+	$result = array();
 	// Get the distinct product id's present 
 	$this->db->limit($limit, $offset);
 	$product_ids = $this->get_distinct(STORE_PRODUCT_TABLE, "product_id", null);
-	
+        	
 	// Get cheapest store product for each product
 	foreach($product_ids as $product_id)
 	{
-		$this->db->limit(1);
-                $this->db->order_by("price", "ASC");
-		$this->db->select("id, price");
-        	$this->db->from(STORE_PRODUCT_TABLE);
-        	$this->db->where("product_id", $product_id->product_id);
-		$store_prodoct_id = $this->db->get()->row()->id;
-        	$store_product = $this->getStoreProduct($store_prodoct_id, false, $latest_products);
-		$result[$store_product->id] = $store_product;
+            $this->db->limit(1);
+            if($filter != null)
+            {
+                $this->db->like("name", $filter);
+            }
+            $this->db->order_by("price", "ASC");
+            $this->db->select(STORE_PRODUCT_TABLE.".id, price, product_id, name");
+            $join = sprintf("%s.product_id = %s.id", STORE_PRODUCT_TABLE, PRODUCT_TABLE);
+            $this->db->join(PRODUCT_TABLE, $join);
+            $this->db->where("product_id", $product_id->product_id);
+            
+            $res = $this->db->get(STORE_PRODUCT_TABLE)->row();
+            if($res)
+            {
+                $store_prodoct_id = $res->id;
+                $store_product = $this->getStoreProduct($store_prodoct_id, false, $latest_products);
+                $result[$store_product->id] = $store_product;
+            
+                $this->db->reset_query();
+            }
 	}
                 
         return $result;
@@ -223,7 +236,7 @@ class CI_Model {
 	{
 	    $this->db->where($where);
 	}
-        
+                
 	return $this->db->get($table_name)->result();
     }
 

@@ -47,15 +47,17 @@
       </tr>
     </thead>
     <tbody md-body>
-      <tr md-row md-select="dessert" md-select-id="name" md-auto-select ng-repeat="product in products.data">
+      <tr md-row md-select="dessert" md-select-id="name" md-auto-select ng-repeat="product in products">
         <td md-cell>{{product.product.name}}</td>
-        <td md-cell>{{product.product.image}}</td>
-        <td md-cell>{{product.store.name}}</td>
+        <td md-cell><div class="admin-image"><a href=""><img alt="" ng-src="{{assets_dir}}img/products/{{product.product.image}}" ></a></div></td>
+        <td md-cell><div class="admin-image"><a href=""><img alt="" ng-src="{{assets_dir}}img/stores/{{product.retailer.image}}" ></a></div></td>
         <td md-cell>{{product.brand}}</td>
         <td md-cell>{{product.format}}</td>
+        <td md-cell>{{product.unit.name}}</td>
         <td md-cell>{{product.price}}</td>
         <td md-cell><input type="number" ng-model="product.quantity" md-no-autogrow="true"></td>
         <td md-cell>{{product.price * product.quantity}}</td>
+        <td md-cell></td>
       </tr>
     </tbody>
   </table>

@@ -6,17 +6,15 @@ and open the template in the editor.
 -->
 <!-- Main Script -->
 <script src="http://<?php echo base_url("assets/js/shop-controller.js")?>"></script>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<!-- Animate CSS -->
+<link rel="stylesheet" href="http://<?php echo base_url("assets/css/shop.css")?>">
+
 <div id="shop-container">
 	
-	<md-toolbar>
-  		<div class="md-toolbar-tools" layout-align="space-between">
-        	<div class="md-title">Available Products</div>
-      	</div>
-    </md-toolbar>
-
     <md-content layout="column" flex>
 
-     	<md-card ng-include="'templates/shop-products-table.html'" ng-controller="ShopController"></md-card>
+     	<md-card id="shopController" ng-include="'../assets/templates/shop-products-table.html'" ng-controller="ShopController"></md-card>
 
     </md-content>
 </div>

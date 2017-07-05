@@ -59,3 +59,15 @@
     cursor: inherit;
     display: block;
 }
+
+
+.admin-image
+{
+    width: 100px;
+    height: auto;
+    border-style: solid;
+    border-color: #1abc9c;
+    border-width: thin;
+    padding: 5px;
+    margin: 5px;
+}

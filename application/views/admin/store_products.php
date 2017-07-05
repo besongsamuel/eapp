@@ -30,11 +30,11 @@
                     </td>
 
                     <td md-cell>
-                        <a href="single-product.html"><img width="145" height="145" alt="poster_1_up" class="shop_thumbnail" ng-src="http://<?php echo base_url("assets/img/stores/"); ?>{{retailers[store_product.retailer_id].image}}" ></a>
+                        <div class="admin-image"><a href=""><img alt="" ng-src="http://<?php echo base_url("assets/img/stores/"); ?>{{retailers[store_product.retailer_id].image}}" ></a></div>
                     </td>
 
                     <td md-cell>
-                        <a href="single-product.html"><img width="145" height="145" alt="poster_1_up" class="shop_thumbnail" ng-src="http://<?php echo base_url("assets/img/products/"); ?>{{products[store_product.product_id].image}}" ></a>
+                        <div class="admin-image"><a href=""><img alt="" ng-src="http://<?php echo base_url("assets/img/products/"); ?>{{products[store_product.product_id].image}}" ></a></div>
                     </td>
 
                     <td md-cell>
