@@ -600,42 +600,9 @@ eappApp.controller('AdminController', ["$scope", "Form", "$http", "notifications
         });
     };
     
-    $scope.create_store_product = function()
+    $scope.post_create_product = function()
     {
-        //upload the image here
-        var formData = new FormData();
-        angular.forEach($scope.files,function(obj){
-            if(!obj.isRemote){
-                formData.append('image', obj.lfFile);
-            }
-        });
-        
-        if($scope.files.length > 0)
-        {
-            formData.append("product_id", $scope.store_product.product_id);
-        
-            $http.post("http://" + $scope.site_url.concat("/admin/upload_product_image"), formData, {
-                transformRequest: angular.identity,
-                headers: {'Content-Type': undefined}
-            }).then(function(result)
-            {
-                if(result.data.success)
-                {
-                    notifications.showSuccess(result.data.message);
-                }
-                else
-                {
-                    //notifications.showError(result.data.message);
-                }
-                
-            },function(err)
-            {
-                // do sometingh
-            });
-            
-        }
-        
-        var redirect_url = null;
+    	var redirect_url = null;
         
         if($scope.continue)
         {
@@ -656,12 +623,11 @@ eappApp.controller('AdminController', ["$scope", "Form", "$http", "notifications
         formData.append("product[country]", $scope.store_product.country);
         if($scope.selectedProduct != null)
         {
-        	formData.append("product[product_id]", $scope.selectedProduct.id);
+	    formData.append("product[product_id]", $scope.selectedProduct.id);
         }
 	    
 	if($scope.continue)
         {
-	    
             sessionStorage.setItem("retailer_id", $scope.store_product.retailer_id);
             sessionStorage.setItem("period_from", convert_to_string_date($scope.store_product.period_from));
             sessionStorage.setItem("period_to", convert_to_string_date($scope.store_product.period_to));
@@ -683,6 +649,48 @@ eappApp.controller('AdminController', ["$scope", "Form", "$http", "notifications
         }
 	    
         Form.postForm(formData, url, redirect_url);
+    }
+	
+    $scope.create_store_product = function()
+    {
+        //upload the image here
+        var formData = new FormData();
+        angular.forEach($scope.files,function(obj){
+            if(!obj.isRemote){
+                formData.append('image', obj.lfFile);
+            }
+        });
+        
+        if($scope.files.length > 0)
+        {
+		if($scope.selectedProduct !== null)
+		{
+			formData.append("product_id", $scope.selectedProduct.product_id);
+
+			$http.post("http://" + $scope.site_url.concat("/admin/upload_product_image"), formData, {
+				transformRequest: angular.identity,
+				headers: {'Content-Type': undefined}
+			}).then(function(result)
+			{
+			if(result.data.success)
+			{
+			    notifications.showSuccess(result.data.message);
+			    $scope.post_create_product();
+			}
+			else
+			{
+			    $scope.post_create_product();
+			    //notifications.showError(result.data.message);
+			}
+		}
+                
+            },function(err)
+            {
+                // do sometingh
+		$scope.post_create_product();
+            });
+            
+        }
     };
     
     $scope.updateQuantity = function()
