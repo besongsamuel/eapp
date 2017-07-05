@@ -658,14 +658,15 @@ eappApp.controller('AdminController', ["$scope", "Form", "$http", "notifications
         {
         	formData.append("product[product_id]", $scope.selectedProduct.id);
         }
-        Form.postForm(formData, url, redirect_url);
-        
-        if($scope.continue)
+	    
+	if($scope.continue)
         {
             sessionStorage.setItem("retailer_id", $scope.store_product.retailer_id);
             sessionStorage.setItem("period_from", convert_to_string_date($scope.store_product.period_from));
             sessionStorage.setItem("period_to", convert_to_string_date($scope.store_product.period_to));
         }
+	    
+        Form.postForm(formData, url, redirect_url);
     };
     
     $scope.updateQuantity = function()
