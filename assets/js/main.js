@@ -667,6 +667,7 @@ eappApp.controller('AdminController', ["$scope", "Form", "$http", "notifications
             sessionStorage.setItem("period_to", convert_to_string_date($scope.store_product.period_to));
 		
 	    $scope.selectedProduct = null;
+	    $scope.api.removeAll();
 	    var tmp = 
 	    {
 	    	id : -1,
