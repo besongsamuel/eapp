@@ -661,6 +661,11 @@ eappApp.controller('AdminController', ["$scope", "Form", "$http", "notifications
 	    
 	if($scope.continue)
         {
+	    
+            sessionStorage.setItem("retailer_id", $scope.store_product.retailer_id);
+            sessionStorage.setItem("period_from", convert_to_string_date($scope.store_product.period_from));
+            sessionStorage.setItem("period_to", convert_to_string_date($scope.store_product.period_to));
+		
 	    $scope.store_product = 
 	    {
 	    	id : -1,
@@ -668,9 +673,6 @@ eappApp.controller('AdminController', ["$scope", "Form", "$http", "notifications
 		in_flyer : 0,
 		format : "1x1"
 	    }
-            sessionStorage.setItem("retailer_id", $scope.store_product.retailer_id);
-            sessionStorage.setItem("period_from", convert_to_string_date($scope.store_product.period_from));
-            sessionStorage.setItem("period_to", convert_to_string_date($scope.store_product.period_to));
         }
 	    
         Form.postForm(formData, url, redirect_url);
