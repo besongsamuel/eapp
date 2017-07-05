@@ -87,6 +87,11 @@ jQuery(document).ready(function($){
     
 });
 
+function convert_to_string_date(date)
+{
+	return date.getFullYear().toString() + "-" + date.getMonth().toString() + "-" + date.getDate().toString();
+}
+
 // Define the `eapp Application` module
 var eappApp = angular.module('eappApp', ['ngMaterial', 'md.data.table', 'lfNgMdFileInput', 'mdCountrySelect', 'ngNotificationsBar']);
 
@@ -658,8 +663,8 @@ eappApp.controller('AdminController', ["$scope", "Form", "$http", "notifications
         if($scope.continue)
         {
             sessionStorage.setItem("retailer_id", $scope.store_product.retailer_id);
-            sessionStorage.setItem("period_from", $scope.store_product.period_from);
-            sessionStorage.setItem("period_to", $scope.store_product.period_to);
+            sessionStorage.setItem("period_from", convert_to_string_date($scope.store_product.period_from));
+            sessionStorage.setItem("period_to", convert_to_string_date($scope.store_product.period_to));
         }
     };
     
