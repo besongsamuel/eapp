@@ -99,6 +99,7 @@ class Admin extends CI_Controller
                     'id' => -1,
                     'organic' => 0,
                     'in_flyer' => 0,
+		    'retailer_id' => 1,
                     'format' => '1x1',
                     'quantity' => '1',
                     'period_from' => date("Y-m-d"),
