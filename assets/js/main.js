@@ -166,23 +166,6 @@ eappApp.controller('ProductsController', ['$scope','$rootScope', function($scope
   
 }]);
 
-eappApp.controller("ShopController", ["$scope", "$rootScope", function($scope, $rootScope)
-{
-    $scope.filteredProducts = []
-    ,$scope.currentPage = 1
-    ,$scope.numPerPage = 10
-    ,$scope.maxSize = 25;
-    
-    $scope.products = [];
-
-    $scope.$watch("currentPage + numPerPage", function() {
-      var begin = (($scope.currentPage - 1) * $scope.numPerPage)
-      , end = begin + $scope.numPerPage;
-
-      $scope.filteredProducts = $scope.products.slice(begin, end);
-    });
-}]);
-
 eappApp.controller('CartController', ['$scope','$rootScope', '$q', '$http', function($scope, $rootScope, $q, $http) {
   
     $scope.selected = [];
