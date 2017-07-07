@@ -59,7 +59,8 @@
         <td md-cell><input type="number" ng-model="product.quantity" md-no-autogrow="true"></td>
         <td md-cell>{{product.price * product.quantity}}</td>
         <td md-cell>
-            <a href ng-class="add_to_Cart()">Add To Cart</a> 
+            <a href ng-class="add_to_Cart()" ng-show="canAddToCart(product.id)">Add To Cart</a> 
+			<a href ng-class="remove_from_cart()" ng-show="!canAddToCart(product.id)">Remove</a> 
         </td>
       </tr>
     </tbody>
