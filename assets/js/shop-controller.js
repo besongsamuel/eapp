@@ -38,7 +38,7 @@ angular.module('eappApp').controller('ShopController', ["$scope", "$q", "$http",
       formData.append("filter", $scope.query.filter);
       formData.append("order", $scope.query.order);
       
-      $scope.promise = $http.post(window.location.href.toString().concat("/get_store_products"), formData, {
+      $scope.promise = $http.post($scope.site_url.concat("shop/get_store_products"), formData, {
           transformRequest: angular.identity,
           headers: {'Content-Type': undefined}
       }).then(function(response)
