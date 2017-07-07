@@ -7,7 +7,7 @@ angular.module('eappApp').controller('ShopController', ["$scope", "$q", "$http",
 
     $scope.add_to_cart = function(product_id) 
     {
-        $scope.addToCart(product_id);
+        $scope.addProductToCart(product_id);
     };
 
     $scope.selected = [];
