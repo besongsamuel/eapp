@@ -22,9 +22,9 @@ class Admin_model extends CI_Model
      * @param type $table_name
      * @param type $data
      */
-    public function create($table_name, $data)
+    public function create($table_name, $data, $is_new = false)
     {
-        if(isset($data['id']))
+        if(isset($data['id']) && !$is_new)
         {
             $query = $this->db->get_where($table_name, array('id' => $data['id']));
             $count = $query->num_rows(); 
@@ -56,10 +56,14 @@ class Admin_model extends CI_Model
         $this->db->update($table_name, $data);
     }
 	
-    public function delete($table_name, $id)
+    public function delete($table_name, $id = null)
     {
-        $this->db->where('id', $id);
-		$this->db->delete($table_name);
+        if($id != null)
+        {
+            $this->db->where('id', $id);
+        }
+        
+        $this->db->delete($table_name);
     }
     
     public function exists($table_name, $column_name, $check_value)

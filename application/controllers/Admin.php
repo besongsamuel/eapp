@@ -145,7 +145,13 @@ class Admin extends CI_Controller
         
         $page = $this->input->post('page') - 1;
         
-        echo json_encode($this->admin_model->get_all_limit(STORE_PRODUCT_TABLE, $limit, $limit * $page));
+        $filter = $this->input->post('filter');
+        
+        $order = $this->input->post('order');
+                
+        $products = $this->shop_model->get_store_products_limit($limit, $limit * $page, false, $filter, $order);
+        
+        echo json_encode($products);
     }
     public function upload_chains() 
     {

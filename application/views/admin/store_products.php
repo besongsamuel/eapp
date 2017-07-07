@@ -1,12 +1,57 @@
 <!DOCTYPE html>
 
-<md-toolbar class="md-table-toolbar md-default">
-  <div class="md-toolbar-tools">
-    <span>Store Products</span>
-  </div>
-</md-toolbar>
+<!-- Main Script -->
+<script src="http://<?php echo base_url("assets/js/admin-controller.js")?>"></script>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<link rel="stylesheet" href="http://<?php echo base_url("assets/css/shop.css")?>">
+
+<script>
+    $(document).ready(function()
+    {
+        var scope = angular.element($("#admin-container")).scope();
+        
+        scope.$apply(function()
+        {
+            scope.base_url = "<?php echo $base_url; ?>";
+            scope.site_url = "<?php echo $site_url; ?>";
+            scope.controller = "<?php echo $controller; ?>";
+            scope.method = "<?php echo $method; ?>";
+        });
+    });
+</script>
 
 <div id="admin-container" class="container admin-container" ng-controller="ProductsTableController">
+    
+    <md-toolbar class="md-table-toolbar md-default" ng-hide="selected.length || filter.show">
+        <div class="md-toolbar-tools">
+        <h2 class="md-title">Products</h2>
+        <div flex></div>
+        <md-button class="md-icon-button" ng-click="filter.show = true">
+            <md-icon>filter_list</md-icon>
+        </md-button>
+      </div>
+    </md-toolbar>
+
+    <md-toolbar class="md-table-toolbar md-default" ng-show="filter.show && !selected.length">
+        <div class="md-toolbar-tools">
+        <md-icon>search</md-icon>
+        <form flex name="filter.form">
+            <input type="text" ng-model="query.filter" ng-model-options="filter.options" placeholder="search">
+        </form>
+        <md-button class="md-icon-button" ng-click="removeFilter()">
+            <md-icon>close</md-icon>
+        </md-button>
+      </div>
+    </md-toolbar>
+
+    <md-toolbar class="md-table-toolbar alternate" ng-show="selected.length">
+      <div class="md-toolbar-tools" layout-align="space-between">
+        <div>{{selected.length}} {{selected.length > 1 ? 'items' : 'item'}} selected</div>
+        <md-button class="md-icon-button" ng-click="add_to_cart($event)">
+            <md-icon>add_shopping_cart</md-icon>
+        </md-button>
+      </div>
+    </md-toolbar>
     
     <md-table-container>
         <table  md-table md-row-select multiple cellspacing="0" ng-model="selected"  md-progress="promise">
@@ -15,11 +60,11 @@
                     <th md-column>&nbsp;</th>
                     <th md-column>Store Logo</th>
                     <th md-column>Image</th>
-                    <th md-column md-order-by="nameToLower">Product</th>
+                    <th md-column md-order-by="name">Product</th>
                     <th md-column md-numeric>Price</th>
                     <th md-column md-numeric>Quantity</th>
                     <th md-column md-numeric>Unit Price</th>
-                    <th md-column>Validity Period</th>
+                    <th md-column md-order-by="date">Validity Period</th>
                     <th md-column>Actions</th>
                 </tr>
             </thead>
@@ -37,7 +82,7 @@
                         <div class="admin-image"><a href=""><img alt="" ng-src="http://<?php echo base_url("assets/img/products/"); ?>{{products[store_product.product_id].image}}" ></a></div>
                     </td>
 
-                    <td md-cell>
+                    <td md-cell width="100%">
                         <p><b><a href="single-product.html">{{products[store_product.product_id].name}}</a></b></p>
                         <p>Format : {{store_product.format}}</p>
                         <p>Unit : {{units[store_product.unit_id].name}}</p>

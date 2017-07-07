@@ -40,8 +40,10 @@ class Shop extends CI_Controller {
         $page = $this->input->post('page') - 1;
         
         $filter = $this->input->post('filter');
+        
+        $order = $this->input->post('order');
                 
-        $products = $this->shop_model->get_store_products_limit($limit, $limit * $page, true, $filter);
+        $products = $this->shop_model->get_store_products_limit($limit, $limit * $page, true, $filter, $order);
         
         echo json_encode($products);
     }

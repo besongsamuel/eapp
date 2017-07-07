@@ -1,5 +1,8 @@
 <!DOCTYPE html>
 
+<!-- Main Script -->
+<script src="http://<?php echo base_url("assets/js/admin-controller.js")?>"></script>
+
 <script>
 $(document).ready(function()
 {
@@ -13,6 +16,10 @@ $(document).ready(function()
 	scope.units = JSON.parse('<?php echo $units; ?>');
 	scope.compareunits = JSON.parse('<?php echo $compareunits; ?>');
 	scope.brands = JSON.parse('<?php echo $brands; ?>');
+        scope.base_url = "<?php echo $base_url; ?>";
+        scope.site_url = "<?php echo $site_url; ?>";
+        scope.controller = "<?php echo $controller; ?>";
+        scope.method = "<?php echo $method; ?>";
         
         if(sessionStorage.getItem("retailer_id"))
         {
