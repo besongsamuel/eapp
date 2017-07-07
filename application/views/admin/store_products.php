@@ -110,7 +110,7 @@
                 </tr>
             </tbody>
         </table>
-        <md-table-pagination md-limit="query.limit" md-limit-options="[10, 25, 50]" md-page="query.page" md-total="{{store_products_count}}" md-on-paginate="getProducts" md-page-select></md-table-pagination>
+        <md-table-pagination md-limit="query.limit" md-limit-options="[10, 25, 50]" md-page="query.page" md-total="{{count}}" md-on-paginate="getProducts" md-page-select></md-table-pagination>
     </md-table-container>                        
 </div>
 

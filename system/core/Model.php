@@ -276,11 +276,26 @@ class CI_Model {
     {
         $result = array();
         $products = array();
-        
+        if($filter != null)
+        {
+            $join = sprintf("%s.product_id = %s.id", STORE_PRODUCT_TABLE, PRODUCT_TABLE);
+            $this->db->join(PRODUCT_TABLE, $join);
+            $this->db->like("name", $filter);
+        }
         $where = array('period_from <=' => date("Y-m-d"), 'period_to >=' => date("Y-m-d"));
         $product_ids = $this->get_distinct(STORE_PRODUCT_TABLE, "product_id", $where);
         
-        $result["count"] = sizeof($product_ids);
+        // Determine the complete list number
+        if($filter != null)
+        {
+            $join = sprintf("%s.product_id = %s.id", STORE_PRODUCT_TABLE, PRODUCT_TABLE);
+            $this->db->join(PRODUCT_TABLE, $join);
+            $this->db->like("name", $filter);
+        }
+        $this->db->where(array('period_from <=' => date("Y-m-d"), 'period_to >=' => date("Y-m-d")));
+        $non_limited_product_ids = $this->get_distinct(STORE_PRODUCT_TABLE, "product_id", $where);
+        
+        $result["count"] = sizeof($non_limited_product_ids);
         
         // Get cheapest store product for each product
 	foreach($product_ids as $product_id)
@@ -325,8 +340,22 @@ class CI_Model {
         $result = array();
         $products = array();
         
-        $product_ids = $this->get_distinct(STORE_PRODUCT_TABLE, "id", null);
-        $result["count"] = sizeof($product_ids);
+        if($filter != null)
+        {
+            $join = sprintf("%s.product_id = %s.id", STORE_PRODUCT_TABLE, PRODUCT_TABLE);
+            $this->db->join(PRODUCT_TABLE, $join);
+            $this->db->like("name", $filter);
+        }
+        $product_ids = $this->get_distinct(STORE_PRODUCT_TABLE, STORE_PRODUCT_TABLE.".id", null);
+        
+        if($filter != null)
+        {
+            $join = sprintf("%s.product_id = %s.id", STORE_PRODUCT_TABLE, PRODUCT_TABLE);
+            $this->db->join(PRODUCT_TABLE, $join);
+            $this->db->like("name", $filter);
+        }
+        $non_limited_product_ids = $this->get_distinct(STORE_PRODUCT_TABLE, STORE_PRODUCT_TABLE.".id", null);
+        $result["count"] = sizeof($non_limited_product_ids);
         
         // Get all products
         foreach($product_ids as $product_id)

@@ -82,7 +82,8 @@ $(document).ready(function()
 </script>
 
 <div id="admin-container" class="container admin-container" ng-controller="AdminController">
-    <form id="create_store_product_form" name="create_store_product_form" ng-submit="create_store_product()">
+    <md-content layout-padding>
+        <form id="create_store_product_form" name="create_store_product_form" ng-submit="create_store_product()">
         
         <input type="hidden" name="product[id]" value="<?php echo $id; ?>">
         <!--Section to select retailer-->
@@ -173,12 +174,18 @@ $(document).ready(function()
         </div>
 
         <!-- Section to select Format -->
-        <md-input-container style="width: 100%;">
+        <md-input-container  class="col-sm-6">
             <label>Product Format</label>
-            <input type="text" id="format" name="product[format]" ng-change="updateQuantity()" ng-model="store_product.format" required>
+            <input id="format" name="product[format]" ng-change="updateQuantity()" ng-model="store_product.format" required>
             <div ng-messages="create_store_product_form.product[format].$error"  ng-show="create_store_product_form.product[format].$dirty">
                 <div ng-message="required">This is required!</div>
             </div>
+        </md-input-container>
+        
+        <!-- Section to select size -->
+        <md-input-container  class="col-sm-6">
+            <label>Size</label>
+            <input id="format" name="product[size]" ng-model="store_product.size">
         </md-input-container>
             
         <!-- Section to select product unit-->
@@ -198,9 +205,9 @@ $(document).ready(function()
         </md-input-container>
         
         <!-- Section to display quantity -->
-        <md-input-container style="width: 100%;">
+        <md-input-container  class="col-sm-12">
             <label>Quantity</label>
-            <input type="text" id="quantity" name="product[quantity]" ng-model="store_product.quantity" ng-change="updateUnitPrice()" readonly="true">
+            <input id="quantity" name="product[quantity]" ng-model="store_product.quantity" ng-change="updateUnitPrice()" readonly="true">
         </md-input-container>
         
         <!-- Price Section -->
@@ -226,4 +233,5 @@ $(document).ready(function()
             <input type="submit" value="{{getSaveLabel()}} and Continue" ng-click="continue = true">
         </div>
     </form>
+    </md-content>
 </div>
