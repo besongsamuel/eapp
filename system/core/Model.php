@@ -37,6 +37,51 @@
  */
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+function cmp_store_product_asc_name($a, $b)
+{
+    return strcmp($a->product->name, $b->product->name);
+}
+
+function cmp_store_product_desc_name($a, $b)
+{
+    return strcmp($b->product->name, $a->product->name);
+}
+
+function cmp_store_product_asc_date($a, $b)
+{
+    if(strtotime($a->period_from) < strtotime($b->period_from))
+    {
+        return -1;
+    }
+    else if(strtotime($a->period_from) > strtotime($b->period_from))
+    {
+        return 1;
+    }
+    else
+    {
+        return 0;
+    }
+}
+
+function cmp_store_product_desc_date($a, $b)
+{
+    if(strtotime($a->period_from) < strtotime($b->period_from))
+    {
+        return 1;
+    }
+    else if(strtotime($a->period_from) > strtotime($b->period_from))
+    {
+        return -1;
+    }
+    else
+    {
+        return 0;
+    }
+}
+
+
+
+
 /**
  * Model Class
  *
@@ -155,7 +200,7 @@ class CI_Model {
      */
     private function getRelatedProducts($store_product_id, $latestProduct = true) 
     {
-	    // Get the store product object
+	// Get the store product object
 	if($latestProduct)
 	{
 		$where = array('period_from <=' => date("Y-m-d"), 'period_to >=' => date("Y-m-d"));
@@ -191,43 +236,132 @@ class CI_Model {
         return $result;
     }
     
-    public function get_store_products_limit($limit, $offset, $latest_products = true, $filter = null)
+    public function get_store_products_limit($limit, $offset, $latest_products = true, $filter = null, $order = null)
     {
 	$result = array();
 	// Get the distinct product id's present 
 	$this->db->limit($limit, $offset);
-	$product_ids = $this->get_distinct(STORE_PRODUCT_TABLE, "product_id", null);
-        	
-	// Get cheapest store product for each product
+        // Get the store product object
+        
+	if($latest_products)
+	{
+            $result = $this->get_latest_products($filter);
+	}
+        else
+        {
+            // since we are not getting the latest products, return all the products
+            $result = $this->get_all_products($filter);
+        }
+        
+        // Perform sorting here if required
+        if($order)
+        {
+            if(strpos($order, "-") !== false) // sort in descending order
+            {
+                $order = str_replace("-", "", $order);
+                usort($result["products"], "cmp_store_product_desc_".$order);
+                $result["sorting_method"] = "cmp_store_product_desc_".$order;
+            }
+            else
+            {
+                usort($result["products"], "cmp_store_product_asc_".$order);
+                $result["sorting_method"] = "cmp_store_product_asc_".$order;
+            }
+        }
+        
+        return $result;
+    }
+    
+    private function get_latest_products($filter = null)
+    {
+        $result = array();
+        $products = array();
+        
+        $where = array('period_from <=' => date("Y-m-d"), 'period_to >=' => date("Y-m-d"));
+        $product_ids = $this->get_distinct(STORE_PRODUCT_TABLE, "product_id", $where);
+        
+        $result["count"] = sizeof($product_ids);
+        
+        // Get cheapest store product for each product
 	foreach($product_ids as $product_id)
 	{
+            // Add filter for search puroses
             $this->db->limit(1);
             if($filter != null)
             {
                 $this->db->like("name", $filter);
             }
+            
             $this->db->order_by("price", "ASC");
             $this->db->select(STORE_PRODUCT_TABLE.".id, price, product_id, name");
             $join = sprintf("%s.product_id = %s.id", STORE_PRODUCT_TABLE, PRODUCT_TABLE);
             $this->db->join(PRODUCT_TABLE, $join);
             $this->db->where("product_id", $product_id->product_id);
+            $where = array('period_from <=' => date("Y-m-d"), 'period_to >=' => date("Y-m-d"));
+            $this->db->where($where);
             
             $res = $this->db->get(STORE_PRODUCT_TABLE)->row();
+            
             if($res)
             {
                 $store_prodoct_id = $res->id;
-                $store_product = $this->getStoreProduct($store_prodoct_id, false, $latest_products);
-                $result[$store_product->id] = $store_product;
-            
+                $store_product = $this->getStoreProduct($store_prodoct_id, false, true);
+                if($store_product != null)
+                {
+                    $products[$store_product->id] = $store_product;
+                }
+                
                 $this->db->reset_query();
             }
 	}
-                
+        
+        $result["products"] = $products;
+        
+        return $result;
+    }
+    
+    private function get_all_products($filter = null)
+    {
+        $result = array();
+        $products = array();
+        
+        $product_ids = $this->get_distinct(STORE_PRODUCT_TABLE, "id", null);
+        $result["count"] = sizeof($product_ids);
+        
+        // Get all products
+        foreach($product_ids as $product_id)
+	{
+            // Add filter for search puroses
+            $this->db->limit(1);
+            if($filter != null)
+            {
+                $this->db->like("name", $filter);
+            }
+            
+            $this->db->order_by("price", "ASC");
+            $this->db->select(STORE_PRODUCT_TABLE.".id, price, product_id, name");
+            $join = sprintf("%s.product_id = %s.id", STORE_PRODUCT_TABLE, PRODUCT_TABLE);
+            $this->db->join(PRODUCT_TABLE, $join);
+            $this->db->where(STORE_PRODUCT_TABLE.".id", $product_id->id);
+            $res = $this->db->get(STORE_PRODUCT_TABLE)->row();
+            
+            if($res)
+            {
+                $store_product = $this->getStoreProduct($product_id->id, false, false);
+                $products[$store_product->id] = $store_product;
+                $this->db->reset_query();
+            }
+	}
+        
+        $result["products"] = $products;
+        
         return $result;
     }
 
     public function get_distinct($table_name, $columns, $where)
     {
+        
+        
     	$this->db->distinct();
 
 	$this->db->select($columns);

@@ -1,32 +1,32 @@
 angular.module('eappApp').controller('ShopController', ["$scope", "$q", "$http", function ($scope, $q, $http) 
 {
     
-  var bookmark;
-  
-  $scope.assets_dir = "http://" + window.location.hostname + "/eapp/assets/";
-  
-  $scope.add_to_cart = function(product_id) 
-  {
-      $scope.addToCart(product_id);
-  };
-    
-  $scope.selected = [];
-  
-  $scope.filter = 
-  {
-      options: 
-      {
-          debounce: 500
-      }
-  };
+    var bookmark;
 
-  $scope.query = 
-  {
-      filter: '',
-      limit: '25',
-      order: 'nameToLower',
-      page: 1
-  };
+    $scope.assets_dir = "http://" + window.location.hostname + "/eapp/assets/";
+
+    $scope.add_to_cart = function(product_id) 
+    {
+        $scope.addToCart(product_id);
+    };
+
+    $scope.selected = [];
+  
+    $scope.filter = 
+    {
+        options: 
+        {
+            debounce: 500
+        }
+    };
+
+    $scope.query = 
+    {
+        filter: '',
+        limit: '25',
+        order: 'name',
+        page: 1
+    };
   
   $scope.getProducts = function () 
   {
@@ -43,10 +43,12 @@ angular.module('eappApp').controller('ShopController', ["$scope", "$q", "$http",
           headers: {'Content-Type': undefined}
       }).then(function(response)
       {
-          var array = $.map(response.data, function(value, index) {
+          var array = $.map(response.data.products, function(value, index) {
               return [value];
           });
           
+          
+          $scope.count = response.data.count;
           $scope.products = array;
           q.resolve( array );
 
