@@ -35,6 +35,7 @@ class Account_model extends CI_Model
             (
                 "user_id" => $user->id,
                 "chain_store_id" => $department_store->id,
+				"distance" => 1000
             );
             
             if($distance_time["distance"] != null)
@@ -42,10 +43,6 @@ class Account_model extends CI_Model
                 $dist = intval(trim(str_replace("km","",$distance_time["distance"])));
                 $data["distance"] = $dist;
                 
-            }
-            else
-            {
-                $data["distance"] = 1000;
             }
             
             $this->create(USER_CHAIN_STORE_TABLE, $data);
