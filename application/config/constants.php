@@ -101,3 +101,7 @@ defined('CHAIN_TABLE')              OR define('CHAIN_TABLE', 'eapp_chain');
 defined('UNITS_TABLE')              OR define('UNITS_TABLE', 'eapp_units');
 defined('BRANDS_TABLE')             OR define('BRANDS_TABLE', 'eapp_brands');
 defined('COMPAREUNITS_TABLE')       OR define('COMPAREUNITS_TABLE', 'eapp_compareunits');
+defined('USER_CHAIN_STORE_TABLE')   OR define('USER_CHAIN_STORE_TABLE', 'eapp_user_chain_store');
+defined('USER_ACCOUNT_TABLE')       OR define('USER_ACCOUNT_TABLE', 'eapp_user_account');
+defined('USER_PROFILE_TABLE')       OR define('USER_PROFILE_TABLE', 'eapp_user_profile');
+

@@ -17,7 +17,12 @@ class Cart_model extends CI_Model
         // Your own constructor code
         $this->load->library("geo");
     }
-		
+    
+    /**
+     * Gets a list of store products related to a given product
+     * @param type $product_id
+     * @return type
+     */
     public function getProducts($product_id)
     {
         $array = array("period_from <=" => date("Y-m-d"), "period_to >=" => date("Y-m-d"), "product_id" => $product_id);
@@ -26,36 +31,52 @@ class Cart_model extends CI_Model
         $this->db->where($array);
         return $this->db->get()->result();
     }
-      
-    public function getDepartmentStores($retailer_id)
+     
+    /**
+     * Gets the department stores for the chain that are in the 
+     * user's current city
+     * @param type $retailer_id The id of the chain or retailer
+     * @param type $user The user's object
+     * @return type returns an object
+     */
+    public function getDepartmentStores($retailer_id, $user)
     {
         $array = array("chain_id" => $retailer_id);
         $this->db->select("*");
         $this->db->from(CHAIN_STORE_TABLE);
         $this->db->where($array);
+        $this->db->like("city", $user->profile->city);
         return $this->db->get()->result();
     }
-      
-    public function findCloseDepartmentStore($department_stores, $user_address, $distance)
+    
+    /**
+     * For a given department stores in the user's city, this method
+     * grabs those stores that are closes to him
+     * @param type $department_stores
+     * @param type $user
+     * @param type $distance
+     * @return a department store object
+     */
+    public function findCloseDepartmentStore($department_stores, $user, $distance)
     {
-          foreach($department_stores as $store)
-          {
-              $store_address = $store->postcode;
+        $closest = null;
+        
+        foreach($department_stores as $store)
+        {
+            // For the current user, get the row containing the distance from the 
+            // user's address
+            $user_chain_store = $this->account_model->get_specific(USER_CHAIN_STORE_TABLE, array("chain_store_id" => $store->id,  "user_id" => $user->id));
 
-              $distance_time = $this->geo->distance_time_between($user_address, $store_address);
+            if($user_chain_store != null 
+            && $user_chain_store->distance < $distance 
+            && ($closest == null || $closest->distance > $user_chain_store->distance))
+            {
+                $store->distance = $user_chain_store->distance;
+                $closest = $store;
+            }
+        }
 
-              if($distance_time["distance"] != null)
-              {
-                  $dist = intval(trim(str_replace("km","",$distance_time["distance"])));
-
-                  if($dist < $distance)
-                  {
-                      return $store;
-                  }
-              }
-          }
-
-          return null;
+        return $closest;
     }
       
     

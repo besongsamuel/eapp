@@ -17,39 +17,6 @@ class Admin_model extends CI_Model
         // Your own constructor code
     }
     
-    /**
-     * Create an EAPP object
-     * @param type $table_name
-     * @param type $data
-     */
-    public function create($table_name, $data, $is_new = false)
-    {
-        if(isset($data['id']) && !$is_new)
-        {
-            $query = $this->db->get_where($table_name, array('id' => $data['id']));
-            $count = $query->num_rows(); 
-            if($count === 0)
-            {
-                $data['date_created'] = date("Y-m-d H:i:s");
-                $this->db->insert($table_name, $data);
-                return $this->db->insert_id();
-            }
-            else
-            {
-                $this->db->where('id', $data['id']);
-                $this->db->update($table_name, $data);
-                return $data['id'];
-            }
-        }
-        else
-        {
-            $this->db->insert($table_name, $data);
-            return $this->db->insert_id();
-        }
-        
-        
-    }
-    
     public function update($table_name, $id, $data)
     {
         $this->db->where('id', $id);
@@ -98,20 +65,6 @@ class Admin_model extends CI_Model
         }
     }
     
-    public function get_all($table_name)
-    {
-        $result = array();
-        
-        $query =  $this->db->get($table_name);
-        
-        foreach ($query->result() as $value) 
-        {
-            $result[$value->id] = $value;
-        }
-        
-        return $result;
-    }
-	
     public function searchProducts($name)
     {
         $result = array();

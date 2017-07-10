@@ -154,6 +154,22 @@ class CI_Model {
         }
     }
     
+    public function get_specific($table_name, $data)
+    {
+        $this->db->select("*");
+        $this->db->from($table_name);
+        $this->db->where($data);
+        $query = $this->db->get();
+        if($query != null)
+        {
+            return $query->row();
+        }
+        else
+        {
+            return null;
+        }
+    }
+    
     public function getStoreProduct($id, $includeRelatedProducts = true, $latestProduct = true) 
     {
         // Get the store product object
@@ -194,6 +210,20 @@ class CI_Model {
         return $store_product;
     }
     
+    public function get_all($table_name)
+    {
+        $result = array();
+        
+        $query =  $this->db->get($table_name);
+        
+        foreach ($query->result() as $value) 
+        {
+            $result[$value->id] = $value;
+        }
+        
+        return $result;
+    }
+        
     /**
      * This method gets the other store products related to this store product
      * @param type $storeProduct
@@ -234,6 +264,39 @@ class CI_Model {
         }
         
         return $result;
+    }
+    
+    /**
+     * Create an EAPP object
+     * @param type $table_name
+     * @param type $data
+     */
+    public function create($table_name, $data, $is_new = false)
+    {
+        if(isset($data['id']) && !$is_new)
+        {
+            $query = $this->db->get_where($table_name, array('id' => $data['id']));
+            $count = $query->num_rows(); 
+            if($count === 0)
+            {
+                $data['date_created'] = date("Y-m-d H:i:s");
+                $this->db->insert($table_name, $data);
+                return $this->db->insert_id();
+            }
+            else
+            {
+                $this->db->where('id', $data['id']);
+                $this->db->update($table_name, $data);
+                return $data['id'];
+            }
+        }
+        else
+        {
+            $this->db->insert($table_name, $data);
+            return $this->db->insert_id();
+        }
+        
+        
     }
     
     public function get_store_products_limit($limit, $offset, $latest_products = true, $filter = null, $order = null)

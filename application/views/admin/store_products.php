@@ -10,8 +10,11 @@
     {
         var scope = angular.element($("#admin-container")).scope();
         
+        var rootScope = angular.element($("html")).scope();
+        
         scope.$apply(function()
         {
+            rootScope.menu = "admin_view_products";
             scope.base_url = "<?php echo $base_url; ?>";
             scope.site_url = "<?php echo $site_url; ?>";
             scope.controller = "<?php echo $controller; ?>";
@@ -19,6 +22,30 @@
         });
     });
 </script>
+
+    <!-- Begin mainmenu area -->
+    <div class="mainmenu-area" ng-controller="MenuController">
+        <div class="container">
+            <div class="row">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                </div> 
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        <li><a  href="http://<?php echo site_url("admin/uploads"); ?>">Uploads</a></li>
+                        <li><a href="http://<?php echo site_url("admin/create_store_product"); ?>">Create Product</a></li>
+                        <li class="active"><a href="http://<?php echo site_url("admin/store_products"); ?>">View Products</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div> 
+    <!-- End mainmenu area -->
 
 <div id="admin-container" class="container admin-container" ng-controller="ProductsTableController">
     

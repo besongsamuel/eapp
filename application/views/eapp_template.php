@@ -73,6 +73,9 @@
     <!-- Admin Script -->
     <script src="http://<?php echo base_url("assets/js/admin.js")?>"></script>
     
+    <!-- Menu Controller Script -->
+    <script src="http://<?php echo base_url("assets/js/menu-controller.js")?>"></script>
+    
     <!-- ngNotificationsBar Script -->
     <script src="http://<?php echo base_url("assets/js/ngNotificationsBar.min.js")?>"></script>
     
@@ -124,10 +127,10 @@
                 <div class="col-md-8">
                     <div class="user-menu">
                         <ul>
-                            <li><a href="#"><i class="fa fa-user"></i>{header_my_account}</a></li>
-                            <li><a href="#"><i class="fa fa-heart"></i>{header_my_list}</a></li>
-                            <li><a href="http://<?php echo site_url("cart"); ?>"><i class="fa fa-user"></i>{header_my_cart}</a></li>
-                            <li><a href="#"><i class="fa fa-user"></i> {header_login}</a></li>
+                            <li><a href="#"><i class="fa fa-user"></i>Mon compte</a></li>
+                            <li><a href="#"><i class="fa fa-heart"></i>Ma liste d'épicerie</a></li>
+                            <li><a href="http://<?php echo site_url("cart"); ?>"><i class="fa fa-user"></i>Mon panier</a></li>
+                            <li><a href="#"><i class="fa fa-user"></i>s'identifier</a></li>
                         </ul>
                     </div>
                 </div>
@@ -136,7 +139,7 @@
                     <div class="header-right">
                         <ul class="list-unstyled list-inline">
                             <li class="dropdown dropdown-small">
-                                <a data-toggle="dropdown" data-hover="dropdown" class="dropdown-toggle" href="#"><span class="key">currency :</span><span class="value">USD </span><b class="caret"></b></a>
+                                <a data-toggle="dropdown" data-hover="dropdown" class="dropdown-toggle" href="#"><span class="key">Devise :</span><span class="value">USD </span><b class="caret"></b></a>
                                 <ul class="dropdown-menu">
                                     <li><a href="#">USD</a></li>
                                     <li><a href="#">INR</a></li>
@@ -145,11 +148,10 @@
                             </li>
 
                             <li class="dropdown dropdown-small">
-                                <a data-toggle="dropdown" data-hover="dropdown" class="dropdown-toggle" href="#"><span class="key">language :</span><span class="value">English </span><b class="caret"></b></a>
+                                <a data-toggle="dropdown" data-hover="dropdown" class="dropdown-toggle" href="#"><span class="key">Langue :</span><span class="value">Anglais </span><b class="caret"></b></a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="#">English</a></li>
-                                    <li><a href="#">French</a></li>
-                                    <li><a href="#">German</a></li>
+                                    <li><a href="#">Anglais</a></li>
+                                    <li><a href="#">Français</a></li>
                                 </ul>
                             </li>
                         </ul>
@@ -161,7 +163,7 @@
     <!-- End header area -->
     
     <!-- Begin Site Branding Section -->
-    <div class="site-branding-area" ng-controller="CartController" ng-hide="controller == 'admin'">
+    <div class="site-branding-area" ng-controller="CartController">
         <div class="container">
             <div class="row">
                 <div class="col-sm-6">
@@ -180,7 +182,7 @@
     </div> 
     <!-- End site branding area -->
     
-    <div class="container search-box"  ng-hide="controller == 'admin'">
+    <div class="container search-box">
         <div class="row">
             <form action="#">
                 <div class="col-md-11 single-sidebar">
@@ -192,38 +194,7 @@
             </form>
         </div>
     </div>
-    
-    <!-- Begin mainmenu area -->
-    <div class="mainmenu-area" ng-controller="CartController">
-        <div class="container">
-            <div class="row">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                </div> 
-                <div class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav">
-                        <li class="active" ng-hide="controller == 'admin'"><a href="index.html">{menu_home}</a></li>
-                        <li ng-hide="controller == 'admin'"><a href="shop.html">{menu_shoppage}</a></li>
-                        <li ng-hide="controller == 'admin'"><a href="single-product.html">{menu_searchproduct}</a></li>
-                        <li ng-hide="controller == 'admin'"><a href="http://<?php echo site_url("cart"); ?>">{menu_cart}</a></li>
-                        <li ng-hide="controller == 'admin'"><a href="#">{menu_categories}</a></li>
-                        <li ng-hide="controller == 'admin'"><a href="#">{menu_flyers}</a></li>
-                        <li ng-hide="controller == 'admin'"><a href="#">{menu_contact}</a></li>
-                        <li ng-show="controller == 'admin'" class="active"><a  href="http://<?php echo site_url("admin/uploads"); ?>">Uploads</a></li>
-                        <li ng-show="controller == 'admin'"><a href="http://<?php echo site_url("admin/create_store_product"); ?>">Create Product</a></li>
-                        <li ng-show="controller == 'admin'"><a href="http://<?php echo site_url("admin/store_products"); ?>">View Products</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div> 
-    <!-- End mainmenu area -->
-    
+
     {body}
     
     <div class="footer-top-area">

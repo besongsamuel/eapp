@@ -60,7 +60,7 @@ class CI_Controller {
         
         public $data;
 	
-	public $user_address;
+	public $user;
 
         /**
 	 * Class constructor
@@ -69,44 +69,47 @@ class CI_Controller {
 	 */
 	public function __construct()
 	{
-		self::$instance =& $this;
+            self::$instance =& $this;
 
-		// Assign all the class objects that were instantiated by the
-		// bootstrap file (CodeIgniter.php) to local class variables
-		// so that CI can run as one big super object.
-		foreach (is_loaded() as $var => $class)
-		{
-			$this->$var =& load_class($class);
-		}
-		$this->user_address = "H2E1M1";
-		$this->load =& load_class('Loader', 'core');
-		$this->load->library('parser', 'router');
-		$this->load->helper('url');
-                $this->load->library('cart');
-		$this->load->initialize();
-		log_message('info', 'Controller Class Initialized');
-                
-                // Set template data
-                $this->data = array(
-                    'title' => 'épicerie a petit prix',
-                    'header_my_account' => 'My Account',
-                    'header_my_list' => 'My Shopping List',
-                    'header_my_cart' => 'My Cart',
-                    'header_login' => 'Login',
-                    'menu_home' => 'Home',
-                    'menu_shoppage' => 'Shop Page',
-                    'menu_cart' => 'Cart',
-                    'menu_searchproduct' => 'Find Product',
-                    'menu_categories' => 'Categories',
-                    'menu_flyers' => 'Flyers',
-                    'menu_contact' => 'Contact',
-                    'base_url' => base_url(),
-                    'site_url' => site_url(),
-                    'controller' => $this->router->fetch_class(),
-                    'method' => $this->router->fetch_method(),
-                    'cart' => addslashes(json_encode($this->getCartItems()))
-                );
+            // Assign all the class objects that were instantiated by the
+            // bootstrap file (CodeIgniter.php) to local class variables
+            // so that CI can run as one big super object.
+            foreach (is_loaded() as $var => $class)
+            {
+                $this->$var =& load_class($class);
+            }
+            $this->load =& load_class('Loader', 'core');
+            $this->load->library('parser', 'router');
+            $this->load->helper('url');
+            $this->load->library('cart');
+            $this->load->initialize();
+            log_message('info', 'Controller Class Initialized');
+
+            // Set template data
+            $this->data = array(
+                'title' => 'épicerie a petit prix',
+                'header_my_account' => 'My Account',
+                'header_my_list' => 'My Shopping List',
+                'header_my_cart' => 'My Cart',
+                'header_login' => 'Login',
+                'menu_home' => 'Home',
+                'menu_shoppage' => 'Shop Page',
+                'menu_cart' => 'Cart',
+                'menu_searchproduct' => 'Find Product',
+                'menu_categories' => 'Categories',
+                'menu_flyers' => 'Flyers',
+                'menu_contact' => 'Contact',
+                'base_url' => base_url(),
+                'site_url' => site_url(),
+                'controller' => $this->router->fetch_class(),
+                'method' => $this->router->fetch_method(),
+                'cart' => addslashes(json_encode($this->getCartItems()))
+            );
+
+            $this->user = $this->get_user();
 	}
+        
+        
 
 	// --------------------------------------------------------------------
 
@@ -149,6 +152,11 @@ class CI_Controller {
             }
 
             return $cart;
+        }
+        
+        private function get_user()
+        {
+            return $this->account_model->get_user(1);
         }
 
 }

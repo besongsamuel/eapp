@@ -1,3 +1,45 @@
+
+<script>
+    
+    $(document).ready(function()
+    {
+        var rootScope = angular.element($("html")).scope();
+        rootScope.$apply(function()
+        {
+            rootScope.updateCartList();
+        });
+    });
+    
+</script>
+
+    <!-- Begin mainmenu area -->
+    <div class="mainmenu-area" ng-controller="MenuController">
+        <div class="container">
+            <div class="row">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                </div> 
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        <li><a href="http://<?php echo site_url("home"); ?>">Accueil</a></li>
+                        <li><a href="http://<?php echo site_url("shop"); ?>">Magasin</a></li>
+                        <li><a href="http://<?php echo site_url("shop"); ?>">Trouver produit</a></li>
+                        <li class="active"><a href="http://<?php echo site_url("cart"); ?>">Panier</a></li>
+                        <li><a href="#">Catégories</a></li>
+                        <li><a href="#">Dépliants</a></li>
+                        <li><a href="#">Contactez nous</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div> 
+    <!-- End mainmenu area -->
+
 <div class="product-big-title-area">
     <div class="container">
         <div class="row">
@@ -34,19 +76,22 @@
                     </td>
 
                     <td md-cell>
-                        <a href="single-product.html"><img width="145" height="145" alt="poster_1_up" class="shop_thumbnail" ng-src="http://<?php echo base_url("assets/img/stores/"); ?>{{item.retailer.image}}" ></a>
+                        <a ng-show="item.store_product.departmentStore" href="single-product.html"><img alt="poster_1_up" class="admin-image" ng-src="http://<?php echo base_url("assets/img/stores/"); ?>{{item.store_product.retailer.image}}" ></a>
                         <div ng-show="item.store_product.departmentStore">
                             <p>{{item.store_product.departmentStore.address}}</p>
                             <p>{{item.store_product.departmentStore.city}}, {{item.store_product.departmentStore.state}} , {{item.store_product.departmentStore.postcode }}</p>
                         </div>
+                        <div ng-hide="item.store_product.departmentStore">
+                            <p>Item pas disponible pres de vous</p>
+                        </div>
                     </td>
 
                     <td md-cell>
-                        <a href="single-product.html"><img width="145" height="145" alt="poster_1_up" class="shop_thumbnail" ng-src="http://<?php echo base_url("assets/img/products/"); ?>{{item.product.image}}" ></a>
+                        <a href="single-product.html"><img alt="poster_1_up" class="admin-image" ng-src="http://<?php echo base_url("assets/img/products/"); ?>{{item.store_product.product.image}}" ></a>
                     </td>
 
                     <td md-cell>
-                        <p><b><a href="single-product.html">{{item.product.name}}</a></b></p>
+                        <p><b><a href="single-product.html">{{item.store_product.product.name}}</a></b></p>
                         <p>Format : {{item.store_product.format}}</p>
                     </td>
 
@@ -55,7 +100,9 @@
                     </td>
 
                     <td md-cell>
-                        <input type="number" size="4" class="input-text qty text" title="Qty" value="1" min="0" step="1" ng-model="item.quantity">
+                        <md-input-container>
+                            <input type="number" ng-model="item.quantity">
+                        </md-input-container>
                     </td>
 
                     <td md-cell>
@@ -77,10 +124,6 @@
         <md-content style="margin: 15px; padding:15px">
             <fieldset>
                 <legend>Optimizations</legend>
-                <md-radio-group ng-model="optimized_cart" ng-change="updateCartList()">
-                        <md-radio-button class="radio-inline" value="0" class="md-primary">View Original List</md-radio-button>
-                        <md-radio-button class="radio-inline" value="1"> View Optimized List </md-radio-button>
-                    </md-radio-group>
                     <md-slider-container>
                         <span>Km</span>
                         <md-slider flex min="0" max="255" ng-model="distance" aria-label="red" id="red-slider">

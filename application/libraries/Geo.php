@@ -15,10 +15,11 @@ class Geo {
      * @param type $province the province
      * @return array
      */
-    function get_coordinates($postcode)
+    function get_coordinates($city, $street, $state, $country)
     {
-        $postcode = str_replace(" ", "", $postcode);
-        $url = "http://maps.google.com/maps/api/geocode/json?address=".$postcode."&sensor=false";
+        $street = rtrim($street, ',');
+        $address = urlencode($city.','.rtrim($street, ',').','.$state);
+        $url = "http://maps.google.com/maps/api/geocode/json?address=$address&sensor=false&region=".trim($country);
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -36,7 +37,7 @@ class Geo {
         }
         else
         {
-            $return = array('lat' => $response_a->results[0]->geometry->location->lat, 'long' => $long = $response_a->results[0]->geometry->location->lng, 'address' => $response_a->results[0]->formatted_address);
+            $return = array('lat' => $response_a->results[0]->geometry->location->lat, 'long' => $long = $response_a->results[0]->geometry->location->lng);
             return $return;
         }
     }
@@ -49,9 +50,9 @@ class Geo {
      * @param type $long2 the longitude of the second address
      * @return type an array containing the distance and time
      */
-    private function GetDrivingDistance($lat1, $lat2, $long1, $long2)
+    function GetDrivingDistance($lat1, $lat2, $long1, $long2)
     {
-        $url = "https://maps.googleapis.com/maps/api/distancematrix/json?origins=".$lat1.",".$long1."&destinations=".$lat2.",".$long2."&mode=driving&language=pl-PL";
+        $url = "https://maps.googleapis.com/maps/api/distancematrix/json?origins=".$lat1.",".$long1."&destinations=".$lat2.",".$long2."&mode=driving&language=en-US";
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -73,12 +74,12 @@ class Geo {
      * @param type $destination The destination address
      * @return array containing 'distance' and 'time'
      */
-    public function distance_time_between($source, $destination) 
+    public function distance_time_between($user_profile, $department_store) 
     {
         set_error_handler(function(){ });
         
-        $coordinates1 = $this->get_coordinates($source);
-        $coordinates2 = $this->get_coordinates($destination); 
+        $coordinates1 = $this->get_coordinates($user_profile->city, $user_profile->address, $user_profile->state, $user_profile->country);
+        $coordinates2 = $this->get_coordinates($department_store->city, $department_store->address, $department_store->state, $department_store->country); 
         
         if ( !$coordinates1 || !$coordinates2 )
         {

@@ -9,6 +9,11 @@ angular.module('eappApp').controller('ShopController', ["$scope", "$q", "$http",
     {
         $scope.addProductToCart(product_id);
     };
+    
+    $scope.remove_from_cart = function(product_id)
+    {
+        $scope.removeItemFromCart(product_id);
+    };
 
     $scope.selected = [];
   
@@ -30,6 +35,11 @@ angular.module('eappApp').controller('ShopController', ["$scope", "$q", "$http",
   
   $scope.getProducts = function () 
   {
+    if(typeof $scope.site_url === 'undefined')
+    {
+        return;
+    }
+      
       var q = $q.defer();
       
       var formData = new FormData();
@@ -38,7 +48,7 @@ angular.module('eappApp').controller('ShopController', ["$scope", "$q", "$http",
       formData.append("filter", $scope.query.filter);
       formData.append("order", $scope.query.order);
       
-      $scope.promise = $http.post($scope.site_url.concat("shop/get_store_products"), formData, {
+      $scope.promise = $http.post("http://" + $scope.site_url.concat("/shop/get_store_products"), formData, {
           transformRequest: angular.identity,
           headers: {'Content-Type': undefined}
       }).then(function(response)

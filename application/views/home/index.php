@@ -1,5 +1,33 @@
 <!DOCTYPE html>
 
+    <!-- Begin mainmenu area -->
+    <div class="mainmenu-area" ng-controller="MenuController">
+        <div class="container">
+            <div class="row">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                </div> 
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        <li class="active"><a href="http://<?php echo site_url("home"); ?>">Accueil</a></li>
+                        <li><a href="http://<?php echo site_url("shop"); ?>">Magasin</a></li>
+                        <li><a href="http://<?php echo site_url("shop"); ?>">Trouver produit</a></li>
+                        <li><a href="http://<?php echo site_url("cart"); ?>">Cart</a></li>
+                        <li><a href="#">Catégories</a></li>
+                        <li><a href="#">Dépliants</a></li>
+                        <li><a href="#">Contactez nous</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div> 
+    <!-- End mainmenu area -->
+
 <div id="home-container">
 
     <div id="admin-container" class="slider-area" >
@@ -125,16 +153,16 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="latest-product" ng-controller="CartController">
-                        <h2 class="section-title">Latest Products</h2>
+                        <h2 class="section-title">Derniers Produits</h2>
                         <div class="product-carousel">
                             <?php foreach($latestProducts as $product): ?>
                                 <div class="single-product">
                                     <div class="product-f-image">
                                         <img ng-src="http://<?php echo base_url("assets/img/products/").$product->product->image;?>" style="height: 100%;" alt="">
                                         <div class="product-hover">
-                                            <a href ng-show="canAddToCart(<?php echo $product->id; ?>)" class="add-to-cart-link" ng-click="addProductToCart(<?php echo $product->id; ?>)"><i class="fa fa-shopping-cart"></i> Add to cart</a>
-                                                <a href ng-hide="canAddToCart(<?php echo $product->id; ?>)" class="add-to-cart-link" ng-click="removeProductFromCart(<?php echo $product->id; ?>)"><i class="fa fa-shopping-cart"></i> Remove</a>
-                                                <a href="http://<?php echo site_url("cart/product/").$product->id; ?>" class="view-details-link"><i class="fa fa-link"></i> See details</a>
+                                            <a href ng-show="canAddToCart(<?php echo $product->id; ?>)" class="add-to-cart-link" ng-click="addProductToCart(<?php echo $product->id; ?>)"><i class="fa fa-shopping-cart"></i>Ajouter au panier</a>
+                                                <a href ng-hide="canAddToCart(<?php echo $product->id; ?>)" class="add-to-cart-link" ng-click="removeProductFromCart(<?php echo $product->id; ?>)"><i class="fa fa-shopping-cart"></i>Retirer</a>
+                                                <a href="http://<?php echo site_url("cart/product/").$product->id; ?>" class="view-details-link"><i class="fa fa-link"></i>Voir détails</a>
                                         </div>
                                     </div>
 
@@ -323,16 +351,17 @@
         </div>
     </div> <!-- End product widget area -->
     
- </div>   
-    <script>
+</div>
+    
+<script>
     $(document).ready(function()
     {
-        
-        var scope = angular.element($("#home-container")).scope();
 
-        scope.$apply(function()
+        var rootScope = angular.element($("html")).scope();
+
+        rootScope.$apply(function()
         {
-            
+            rootScope.menu = "home";
         });
     });
-    </script>
+</script>

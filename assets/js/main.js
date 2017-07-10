@@ -59,32 +59,7 @@ jQuery(document).ready(function($){
             }
         }
     });    
-    
-    // Bootstrap Mobile Menu fix
-    $(".navbar-nav li a").click(function(){
-        $(".navbar-collapse").removeClass('in');
-    });    
-    
-    // jQuery Scroll effect
-    $('.navbar-nav li a, .scroll-to-up').bind('click', function(event) {
-        var $anchor = $(this);
-        var headerH = $('.header-area').outerHeight();
-        $('html, body').stop().animate({
-            scrollTop : $($anchor.attr('href')).offset().top - headerH + "px"
-        }, 1200, 'easeInOutExpo');
-
-        event.preventDefault();
-    });    
-    
-    // Bootstrap ScrollPSY
-    $('body').scrollspy({ 
-        target: '.navbar-collapse',
-        offset: 95
-    });
-    
-    // Slider
-    $("#distance-slider").slider({tooltip: 'always'});
-    
+       
 });
 
 function convert_to_string_date(date)
@@ -178,58 +153,39 @@ eappApp.controller('CartController', ['$scope','$rootScope', '$q', '$http', func
     
     $rootScope.cart = [];
     
-    $scope.optimized_cart = 0;
-        
     // Here we define the default desired distance of the user	
     $scope.distance = 10;
     
-    $scope.updateCartList = function()
+    $rootScope.updateCartList = function()
     {
-        var deferred = $q.defer();
-        
-        var optimized_cart= Boolean(parseInt($scope.optimized_cart));
-        
-        if(optimized_cart)
+        // Create array with selected store_product id's
+        var store_products = [];
+        // Get optimized list here
+        for(var index in $rootScope.cart)
         {
-            // Create array with selected store_product id's
-	    var store_products = [];
-            // Get optimized list here
-	    for(var index in $rootScope.cart)
-	    {
-	    	var cartItem = $rootScope.cart[index];
-		var data = 
-		{
-			id : cartItem.store_product.id,
-			rowid : cartItem.rowid,
-			quantity : cartItem.quantity
-		};
-		store_products.push(data);
-	    }
-	    
-	    var formData = new FormData();
-	    formData.append("store_products", JSON.stringify(store_products));
-	    formData.append("distance", $scope.distance);
-	    // Send request to server to get optimized list 	
-	    $scope.promise = 
-                $http.post("http://"+ $scope.site_url.concat("/cart/getOptimizedList"), 
-                formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}}).then(
-                function(response)
-                {
-                    $scope.cart = response.data;
-                });
-        }
-        else
-        {
-            // In this case the user did not request an optimized list, return the cart list	
-            deferred.resolve($rootScope.cart);
-	    $scope.promise = deferred.promise;
-            $scope.promise.then(function(cart)
+            var cartItem = $rootScope.cart[index];
+            var data = 
             {
-                // assign rootscope cart to isolate scope
-                $scope.cart = cart;
-            });
+                    id : cartItem.store_product.id,
+                    rowid : cartItem.rowid,
+                    quantity : cartItem.quantity
+            };
+            store_products.push(data);
         }
-    }
+
+        var formData = new FormData();
+        formData.append("store_products", JSON.stringify(store_products));
+        formData.append("distance", $scope.distance);
+        // Send request to server to get optimized list 	
+        $scope.promise = 
+            $http.post("http://"+ $scope.site_url.concat("/cart/getOptimizedList"), 
+            formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}}).then(
+            function(response)
+            {
+                $scope.cart = response.data;
+            });
+        
+    };
     
     $rootScope.getCart = function()
     {
@@ -341,7 +297,7 @@ eappApp.controller('CartController', ['$scope','$rootScope', '$q', '$http', func
 	});
      };
      
-    $scope.relatedProductsAvailable = function()
+    $rootScope.relatedProductsAvailable = function()
     {
         if(typeof $scope.storeProduct !== 'undefined')
         {
@@ -354,7 +310,7 @@ eappApp.controller('CartController', ['$scope','$rootScope', '$q', '$http', func
         return false;
     }
     
-    $scope.getRowID = function(product_id)
+    $rootScope.getRowID = function(product_id)
     {
         var rowid = -1;
         
@@ -370,7 +326,7 @@ eappApp.controller('CartController', ['$scope','$rootScope', '$q', '$http', func
         return rowid;
     };
     
-    $scope.removeItemFromCart = function(product_id)
+    $rootScope.removeItemFromCart = function(product_id)
     {
         var index = -1;
         
