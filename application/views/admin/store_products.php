@@ -112,6 +112,7 @@
                     <td md-cell width="100%">
                         <p><b><a href="single-product.html">{{products[store_product.product_id].name}}</a></b></p>
                         <p>Format : {{store_product.format}}</p>
+						<p>Size : {{store_product.size}}</p>
                         <p>Unit : {{units[store_product.unit_id].name}}</p>
                     </td>
 
