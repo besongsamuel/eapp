@@ -63,7 +63,7 @@ class Admin extends CI_Controller
         $response = array();
         $data = array();
         $data['name'] = $this->input->post('name');
-        $this->admin_model->create(BRANDS_TABLE, $data);
+        $response['id'] = $this->admin_model->create(BRANDS_TABLE, $data);
         
         $response['success'] = true;
         $response['message'] = "Brand ".$data['name']." was created successfully. ";
@@ -71,6 +71,21 @@ class Admin extends CI_Controller
         echo json_encode($response);
         
     }
+	
+    public function create_product()
+    {
+        $response = array();
+        $data = array();
+        $data['name'] = $this->input->post('name');
+        $response['id'] = $this->admin_model->create(PRODUCT_TABLE, $data, true);
+        
+        $response['success'] = true;
+        $response['message'] = "Product ".$data['name']." was created successfully. ";
+        
+        echo json_encode($response);
+        
+    }
+	
     public function create_store_product($id = null)
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') 
