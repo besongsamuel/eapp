@@ -175,9 +175,9 @@ class Cart extends CI_Controller {
             {
                 if($store_product->price < $best_match->price)
                 {
-                    $closestDepartmentStore = $this->get_closest_department_store($best_match->retailer_id, $distance);
+                    $best_store_fit = $this->get_closest_department_store($best_match->retailer_id, $distance);
 
-                    if($closestDepartmentStore != null)
+                    if($best_store_fit != null)
                     {
                         $best_match = $store_product;
                         $best_match->departmentStore = $closestDepartmentStore;
@@ -202,9 +202,9 @@ class Cart extends CI_Controller {
         // Get the department stores related to this product
         $department_stores = $this->cart_model->getDepartmentStores($retailer_id);
 
-        $closestDepartmentStore = $this->cart_model->findCloseDepartmentStore($department_stores, $this->user, $distance);
+        $best_store_fit = $this->cart_model->findCloseDepartmentStore($department_stores, $this->user, $distance);
         
-        return $closestDepartmentStore;
+        return $best_store_fit;
         
     }
 }
