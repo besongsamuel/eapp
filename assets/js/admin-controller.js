@@ -77,9 +77,12 @@ angular.module("eappApp").controller('AdminController', ["$scope", "Form", "$htt
             headers: {'Content-Type': undefined}
         }).then(function(result)
         {
-            $scope.brands[result.data] = { id : result.data, name : brand_name } ;
+		if(result.data.success)
+		{
+			$scope.brands[result.data] = { id : result.data.id, name : brand_name } ;
             
-            notifications.showSuccess("Brand " + brand_name + " created!!!");
+            		notifications.showSuccess(result.data.message);
+		}
             
             // do sometingh                   
         },function(err){
@@ -99,9 +102,13 @@ angular.module("eappApp").controller('AdminController', ["$scope", "Form", "$htt
             headers: {'Content-Type': undefined}
         }).then(function(result)
         {
-            $scope.products[result.data] = { id : result.data, name : product_name } ;
+		
+		if(!result.data.success)
+			return;
+		
+            	$scope.products[result.data] = { id : result.data.id, name : product_name } ;
             
-            notifications.showSuccess("Product " + product_name + " created!!!");
+            	notifications.showSuccess(result.data.message);
 		
 	    	// Upload product image
 	    	var formData = new FormData();
