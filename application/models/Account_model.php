@@ -49,9 +49,9 @@ class Account_model extends CI_Model
         }
     }
     
-    public function get_user($id) 
+    public function get_user($account_id) 
     {
-        $user_account = $this->get(USER_ACCOUNT_TABLE, $id);
+        $user_account = $this->get(USER_ACCOUNT_TABLE, $account_id);
         
         $user_account->profile = $this->get_specific(USER_PROFILE_TABLE, array("user_account_id" => $user_account->id));
         
