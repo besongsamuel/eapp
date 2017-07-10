@@ -10,6 +10,14 @@
 		vm.country = {};
 		vm.allCountries = [
 	      {
+	        code: 'CA',
+	        name: 'Canada'
+	      },
+	      {
+	        code: 'US',
+	        name: 'United States of America'
+	      },
+	      {
 	        code: 'AF',
 	        name: 'Afghanistan'
 	      }, {
@@ -126,9 +134,6 @@
 	      }, {
 	        code: 'CM',
 	        name: 'Cameroon'
-	      }, {
-	        code: 'CA',
-	        name: 'Canada'
 	      }, {
 	        code: 'CV',
 	        name: 'Cape Verde'
@@ -717,9 +722,6 @@
 	      }, {
 	        code: 'UM',
 	        name: 'United States Minor Outlying Islands'
-	      }, {
-	        code: 'US',
-	        name: 'United States of America'
 	      }, {
 	        code: 'UY',
 	        name: 'Uruguay'
