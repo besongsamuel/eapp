@@ -207,4 +207,36 @@ class Cart extends CI_Controller {
         return $best_store_fit;
         
     }
+	
+    public function optimize_product_list_by_store()
+    {
+	$result = array();
+	$distance = $this->input->post("distance");
+	$store_products = json_decode($this->input->post("store_products"));
+    	// get top 5 closest department stores
+	$close_stores = $this->cart_model->get_closest_stores($this->user, $distance);
+	// Try finding the products for each store
+	foreach($close_stores as $store)
+	{
+		$store->products = array();
+		$store->chain = $this->cart_model->get(CHAIN_TABLE, $store->chain_id);
+		foreach($store_products as $store_product)
+		{
+			$associated_product = $this->cart_model->get(PRODUCT_TABLE, $store_product->product_id);
+			// Check if the product exists for that store
+			$current_store_product = $this->cart_model->get_specific(STORE_PRODUCT_TABLE, array("product_id" => $store_product->product_id, "retailer_id" => $store->chain_id));
+			
+			if($current_store_product != null)
+			{
+				$associated_product->store_product = $this->cart_model->getStoreProduct($current_store_product->id);
+			}
+			array_push($store->products, $associated_product);
+		}
+		
+		array_push($result, $store);
+	}
+	    
+	echo json_encode($result);
+	
+    }
 }
