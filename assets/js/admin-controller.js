@@ -86,6 +86,60 @@ angular.module("eappApp").controller('AdminController', ["$scope", "Form", "$htt
             // do sometingh
         });
     };
+	
+    $scope.createNewProduct = function(product_name)
+    {
+        //upload the image here
+        var formData = new FormData();
+        
+        formData.append("name", product_name);
+        
+        $http.post("http://" + $scope.site_url.concat("/admin/create_product"), formData, {
+            transformRequest: angular.identity,
+            headers: {'Content-Type': undefined}
+        }).then(function(result)
+        {
+            $scope.products[result.data] = { id : result.data, name : product_name } ;
+            
+            notifications.showSuccess("Product " + product_name + " created!!!");
+		
+	    	// Upload product image
+	    	var formData = new FormData();
+		angular.forEach($scope.files,function(obj){
+		    if(!obj.isRemote){
+			formData.append("image", obj.lfFile);
+		    }
+		});
+        
+		if($scope.files.length > 0)
+		{
+			if($scope.selectedProduct !== null)
+			{
+				formData.append("product_id", result.data);
+
+				$http.post("http://" + $scope.site_url.concat("/admin/upload_product_image"), formData, {
+					transformRequest: angular.identity,
+					headers: {'Content-Type': undefined}
+				}).then(
+				function(response)
+				{
+					if(response.data.success)
+					{
+						notifications.showSuccess(response.data.message);
+					}
+							
+				},function(err)
+				{
+				})
+			}
+
+		}
+            
+            // do sometingh                   
+        },function(err){
+            // do sometingh
+        });
+    };
     
     $scope.post_create_product = function()
     {
