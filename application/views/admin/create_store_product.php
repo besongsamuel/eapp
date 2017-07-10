@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 
 <!-- Main Script -->
-<script src="http://<?php echo base_url("assets/js/admin-controller.js")?>"></script>
+<script src="http://<?php echo addslashes(base_url("assets/js/admin-controller.js")); ?>"></script>
 
 <script>
 $(document).ready(function()
@@ -97,9 +97,9 @@ $(document).ready(function()
                 </div> 
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
-                        <li><a  href="http://<?php echo site_url("admin/uploads"); ?>">Uploads</a></li>
-                        <li class="active"><a href="http://<?php echo site_url("admin/create_store_product"); ?>">Create Product</a></li>
-                        <li><a href="http://<?php echo site_url("admin/store_products"); ?>">View Products</a></li>
+                        <li><a  href="http://<?php echo addslashes(site_url("admin/uploads")); ?>">Uploads</a></li>
+                        <li class="active"><a href="http://<?php echo addslashes(site_url("admin/create_store_product")); ?>">Create Product</a></li>
+                        <li><a href="http://<?php addslashes(echo site_url("admin/store_products")); ?>">View Products</a></li>
                     </ul>
                 </div>
             </div>
