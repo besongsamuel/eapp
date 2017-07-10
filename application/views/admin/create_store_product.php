@@ -184,7 +184,7 @@ $(document).ready(function()
         
        
         <!--Select the country and state origin of the product-->
-        <md-country-select cs-priorities="CA, US, GB" class="col-sm-6" country="store_product.country"></md-country-select>
+        <md-country-select class="col-sm-6" country="store_product.country"></md-country-select>
         
         <!-- Section to select if product is organic -->        
         <div flex-gt-sm="50">
