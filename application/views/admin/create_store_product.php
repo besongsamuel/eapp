@@ -156,8 +156,9 @@ $(document).ready(function()
 	          	<span md-highlight-text="searchProductText" md-highlight-flags="^i">{{item.name}}</span>
 	        </md-item-template>
 	        <md-not-found>
-	          	No products matching "{{searchProductText}}" were found.
-	        </md-not-found>
+                	No poducts matching "{{searchProductText}}" were found.
+                	<a ng-click="createNewProduct(searchProductText)">Create a new one!</a>
+            	</md-not-found>
       	</md-autocomplete>
            
         <!--Section to enter the brand of the product-->
