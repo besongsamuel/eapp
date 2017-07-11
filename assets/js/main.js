@@ -187,6 +187,37 @@ eappApp.controller('CartController', ['$scope','$rootScope', '$q', '$http', func
         
     };
     
+    $rootScope.update_product_list_by_store = function()
+    {
+        // Create array with selected store_product id's
+        var store_products = [];
+        // Get optimized list here
+        for(var index in $rootScope.cart)
+        {
+            var cartItem = $rootScope.cart[index];
+            var data = 
+            {
+                    id : cartItem.store_product.id,
+                    rowid : cartItem.rowid,
+                    quantity : cartItem.quantity
+            };
+            store_products.push(data);
+        }
+
+        var formData = new FormData();
+        formData.append("store_products", JSON.stringify(store_products));
+        formData.append("distance", $scope.distance);
+        // Send request to server to get optimized list 	
+        $scope.promise = 
+            $http.post("http://"+ $scope.site_url.concat("/cart/optimize_product_list_by_store"), 
+            formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}}).then(
+            function(response)
+            {
+                $scope.store_cart = response.data;
+            });
+        
+    };
+    
     $rootScope.getCart = function()
     {
         

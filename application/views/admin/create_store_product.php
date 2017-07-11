@@ -82,7 +82,7 @@ $(document).ready(function()
     });
 });
 </script>
-
+    
     <!-- Begin mainmenu area -->
     <div class="mainmenu-area" ng-controller="MenuController">
         <div class="container">
@@ -99,7 +99,7 @@ $(document).ready(function()
                     <ul class="nav navbar-nav">
                         <li><a  href="http://<?php echo addslashes(site_url("admin/uploads")); ?>">Uploads</a></li>
                         <li class="active"><a href="http://<?php echo addslashes(site_url("admin/create_store_product")); ?>">Create Product</a></li>
-                        <li><a href="http://<?php addslashes(echo site_url("admin/store_products")); ?>">View Products</a></li>
+                        <li><a href="http://<?php echo addslashes(site_url("admin/store_products")); ?>">View Products</a></li>
                     </ul>
                 </div>
             </div>

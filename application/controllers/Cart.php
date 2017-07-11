@@ -134,7 +134,7 @@ class Cart extends CI_Controller {
 	$optimizedList = array();    
     	$distance = $this->input->post("distance");
 	$store_products = json_decode($this->input->post("store_products"));
-	    
+        
 	foreach($store_products as $s_product)
 	{
             // Get the store product
@@ -200,7 +200,7 @@ class Cart extends CI_Controller {
     private function get_closest_department_store($retailer_id, $distance) 
     {
         // Get the department stores related to this product
-        $department_stores = $this->cart_model->getDepartmentStores($retailer_id);
+        $department_stores = $this->cart_model->getDepartmentStores($retailer_id, $this->user);
 
         $best_store_fit = $this->cart_model->findCloseDepartmentStore($department_stores, $this->user, $distance);
         
@@ -222,14 +222,16 @@ class Cart extends CI_Controller {
 		$store->chain = $this->cart_model->get(CHAIN_TABLE, $store->chain_id);
 		foreach($store_products as $store_product)
 		{
-			$associated_product = $this->cart_model->get(PRODUCT_TABLE, $store_product->product_id);
+			$associated_product = $this->cart_model->get(PRODUCT_TABLE, $store_product->id);
 			// Check if the product exists for that store
-			$current_store_product = $this->cart_model->get_specific(STORE_PRODUCT_TABLE, array("product_id" => $store_product->product_id, "retailer_id" => $store->chain_id));
+			$current_store_product = $this->cart_model->get_specific(STORE_PRODUCT_TABLE, array("product_id" => $associated_product->id, "retailer_id" => $store->chain_id));
 			
 			if($current_store_product != null)
 			{
-				$associated_product->store_product = $this->cart_model->getStoreProduct($current_store_product->id);
+                            $associated_product->store_product = $this->cart_model->getStoreProduct($current_store_product->id);
 			}
+                        $associated_product->rowid = $store_product->rowid;
+                        $associated_product->quantity = $store_product->quantity;
 			array_push($store->products, $associated_product);
 		}
 		

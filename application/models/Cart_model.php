@@ -86,17 +86,17 @@ class Cart_model extends CI_Model
 		// Limit to the first 5 closest
 		$this->db->limit(5);
 		$this->db->where(array("user_id" => $user->id, "distance <=" => $distance));
-		$this->db->order("distance", "ASC");
+		$this->db->order_by("distance", "ASC");
 		$result = $this->db->get(USER_CHAIN_STORE_TABLE);
-		
+	
 		foreach($result->result() as $row)
 		{
-			$department_store = $this->get(CHAIN_STORE_TABLE, $row->chain_store_id);
-			
-			if($department_store != null)
-			{
-				$stores[$department_store->chain_id] = $department_store;
-			}
+                    $department_store = $this->get(CHAIN_STORE_TABLE, $row->chain_store_id);
+
+                    if($department_store != null)
+                    {
+                        $stores[$department_store->chain_id] = $department_store;
+                    }
 		}
 		
 		return $stores;
