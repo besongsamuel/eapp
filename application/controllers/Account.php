@@ -28,6 +28,12 @@ class Account extends CI_Controller {
          $this->account_model->update_user_store_table($this->user); 
     }
     
+    public function login() 
+    {
+        $this->data['body'] = $this->load->view('account/login', $this->data, TRUE);
+        $this->parser->parse('eapp_template', $this->data);
+    }
+    
     
     
     
