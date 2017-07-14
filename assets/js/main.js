@@ -68,7 +68,7 @@ function convert_to_string_date(date)
 }
 
 // Define the `eapp Application` module
-var eappApp = angular.module('eappApp', ['ngMaterial', 'md.data.table', 'lfNgMdFileInput', 'mdCountrySelect', 'ngNotificationsBar']);
+var eappApp = angular.module('eappApp', ['ngMaterial', 'md.data.table', 'lfNgMdFileInput', 'mdCountrySelect', 'ngNotificationsBar', 'ngAnimate']);
 
 eappApp.factory('Form', [ '$http', 'notifications', function($http, notifications) 
 {
@@ -143,9 +143,11 @@ eappApp.controller('ProductsController', ['$scope','$rootScope', function($scope
 
 eappApp.controller('CartController', ['$scope','$rootScope', '$q', '$http', function($scope, $rootScope, $q, $http) {
   
-    $scope.selected = [];
-
-    $scope.query = {
+    $rootScope.viewing_cart_optimization = true;
+    
+    $rootScope.selected = [];
+    
+    $rootScope.query = {
       order: 'nameToLower',
       limit: 5,
       page: 1
@@ -153,11 +155,24 @@ eappApp.controller('CartController', ['$scope','$rootScope', '$q', '$http', func
     
     $rootScope.cart = [];
     
+    $rootScope.optimized_cart = [];
+    
     // Here we define the default desired distance of the user	
-    $scope.distance = 10;
+    $rootScope.distance_from_home = 10;
+    
+    $rootScope.distance = 10;
+    
+    $rootScope.distance_updated = function(new_distance)
+    {
+        $rootScope.distance = new_distance;
+    };
+    
+    $rootScope.true_value = true;
+    $rootScope.false_value = false;
     
     $rootScope.updateCartList = function()
     {
+        $rootScope.viewing_cart_optimization = true;
         // Create array with selected store_product id's
         var store_products = [];
         // Get optimized list here
@@ -175,20 +190,24 @@ eappApp.controller('CartController', ['$scope','$rootScope', '$q', '$http', func
 
         var formData = new FormData();
         formData.append("store_products", JSON.stringify(store_products));
-        formData.append("distance", $scope.distance);
+        formData.append("distance", $rootScope.distance);
         // Send request to server to get optimized list 	
-        $scope.promise = 
+        $rootScope.promise = 
             $http.post("http://"+ $scope.site_url.concat("/cart/getOptimizedList"), 
             formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}}).then(
             function(response)
             {
-                $scope.cart = response.data;
+                $rootScope.optimized_cart = response.data;
             });
         
     };
     
+    $scope.loading_store_products = false;
+    
     $rootScope.update_product_list_by_store = function()
     {
+        $rootScope.viewing_cart_optimization = false;
+        $scope.loading_store_products = true;
         // Create array with selected store_product id's
         var store_products = [];
         // Get optimized list here
@@ -197,9 +216,9 @@ eappApp.controller('CartController', ['$scope','$rootScope', '$q', '$http', func
             var cartItem = $rootScope.cart[index];
             var data = 
             {
-                    id : cartItem.store_product.id,
-                    rowid : cartItem.rowid,
-                    quantity : cartItem.quantity
+                id : cartItem.store_product.id,
+                rowid : cartItem.rowid,
+                quantity : cartItem.quantity
             };
             store_products.push(data);
         }
@@ -208,12 +227,44 @@ eappApp.controller('CartController', ['$scope','$rootScope', '$q', '$http', func
         formData.append("store_products", JSON.stringify(store_products));
         formData.append("distance", $scope.distance);
         // Send request to server to get optimized list 	
-        $scope.promise = 
+        $scope.store_cart_promise = 
             $http.post("http://"+ $scope.site_url.concat("/cart/optimize_product_list_by_store"), 
             formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}}).then(
             function(response)
             {
-                $scope.store_cart = response.data;
+                
+                $scope.close_stores = response.data.close_stores;
+                $scope.store_products = response.data.products;
+                
+                for(var index in $scope.store_products)
+                {
+                    for(var key in $scope.store_products[index].store_products)
+                    {
+                        if($scope.store_products[index].store_products[key] === null || typeof $scope.store_products[index].store_products[key] === 'undefined')
+                        {
+                           $scope.store_products[index].store_products[key] = 
+                           {
+                               id : key,
+                               price : 'item pas disponible dans ce magasin. '
+                               
+                           };
+                        }
+                    }
+                }
+                
+                var close_stores_array = $.map($scope.close_stores, function(value, index) {
+                    return [value];
+                });
+                
+                var store_products_array = $.map($scope.store_products, function(value, index) {
+                    return [value];
+                });
+                
+                $scope.close_stores = close_stores_array;
+                $scope.store_products = store_products_array;
+                
+                $scope.loading_store_products = false;
+                
             });
         
     };
