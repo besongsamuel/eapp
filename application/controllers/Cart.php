@@ -129,7 +129,7 @@ class Cart extends CI_Controller {
      * Method that gets an optimized list from a list of cart items
      * within a given distance
      */
-    public function getOptimizedList()
+    public function update_cart_list()
     {
 	$optimizedList = array();    
     	$distance = $this->input->post("distance");
@@ -139,10 +139,8 @@ class Cart extends CI_Controller {
 	{
             // Get the store product
             $store_product = $this->admin_model->get(STORE_PRODUCT_TABLE, $s_product->id);
-            
             // Get all store products created with the same product
             $comparable_store_products = $this->cart_model->getProducts($store_product->product_id);
-            
             // Get chepeast withing required distance
             $optimized_store_product = $this->get_best_store_product($comparable_store_products, $distance);
             

@@ -3,10 +3,10 @@
     
     $(document).ready(function()
     {
-        var rootScope = angular.element($("html")).scope();
-        rootScope.$apply(function()
+        var scope = angular.element($("#cart-optimization-container")).scope();
+        scope.$apply(function()
         {
-            rootScope.updateCartList();
+            scope.update_cart_list();
         });
     });
     
@@ -45,21 +45,19 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="product-bit-title text-center">
-                    <h2>Shopping Cart</h2>
+                    <h2>Panier</h2>
                 </div>
             </div>
         </div>
     </div>
 </div> <!-- End Page title area -->
 
-<div id="admin-container" class="container admin-container" ng-controller="CartController" ng-show="viewing_cart_optimization">
-    
+<div id="cart-optimization-container" class="container admin-container" ng-controller="CartController" ng-show="viewing_cart_optimization.value">
     <!-- Cart Optimizations -->
-    <div ng-show="viewing_cart_optimization">
-        <md-content layout-padding >
+    <md-content>
             <md-table-container>
                 <table  md-table md-row-select multiple cellspacing="0" ng-model="selected"  md-progress="promise">
-                <thead md-head md-order="query.order" md-on-reorder="getCart">
+                <thead md-head md-order="query.order" md-on-reorder="update_cart_list">
                     <tr md-row>
                         <th md-column>&nbsp;</th>
                         <th md-column>Store</th>
@@ -105,7 +103,7 @@
 
                         <td md-cell>
                             <md-input-container>
-                                <input type="number" ng-model="item.quantity">
+                                <input aria-label="Qty" type="number" ng-model="item.quantity">
                             </md-input-container>
                         </td>
 
@@ -125,92 +123,85 @@
                     </tr>
                 </tbody>
             </table>
-                <md-table-pagination md-limit="query.limit" md-limit-options="[25, 50, 100]" md-page="query.page" md-total="{{store_products_count}}" md-on-paginate="getCart" md-page-select></md-table-pagination>
+                <md-table-pagination md-limit="query.limit" md-limit-options="[25, 50, 100]" md-page="query.page" md-total="{{store_products_count}}" md-on-paginate="update_cart_list" md-page-select></md-table-pagination>
             </md-table-container>
         </md-content>
-    </div>
-        
 </div>
 
-<div class="container" ng-controller="CartController" ng-hide="viewing_cart_optimization">
-  <div>
-        <!-- Store Optimizations -->
-        <md-content layout-padding >
-            <table class="table table-condensed" >
-                <md-progress-linear md-mode="indeterminate" ng-disabled="!loading_store_products"></md-progress-linear>
-                <thead>
-                    <tr>
-                        <th>Commerçant</th>
-                        <th ng-repeat="store in close_stores">
-                            <p>{{store.store.chain.name}}</p>
-                        </th>
-                    </tr>
-                    <tr>
-                        <th>Addresse</th>
-                        <th ng-repeat="store in close_stores">
-                            <p>{{store.store.address}}</p>
-                        </th>
-                    </tr>
-                    <tr>
-                        <th>Distance</th>
-                        <th ng-repeat="store in close_stores">
-                            <p> > {{store.distance}} Km</p>
-                        </th>
-                    </tr>
+<div id="store-optimization-container" class="container" ng-controller="CartController" ng-hide="viewing_cart_optimization.value">
+    <!-- Store Optimizations -->
+    <md-content layout-padding >
+        <table class="table table-condensed" >
+            <md-progress-linear md-mode="indeterminate" ng-disabled="!loading_store_products"></md-progress-linear>
+            <thead>
+                <tr>
+                    <th>Commerçant</th>
+                    <th ng-repeat="store in close_stores">
+                        <p>{{store.store.chain.name}}</p>
+                    </th>
+                </tr>
+                <tr>
+                    <th>Addresse</th>
+                    <th ng-repeat="store in close_stores">
+                        <p>{{store.store.address}}</p>
+                    </th>
+                </tr>
+                <tr>
+                    <th>Distance</th>
+                    <th ng-repeat="store in close_stores">
+                        <p> > {{store.distance}} Km</p>
+                    </th>
+                </tr>
 
-                </thead>
-                <tbody id="store-cart-tbody">
-                    <tr ng-repeat="product in store_products">
-            <td>
-                <img class="admin-image" ng-src="http://{{base_url}}/assets/img/products/{{product.product.image}}" />
-                <p style="width : auto;">{{product.product.name}}</p>
-            </td>
-            <td ng-repeat="store_product in product.store_products">{{store_product.price}}</td>
-        </tr>
-                    <tr>
-            <td class="store-total-caption"><b>Total</b></td>
-            <td class="store-total-value" ng-repeat="store in close_stores">{{store.store_items_cost}}</td>
-        </tr>
-                    <tr>
-            <td class="store-total-caption"><b>Sélectionner</b></td>
-            <td class="store-total-checkbox" ng-repeat="store in close_stores">
-                <md-checkbox ng-model="store.selected" aria-label="Finished?">
-                </md-checkbox>
-            </td>
-        </tr>
-                </tbody>
-            </table>
-        </md-content>
-    </div>
-    
-  
+            </thead>
+            <tbody id="store-cart-tbody">
+                <tr ng-repeat="product in store_products">
+                    <td>
+                        <img class="admin-image" ng-src="http://{{base_url}}/assets/img/products/{{product.product.image}}" />
+                        <p style="width : auto;">{{product.product.name}}</p>
+                    </td>
+                    <td ng-repeat="store_product in product.store_products">{{store_product.price}}</td>
+                </tr>
+                <tr>
+                    <td class="store-total-caption"><b>Total</b></td>
+                    <td class="store-total-value" ng-repeat="store in close_stores">{{store.store_items_cost}}</td>
+                </tr>
+                <tr>
+                    <td class="store-total-caption"><b>Sélectionner</b></td>
+                    <td class="store-total-checkbox" ng-repeat="store in close_stores">
+                        <md-checkbox ng-model="store.selected" aria-label="Finished?">
+                        </md-checkbox>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </md-content>
 </div>
 
 <div class="admin-container" ng-controller="CartController">
     <md-content style="margin: 15px; padding:15px">
         <fieldset>
             <legend>Optimizations</legend>
+            <md-radio-group ng-model="viewing_cart_optimization.value" ng-change="optimization_preference_changed()">
+                <md-radio-button ng-value="true_value">Optimisation du panier</md-radio-button>
+                <md-radio-button ng-value="false_value">Optimisation par magasin</md-radio-button>
+            </md-radio-group>
             
-                <md-content>
-                    <md-button ng-click="updateCartList()" class="md-primary">Optimisation du panier</md-button>
-                    <md-button ng-click="update_product_list_by_store()" class="md-primary">Optimisation par magasin</md-button>
-                </md-content>
-            
-                <md-slider-container>
-                    <span>Km</span>
-                    <md-slider min="0" max="255" ng-model="distance_from_home" ng-change="distance_updated(distance_from_home)" aria-label="red" id="red-slider">
-                    </md-slider>
-                    <md-input-container>
-                        <input type="number" ng-model="distance_from_home" aria-label="red" aria-controls="red-slider">
-                    </md-input-container>
-                </md-slider-container>
-                <md-button class="md-raised" ng-click="updateCartList()">Update</md-button>
+            <md-slider-container>
+                <span>Km</span>
+                <md-slider min="0" max="255" ng-model="distance" aria-label="red" id="red-slider">
+                </md-slider>
+                <md-input-container>
+                    <input type="number" ng-model="distance" aria-label="red" aria-controls="red-slider">
+                </md-input-container>
+            </md-slider-container>
+            <md-button class="md-raised" ng-click="optimization_preference_changed()">Mettre à jour</md-button>
         </fieldset>
     </md-content>
     <div class="cart-collaterals">
                                 
         <div class="cart_totals ">
-            <h2>Optimization Details</h2>
+            <h2>Détails d'optimisation</h2>
 
             <table cellspacing="0">
                 <tbody>

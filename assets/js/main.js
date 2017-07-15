@@ -141,38 +141,74 @@ eappApp.controller('ProductsController', ['$scope','$rootScope', function($scope
   
 }]);
 
-eappApp.controller('CartController', ['$scope','$rootScope', '$q', '$http', function($scope, $rootScope, $q, $http) {
+eappApp.controller('CartController', ['$scope','$rootScope', '$http', function($scope, $rootScope, $http) {
   
-    $rootScope.viewing_cart_optimization = true;
+    /**
+     * When this is true, the user is viewing optimizations
+     * based on the cart. When false, he is viewing optimization 
+     * based on the closest stores. 
+     */
+    $rootScope.viewing_cart_optimization = { value: true};
     
-    $rootScope.selected = [];
+    /**
+     * List of selected cart items. 
+     * With this list we can batch remove cart items. 
+     */
+    $scope.selected = [];
     
-    $rootScope.query = {
+    /**
+     * The query object
+     */
+    $scope.query = 
+    {
       order: 'nameToLower',
       limit: 5,
       page: 1
     };
     
-    $rootScope.cart = [];
-    
-    $rootScope.optimized_cart = [];
-    
-    // Here we define the default desired distance of the user	
-    $rootScope.distance_from_home = 10;
-    
-    $rootScope.distance = 10;
-    
-    $rootScope.distance_updated = function(new_distance)
+    /**
+     * Callback method when the user changes his optimization preference
+     * @returns void
+     */
+    $scope.optimization_preference_changed = function()
     {
-        $rootScope.distance = new_distance;
+        if($rootScope.viewing_cart_optimization.value)
+        {
+            $scope.update_cart_list();
+        }
+        else
+        {
+            $scope.update_product_list_by_store();
+        }
     };
     
-    $rootScope.true_value = true;
-    $rootScope.false_value = false;
+    /**
+     * List of selected cart items
+     */
+    $rootScope.cart = [];
     
-    $rootScope.updateCartList = function()
+    /**
+     * List of optimized cart store product items
+     */
+    $rootScope.optimized_cart = [];
+    
+    /**
+     * Set distance
+     */
+    $scope.distance = 10;
+    
+    $scope.true_value = true;
+    $scope.false_value = false;
+    
+    /**
+     * Updates the cart list by finding cheap products 
+     * close to you
+     * @returns {undefined}
+     */
+    $scope.update_cart_list = function()
     {
-        $rootScope.viewing_cart_optimization = true;
+        // Clear items
+        $rootScope.optimized_cart = [];
         // Create array with selected store_product id's
         var store_products = [];
         // Get optimized list here
@@ -190,24 +226,34 @@ eappApp.controller('CartController', ['$scope','$rootScope', '$q', '$http', func
 
         var formData = new FormData();
         formData.append("store_products", JSON.stringify(store_products));
-        formData.append("distance", $rootScope.distance);
+        formData.append("distance", $scope.distance);
         // Send request to server to get optimized list 	
-        $rootScope.promise = 
-            $http.post("http://"+ $scope.site_url.concat("/cart/getOptimizedList"), 
-            formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}}).then(
-            function(response)
-            {
-                $rootScope.optimized_cart = response.data;
-            });
+        $scope.promise = 
+                        $http.post("http://"+ $scope.site_url.concat("/cart/update_cart_list"), 
+                        formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}}).then(
+                        function(response)
+                        {
+                            $rootScope.optimized_cart = response.data;
+                        });
         
     };
     
-    $scope.loading_store_products = false;
+    /**
+     * When this variable is true, the application is loading store optimizations. 
+     * We display the progress bar
+     */
+    $rootScope.loading_store_products = false;
     
-    $rootScope.update_product_list_by_store = function()
+    /**
+     * Optimize product list by finding items in stores
+     * close to you.
+     * @returns {undefined}
+     */
+    $scope.update_product_list_by_store = function()
     {
-        $rootScope.viewing_cart_optimization = false;
-        $scope.loading_store_products = true;
+        $rootScope.close_stores = [];
+        $rootScope.store_products = [];
+        $rootScope.loading_store_products = true;
         // Create array with selected store_product id's
         var store_products = [];
         // Get optimized list here
@@ -233,16 +279,16 @@ eappApp.controller('CartController', ['$scope','$rootScope', '$q', '$http', func
             function(response)
             {
                 
-                $scope.close_stores = response.data.close_stores;
-                $scope.store_products = response.data.products;
+                $rootScope.close_stores = response.data.close_stores;
+                $rootScope.store_products = response.data.products;
                 
-                for(var index in $scope.store_products)
+                for(var index in $rootScope.store_products)
                 {
-                    for(var key in $scope.store_products[index].store_products)
+                    for(var key in $rootScope.store_products[index].store_products)
                     {
-                        if($scope.store_products[index].store_products[key] === null || typeof $scope.store_products[index].store_products[key] === 'undefined')
+                        if($rootScope.store_products[index].store_products[key] === null || typeof $rootScope.store_products[index].store_products[key] === 'undefined')
                         {
-                           $scope.store_products[index].store_products[key] = 
+                           $rootScope.store_products[index].store_products[key] = 
                            {
                                id : key,
                                price : 'item pas disponible dans ce magasin. '
@@ -252,74 +298,22 @@ eappApp.controller('CartController', ['$scope','$rootScope', '$q', '$http', func
                     }
                 }
                 
-                var close_stores_array = $.map($scope.close_stores, function(value, index) {
+                var close_stores_array = $.map($rootScope.close_stores, function(value, index) {
                     return [value];
                 });
                 
-                var store_products_array = $.map($scope.store_products, function(value, index) {
+                var store_products_array = $.map($rootScope.store_products, function(value, index) {
                     return [value];
                 });
                 
-                $scope.close_stores = close_stores_array;
-                $scope.store_products = store_products_array;
-                
-                $scope.loading_store_products = false;
+                $rootScope.close_stores = close_stores_array;
+                $rootScope.store_products = store_products_array;
+                $rootScope.loading_store_products = false;
                 
             });
         
     };
-    
-    $rootScope.getCart = function()
-    {
         
-        return $scope.cart;
-        
-        var deferred = $q.defer();
-        
-        if($scope.optimized_cart)
-        {
-            // Create array with selected store_product id's
-	    var store_products = [];
-            // Get optimized list here
-	    for(var index in $rootScope.cart)
-	    {
-	    	var cartItem = $rootScope.cart[index];
-		var data = 
-		{
-			id : cartItem.store_product.id,
-			rowid : cartItem.rowid,
-			quantity : cartItem.quantity
-		};
-		store_products.push(data);
-	    }
-	    
-	    var formData = new FormData();
-	    formData.append("store_products", JSON.stringify(store_products));
-	    formData.append("distance", $scope.distance);
-	    // Send request to server to get optimized list 	
-	    $scope.promise = $http.post("http://"+ $scope.site_url.concat("/cart/getOptimizedList"), formData, {
-				transformRequest: angular.identity,
-				headers: {'Content-Type': undefined}}).then(
-                            function(response)
-                            {
-                                $rootScope.cart = response.data;
-                            });
-        }
-        else
-        {
-	    // In this case the user did not request an optimized list, return the cart list	
-            deferred.resolve($rootScope.cart);
-	    $scope.promise = deferred.promise;
-            $scope.promise.then(function(cart)
-            {
-                // assign rootscope cart to isolate scope
-                $scope.cart = cart;
-            });
-        }
-        
-        return $scope.promise;
-    };
-    
     $rootScope.getCartTotal = function()
     {
 	var total = 0;
@@ -474,17 +468,8 @@ eappApp.controller('CartController', ['$scope','$rootScope', '$q', '$http', func
   
 }]);
 
-eappApp.controller('HomeController', ["$scope","$rootScope", function($scope, $rootScope) 
+eappApp.controller('HomeController', ["$scope", function($scope) 
 {
-  	$scope.addProductToCart = function(id)
-	{
-	
-	}
-	
-	$scope.viewProductDetails = function(id)
-	{
-	
-	}
   
 }]);
 
