@@ -172,13 +172,13 @@ class Cart extends CI_Controller {
             if($best_match === null)
             {
                 $best_match = $store_product;
-                $best_match->departmentStore = $this->cart_model->get_user_closest_retailer_store($this->user, $distance, $best_match->retailer_id);
+                $best_match->departmentStore = $this->cart_model->get_user_closest_retailer_store($this->user, $distance, $store_product->retailer_id);
             }
             else
             {
                 if($store_product->price < $best_match->price)
                 {
-                    $best_store_fit = $this->cart_model->get_user_closest_retailer_store($this->user, $distance, $best_match->retailer_id);
+                    $best_store_fit = $this->cart_model->get_user_closest_retailer_store($this->user, $distance, $store_product->retailer_id);
 
                     if($best_store_fit != null)
                     {

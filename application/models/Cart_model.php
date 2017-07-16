@@ -12,12 +12,12 @@
 
 function cmp_stores_by_num_items($a, $b)
 {
-    if($b->store_items_cost < $a->store_items_cost)
+    if($b->store_items_cost < $a->num_items)
     {
         return -1;
     }
     
-    if($b->store_items_cost > $a->store_items_cost)
+    if($b->store_items_cost > $a->num_items)
     {
         return 1;
     }
@@ -112,14 +112,15 @@ class Cart_model extends CI_Model
                     $department_store->chain = $this->get(CHAIN_TABLE, $department_store->chain_id);
 
                     //check number of products the store has
-                    $store_items_cost = $this->store_has_product($department_store->chain, $products);
+                    $result = $this->store_has_product($department_store->chain, $products);
 
                     //check if the chain store has at least one of the products
-                    if($store_items_cost > 0)
+                    if($result['num_items'] > 0)
                     {
                         $stores[$department_store->chain_id] = new stdClass();
                         $stores[$department_store->chain_id]->store = $department_store;
-                        $stores[$department_store->chain_id]->store_items_cost = $store_items_cost;
+                        $stores[$department_store->chain_id]->store_items_cost = $result['store_total_cost'];
+                        $stores[$department_store->chain_id]->num_items = $result['num_items'];
                         $stores[$department_store->chain_id]->distance = $row->distance;
                     }
 
@@ -161,6 +162,7 @@ class Cart_model extends CI_Model
         private function store_has_product($store, $products)
         {
             $store_items_cost = 0;
+            $num_items = 0;
             
             foreach ($products as $product) 
             {
@@ -171,9 +173,13 @@ class Cart_model extends CI_Model
                 if($product_found != null)
                 {
                     $store_items_cost += $product_found->price;
+                    $num_items++;
                 }
             }
             
-            return $store_items_cost;
+            $result = array();
+            $result['num_items'] = $num_items;
+            $result['store_total_cost'] = $store_items_cost;
+            return $result;
         }
 }

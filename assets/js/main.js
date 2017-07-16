@@ -320,7 +320,19 @@ eappApp.controller('CartController', ['$scope','$rootScope', '$http', function($
 	    
     	for(var key in $rootScope.cart)
 	{
-            total += parseFloat($rootScope.cart[key].store_product.price);
+            total += parseFloat($rootScope.cart[key].quantity * $rootScope.cart[key].store_product.price);
+	}
+	    
+	return total;
+    };
+    
+    $rootScope.get_optimized_cart_details = function()
+    {
+	var total = 0;
+	    
+    	for(var key in $rootScope.optimized_cart)
+	{
+            total += parseFloat($rootScope.optimized_cart[key].quantity * $rootScope.optimized_cart[key].store_product.price);
 	}
 	    
 	return total;
