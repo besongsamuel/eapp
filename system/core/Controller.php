@@ -84,7 +84,7 @@ class CI_Controller {
             $this->load->library('cart');
             $this->load->initialize();
             log_message('info', 'Controller Class Initialized');
-
+            $this->user = $this->get_user();
             // Set template data
             $this->data = array(
                 'title' => 'épicerie a petit prix',
@@ -106,7 +106,7 @@ class CI_Controller {
                 'cart' => addslashes(json_encode($this->getCartItems()))
             );
 
-            $this->user = $this->get_user();
+            
 	}
         
         
@@ -134,18 +134,17 @@ class CI_Controller {
 
                 $product_id = $item['id'];
                 $rowid = $item['rowid'];
-                $store_product = $this->admin_model->get(STORE_PRODUCT_TABLE, $product_id);
+                // Get best match close to user
+                $store_product = $this->cart_model->get_best_store_product($product_id, DEFAULT_DISTANCE, MAX_DISTANCE, $this->user);
                 
                 if($store_product === null)
-                    continue;
-                
-                $retailer = $this->admin_model->get(CHAIN_TABLE, $store_product->retailer_id);
-                $product = $this->admin_model->get(PRODUCT_TABLE, $store_product->product_id);
+                {
+                    continue; 
+                }
 
                 $cart_item['store_product'] = $store_product;
-                $cart_item['product'] = $product;
+                $cart_item['product'] = $store_product->product;
                 $cart_item['rowid'] = $rowid;
-                $cart_item['retailer'] = $retailer;
                 $cart_item['quantity'] = 1;
 
                 array_push($cart, $cart_item);

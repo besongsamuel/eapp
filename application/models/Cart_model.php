@@ -95,7 +95,47 @@ class Cart_model extends CI_Model
         return $closest;
     }
     
-	public function get_closest_stores($user, $distance, $products, $limit = 5)
+    public function get_best_store_product($product_id, $distance, $max_distance, $user) 
+    {
+        $product_found = false;
+        
+        $store_product = null;
+        
+        while($distance <= $max_distance && !$product_found)
+        {
+            $this->db->select(STORE_PRODUCT_TABLE.".id, ".CHAIN_STORE_TABLE.".id AS department_store_id, distance");
+            $this->db->join(CHAIN_TABLE, CHAIN_TABLE.'.id = '.STORE_PRODUCT_TABLE.'.retailer_id');
+            $this->db->join(CHAIN_STORE_TABLE, CHAIN_TABLE.'.id = '.CHAIN_STORE_TABLE.'.chain_id');
+            $this->db->join(USER_CHAIN_STORE_TABLE, USER_CHAIN_STORE_TABLE.'.chain_store_id = '.CHAIN_STORE_TABLE.'.id');
+            $this->db->where
+            (
+                array
+                (
+                    "distance <= " => $distance,
+                    "user_id" => $user->id,
+                    "product_id" => $product_id
+                )
+            );
+            $this->db->order_by("price", "ASC");
+            $query = $this->db->get_compiled_select(STORE_PRODUCT_TABLE);
+            $store_product = $this->db->query($query)->row();
+            $product_found = $store_product != null;
+            $distance += DEFAULT_DISTANCE;
+        }
+        
+        $best_Store_product = null;
+        
+        if($store_product != null)
+        {
+            $best_Store_product = $this->getStoreProduct($store_product->id, false, false);
+            $best_Store_product->department_store = $this->get(CHAIN_STORE_TABLE, $store_product->department_store_id);
+            $best_Store_product->department_store->distance = $store_product->distance;
+        }
+        
+        return $best_Store_product;
+    }
+    
+    public function get_closest_stores($user, $distance, $products, $limit = 5)
 	{
             $stores = array();
 
@@ -139,7 +179,7 @@ class Cart_model extends CI_Model
             return $stores;
 	}
         
-        public function get_user_closest_retailer_store($user, $distance, $retailer_id)
+    public function get_user_closest_retailer_store($user, $distance, $retailer_id)
 	{
             $this->db->select(CHAIN_STORE_TABLE.".*, distance");
             $this->db->join(CHAIN_STORE_TABLE, CHAIN_STORE_TABLE.".id = ".USER_CHAIN_STORE_TABLE.".chain_store_id");
@@ -159,27 +199,25 @@ class Cart_model extends CI_Model
             
 	}
         
-        private function store_has_product($store, $products)
+    private function store_has_product($store, $products)
+    {
+        $store_items_cost = 0;
+        $num_items = 0;
+
+        foreach ($products as $product) 
         {
-            $store_items_cost = 0;
-            $num_items = 0;
-            
-            foreach ($products as $product) 
+            $product_found = $this->cart_model->get_specific(STORE_PRODUCT_TABLE, array("product_id" => $product->id, "retailer_id" => $store->id));
+
+            if($product_found != null)
             {
-                $store_product = $this->getStoreProduct($product->id, false, false);
-                              
-                $product_found = $this->cart_model->get_specific(STORE_PRODUCT_TABLE, array("product_id" => $store_product->product->id, "retailer_id" => $store->id));
-                
-                if($product_found != null)
-                {
-                    $store_items_cost += $product_found->price;
-                    $num_items++;
-                }
+                $store_items_cost += $product_found->price;
+                $num_items++;
             }
-            
-            $result = array();
-            $result['num_items'] = $num_items;
-            $result['store_total_cost'] = $store_items_cost;
-            return $result;
         }
+
+        $result = array();
+        $result['num_items'] = $num_items;
+        $result['store_total_cost'] = $store_items_cost;
+        return $result;
+    }
 }

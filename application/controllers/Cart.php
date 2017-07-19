@@ -51,32 +51,37 @@ class Cart extends CI_Controller {
     public function insert()
     {
         $product_id = $this->input->post("product_id");
-	    
-        $store_product = $this->admin_model->get(STORE_PRODUCT_TABLE, $product_id);
-	$product = $this->admin_model->get(PRODUCT_TABLE, $store_product->product_id);
-        $retailer = $this->admin_model->get(CHAIN_TABLE, $store_product->retailer_id);
+        
+        $result = array
+	(
+            "success" => false,
+	);
 	
-	$data = array(
-		'id'      => $store_product->id,
-		'qty'     => $store_product->quantity,
-		'price'   => $store_product->price,
-		'name'    => $product->name
+        // Get best match close to user
+        $store_product = $this->cart_model->get_best_store_product($product_id, DEFAULT_DISTANCE, MAX_DISTANCE, $this->user);
+        
+        if($store_product == null)
+        {
+            echo json_encode($result);
+            return;
+        }
+	
+	$data = array
+        (
+            'id'      => $store_product->product_id,
+            'qty'     => 1,
+            'price'   => $store_product->price,
+            'name'    => $store_product->product->name
 	);	    
         
         $rowid = $this->cart->insert($data);
 		
-	$result = array
-	(
-		"success" => false,
-		"rowid" => $rowid
-	);
-
 	if($rowid)
 	{
-		$result["success"] = true;
-		$result["store_product"] = $store_product;
-		$result["product"] = $product;
-                $result["retailer"] = $retailer;
+            $result["rowid"] = $rowid;
+            $result["success"] = true;
+            $result["store_product"] = $store_product;
+            $result["product"] = $this->cart_model->get(PRODUCT_TABLE, $product_id);
 	}
 		
         echo json_encode($result);
@@ -133,23 +138,16 @@ class Cart extends CI_Controller {
     {
 	$optimizedList = array();    
     	$distance = $this->input->post("distance");
-	$store_products = json_decode($this->input->post("store_products"));
+	$products = json_decode($this->input->post("products"));
         
-	foreach($store_products as $s_product)
+	foreach($products as $product)
 	{
-            // Get the store product
-            $store_product = $this->admin_model->get(STORE_PRODUCT_TABLE, $s_product->id);
-            // Get all store products created with the same product
-            $comparable_store_products = $this->cart_model->getProducts($store_product->product_id);
-            // Get chepeast withing required distance
-            $optimized_store_product = $this->get_best_store_product($comparable_store_products, $distance);
-            
-            $full_store_product = $this->cart_model->getStoreProduct($optimized_store_product->id, false, false);
-            $full_store_product->departmentStore = isset($optimized_store_product->departmentStore) ? $optimized_store_product->departmentStore : null;
+            $store_product = $this->cart_model->get_best_store_product($product->id, $distance, $distance, $this->user);
             $cart_item = new stdClass();
-            $cart_item->store_product = $full_store_product;
-            $cart_item->rowid = $s_product->rowid;
-            $cart_item->quantity = $s_product->quantity;
+            $cart_item->store_product = $store_product == null ? $this->create_empty_store_product() : $store_product;
+            $cart_item->product = $this->cart_model->get(PRODUCT_TABLE, $product->id);
+            $cart_item->rowid = $product->rowid;
+            $cart_item->quantity = $product->quantity;
             array_push($optimizedList, $cart_item);
 	}
 	
@@ -192,52 +190,55 @@ class Cart extends CI_Controller {
         return $best_match;
     }
     
-    private function get_closest_department_store($retailer_id, $distance) 
+    private function create_empty_store_product()
     {
-        // Get the department stores related to this product
-        $department_stores = $this->cart_model->getDepartmentStores($retailer_id, $this->user);
-
-        $best_store_fit = $this->cart_model->findCloseDepartmentStore($department_stores, $this->user, $distance);
-        
-        return $best_store_fit;
-        
+        $empty_store_product = new stdClass();
+        $empty_store_product->price = 0;
+        $empty_store_product->retailer = new stdClass();
+        $empty_store_product->retailer->image = "no_image_available.png";
+        $empty_store_product->retailer->name = "none";
+        return $empty_store_product;
     }
 	
     public function optimize_product_list_by_store()
     {
 	$result = array();
 	$distance = $this->input->post("distance");
-	$store_products = json_decode($this->input->post("store_products"));
-    	// get top 5 closest department stores
-	$close_stores = $this->cart_model->get_closest_stores($this->user, $distance, $store_products);
-        
+	$products = json_decode($this->input->post("products"));
+    	// get top 5 or less closest department stores 
+        // that contain at least one of the products
+	$close_stores = $this->cart_model->get_closest_stores($this->user, $distance, $products);
         
         $result['products'] = array();
         
-        foreach($store_products as $store_product)
+        foreach($products as $product_item)
         {
-            $full_store_product = $this->cart_model->getStoreProduct($store_product->id, false, false);
-            // get other store products that compare with this product
-            $associated_product = $this->cart_model->get(PRODUCT_TABLE, $full_store_product->product_id);
-            
-            $result['products'][$associated_product->id] = new stdClass();
-            $result['products'][$associated_product->id]->product = $associated_product;
-            $result['products'][$associated_product->id]->store_products = array();
+            $store_product = $this->cart_model->get_best_store_product($product_item->id, $distance, $distance, $this->user);
+            $cart_item = new stdClass();
+            $cart_item->store_product = $store_product == null ? $this->create_empty_store_product() : $store_product;;
+            $cart_item->product = $this->cart_model->get(PRODUCT_TABLE, $product_item->id);
+            $cart_item->rowid = $product_item->rowid;
+            $cart_item->quantity = $product_item->quantity;
+            $cart_item->store_products = array();
             
             foreach($close_stores as $store)
             {
                 // Check if the product exists for that store
-                $current_store_product = $this->cart_model->get_specific(STORE_PRODUCT_TABLE, array("product_id" => $associated_product->id, "retailer_id" => $store->store->chain_id));
-
+                $current_store_product = $this->cart_model->get_specific(STORE_PRODUCT_TABLE, array("product_id" => $product_item->id, "retailer_id" => $store->store->chain_id));
+                
                 if($current_store_product != null)
                 {
-                    $associated_product->store_product = $this->cart_model->getStoreProduct($current_store_product->id, false, false);
+                    array_push($cart_item->store_products, $this->cart_model->getStoreProduct($current_store_product->id, false, false));
                 }
-                $associated_product->rowid = $store_product->rowid;
-                $associated_product->quantity = $store_product->quantity;
-                array_push($result['products'][$associated_product->id]->store_products, $current_store_product);
+                else
+                {
+                    array_push($cart_item->store_products, $this->create_empty_store_product());
+                }
             }
+            
+            array_push($result['products'], $cart_item);
         }
+        
         $result['close_stores'] = $close_stores;
         echo json_encode($result);
 	

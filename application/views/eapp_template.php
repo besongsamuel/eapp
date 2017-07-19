@@ -174,7 +174,7 @@
                 
                 <div class="col-sm-6">
                     <div class="shopping-item">
-                        <a href="http://<?php echo site_url("cart"); ?>">Cart - <span class="cart-amunt">CAD {{getCartTotal()}}</span> <i class="fa fa-shopping-cart"></i> <span class="product-count">{{cart.length}}</span></a>
+                        <a href="http://<?php echo site_url("cart"); ?>">Cart - <span class="cart-amunt">CAD {{get_cart_total_price() | number : 2}}</span> <i class="fa fa-shopping-cart"></i> <span class="product-count">{{get_cart_item_total()}}</span></a>
                     </div>
                 </div>
             </div>

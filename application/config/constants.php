@@ -84,6 +84,10 @@ defined('EXIT_DATABASE')       OR define('EXIT_DATABASE', 8); // database error
 defined('EXIT__AUTO_MIN')      OR define('EXIT__AUTO_MIN', 9); // lowest automatically-assigned error code
 defined('EXIT__AUTO_MAX')      OR define('EXIT__AUTO_MAX', 125); // highest automatically-assigned error code
 
+defined('DEFAULT_DISTANCE')    OR define('DEFAULT_DISTANCE', 10);
+defined('MAX_DISTANCE')        OR define('MAX_DISTANCE', 255);
+
+
 
 /* Globals */
 defined('ASSETS_PATH')              OR define('ASSETS_PATH', 'http://'.$_SERVER['HTTP_HOST'].'/eapp/assets/'); // The assets folder of the application

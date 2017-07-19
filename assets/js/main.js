@@ -201,6 +201,14 @@ eappApp.controller('CartController', ['$scope','$rootScope', '$http', function($
     $scope.false_value = false;
     
     /**
+     * When this variable is true, the application is loading store optimizations. 
+     * We display the progress bar
+     */
+    $rootScope.loading_store_products = false;
+    
+    $rootScope.travel_distance = 0;
+    
+    /**
      * Updates the cart list by finding cheap products 
      * close to you
      * @returns {undefined}
@@ -217,7 +225,7 @@ eappApp.controller('CartController', ['$scope','$rootScope', '$http', function($
             var cartItem = $rootScope.cart[index];
             var data = 
             {
-                    id : cartItem.store_product.id,
+                    id : cartItem.product.id,
                     rowid : cartItem.rowid,
                     quantity : cartItem.quantity
             };
@@ -225,24 +233,27 @@ eappApp.controller('CartController', ['$scope','$rootScope', '$http', function($
         }
 
         var formData = new FormData();
-        formData.append("store_products", JSON.stringify(store_products));
+        formData.append("products", JSON.stringify(store_products));
         formData.append("distance", $scope.distance);
         // Send request to server to get optimized list 	
         $scope.promise = 
-                        $http.post("http://"+ $scope.site_url.concat("/cart/update_cart_list"), 
-                        formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}}).then(
-                        function(response)
-                        {
-                            $rootScope.optimized_cart = response.data;
-                        });
+            $http.post("http://"+ $scope.site_url.concat("/cart/update_cart_list"), 
+            formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}}).then(
+            function(response)
+            {
+                $rootScope.cart = response.data;
+
+                $rootScope.cart.sort(function(a, b)
+                {
+                    var a_retailer_name = a.store_product.retailer.name;
+                    var b_retailer_name = b.store_product.retailer.name;
+                    return a_retailer_name.toString().localeCompare(b_retailer_name.toString());
+                });
+
+                $scope.update_travel_distance();
+            });
         
     };
-    
-    /**
-     * When this variable is true, the application is loading store optimizations. 
-     * We display the progress bar
-     */
-    $rootScope.loading_store_products = false;
     
     /**
      * Optimize product list by finding items in stores
@@ -262,7 +273,7 @@ eappApp.controller('CartController', ['$scope','$rootScope', '$http', function($
             var cartItem = $rootScope.cart[index];
             var data = 
             {
-                id : cartItem.store_product.id,
+                id : cartItem.product.id,
                 rowid : cartItem.rowid,
                 quantity : cartItem.quantity
             };
@@ -270,7 +281,7 @@ eappApp.controller('CartController', ['$scope','$rootScope', '$http', function($
         }
 
         var formData = new FormData();
-        formData.append("store_products", JSON.stringify(store_products));
+        formData.append("products", JSON.stringify(store_products));
         formData.append("distance", $scope.distance);
         // Send request to server to get optimized list 	
         $scope.store_cart_promise = 
@@ -281,23 +292,7 @@ eappApp.controller('CartController', ['$scope','$rootScope', '$http', function($
                 
                 $rootScope.close_stores = response.data.close_stores;
                 $rootScope.store_products = response.data.products;
-                
-                for(var index in $rootScope.store_products)
-                {
-                    for(var key in $rootScope.store_products[index].store_products)
-                    {
-                        if($rootScope.store_products[index].store_products[key] === null || typeof $rootScope.store_products[index].store_products[key] === 'undefined')
-                        {
-                           $rootScope.store_products[index].store_products[key] = 
-                           {
-                               id : key,
-                               price : 'item pas disponible dans ce magasin. '
-                               
-                           };
-                        }
-                    }
-                }
-                
+                                
                 var close_stores_array = $.map($rootScope.close_stores, function(value, index) {
                     return [value];
                 });
@@ -307,20 +302,95 @@ eappApp.controller('CartController', ['$scope','$rootScope', '$http', function($
                 });
                 
                 $rootScope.close_stores = close_stores_array;
-                $rootScope.store_products = store_products_array;
+                $rootScope.cart = store_products_array;
                 $rootScope.loading_store_products = false;
                 
             });
         
     };
+    
+    /**
+     * This method applies the selected store
+     * @param {type} index
+     * @returns {void}
+     */
+    $scope.store_selected = function(index)
+    {
+        for(var store_index in $rootScope.close_stores)
+        {
+            if(parseInt(store_index) !== parseInt(index))
+            {
+                $rootScope.close_stores[store_index].selected = false;
+            }
+            else
+            {
+                $rootScope.travel_distance = $rootScope.close_stores[store_index].distance;
+            }
+        }
         
-    $rootScope.getCartTotal = function()
+        for(var product_index in $rootScope.cart)
+        {
+            $rootScope.cart[product_index].store_product = $rootScope.cart[product_index].store_products[index];
+        }
+    }; 
+    
+    $scope.update_travel_distance = function()
+    {
+        var traval_distance = 0;
+        var stores = [];
+        
+        for(var key in $rootScope.cart)
+        {
+            var product = $rootScope.cart[key];
+            
+            if(typeof product.store_product.department_store !== 'undefined' && $.inArray(product.store_product.department_store.id, stores) == -1)
+            {
+                stores.push(product.store_product.department_store.id);
+                traval_distance += parseInt(product.store_product.department_store.distance);
+            }
+        }
+        
+        $rootScope.travel_distance = traval_distance;
+    };
+      
+    $rootScope.get_store_total = function(store_index)
+    {        
+        var total = 0;
+        
+        for(var key in $rootScope.cart)
+        {
+            //$rootScope.store_products[index].store_products
+            total += 
+                    !$rootScope.viewing_cart_optimization.value ? 
+                        $rootScope.cart[key].store_products[store_index].price * $rootScope.cart[key].quantity : 
+                        $rootScope.cart[key].store_product.price * $rootScope.cart[key].quantity;
+        }
+        
+        return total;
+    };
+        
+    $rootScope.get_cart_total_price = function()
     {
 	var total = 0;
 	    
     	for(var key in $rootScope.cart)
 	{
             total += parseFloat($rootScope.cart[key].quantity * $rootScope.cart[key].store_product.price);
+	}
+	    
+	return total;
+    };
+    
+    $rootScope.get_cart_item_total = function()
+    {
+        var total = 0;
+	    
+    	for(var key in $rootScope.cart)
+	{
+            if(parseFloat($rootScope.cart[key].store_product.price) !== 0)
+            {
+                total++;
+            }
 	}
 	    
 	return total;
@@ -338,12 +408,11 @@ eappApp.controller('CartController', ['$scope','$rootScope', '$http', function($
 	return total;
     };
     
-    $rootScope.addProductToCart = function(product_id)
+    $rootScope.add_product_to_cart = function(product_id)
     {
-
 	var data = 
 	{
-		product_id : product_id
+            product_id : product_id
 	};
 
 	$.ajax({
@@ -361,8 +430,7 @@ eappApp.controller('CartController', ['$scope','$rootScope', '$http', function($
                     {
                         rowid : response_data.rowid,
                         store_product : response_data.store_product,
-                        product : response_data.product,
-                        retailer : response_data.retailer,
+                        top_five_store_products : [],
                         quantity : 1
                     };
 
@@ -396,7 +464,7 @@ eappApp.controller('CartController', ['$scope','$rootScope', '$http', function($
         }
         
         return false;
-    }
+    };
     
     $rootScope.getRowID = function(product_id)
     {
@@ -433,7 +501,7 @@ eappApp.controller('CartController', ['$scope','$rootScope', '$http', function($
         }
     };
     
-    $rootScope.removeProductFromCart = function(product_id)
+    $rootScope.remove_product_from_cart = function(product_id)
     {
         
         var data = 
@@ -465,11 +533,11 @@ eappApp.controller('CartController', ['$scope','$rootScope', '$http', function($
 	});
     };
 				      
-     $rootScope.canAddToCart = function(product_id)
+     $rootScope.can_add_to_cart = function(product_id)
      {
         for(var key in $rootScope.cart)
 	{
-            if(parseInt($rootScope.cart[key].store_product.id) === parseInt(product_id))
+            if(parseInt($rootScope.cart[key].store_product.product_id) === parseInt(product_id))
             {
                 return false;
             }

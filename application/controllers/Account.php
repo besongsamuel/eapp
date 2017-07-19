@@ -34,6 +34,12 @@ class Account extends CI_Controller {
         $this->parser->parse('eapp_template', $this->data);
     }
     
+    public function register() 
+    {
+        $this->data['body'] = $this->load->view('account/register', $this->data, TRUE);
+        $this->parser->parse('eapp_template', $this->data);
+    }
+    
     
     
     
