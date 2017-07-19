@@ -35,10 +35,12 @@ class Cart extends CI_Controller {
     
     public function product($id)
     {
-        $storeProduct = $this->cart_model->getStoreProduct($id);
-        $data["relatedProducts"] = $storeProduct->related_products;
-        $data["retailer"] = $storeProduct->retailer;
-        $data['store_product'] = addslashes(json_encode($storeProduct));
+        // get best product
+        $best_store_product = $this->cart_model->get_best_store_product($id, DEFAULT_DISTANCE, MAX_DISTANCE, $this->user);
+        $store_product = $this->cart_model->getStoreProduct($best_store_product->id);
+        $data["relatedProducts"] = $store_product->related_products;
+        $data["retailer"] = $store_product->retailer;
+        $data['store_product'] = addslashes(json_encode($store_product));
         $data['products'] = addslashes(json_encode($this->admin_model->get_all(PRODUCT_TABLE)));
         $this->data['body'] = $this->load->view('cart/product', $data, TRUE);
         $this->parser->parse('eapp_template', $this->data);

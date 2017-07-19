@@ -201,7 +201,7 @@ class CI_Model {
                 // Get associated store products
                 if($includeRelatedProducts)
                 {
-                    $store_product->related_products = $this->getRelatedProducts($store_product);
+                    $store_product->related_products = $this->get_related_products($store_product);
                 }
                 
             }
@@ -228,16 +228,8 @@ class CI_Model {
      * This method gets the other store products related to this store product
      * @param type $storeProduct
      */
-    private function getRelatedProducts($store_product_id, $latestProduct = true) 
+    private function get_related_products($storeProduct, $latestProduct = true) 
     {
-	// Get the store product object
-	if($latestProduct)
-	{
-		$where = array('period_from <=' => date("Y-m-d"), 'period_to >=' => date("Y-m-d"));
-		$this->db->where($where);
-	}
-	// Get the store product
-	$storeProduct = $this->get(STORE_PRODUCT_TABLE, $store_product_id);
         $array = array("product_id" => $storeProduct->product_id, STORE_PRODUCT_TABLE.".id !=" => $storeProduct->id);
         $get = sprintf("%s.*, %s.name, %s.image, %s.name as retailer_name", STORE_PRODUCT_TABLE, PRODUCT_TABLE, PRODUCT_TABLE, CHAIN_TABLE);
         $join = sprintf("%s.product_id = %s.id", STORE_PRODUCT_TABLE, PRODUCT_TABLE);
@@ -247,6 +239,12 @@ class CI_Model {
         $this->db->join(PRODUCT_TABLE, $join);
         $this->db->join(CHAIN_TABLE, $join2);
         $this->db->where($array);
+        // Get the store product object
+	if($latestProduct)
+	{
+            $where = array('period_from <=' => date("Y-m-d"), 'period_to >=' => date("Y-m-d"));
+            $this->db->where($where);
+	}
         return $this->db->get()->result();
     }
     
