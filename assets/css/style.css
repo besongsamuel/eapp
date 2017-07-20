@@ -76,11 +76,8 @@ body { font-family: 'Titillium Web', sans-serif; }
 
 .mainmenu-area {background: none repeat scroll 0 0 #1abc9c;
 font-family: "Roboto Condensed",sans-serif;
-text-transform: uppercase;
 width: 100%;
 z-index: 999;}
-
-
 
 .logo h1 {
     font-size: 40px;
@@ -126,7 +123,6 @@ z-index: 999;}
     margin-left: 15px;
 }
 
-
 .shopping-item:hover {
     background: none repeat scroll 0 0 #1abc9c;
     border-color: #1abc9c;
@@ -142,14 +138,14 @@ z-index: 999;}
 }
 
 
-.mainmenu-area ul.navbar-nav li a {
+.mainmenu-area ul.navbar-nav li a, .main-menu-item {
     color: #fff;
     font-size: 16px;
     font-weight: 700;
     padding: 20px;
 }
 
-.mainmenu-area ul.navbar-nav li:hover a, .mainmenu-area ul.navbar-nav li.active a {background: #222}
+.mainmenu-area ul.navbar-nav li:hover a, .mainmenu-area ul.navbar-nav li.active a, .main-menu-item {background: #222}
 .mainmenu-area .nav > li > a:focus {color: #000}
 
 .slider-area {clear: both}
