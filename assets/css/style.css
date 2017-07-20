@@ -138,14 +138,14 @@ z-index: 999;}
 }
 
 
-.mainmenu-area ul.navbar-nav li a, .main-menu-item {
+.mainmenu-area ul.navbar-nav li a{
     color: #fff;
     font-size: 16px;
     font-weight: 700;
     padding: 20px;
 }
 
-.mainmenu-area ul.navbar-nav li:hover a, .mainmenu-area ul.navbar-nav li.active a, .main-menu-item {background: #222}
+.mainmenu-area ul.navbar-nav li:hover a, .mainmenu-area ul.navbar-nav li.active a {background: #222}
 .mainmenu-area .nav > li > a:focus {color: #000}
 
 .slider-area {clear: both}
