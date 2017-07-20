@@ -21,6 +21,41 @@ $(document).ready(function()
 
 </script>   
 
+<div class="md-menu-demo" ng-controller="MenuController" ng-cloak>
+
+  <div class="menu-demo-container" layout-align="center center" layout="column">
+    <h2 class="md-title">Simple dropdown menu</h2>
+    <p>Applying the <code>md-menu-origin</code> and <code>md-menu-align-target</code> attributes ensure that the menu elements align.
+    Note: If you select the Redial menu option, then a modal dialog will zoom out of the phone icon button.</p>
+    <md-menu>
+      <md-button aria-label="Open phone interactions menu" class="md-icon-button" ng-click="openMenu($mdMenu, $event)">
+        <md-icon md-menu-origin md-svg-icon="call:phone"></md-icon>
+      </md-button>
+      <md-menu-content width="4">
+        <md-menu-item>
+          <md-button ng-click="redial($event)">
+            <md-icon md-svg-icon="call:dialpad" md-menu-align-target></md-icon>
+            Redial
+          </md-button>
+        </md-menu-item>
+        <md-menu-item>
+          <md-button disabled="disabled" ng-click="ctrl.checkVoicemail()">
+            <md-icon md-svg-icon="call:voicemail"></md-icon>
+            Check voicemail
+          </md-button>
+        </md-menu-item>
+        <md-menu-divider></md-menu-divider>
+        <md-menu-item>
+          <md-button ng-click="ctrl.toggleNotifications()">
+            <md-icon md-svg-icon="social:notifications-{{ctrl.notificationsEnabled ? 'off' : 'on'}}"></md-icon>
+            {{ctrl.notificationsEnabled ? 'Disable' : 'Enable' }} notifications
+          </md-button>
+        </md-menu-item>
+      </md-menu-content>
+    </md-menu>
+  </div>
+</div>
+
     <!-- Begin mainmenu area -->
     <div class="mainmenu-area" ng-controller="MenuController">
         <div class="container">
@@ -50,8 +85,7 @@ $(document).ready(function()
     <!-- End mainmenu area -->
     
 <div id="admin-container" class="single-product-area" ng-controller="CartController">
-        <div class="zigzag-bottom"></div>
-        <div class="container">
+    <md-content>
             <div class="row">
                 <div class="col-md-12">
                     <div class="product-content-right">
@@ -124,36 +158,12 @@ $(document).ready(function()
                                             </div>
                                         </div>
                                     </div>
-                                    
                                 </div>
-                            </div>
-                        </div>
-                        
-                        <div class="related-products-wrapper" ng-show="relatedProductsAvailable()">
-                            <h2 class="related-products-title">Related Products</h2>
-                            <div class="related-products-carousel">
-                                <?php foreach($relatedProducts as $product): ?>
-                                <div class="single-product">
-                                    <div class="product-f-image">   
-                                        <img ng-src="http://<?php echo base_url("assets/img/products/").$product->image;?>" style="height: 100%;" alt="">
-                                        <div class="product-hover">
-                                            <a href ng-show="canAddToCart(<?php echo $product->id; ?>)" class="add-to-cart-link" ng-click="addProductToCart(<?php echo $product->id; ?>)"><i class="fa fa-shopping-cart"></i> Add to cart</a>
-                                                <a href ng-hide="canAddToCart(<?php echo $product->id; ?>)" class="add-to-cart-link" ng-click="removeProductFromCart(<?php echo $product->id; ?>)"><i class="fa fa-shopping-cart"></i> Remove</a>
-                                            <a href ng-click="viewProductDetails(<?php echo $product->id; ?>)" class="view-details-link"><i class="fa fa-link"></i> See details</a>
-                                        </div>
-                                    </div>
-
-                                    <h2><a href ng-click="viewStoreDetails(<?php echo $product->id; ?>)"><?php echo $product->retailer_name; ?></a></h2>
-                                    <div class="product-carousel-price">
-                                        <ins>CAD <?php echo $product->price; ?></ins><del>CAD <?php echo $product->regular_price; ?></del>
-                                    </div>
-                                </div>
-                            <?php endforeach; ?>                                  
                             </div>
                         </div>
                     </div>                    
                 </div>
             </div>
-        </div>
-    </div>
+        </md-content>
+</div>
    

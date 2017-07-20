@@ -76,6 +76,9 @@
     <!-- Menu Controller Script -->
     <script src="http://<?php echo base_url("assets/js/menu-controller.js")?>"></script>
     
+    <!-- Menu Controller Script -->
+    <script src="http://<?php echo base_url("assets/js/cart-controller.js")?>"></script>
+    
     <!-- ngNotificationsBar Script -->
     <script src="http://<?php echo base_url("assets/js/ngNotificationsBar.min.js")?>"></script>
     
@@ -277,9 +280,6 @@
             </div>
         </div>
     </div> <!-- End footer bottom area -->
-   
-
-    
    
   </body>
 </html>
