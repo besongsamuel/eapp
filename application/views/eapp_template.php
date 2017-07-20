@@ -227,7 +227,7 @@
 			<li><a href="http://<?php echo site_url("cart"); ?>">Votre panier</a></li>
 			<li>
 				<md-menu>
-					<a href  ng-click="$mdMenu.open($event)" class="main-menu-item">Réduisez vos dépenses</a>
+					<a href  ng-click="$mdMenu.open($event)" class="main-menu-item">Blogue</a>
 					<md-menu-content>
 					  	<md-menu-item><a href="http://<?php echo site_url("home/grocery_press"); ?>">Épicerie dans la presse</a></md-menu-item>
 					  	<md-menu-item><a href="http://<?php echo site_url("home/stats"); ?>">STAT</a></md-menu-item>
