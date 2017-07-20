@@ -215,7 +215,7 @@
                         <li class="active"><a href="http://<?php echo site_url("home"); ?>">Accueil</a></li>
 			<li>
 			    <md-menu>
-				<a href  ng-click="$mdMenu.open($event)" class="main-menu-item">Réduisez vos dépenses</a>
+				<a href md-menu-origin  ng-click="$mdMenu.open($event)" class="main-menu-item">Réduisez vos dépenses</a>
 				<md-menu-content>
 					<md-menu-item><a href="http://<?php echo site_url("account/my_list"); ?>">Votre liste d'épicerie</a></md-menu-item>
 					<md-menu-item><a href="http://<?php echo site_url("shop/flyers"); ?>">Les circulaires des magasins</a></md-menu-item>
@@ -227,7 +227,7 @@
 			<li><a href="http://<?php echo site_url("cart"); ?>">Votre panier</a></li>
 			<li>
 				<md-menu>
-					<a href  ng-click="$mdMenu.open($event)" class="main-menu-item">Blogue</a>
+					<a href md-menu-origin  ng-click="$mdMenu.open($event)" class="main-menu-item">Blogue</a>
 					<md-menu-content>
 					  	<md-menu-item><a href="http://<?php echo site_url("home/grocery_press"); ?>">Épicerie dans la presse</a></md-menu-item>
 					  	<md-menu-item><a href="http://<?php echo site_url("home/stats"); ?>">STAT</a></md-menu-item>
@@ -239,7 +239,7 @@
 			 </li>
 			 <li>
 				<md-menu>
-					<a href  ng-click="$mdMenu.open($event)" class="main-menu-item">Contact</a>
+					<a href md-menu-origin ng-click="$mdMenu.open($event)" class="main-menu-item">Contact</a>
 					<md-menu-content>
 						<md-menu-item><a href="http://<?php echo site_url("home/contact"); ?>">Formulaire</a></md-menu-item>
 					</md-menu-content>
