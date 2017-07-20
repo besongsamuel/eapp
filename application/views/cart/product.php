@@ -20,69 +20,6 @@ $(document).ready(function()
 });
 
 </script>   
-
-<div class="md-menu-demo" ng-controller="MenuController" ng-cloak>
-
-  <div class="menu-demo-container" layout-align="center center" layout="column">
-    <h2 class="md-title">Simple dropdown menu</h2>
-    <p>Applying the <code>md-menu-origin</code> and <code>md-menu-align-target</code> attributes ensure that the menu elements align.
-    Note: If you select the Redial menu option, then a modal dialog will zoom out of the phone icon button.</p>
-    <md-menu>
-      <md-button aria-label="Open phone interactions menu" class="md-icon-button" ng-click="openMenu($mdMenu, $event)">
-        <md-icon md-menu-origin md-svg-icon="call:phone"></md-icon>
-      </md-button>
-      <md-menu-content width="4">
-        <md-menu-item>
-          <md-button ng-click="redial($event)">
-            <md-icon md-svg-icon="call:dialpad" md-menu-align-target></md-icon>
-            Redial
-          </md-button>
-        </md-menu-item>
-        <md-menu-item>
-          <md-button disabled="disabled" ng-click="ctrl.checkVoicemail()">
-            <md-icon md-svg-icon="call:voicemail"></md-icon>
-            Check voicemail
-          </md-button>
-        </md-menu-item>
-        <md-menu-divider></md-menu-divider>
-        <md-menu-item>
-          <md-button ng-click="ctrl.toggleNotifications()">
-            <md-icon md-svg-icon="social:notifications-{{ctrl.notificationsEnabled ? 'off' : 'on'}}"></md-icon>
-            {{ctrl.notificationsEnabled ? 'Disable' : 'Enable' }} notifications
-          </md-button>
-        </md-menu-item>
-      </md-menu-content>
-    </md-menu>
-  </div>
-</div>
-
-    <!-- Begin mainmenu area -->
-    <div class="mainmenu-area" ng-controller="MenuController">
-        <div class="container">
-            <div class="row">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                </div> 
-                <div class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav">
-                        <li><a href="http://<?php echo site_url("home"); ?>">Accueil</a></li>
-                        <li><a href="http://<?php echo site_url("shop"); ?>">Magasin</a></li>
-                        <li><a href="http://<?php echo site_url("shop"); ?>">Trouver produit</a></li>
-                        <li class="active"><a href="http://<?php echo site_url("cart"); ?>">Cart</a></li>
-                        <li><a href="#">Catégories</a></li>
-                        <li><a href="#">Dépliants</a></li>
-                        <li><a href="#">Contactez nous</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div> 
-    <!-- End mainmenu area -->
     
 <div id="admin-container" class="single-product-area" ng-controller="CartController">
     <md-content>
