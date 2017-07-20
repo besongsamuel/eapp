@@ -213,48 +213,50 @@
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
                         <li class="active"><a href="http://<?php echo site_url("home"); ?>">Accueil</a></li>
-												<li>
-												    <md-menu>
-																<a href  ng-click="$mdMenu.open($event)">Réduisez vos dépenses</a>
-																<md-menu-content>
-   																	<md-menu-item><a href="http://<?php echo site_url("account/my_list"); ?>">Votre liste d'épicerie</a></md-menu-item>
-																		<md-menu-item><a href="http://<?php echo site_url("shop/flyers"); ?>">Les circulaires des magasins</a></md-menu-item>
-																		<md-menu-item><a href="http://<?php echo site_url("shop/categories"); ?>">Les catégories de produits</a></md-menu-item>
- 																</md-menu-content>
-													  </md-menu>
-											  </li>
+			<li>
+			    <md-menu>
+				<a href  ng-click="$mdMenu.open($event)" class="main-menu-item">Réduisez vos dépenses</a>
+				<md-menu-content>
+					<md-menu-item><a href="http://<?php echo site_url("account/my_list"); ?>">Votre liste d'épicerie</a></md-menu-item>
+					<md-menu-item><a href="http://<?php echo site_url("shop/flyers"); ?>">Les circulaires des magasins</a></md-menu-item>
+					<md-menu-item><a href="http://<?php echo site_url("shop/categories"); ?>">Les catégories de produits</a></md-menu-item>
+				</md-menu-content>
+			    </md-menu>
+		  	</li>
                         <li><a href="http://<?php echo site_url("shop"); ?>">Trouvez un produit</a></li>
-											  <li><a href="http://<?php echo site_url("cart"); ?>">Votre panier</a></li>
-												<li>
-														<md-menu>
-																<a href  ng-click="$mdMenu.open($event)">Réduisez vos dépenses</a>
-																<md-menu-content>
-																		<md-menu-item><a href="http://<?php echo site_url("home/grocery_press"); ?>">Épicerie dans la presse</a></md-menu-item>
-																		<md-menu-item><a href="http://<?php echo site_url("home/stats"); ?>">STAT</a></md-menu-item>
-																		<md-menu-item><a href="http://<?php echo site_url("home/video"); ?>">Vidéo</a></md-menu-item>
-																	  <md-menu-item><a href="http://<?php echo site_url("home/store_policy"); ?>">Politiques des magasins</a></md-menu-item>
-																	  <md-menu-item><a href="http://<?php echo site_url("home/about_us"); ?>">À propos</a></md-menu-item>
-																</md-menu-content>
-														</md-menu>
-												 </li>
-												 <li>
-														<md-menu>
-																<a href  ng-click="$mdMenu.open($event)">Contact</a>
-																<md-menu-content>
-																		<md-menu-item><a href="http://<?php echo site_url("home/contact"); ?>">Formulaire</a></md-menu-item>
-																</md-menu-content>
-														</md-menu>
-												 </li>
+			<li><a href="http://<?php echo site_url("cart"); ?>">Votre panier</a></li>
+			<li>
+				<md-menu>
+					<a href  ng-click="$mdMenu.open($event)" class="main-menu-item">Réduisez vos dépenses</a>
+					<md-menu-content>
+					  	<md-menu-item><a href="http://<?php echo site_url("home/grocery_press"); ?>">Épicerie dans la presse</a></md-menu-item>
+					  	<md-menu-item><a href="http://<?php echo site_url("home/stats"); ?>">STAT</a></md-menu-item>
+					  	<md-menu-item><a href="http://<?php echo site_url("home/video"); ?>">Vidéo</a></md-menu-item>
+					  	<md-menu-item><a href="http://<?php echo site_url("home/store_policy"); ?>">Politiques des magasins</a></md-menu-item>
+					  	<md-menu-item><a href="http://<?php echo site_url("home/about_us"); ?>">À propos</a></md-menu-item>
+					</md-menu-content>
+				</md-menu>
+			 </li>
+			 <li>
+				<md-menu>
+					<a href  ng-click="$mdMenu.open($event)" class="main-menu-item">Contact</a>
+					<md-menu-content>
+						<md-menu-item><a href="http://<?php echo site_url("home/contact"); ?>">Formulaire</a></md-menu-item>
+					</md-menu-content>
+				</md-menu>
+			 </li>
 
                     </ul>
                 </div>
             </div>
         </div>
     </div> 
+	  
     <!-- End mainmenu area -->
+    <div id="main-body">	
+    	{body}
+    </div>
 
-    {body}
-    
     <div class="footer-top-area">
         <div class="zigzag-bottom"></div>
         <div class="container">
