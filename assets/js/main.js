@@ -68,7 +68,7 @@ function convert_to_string_date(date)
 }
 
 // Define the `eapp Application` module
-var eappApp = angular.module('eappApp', ['ngMaterial', 'md.data.table', 'lfNgMdFileInput', 'mdCountrySelect', 'ngNotificationsBar', 'ngAnimate']);
+var eappApp = angular.module('eappApp', ['ngMaterial', 'md.data.table', 'lfNgMdFileInput', 'mdCountrySelect', 'ngNotificationsBar', 'ngAnimate', 'angularCountryState']);
 
 eappApp.factory('Form', [ '$http', 'notifications', function($http, notifications) 
 {
