@@ -7,7 +7,6 @@ class Account extends CI_Controller {
     {
         parent::__construct();
 	   $this->load->library('form_validation');
-        $this->load->model('user_model');
     }
     
     /**
@@ -61,7 +60,7 @@ class Account extends CI_Controller {
     /*
      * User login
      */
-    public function login(){
+    public function do_login(){
         $data = array();
         if($this->session->userdata('success_msg')){
             $data['success_msg'] = $this->session->userdata('success_msg');

@@ -36,7 +36,7 @@
                                     </md-input-container>
               
                                     <!--Select the country and state origin of the product-->
-                                    <country-state-select country="user.country"></country-state-select>
+                                    <country-state-select country="Canada" countryState="Quebec" class="col-sm-12"</country-state-select>
 
                                     <md-input-container class="md-block col-md-12" flex-gt-sm>
                                         <label>Adresse</label>

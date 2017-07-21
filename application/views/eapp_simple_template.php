@@ -66,8 +66,9 @@
     
     <!-- Angular JS Country/State Select -->
     <script src="http://<?php echo base_url("assets/js/md-country-select.js")?>"></script>
+    
     <!-- Angular JS Country/State Select -->
-    <script src="http://<?php echo base_url("assets/js/md-angular-country-state.js")?>"></script>
+    <script src="http://<?php echo base_url("assets/js/angular-country-state.js")?>"></script>
     
     <!-- Main Script -->
     <script src="http://<?php echo base_url("assets/js/main.js")?>"></script>
