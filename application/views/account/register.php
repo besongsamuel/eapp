@@ -49,18 +49,8 @@
                                     </md-input-container>
 
                                     <md-input-container class="md-block col-md-6" flex-gt-sm>
-                                        <label>Ville</label>
-                                            <md-icon md-svg-src="http://{{base_url}}/assets/icons/ic_home_black_24px.svg"></md-icon>
-                                        <input required name="ville" ng-model="user.ville" />
-                                        <div class="hint" ng-if="showHints">Entrez votre ville actuelle</div>
-                                        <div ng-messages="signupForm.ville.$error" ng-if="!showHints">
-                                            <div ng-message="required">Vous devez entrer une ville</div>
-                                        </div>
-                                    </md-input-container>
-
-                                    <md-input-container class="md-block col-md-6" flex-gt-sm>
                                         <label>Code Postal</label>
-                                        <input required name="ville" ng-model="user.postcode" />
+                                        <input required name="postcode" ng-model="user.postcode" />
                                         <div class="hint" ng-if="showHints">Entrez votre code postale</div>
                                         <div ng-messages="signupForm.postcode.$error" ng-if="!showHints">
                                             <div ng-message="required"></div>
