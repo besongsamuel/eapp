@@ -8,7 +8,7 @@
                             <div style="float:right; font-size: 85%; position: relative; top:-10px; ">Vous avez un compte!  <a id="signinlink" href="#" onclick="$('#signupbox').hide(); $('#loginbox').show()">Se connecter</a></div>
                         </div>  
                         <div class="panel-body" >
-                            <form id="signupForm" class="form-horizontal" role="form" novalidate>
+                            <form id="signupForm" class="form-horizontal" role="form" novalidate ng-submit="register()">
                                 
                                 <div id="alert_enregist" style="display:none" class="alert alert-danger">
                                     <p>Erreur:</p>
@@ -22,7 +22,7 @@
                                     <md-input-container class="md-block col-md-6" flex-gt-sm>
                                         <label>Prenom</label>
                                         <md-icon md-svg-src="http://{{base_url}}/assets/icons/ic_person_black_24px.svg"></md-icon>
-                                        <input name="firstname" ng-model="user.firstname" />
+                                    <input name="firstname" ng-model="user.firstname" />
                                         <div class="hint" ng-if="showHints">Entrez votre prenom</div>
                                     </md-input-container>
                                     <!-- -->
@@ -30,20 +30,20 @@
                                         <label>Nom</label>
                                         <input required name="lastname" ng-model="user.lastname" />
                                         <div class="hint" ng-if="showHints">Entrez votre nom de famille</div>
-                                            <div ng-messages="signupForm.lastname.$error" ng-if="!showHints">
+                                        <div ng-messages="signupForm.lastname.$error" ng-if="!showHints">
                                             <div ng-message="required">Vous devex entrer au moins un nom</div>
                                         </div>
                                     </md-input-container>
               
                                     <!--Select the country and state origin of the product-->
-                                    <country-state-select country="Canada" countryState="Quebec" class="col-sm-12"</country-state-select>
+                                    <country-state-select country="user.country" state="user.state" class="col-sm-12"</country-state-select>
 
                                     <md-input-container class="md-block col-md-12" flex-gt-sm>
                                         <label>Adresse</label>
                                         <md-icon md-svg-src="http://{{base_url}}/assets/icons/ic_place_black_24px.svg"></md-icon>
                                         <input required name="address" ng-model="user.address" />
                                         <div class="hint" ng-if="showHints">Entrez votre adresse actuelle</div>
-                                            <div ng-messages="signupForm.address.$error" ng-if="!showHints">
+                                        <div ng-messages="signupForm.address.$error" ng-if="!showHints">
                                             <div ng-message="required">Vous devez entrer une adresse</div>
                                         </div>
                                     </md-input-container>
@@ -53,16 +53,16 @@
                                             <md-icon md-svg-src="http://{{base_url}}/assets/icons/ic_home_black_24px.svg"></md-icon>
                                         <input required name="ville" ng-model="user.ville" />
                                         <div class="hint" ng-if="showHints">Entrez votre ville actuelle</div>
-                                            <div ng-messages="signupForm.ville.$error" ng-if="!showHints">
+                                        <div ng-messages="signupForm.ville.$error" ng-if="!showHints">
                                             <div ng-message="required">Vous devez entrer une ville</div>
                                         </div>
                                     </md-input-container>
 
                                     <md-input-container class="md-block col-md-6" flex-gt-sm>
                                         <label>Code Postal</label>
-                                        <input required name="ville" ng-model="user.codepostale" />
-                                        <div class="hint" ng-if="showHints">Entrez un mot de passe avec au moins 8 caractères</div>
-                                            <div ng-messages="signupForm.codepostale.$error" ng-if="!showHints">
+                                        <input required name="ville" ng-model="user.postcode" />
+                                        <div class="hint" ng-if="showHints">Entrez votre code postale</div>
+                                        <div ng-messages="signupForm.postcode.$error" ng-if="!showHints">
                                             <div ng-message="required"></div>
                                         </div>
                                     </md-input-container>
@@ -70,24 +70,17 @@
                                     <md-input-container class="md-block col-md-6" flex-gt-sm>
                                         <label>Numbero de telephone N# 1</label>
                                         <md-icon md-svg-src="http://{{base_url}}/assets/icons/ic_local_phone_black_24px.svg"></md-icon>
-                                        <input required name="phone1" ng-model="user.phone1" />
-                                        <div class="hint" ng-if="showHints">Entrez un mot de passe avec au moins 8 caractères</div>
-                                            <div ng-messages="signupForm.phone1.$error" ng-if="!showHints">
-                                            <div ng-message="required"></div>
-                                        </div>
+                                        <input name="phone1" ng-model="user.phone1" />
+                                        <div class="hint" ng-if="showHints">Entrez votre numéro de téléphone principal</div>   
                                     </md-input-container>
 
                                     <md-input-container class="md-block col-md-6" flex-gt-sm>
                                         <label>Numbero de telephone N# 2</label>
-                                        <input required name="phone2" ng-model="user.phone2" />
-                                        <div class="hint" ng-if="showHints">Entrez un mot de passe avec au moins 8 caractères</div>
-                                            <div ng-messages="signupForm.phone2.$error" ng-if="!showHints">
-                                            <div ng-message="required"></div>
-                                        </div>
+                                        <input name="phone2" ng-model="user.phone2" />
+                                        <div class="hint" ng-if="showHints">Entrez votre numéro de téléphone secondaire</div>
                                     </md-input-container>
                                 
                                 </fieldset>
-                                
                                 
                                 <fieldset>
                                     
