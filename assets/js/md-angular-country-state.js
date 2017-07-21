@@ -31,6 +31,8 @@
                     scope.countryLabel = "Country : ";
                     scope.stateLabel = "State : ";
                     scope.countrySelectLabel = "Select : ";
+		    scope.countryClass = "md-block col-sm-6";
+		    scope.stateClass = "md-block col-sm-6";
 
                     if(typeof attrs.countryLabel != 'undefined'){
                         scope.countryLabel = attrs.countryLabel;
@@ -44,11 +46,11 @@
                         scope.countrySelectLabel = attrs.countrySelectLabel;
                     }
 					
-					if(typeof attrs.countryClass != 'undefined'){
+		    if(typeof attrs.countryClass != 'undefined'){
                         scope.countryClass = attrs.countryClass;
                     }
 					
-					if(typeof attrs.stateClass != 'undefined'){
+		    if(typeof attrs.stateClass != 'undefined'){
                         scope.stateClass = attrs.stateClass;
                     }
                     
