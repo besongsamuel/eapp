@@ -146,7 +146,7 @@ eappApp.controller('HomeController', ["$scope", function($scope)
   
 }]);
 
-eappApp.controller('AccountController', ["$scope", function($scope) 
+eappApp.controller('AccountController', ["$scope", "$http", function($scope, "$http") 
 {
    $scope.showHints = true;
    
@@ -159,6 +159,62 @@ eappApp.controller('AccountController', ["$scope", function($scope)
         "Le prénom de votre premier amour",
         "Le deuxième prenom de votre plus jeune enfant"
     ];
+	
+	$scope.register = function()
+	{
+		if(signupForm.$valid)
+		{
+			// Create form data
+			var formData = new FormData();
+			formData.append("account[email]", $scope.user.email);
+			formData.append("account[password]", $scope.user.email);
+			formData.append("account[security_question_id]", $scope.user.security_question_id);
+			formData.append("account[security_question_answer]", $scope.user.security_question_answer);
+			
+			formData.append("profile[firstname]", $scope.user.firstname);
+			formData.append("profile[lastname]", $scope.user.lastname);
+			formData.append("profile[country]", $scope.user.country);
+			formData.append("profile[state]", $scope.user.state);
+			formData.append("profile[city]", $scope.user.city);
+			formData.append("profile[address]", $scope.user.address);
+			formData.append("profile[postcode]", $scope.user.postcode);
+			formData.append("profile[phone1]", $scope.user.postcode);
+			formData.append("profile[phone2]", $scope.user.postcode);
+			
+			$http.post
+			(
+				"http://" + $scope.site_url.concat("/account/registration"),
+				{
+					transformRequest: angular.identity,
+					headers: {'Content-Type': undefined}
+				}.then
+				(
+					function(result)
+					{
+						if(result.data.success)
+						{
+							// Redirect to confirmation page. 
+						}
+						
+						if(!result.data.success)
+						{
+						
+						}
+					},
+					function(error)
+					{
+					
+					},
+				)
+			);
+		}
+		
+		if(!signupForm.$valid)
+		{
+			// This will cause the form to show errors
+			$scope.showHinds = false;
+		}
+	};
    
 }]);
 
