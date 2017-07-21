@@ -31,13 +31,13 @@ class Account extends CI_Controller {
     public function login() 
     {
         $this->data['body'] = $this->load->view('account/login', $this->data, TRUE);
-        $this->parser->parse('eapp_template', $this->data);
+        $this->parser->parse('eapp_simple_template', $this->data);
     }
     
     public function register() 
     {
         $this->data['body'] = $this->load->view('account/register', $this->data, TRUE);
-        $this->parser->parse('eapp_template', $this->data);
+        $this->parser->parse('eapp_simple_template', $this->data);
     }
     
     

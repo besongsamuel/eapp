@@ -122,7 +122,6 @@
     </script>
   </head>
   <body>
-    <notifications-bar class="notifications"></notifications-bar>
     <!-- Begin Header Section -->   
     <div class="header-area">
         <div class="container">
@@ -164,41 +163,8 @@
         </div>
     </div> 
     <!-- End header area -->
-    
-    <!-- Begin Site Branding Section -->
-    <div class="site-branding-area" ng-controller="CartController">
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-6">
-                    <div class="logo">
-                        <h1><a href="index.html">Epicery<span></span></a></h1>
-                    </div>
-                </div>
-                
-                <div class="col-sm-6">
-                    <div class="shopping-item">
-                        <a href="http://<?php echo site_url("cart"); ?>">Cart - <span class="cart-amunt">CAD {{get_cart_total_price() | number : 2}}</span> <i class="fa fa-shopping-cart"></i> <span class="product-count">{{get_cart_item_total()}}</span></a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div> 
-    <!-- End site branding area -->
-    
-    <div class="container search-box">
-        <div class="row">
-            <form action="#">
-                <div class="col-md-11 single-sidebar">
-                    <input type="text" placeholder="Search products...">
-                </div>
-                <div class="col-md-1">
-                    <input type="submit" value="Search">
-                </div>
-            </form>
-        </div>
-    </div>
-		
-		<!-- Begin mainmenu area -->
+        
+    <!-- Begin mainmenu area -->
     <div class="mainmenu-area" ng-controller="MenuController">
         <div class="container">
             <div class="row">

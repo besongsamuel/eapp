@@ -4,8 +4,11 @@
  * and open the template in the editor.
  */
 
-angular.module("eappApp").controller("MenuController", ["$rootScope", function($rootScope) 
+angular.module("eappApp").controller("MenuController", ["$rootScope", "$http", function($rootScope, $http) 
 {
-   
+   $rootScope.loadPage = function(url)
+   {
+       
+   };
 }]);
 

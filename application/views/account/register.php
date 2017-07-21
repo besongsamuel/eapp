@@ -1,5 +1,5 @@
 
-    <div class="container">    
+<div class="container" ng-controller="AccountController">    
 
         <div id="signupbox" style=" margin-top:50px" class="mainbox col-md-8 col-md-offset-2 col-sm-8 col-sm-offset-2">
                     <div class="panel panel-info">
@@ -15,134 +15,140 @@
                                     <span></span>
                                 </div>
                                 
-                                <!-- RENSEIGNEMENT -->
-                                <div class="form-group">
-                                    <label for="prenom" class="col-md-3 control-label">Prenom</label>
-                                    <div class="col-md-9">
-                                        <input type="text" class="form-control" id="prenom" name="prenom" placeholder="prenom" required>
-                                    </div>
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label for="nom" class="col-md-3 control-label">Nom</label>
-                                    <div class="col-md-9">
-                                        <input type="text" class="form-control" id="nom" name="prenom" placeholder="Nom" required>
-                                    </div>
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label for="adresse" class="col-md-3 control-label">Adresse</label>
-                                    <div class="col-md-9">
-                                        <input type="text" class="form-control" id="adresse" name="adresse" placeholder="Adresse" required>
-                                    </div>
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label for="ville" class="col-md-3 control-label">Ville</label>
-                                    <div class="col-md-9">
-                                        <input type="text" class="form-control" id="ville" name="ville" placeholder="Ville" required>
-                                    </div>
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label for="code_postal" class="col-md-3 control-label">Code Postal</label>
-                                    <div class="col-md-9">
-                                        <input type="text" class="form-control" maxlength="7" id="code_postal" name="cp" placeholder="Code postal" required>
-                                    </div>
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label for="province" class="col-md-3 control-label">Province</label>
-                                    <div class="col-md-9">
-                                        <select class=" form-control selectpicker" data-live-search="true" id="province" required>
-                                            <option>Alberta</option>
-                                            <option>Colombie-Britannique</option>
-                                            <option>Île-du-Prince-Édouard</option>
-                                            <option>Manitoba </option>
-                                            <option>Nouveau-Brunswick </option>
-                                            <option>Nouvelle-Écosse </option>
-                                            <option>Ontario </option>
-                                            <option selected>Québec </option>
-                                            <option>Saskatchewan </option>
-                                            <option>Terre-Neuve et Labrador </option>
-                                        </select>
-                                    </div>
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label for="pays" class="col-md-3 control-label">Pays</label>
-                                    <div class="col-md-9">
-                                        <input type="text" class="form-control" id="pays" name="pays" placeholder="Pays">
-                                    </div>
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label for="phone" class="col-md-3 control-label">Téléphone</label>
-                                    <div class="col-md-9">
-                                        <input type="text" class="form-control" id="phone" name="phone" placeholder="Téléphone" required>
-                                    </div>
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label for="phone_2" class="col-md-3 control-label">Téléphone</label>
-                                    <div class="col-md-9">
-                                        <input type="text" class="form-control" id="phone_2" name="phone2" placeholder="Téléphone 2">
-                                    </div>
-                                </div>
-                                
-                                <div class="panel-heading">
-                                    <div class="panel-title" style="font-weight:600; margin-top:50px">IDENTIFICATION</div>
-                                </div>
-                                
-                                  
-                                <div class="form-group">
-                                    <label for="email" class="col-md-3 control-label">Email</label>
-                                    <div class="col-md-9">
-                                        <input type="text" class="form-control" id="email" name="email" placeholder="Adresse email" required>
-                                    </div>
-                                </div>
+                                <fieldset>
                                     
-                                <div class="form-group">
-                                    <label for="register_password" class="col-md-3 control-label">Mot de passe</label>
-                                    <div class="col-md-9">
-                                        <input type="password" id="register_password" data-minlength="8" class="form-control" name="password" placeholder="mot de passe" required>
-                                        <div class="help-block">Minimum de 8 caractere</div>
-                                    </div>
+                                    <legend>FORMULAIRE D'INSCRIPTION</legend>
+                                
+                                    <md-input-container class="md-block col-md-6" flex-gt-sm>
+                                        <label>Prenom</label>
+                                        <md-icon md-svg-src="http://{{base_url}}/assets/icons/ic_person_black_24px.svg"></md-icon>
+                                        <input name="firstname" ng-model="user.firstname" />
+                                        <div class="hint" ng-if="showHints">Entrez votre prenom</div>
+                                    </md-input-container>
+
+                                    <md-input-container class="md-block col-md-6" flex-gt-sm>
+                                        <label>Nom</label>
+                                        <input required name="lastname" ng-model="user.lastname" />
+                                        <div class="hint" ng-if="showHints">Entrez votre nom</div>
+                                            <div ng-messages="loginform.lastname.$error" ng-if="!showHints">
+                                            <div ng-message="required">Vous devex entrer au moins un nom</div>
+                                        </div>
+                                    </md-input-container>
+
+                                    <!--Select the country and state origin of the product-->
+                                    <md-country-select class="col-sm-6" country="store_product.country"></md-country-select>
+
+                                    <md-input-container class="md-block col-md-6" flex-gt-sm>
+                                        <label>Province</label>
+                                        <md-select ng-model="user.province">
+                                            <md-option ng-value="province" ng-repeat="province in provinces">{{ opt }}</md-option>
+                                        </md-select>
+                                    </md-input-container>
+
+                                    <md-input-container class="md-block col-md-12" flex-gt-sm>
+                                        <label>Adresse</label>
+                                        <md-icon md-svg-src="http://{{base_url}}/assets/icons/ic_place_black_24px.svg"></md-icon>
+                                        <input required name="address" ng-model="user.address" />
+                                        <div class="hint" ng-if="showHints">Entrez un mot de passe avec au moins 8 caractères</div>
+                                            <div ng-messages="loginform.address.$error" ng-if="!showHints">
+                                            <div ng-message="required"></div>
+                                        </div>
+                                    </md-input-container>
+
+                                    <md-input-container class="md-block col-md-6" flex-gt-sm>
+                                        <label>Ville</label>
+                                            <md-icon md-svg-src="http://{{base_url}}/assets/icons/ic_home_black_24px.svg"></md-icon>
+                                        <input required name="ville" ng-model="user.ville" />
+                                        <div class="hint" ng-if="showHints">Entrez un mot de passe avec au moins 8 caractères</div>
+                                            <div ng-messages="loginform.ville.$error" ng-if="!showHints">
+                                            <div ng-message="required"></div>
+                                        </div>
+                                    </md-input-container>
+
+                                    <md-input-container class="md-block col-md-6" flex-gt-sm>
+                                        <label>Code Postal</label>
+                                        <input required name="ville" ng-model="user.codepostale" />
+                                        <div class="hint" ng-if="showHints">Entrez un mot de passe avec au moins 8 caractères</div>
+                                            <div ng-messages="loginform.codepostale.$error" ng-if="!showHints">
+                                            <div ng-message="required"></div>
+                                        </div>
+                                    </md-input-container>
+
+                                    <md-input-container class="md-block col-md-6" flex-gt-sm>
+                                        <label>Numbero de telephone N# 1</label>
+                                        <md-icon md-svg-src="http://{{base_url}}/assets/icons/ic_local_phone_black_24px.svg"></md-icon>
+                                        <input required name="phone1" ng-model="user.phone1" />
+                                        <div class="hint" ng-if="showHints">Entrez un mot de passe avec au moins 8 caractères</div>
+                                            <div ng-messages="loginform.phone1.$error" ng-if="!showHints">
+                                            <div ng-message="required"></div>
+                                        </div>
+                                    </md-input-container>
+
+                                    <md-input-container class="md-block col-md-6" flex-gt-sm>
+                                        <label>Numbero de telephone N# 2</label>
+                                        <input required name="phone2" ng-model="user.phone2" />
+                                        <div class="hint" ng-if="showHints">Entrez un mot de passe avec au moins 8 caractères</div>
+                                            <div ng-messages="loginform.phone2.$error" ng-if="!showHints">
+                                            <div ng-message="required"></div>
+                                        </div>
+                                    </md-input-container>
+                                
+                                </fieldset>
+                                
+                                
+                                <fieldset>
                                     
-                                </div>
+                                    <legend>IDENTIFICATION</legend>
                                 
-                                <div class="form-group">
-                                    <label for="confir_password" class="col-md-3 control-label">Confirmer le mot de passe</label>
-                                    <div class="col-md-9">
-                                        <input type="password" id="confir_password" data-minlength="8" class="form-control" name="psw" placeholder="Entrer le même mot de passe" required>
-                                    </div>
-                                    <div class="help-block avec_erreur"></div>
-                                </div>
+                                    <md-input-container class="md-block col-md-12" flex-gt-sm>
+                                        <label>Email</label>
+                                        <md-icon md-svg-src="http://{{base_url}}/assets/icons/ic_email_black_24px.svg"></md-icon>
+                                        <input md-maxlength="30" required name="email" ng-model="user.email" />
+                                        <div class="hint" ng-if="showHints">Entrez votre nom d'utilisateur ou votre email</div>
+                                        <div ng-messages="loginform.email.$error" ng-if="!showHints">
+                                            <div ng-message="required">Name is required.</div>
+                                            <div ng-message="md-maxlength">The username has to be less than 30 characters.</div>
+                                        </div>
+                                    </md-input-container>
+
+                                    <md-input-container class="md-block col-md-6" flex-gt-sm>
+                                        <label>Mot de passe</label>
+                                        <md-icon md-svg-src="http://{{base_url}}/assets/icons/ic_lock_black_24px.svg"></md-icon>
+                                        <input style="border-left : none; border-right : none;border-top : none;" type="password" required name="password" ng-model="user.password" />
+                                        <div class="hint" ng-if="showHints">Entrez un mot de passe avec au moins 8 caractères</div>
+                                            <div ng-messages="loginform.password.$error" ng-if="!showHints">
+                                            <div ng-message="required">Un mot de passe est requis.</div>
+                                        </div>
+                                    </md-input-container>
+
+                                    <md-input-container class="md-block col-md-6" flex-gt-sm>
+                                        <label>Confirmer ot de passe</label>
+                                        <md-icon md-svg-src="http://{{base_url}}/assets/icons/ic_lock_black_24px.svg"></md-icon>
+                                        <input style="border-left : none; border-right : none;border-top : none;" type="password" required name="password" ng-model="user.password" />
+                                        <div class="hint" ng-if="showHints">Entrez un mot de passe avec au moins 8 caractères</div>
+                                            <div ng-messages="loginform.password.$error" ng-if="!showHints">
+                                            <div ng-message="required">Un mot de passe est requis.</div>
+                                        </div>
+                                    </md-input-container>
+
+                                    <md-input-container class="md-block col-md-12" flex-gt-sm>
+                                        <label>Question secrète</label>
+                                        <md-select ng-model="user.province">
+                                            <md-option ng-value="question" ng-repeat="question in securityQuestions">{{ question }}</md-option>
+                                        </md-select>
+                                    </md-input-container>
+                                    
+                                    <md-input-container class="md-block col-md-12" flex-gt-sm>
+                                        <label>Reponse</label>
+                                        <input md-maxlength="30" required name="response" ng-model="user.response" />
+                                        <div class="hint" ng-if="showHints">Entrez votre nom d'utilisateur ou votre email</div>
+                                        <div ng-messages="loginform.response.$error" ng-if="!showHints">
+                                            <div ng-message="required">Name is required.</div>
+                                            <div ng-message="md-maxlength">The username has to be less than 30 characters.</div>
+                                        </div>
+                                    </md-input-container>
                                 
-                                
-                                
-                                <div class="form-group">
-                                    <label for="quest_secret" class="col-md-3 control-label">Question secrète</label>
-                                    <div class="col-md-9">
-                                        <select class="form-control" id="quest_secret" required>
-                                            <option selected>Choisissez une question</option>
-                                            <option value="1">La destination de votre premier voyage</option>
-                                            <option value="2">Quel était l'héros de votre enfance</option>
-                                            <option value="3">Le prénom de votre meilleur ami</option>
-                                            <option value="4">Le prénom de votre premier amour</option>
-                                            <option value="5">Le deuxième prenom de votre plus jeune enfant</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label for="reponse" class="col-md-3 control-label">Réponse</label>
-                                    <div class="col-md-9">
-                                        <input type="text" class="form-control" id="reponse" name="reponse" placeholder="Réponse" required>
-                                    </div>
-                                </div>
-                                
-                                
+                                </fieldset>
                                 
 
                                 <div class="form-group" >

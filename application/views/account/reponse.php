@@ -6,7 +6,7 @@
                             <div style="float:right; font-size: 85%; position: relative; top:-10px"><a id="signinlink" href="#">Se connecter</a></div>
                         </div>  
                         <div class="panel-body" >
-                            <form id="reponse" class="form-horizontal" role="form">
+                            <form id="reponse" class="form-horizontal" role="form" novalidate>
                                 <div class="form-group">
                                    <!-- Question à récuperer dans la base de donnée-->
                                     <label for="question" class="col-md-5 control-label" style="text-align:left"></label>

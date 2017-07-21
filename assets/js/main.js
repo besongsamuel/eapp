@@ -146,4 +146,20 @@ eappApp.controller('HomeController', ["$scope", function($scope)
   
 }]);
 
+eappApp.controller('AccountController', ["$scope", function($scope) 
+{
+   $scope.showHints = true;
+   
+   $scope.securityQuestions = 
+    [
+        "Choisissez une question",
+        "La destination de votre premier voyage",
+        "Quel était l'héros de votre enfance",
+        "Le prénom de votre meilleur ami",
+        "Le prénom de votre premier amour",
+        "Le deuxième prenom de votre plus jeune enfant"
+    ];
+   
+}]);
+
 
