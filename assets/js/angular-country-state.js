@@ -8,14 +8,16 @@
     "use strict";
     var template = '<md-input-container ng-class="countryClass"> ';
     template += '<label>{{countryLabel}}</label>';
-	template += '<md-select name="country" ng-change="selectCountry()" ng-model="country" required>';
+    template += '<div class="hint" ng-if="showHints">Choisisez votre pays</div>';	
+    template += '<md-select name="country" ng-change="selectCountry()" ng-model="country" required>';
     template += '<md-option ng-repeat="theCountry in countries track by $index">{{ theCountry }}</md-option>';
     template +='</md-select>';
     template +='</md-input-container>';
 	
     template +='<md-input-container ng-class="stateClass">';
     template +='<label ng-show="states">{{stateLabel}}</label>';
-	template += '<md-select name="state" ng-change="selectCountry()" ng-model="countryState"  ng-show="states" required>';
+    template += '<div class="hint" ng-if="showHints">Choisisez votre ville</div>';
+    template += '<md-select name="state" ng-change="selectCountry()" ng-model="countryState"  ng-show="states" required>';
     template += '<md-option ng-repeat="optStates in states track by $index" >{{ optStates }}</md-option>';
     template +='</md-select>';
     template +='</md-input-container>';
@@ -26,7 +28,7 @@
             return {
                 restrict: "E",
                 template: template,
-                scope: { country: "=?", countryState: "=?state" , defaultCountry:"=?", countryClass:"=?", stateClass:"=?" },
+                scope: { country: "=?country", countryState: "=?state" , defaultCountry:"=?", countryClass:"=?", stateClass:"=?" },
                 link: function (scope, element, attrs) {
                     scope.countryLabel = "Country";
                     scope.stateLabel = "State";
