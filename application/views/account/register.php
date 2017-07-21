@@ -117,18 +117,18 @@
 
                                     <md-input-container class="md-block col-md-12" flex-gt-sm>
                                         <label>Question secrète</label>
-                                        <md-select ng-model="user.province">
-                                            <md-option ng-value="question" ng-repeat="question in securityQuestions">{{ question }}</md-option>
+					<div class="hint" ng-if="showHints">Veuillez sélectionner une question de sécurité.</div>
+                                        <md-select ng-model="user.security_question_id">
+                                            <md-option ng-value="$index" ng-repeat="question in securityQuestions">{{ question }}</md-option>
                                         </md-select>
                                     </md-input-container>
                                     
                                     <md-input-container class="md-block col-md-12" flex-gt-sm>
                                         <label>Reponse</label>
-                                        <input md-maxlength="30" required name="response" ng-model="user.response" />
-                                        <div class="hint" ng-if="showHints">Entrez votre nom d'utilisateur ou votre email</div>
+                                        <input md-maxlength="30" required name="response" ng-model="user.security_question_answer" />
+                                        <div class="hint" ng-if="showHints">Veuillez fournir une réponse à cette question</div>
                                         <div ng-messages="signupForm.response.$error" ng-if="!showHints">
                                             <div ng-message="required">Name is required.</div>
-                                            <div ng-message="md-maxlength">The username has to be less than 30 characters.</div>
                                         </div>
                                     </md-input-container>
                                 
