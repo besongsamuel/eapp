@@ -47,7 +47,15 @@
                                             <div ng-message="required">Vous devez entrer une adresse</div>
                                         </div>
                                     </md-input-container>
-
+				    <!-- -->
+                                    <md-input-container class="md-block col-md-6" flex-gt-sm>
+                                        <label>Nom</label>
+                                        <input required name="city" ng-model="user.city" />
+                                        <div class="hint" ng-if="showHints">Entrez votre ville actuelle</div>
+                                        <div ng-messages="signupForm.city.$error" ng-if="!showHints">
+                                            <div ng-message="required">Vous devex entrer une villem</div>
+                                        </div>
+                                    </md-input-container>
                                     <md-input-container class="md-block col-md-6" flex-gt-sm>
                                         <label>Code Postal</label>
                                         <input required name="postcode" ng-model="user.postcode" />
