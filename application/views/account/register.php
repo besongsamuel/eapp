@@ -36,23 +36,15 @@
                                     </md-input-container>
               
                                     <!--Select the country and state origin of the product-->
-                                    <md-country-select class="col-sm-6" country="store_product.country"></md-country-select>
-					
-                                    <!-- -->
-                                    <md-input-container class="md-block col-md-6" flex-gt-sm>
-                                        <label>Province</label>
-                                        <md-select ng-model="user.province">
-                                            <md-option ng-value="province" ng-repeat="province in provinces">{{ opt }}</md-option>
-                                        </md-select>
-                                    </md-input-container>
+                                    <country-state-select country="user.country"></country-state-select>
 
                                     <md-input-container class="md-block col-md-12" flex-gt-sm>
                                         <label>Adresse</label>
                                         <md-icon md-svg-src="http://{{base_url}}/assets/icons/ic_place_black_24px.svg"></md-icon>
                                         <input required name="address" ng-model="user.address" />
-                                        <div class="hint" ng-if="showHints">Entrez un mot de passe avec au moins 8 caractères</div>
+                                        <div class="hint" ng-if="showHints">Entrez votre adresse actuelle</div>
                                             <div ng-messages="signupForm.address.$error" ng-if="!showHints">
-                                            <div ng-message="required"></div>
+                                            <div ng-message="required">Vous devez entrer une adresse</div>
                                         </div>
                                     </md-input-container>
 
@@ -60,9 +52,9 @@
                                         <label>Ville</label>
                                             <md-icon md-svg-src="http://{{base_url}}/assets/icons/ic_home_black_24px.svg"></md-icon>
                                         <input required name="ville" ng-model="user.ville" />
-                                        <div class="hint" ng-if="showHints">Entrez un mot de passe avec au moins 8 caractères</div>
+                                        <div class="hint" ng-if="showHints">Entrez votre ville actuelle</div>
                                             <div ng-messages="signupForm.ville.$error" ng-if="!showHints">
-                                            <div ng-message="required"></div>
+                                            <div ng-message="required">Vous devez entrer une ville</div>
                                         </div>
                                     </md-input-container>
 
