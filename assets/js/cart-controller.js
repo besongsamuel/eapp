@@ -407,5 +407,11 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
 	}
 	
 	return true;
-     };    
+     }; 
+	
+     $scope.select_retailer = function($event)
+    {
+        var element = $event.target;
+	var store_id = parseInt(element.id);
+    };
 }]);
