@@ -7,7 +7,7 @@
 
 <md-input-container ng-class="countryClass"> 
     <label>{{countryLabel}}</label>	
-    <md-icon style="background: #1abc9c;" md-svg-src="{{flag | trustUrl}}"></md-icon>
+    <md-icon ng-show="flag" style="background: #1abc9c;" md-svg-src="{{flag | trustUrl}}"></md-icon>
     <md-select name="country" ng-change="selectCountry()" ng-model="country" required>
         <md-option value="{{theCountry}}" ng-repeat="theCountry in countries">{{ theCountry }}</md-option>;
     </md-select>
