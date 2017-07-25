@@ -106,6 +106,11 @@ class Account extends CI_Controller {
                 $data["success"] = true;
                 $this->set_user();
                 $data["user"] = json_encode($this->user);
+		
+		if($this->input->post("rememberme"))
+		{
+		    $this->rememberme->setCookie($this->input->post($this->input->post('email')));
+		}    
             }else{
                 $data['message'] = 'E-mail ou mot de passe incorrect, réessayez.';
             }
