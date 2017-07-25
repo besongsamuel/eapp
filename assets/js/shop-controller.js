@@ -33,7 +33,7 @@ angular.module('eappApp').controller('ShopController', ["$scope", "$q", "$http",
         page: 1
     };
   
-  $scope.getProducts = function () 
+  $scope.getProducts = function (store_id) 
   {
     if(typeof $scope.site_url === 'undefined')
     {
@@ -47,6 +47,12 @@ angular.module('eappApp').controller('ShopController', ["$scope", "$q", "$http",
       formData.append("limit", $scope.query.limit);
       formData.append("filter", $scope.query.filter);
       formData.append("order", $scope.query.order);
+      
+      if(typeof store_id !== 'undefined')
+      {
+          formData.append("store_id", store_id);
+      }
+	  
       
       $scope.promise = $http.post("http://" + $scope.site_url.concat("/shop/get_store_products"), formData, {
           transformRequest: angular.identity,
@@ -102,6 +108,7 @@ angular.module('eappApp').controller('ShopController', ["$scope", "$q", "$http",
     {
         var element = $event.target;
 	var store_id = parseInt(element.id);
+	$scope.getProducts(store_id);
     };
  
   
