@@ -1,31 +1,53 @@
-<div class="container" ng-controller="AccountController">
+<script>
+$(document).ready(function(){
+    
+    var scope = angular.element($("#admin-container")).scope();
+    
+    scope.$apply(function()
+    {
+       scope.load_icons(); 
+       
+       if(window.sessionStorage.getItem("accountCreated"))
+       {
+           scope.accountCreated = window.sessionStorage.getItem("accountCreated");
+           window.sessionStorage.removeItem("accountCreated");
+       }
+    });
+})
+</script>
+
+
+<div id="admin-container" class="container" ng-controller="AccountController">
    <div id="loginbox" style="margin-top:50px;" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
       <div class="panel panel-info" >
          <div class="panel-heading">
             <div class="panel-title">Se connecter</div>
             <div style="float:right; font-size: 80%; position: relative; top:-10px"><a href="#">Mot de passe oublié?</a></div>
          </div>
-         <div style="padding-top:30px" class="panel-body" >
-            <div style="display:none" id="login-alert" class="alert alert-danger col-sm-12"></div>
-            <form name="loginform" class="form-horizontal" role="form" novalidate>
+          <div style="padding-top:30px" class="panel-body">
+             <div id="login-alert" class="alert alert-danger col-sm-12" ng-show="message">
+                 <p>{{message}}</p>
+             </div>
+             <div class="alert alert-success col-sm-12" ng-show="accountCreated">
+                 <p>{{accountCreated}}</p>
+             </div>
+              <form name="loginForm" class="form-horizontal" role="form" ng-submit="login()" novalidate>
                 
-                <md-input-container class="md-block" flex-gt-sm>
+                <md-input-container class="md-block col-md-12" flex-gt-sm>
                     <label>Email</label>
-                    <md-icon md-svg-src="http://{{base_url}}/assets/icons/ic_person_black_24px.svg"></md-icon>
-                    <input md-maxlength="30" required name="email" ng-model="user.email" />
-                    <div class="hint" ng-if="showHints">Entrez votre nom d'utilisateur ou votre email</div>
-                    <div ng-messages="loginform.email.$error" ng-if="!showHints">
-                        <div ng-message="required">Name is required.</div>
-                        <div ng-message="md-maxlength">The username has to be less than 30 characters.</div>
+                    <md-icon style="background-color: #1abc9c; " md-svg-src="{{icons.email | trustUrl}}"></md-icon>
+                    <input required name="email" ng-model="user.email" />
+                    <div ng-messages="loginForm.email.$error">
+                        <div ng-message="required">Veillez entrer votre addresse email.</div>
                     </div>
                 </md-input-container>
-                <md-input-container class="md-block" flex-gt-sm>
+                
+                <md-input-container class="md-block col-md-12" flex-gt-sm>
                     <label>Mot de passe</label>
-                    <md-icon md-svg-src="http://{{base_url}}/assets/icons/ic_work_black_24px.svg"></md-icon>
+                    <md-icon style="background: #1abc9c;" md-svg-src="{{icons.lock | trustUrl}}"></md-icon>
                     <input style="border-left : none; border-right : none;border-top : none;" type="password" required name="password" ng-model="user.password" />
-                    <div class="hint" ng-if="showHints">Entrez un mot de passe avec au moins 8 caractères</div>
-                        <div ng-messages="loginform.password.$error" ng-if="!showHints">
-                        <div ng-message="required">Un mot de passe est requis.</div>
+                    <div ng-messages="loginForm.password.$error">
+                        <div ng-message="required">Veillez entrer un mot de passe.</div>
                     </div>
                 </md-input-container>
                 
@@ -37,11 +59,13 @@
                   </div>
                </div>
                <div style="margin-top:10px" class="form-group">
-                  <!-- Button -->
-                  <div class="col-sm-12 controls">
-                     <a id="btn-login" href="#" class="btn btn-success">Se connecter  </a>
-                     <a id="btn-fblogin" href="#" class="btn btn-primary">Se connecter avec Facebook</a>
-                  </div>
+                    <!-- Button -->
+                    <div class="form-group" >
+                        <!-- Boutton -->                                        
+                        <div class="col-md-offset-3 col-md-9" style=" margin-top:20px;">
+                            <button id="btn-signup" type="submit" class="btn btn-info col-md-12"><i class="icon-hand-right"></i> &nbsp Se connecter</button>
+                        </div>
+                    </div>
                </div>
                <div class="form-group">
                   <div class="col-md-12 control">

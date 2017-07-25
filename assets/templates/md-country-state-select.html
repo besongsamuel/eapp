@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<!--
+    To change this license header, choose License Headers in Project Properties.
+    To change this template file, choose Tools | Templates
+    and open the template in the editor.
+-->
+
+<md-input-container ng-class="countryClass"> 
+    <label>{{countryLabel}}</label>	
+    <md-icon style="background: #1abc9c;" md-svg-src="{{flag | trustUrl}}"></md-icon>
+    <md-select name="country" ng-change="selectCountry()" ng-model="country" required>
+        <md-option value="{{theCountry}}" ng-repeat="theCountry in countries">{{ theCountry }}</md-option>;
+    </md-select>
+</md-input-container>
+	
+<md-input-container ng-class="stateClass">
+    <label ng-show="states">{{stateLabel}}</label>
+    <md-select name="state" ng-model="countryState"  ng-show="states" required>
+        <md-option value="{{optStates}}" ng-repeat="optStates in states">{{ optStates }}</md-option>
+    </md-select>
+</md-input-container>

@@ -84,7 +84,7 @@ class CI_Controller {
             $this->load->library('cart');
             $this->load->initialize();
             log_message('info', 'Controller Class Initialized');
-            $this->user = $this->get_user();
+            $this->set_user();
             // Set template data
             $this->data = array(
                 'title' => 'épicerie a petit prix',
@@ -103,7 +103,8 @@ class CI_Controller {
                 'site_url' => site_url(),
                 'controller' => $this->router->fetch_class(),
                 'method' => $this->router->fetch_method(),
-                'cart' => addslashes(json_encode($this->getCartItems()))
+                'cart' => addslashes(json_encode($this->getCartItems())),
+                'user' => json_encode($this->user)
             );
 
             
@@ -153,9 +154,13 @@ class CI_Controller {
             return $cart;
         }
         
-        private function get_user()
+        public function set_user()
         {
-            return $this->account_model->get_user(1);
+            $this->user = null;
+            if($this->session->userdata('isUserLoggedIn'))
+            {
+                $this->user = $this->account_model->get_user($this->session->userdata('userId'));
+            }
         }
 
 }

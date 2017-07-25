@@ -1143,7 +1143,11 @@ div.cart-collaterals ul.products li.product:hover .add_to_cart_button{background
 }
 
 /* LOGIN CSS*/
-
+.img-thumbnail
+{
+    width : 150px;
+    height : 50px;
+}
 /* LOGIN CSS END */
 
 

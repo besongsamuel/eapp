@@ -13,6 +13,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-animate.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-aria.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-messages.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-sanitize.min.js"></script>
     <script src="http://<?php echo base_url("assets/js/lf-ng-md-file-input.js")?>"></script>
 
     <!-- Angular Material Library -->
@@ -120,6 +121,19 @@
             rootScope.valid = true;
             rootScope.success_message = "";
             rootScope.error_message = "";
+            var user = '<?php echo $user; ?>';
+            if(user === "" || user == "null")
+            {
+                rootScope.loggedUser = null;
+            }
+            else
+            {
+                rootScope.loggedUser = JSON.parse(user);
+            }
+            
+            rootScope.hideSearchArea = (rootScope.controller == "account" && (rootScope.method == "login" || rootScope.method == "register"));
+            
+            rootScope.userLogged = rootScope.loggedUser !== null;
         });
     });
     </script>
@@ -127,7 +141,7 @@
   <body>
     <notifications-bar class="notifications"></notifications-bar>
     <!-- Begin Header Section -->   
-    <div class="header-area">
+    <div class="header-area" ng-controller="AccountController">
         <div class="container">
             <div class="row">
                 <div class="col-md-8">
@@ -136,7 +150,16 @@
                             <li><a href="#"><i class="fa fa-user"></i>Mon compte</a></li>
                             <li><a href="#"><i class="fa fa-heart"></i>Ma liste d'épicerie</a></li>
                             <li><a href="http://<?php echo site_url("cart"); ?>"><i class="fa fa-user"></i>Mon panier</a></li>
-                            <li><a href="#"><i class="fa fa-user"></i>s'identifier</a></li>
+                            <li ng-hide="userLogged"><a href="http://<?php echo site_url("account/login"); ?>"><i class="fa fa-user"></i>s'identifier</a></li>
+                            <li ng-show="userLogged">
+                            <md-menu>
+				<a href md-menu-origin  ng-click="$mdMenu.open($event)" class="main-menu-item">Bonjour, {{loggedUser.profile.lastname}}, {{loggedUser.profile.firstname}}</a>
+				<md-menu-content>
+                                    <md-menu-item><a href="http://<?php echo site_url("account/logout"); ?>">Logout</a></md-menu-item>
+                                    <md-menu-item><a href="http://<?php echo site_url("account/account"); ?>">Mon Compte</a></md-menu-item>
+				</md-menu-content>
+			    </md-menu>
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -169,7 +192,7 @@
     <!-- End header area -->
     
     <!-- Begin Site Branding Section -->
-    <div class="site-branding-area" ng-controller="CartController">
+    <div class="site-branding-area" ng-controller="CartController" ng-hide="hideSearchArea">
         <div class="container">
             <div class="row">
                 <div class="col-sm-6">
@@ -188,7 +211,7 @@
     </div> 
     <!-- End site branding area -->
     
-    <div class="container search-box">
+    <div class="container search-box" ng-controller="CartController" ng-hide="hideSearchArea">
         <div class="row">
             <form action="#">
                 <div class="col-md-11 single-sidebar">
