@@ -97,5 +97,12 @@ angular.module('eappApp').controller('ShopController', ["$scope", "$q", "$http",
     
       $scope.getProducts();
   });
+	
+    $scope.select_retailer = function($event)
+    {
+        var element = $event.target;
+	var store_id = parseInt(element.id);
+    };
+ 
   
 }]);
