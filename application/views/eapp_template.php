@@ -155,7 +155,7 @@
                             <md-menu>
 				<a href md-menu-origin  ng-click="$mdMenu.open($event)" class="main-menu-item">Bonjour, {{loggedUser.profile.firstname}}</a>
 				<md-menu-content>
-                                    <md-menu-item><a href="http://<?php echo site_url("account/logout"); ?>">Logout</a></md-menu-item>
+                                    <md-menu-item><a href ng-click="logout()">Logout</a></md-menu-item>
                                     <md-menu-item><a href="http://<?php echo site_url("account/account"); ?>">Mon Compte</a></md-menu-item>
 				</md-menu-content>
 			    </md-menu>

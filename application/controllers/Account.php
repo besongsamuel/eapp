@@ -107,10 +107,17 @@ class Account extends CI_Controller {
                 $this->set_user();
                 $data["user"] = json_encode($this->user);
 		$data["redirect"] = $this->rememberme->getOrigPage();
+                
+                if(!$data["redirect"])
+                {
+                    $data["redirect"] = "home";
+                }
 		
-		if($this->input->post("rememberme"))
+                $rememberme = $this->input->post("rememberme");
+                
+		if($rememberme)
 		{
-		    $this->rememberme->setCookie($this->input->post($this->input->post('email')));
+		    $this->rememberme->setCookie($this->input->post('email'));
 		}    
             }else{
                 $data['message'] = 'E-mail ou mot de passe incorrect, réessayez.';
@@ -167,7 +174,8 @@ class Account extends CI_Controller {
     /*
      * User logout
      */
-    public function logout(){
+    public function logout()
+    {
         $this->session->unset_userdata('isUserLoggedIn');
         $this->session->unset_userdata('userId');
         $this->session->sess_destroy();

@@ -22,7 +22,11 @@ class Rememberme {
 			return;
 		}
 		
-		session_start();		
+                if(session_status() == PHP_SESSION_NONE)
+                {
+                    session_start();
+                }
+				
 		// delete any existing table entries belonging to user
 		$nocookie ? $this->CI->db->where('php_session_id', session_id()) : 
 					$this->CI->db->where('netid', $netid);
@@ -90,7 +94,10 @@ class Rememberme {
 	}
 	
 	function getOrigPage() {
-		session_start();
+		if(session_status() == PHP_SESSION_NONE)
+                {
+                    session_start();
+                }
 		$query = $this->CI->db->get_where('ci_cookies', array(
 			'php_session_id' => session_id()
 		));

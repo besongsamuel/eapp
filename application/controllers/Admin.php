@@ -132,6 +132,7 @@ class Admin extends CI_Controller
                 $this->data['store_product'] = json_encode($this->data['store_product']);
             }
             
+            $this->rememberme->recordOrigPage();
             $this->data['body'] = $this->load->view('admin/create_store_product', $this->data, TRUE);
             $this->parser->parse('eapp_template', $this->data);
         }
@@ -150,6 +151,7 @@ class Admin extends CI_Controller
         $this->data['retailers'] = addslashes(json_encode($this->admin_model->get_all(CHAIN_TABLE)));
         $this->data['units'] = addslashes(json_encode($this->admin_model->get_all(UNITS_TABLE)));
         
+        $this->rememberme->recordOrigPage();
         $this->data['body'] = $this->load->view('admin/store_products', $this->data, TRUE);
             $this->parser->parse('eapp_template', $this->data);
     }
@@ -304,6 +306,7 @@ class Admin extends CI_Controller
     }
     public function uploads() 
     {
+        $this->rememberme->recordOrigPage();
         $this->data['body'] = $this->load->view('admin/uploads', $this->data, TRUE);
         $this->parser->parse('eapp_template', $this->data);
     }

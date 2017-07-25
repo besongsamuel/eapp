@@ -28,6 +28,7 @@ class Shop extends CI_Controller {
         $this->data['stores'] = addslashes(json_encode($this->admin_model->get_all(CHAIN_TABLE))) ;
         $this->data['products'] = addslashes(json_encode($this->admin_model->get_all(STORE_PRODUCT_TABLE)));
         $this->data['body'] = $this->load->view('shop/index', $this->data, TRUE);
+        $this->rememberme->recordOrigPage();
         $this->parser->parse('eapp_template', $this->data);
     }
     

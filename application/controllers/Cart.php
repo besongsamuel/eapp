@@ -30,6 +30,7 @@ class Cart extends CI_Controller {
     {
         $this->data['body'] = $this->load->view('cart/index', '', TRUE);
         $this->data['distance_from_home'] = 'Distance from home';
+        $this->rememberme->recordOrigPage();
         $this->parser->parse('eapp_template', $this->data);
     }
     
@@ -43,6 +44,7 @@ class Cart extends CI_Controller {
         $data['store_product'] = addslashes(json_encode($store_product));
         $data['products'] = addslashes(json_encode($this->admin_model->get_all(PRODUCT_TABLE)));
         $this->data['body'] = $this->load->view('cart/product', $data, TRUE);
+        $this->rememberme->recordOrigPage();
         $this->parser->parse('eapp_template', $this->data);
     }
     

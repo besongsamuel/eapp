@@ -105,13 +105,7 @@ class CI_Controller {
                 'method' => $this->router->fetch_method(),
                 'cart' => addslashes(json_encode($this->getCartItems())),
                 'user' => json_encode($this->user)
-            );
-            
-            if($this->router->fetch_class() != 'account')
-	    {
-	    	$this->rememberme->recordOrigPage();
-	    }
-            
+            );            
 	}
         
         

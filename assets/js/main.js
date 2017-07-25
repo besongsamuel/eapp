@@ -183,7 +183,7 @@ eappApp.controller('HomeController', ["$scope", function($scope)
   
 }]);
 
-eappApp.controller('AccountController', ["$scope", "$http", "$mdToast", "$rootScope", function($scope, $http, $mdToast, $rootScope) 
+eappApp.controller('AccountController', ["$scope", "$http", "$mdToast", function($scope, $http, $mdToast) 
 {
    
    $scope.showSimpleToast = function(message, parent_id) {
@@ -329,7 +329,7 @@ eappApp.controller('AccountController', ["$scope", "$http", "$mdToast", "$rootSc
             formData.append("profile[postcode]", $scope.user.postcode);
             formData.append("profile[phone1]", $scope.user.phone1);
             formData.append("profile[phone2]", $scope.user.phone2);
-	    formData.append("profile[rememberme]", $scope.user.rememberme);
+	    
 
             $http.post(
                 "http://" + $scope.site_url.concat("/account/registration"),formData,
@@ -372,6 +372,7 @@ eappApp.controller('AccountController', ["$scope", "$http", "$mdToast", "$rootSc
             var formData = new FormData();
             formData.append("email", $scope.user.email);
             formData.append("password", $scope.user.password);
+            formData.append("rememberme", $scope.user.rememberme ? 1 : 0);
             // Send request to server to get optimized list 	
             $http.post("http://"+ $scope.site_url.concat("/account/perform_login"), 
             formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}}).then(
@@ -380,7 +381,7 @@ eappApp.controller('AccountController', ["$scope", "$http", "$mdToast", "$rootSc
                 if(response.data.success)
                 {
                     // redirect to home page. 
-                    window.location = "http://" + $scope.site_url.concat("/home");
+                    window.location = "http://" + $scope.site_url.concat("/" + response.data.redirect);
                 }
                 else
                 {
@@ -388,6 +389,19 @@ eappApp.controller('AccountController', ["$scope", "$http", "$mdToast", "$rootSc
                 }
             });
         }
+    };
+    
+    $scope.logout = function()
+    {
+        // Send request to server to get optimized list 	
+        $http.post("http://"+ $scope.site_url.concat("/account/logout"), 
+        null, { transformRequest: angular.identity, headers: {'Content-Type': undefined}}).then(
+        function(response)
+        {
+            // redirect to home page. 
+            window.location = "http://" + $scope.site_url.concat("/home");
+            
+        });
     };
    
 }]);
