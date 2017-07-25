@@ -235,7 +235,8 @@ eappApp.controller('AccountController', ["$scope", "$http", "$mdToast", "$rootSc
         address : '',
         postcode : '',
         phone1 : '',
-        phone2 : ''
+        phone2 : '',
+	rememberme : false
 
     };
 	
@@ -328,6 +329,7 @@ eappApp.controller('AccountController', ["$scope", "$http", "$mdToast", "$rootSc
             formData.append("profile[postcode]", $scope.user.postcode);
             formData.append("profile[phone1]", $scope.user.phone1);
             formData.append("profile[phone2]", $scope.user.phone2);
+	    formData.append("profile[rememberme]", $scope.user.rememberme);
 
             $http.post(
                 "http://" + $scope.site_url.concat("/account/registration"),formData,
