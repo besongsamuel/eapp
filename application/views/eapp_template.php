@@ -133,7 +133,7 @@
             
             rootScope.hideSearchArea = (rootScope.controller == "account" && (rootScope.method == "login" || rootScope.method == "register"));
             
-            rootScope.userLogged = rootScope.loggedUser !== null;
+            rootScope.isUserLogged = rootScope.loggedUser !== null;
         });
     });
     </script>
@@ -147,13 +147,13 @@
                 <div class="col-md-8">
                     <div class="user-menu">
                         <ul>
-                            <li><a href="#"><i class="fa fa-user"></i>Mon compte</a></li>
-                            <li><a href="#"><i class="fa fa-heart"></i>Ma liste d'épicerie</a></li>
+                            <li ng-show="isUserLogged"><a href="#"><i class="fa fa-user"></i>Mon compte</a></li>
+                            <li ng-show="isUserLogged"><a href="#"><i class="fa fa-heart"></i>Ma liste d'épicerie</a></li>
                             <li><a href="http://<?php echo site_url("cart"); ?>"><i class="fa fa-user"></i>Mon panier</a></li>
-                            <li ng-hide="userLogged"><a href="http://<?php echo site_url("account/login"); ?>"><i class="fa fa-user"></i>s'identifier</a></li>
-                            <li ng-show="userLogged">
+                            <li ng-hide="isUserLogged"><a href="http://<?php echo site_url("account/login"); ?>"><i class="fa fa-user"></i>s'identifier</a></li>
+                            <li ng-show="isUserLogged">
                             <md-menu>
-				<a href md-menu-origin  ng-click="$mdMenu.open($event)" class="main-menu-item">Bonjour, {{loggedUser.profile.lastname}}, {{loggedUser.profile.firstname}}</a>
+				<a href md-menu-origin  ng-click="$mdMenu.open($event)" class="main-menu-item">Bonjour, {{loggedUser.profile.firstname}}</a>
 				<md-menu-content>
                                     <md-menu-item><a href="http://<?php echo site_url("account/logout"); ?>">Logout</a></md-menu-item>
                                     <md-menu-item><a href="http://<?php echo site_url("account/account"); ?>">Mon Compte</a></md-menu-item>
