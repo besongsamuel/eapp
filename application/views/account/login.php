@@ -54,7 +54,7 @@ $(document).ready(function(){
                <div class="input-group">
                   <div class="checkbox">
                      <label>
-                     <input id="login-remember" type="checkbox" ng-model="user.rememberme" name="remember" value="1"> Rester connecté
+                     <input id="login-remember" type="checkbox" ng-model="user.rememberme" name="remember"> Rester connecté
                      </label>
                   </div>
                </div>
