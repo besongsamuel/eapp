@@ -62,14 +62,14 @@ $(document).ready(function(){
                                 <label>City</label>
                                 <input required name="city" ng-model="user.city" />
                                 <div ng-messages="signupForm.city.$error" ng-if="!showHints">
-                                    <div ng-message="required">Vous devex entrer une villem</div>
+                                    <div ng-message="required">Vous devex entrer une ville</div>
                                 </div>
                             </md-input-container>
                             <md-input-container class="md-block col-md-6" flex-gt-sm>
                                 <label>Code Postal</label>
                                 <input required name="postcode" ng-model="user.postcode" />
                                 <div ng-messages="signupForm.postcode.$error" ng-if="!showHints">
-                                    <div ng-message="required"></div>
+                                    <div ng-message="required">Veillez entrer votre code postale</div>
                                 </div>
                             </md-input-container>
 
