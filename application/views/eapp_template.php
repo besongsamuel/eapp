@@ -249,7 +249,7 @@
 				</md-menu-content>
 			    </md-menu>
 		  	</li>
-                        <li><a href="http://<?php echo site_url("shop"); ?>">Trouvez un produit</a></li>
+                        <li><a ng-click="gotoShop()">Trouvez un produit</a></li>
 			<li><a href="http://<?php echo site_url("cart"); ?>">Votre panier</a></li>
                         <li style="padding : 20px;">
 				<md-menu>
