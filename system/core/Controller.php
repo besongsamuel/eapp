@@ -156,11 +156,28 @@ class CI_Controller {
         
         public function set_user()
         {
-            $this->user = null;
-            if($this->session->userdata('isUserLoggedIn'))
-            {
-                $this->user = $this->account_model->get_user($this->session->userdata('userId'));
-            }
+            	$this->user = null;
+		
+	    	// user is still null, check if remember me was checked
+		$cookie_user = $this->rememberme->verifyCookie();
+		
+		if ($cookie_user) 
+		{
+			$condition = array('email'=>$this->input->post($cookie_user));
+			// find user account of cookie_user stored in application database
+			$checkLogin = $this->account_model->get_specific(USER_ACCOUNT_TABLE, $condition);
+			// set session if necessary
+			if (!$this->session->userdata('userId')) 
+			{
+			    $this->session->set_userdata('userId', $checkLogin->id);
+			}
+			$this->user = $this->account_model->get_user($this->session->userdata('userId'));
+		 }
+		 else if ($this->session->userdata('isUserLoggedIn')) 
+		 {
+		     $this->user = $this->account_model->get_user($this->session->userdata('userId'));
+		 }
+	    
         }
 
 }
