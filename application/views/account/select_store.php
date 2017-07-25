@@ -55,10 +55,6 @@ $(document).ready(function(){
                             </form>
                         
                     </div>
-
-               
-               
-                
          </div> 
     </div>
     
