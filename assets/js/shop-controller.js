@@ -2,7 +2,7 @@ angular.module('eappApp').controller('ShopController', ["$scope", "$q", "$http",
 {
     
     var bookmark;
-
+    
     $scope.assets_dir = "http://" + window.location.hostname + "/eapp/assets/";
 
     $scope.add_to_cart = function(product_id) 
@@ -33,7 +33,7 @@ angular.module('eappApp').controller('ShopController', ["$scope", "$q", "$http",
         page: 1
     };
   
-  $scope.getProducts = function (store_id) 
+  $scope.getProducts = function () 
   {
     if(typeof $scope.site_url === 'undefined')
     {
@@ -48,9 +48,9 @@ angular.module('eappApp').controller('ShopController', ["$scope", "$q", "$http",
       formData.append("filter", $scope.query.filter);
       formData.append("order", $scope.query.order);
       
-      if(typeof store_id !== 'undefined')
+      if(typeof $scope.store_id !== 'undefined')
       {
-          formData.append("store_id", store_id);
+          formData.append("store_id", $scope.store_id);
       }
 	  
       
@@ -70,7 +70,7 @@ angular.module('eappApp').controller('ShopController', ["$scope", "$q", "$http",
 
       });
 	
-	    return q.promise;
+      return q.promise;
   };
   
   $scope.removeFilter = function () 
@@ -108,7 +108,8 @@ angular.module('eappApp').controller('ShopController', ["$scope", "$q", "$http",
     {
         var element = $event.target;
 	var store_id = parseInt(element.id);
-	$scope.getProducts(store_id);
+	window.sessionStorage.setItem("store_id", store_id);    
+	window.location = "http://" + $scope.site_url.concat("/shop");
     };
  
   
