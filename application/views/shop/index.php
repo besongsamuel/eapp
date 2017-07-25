@@ -20,6 +20,8 @@ and open the template in the editor.
             });
             
             var scope = angular.element($("#shop-container")).scope();
+	    
+            
 
             scope.$apply(function()
             {
@@ -27,6 +29,10 @@ and open the template in the editor.
                 scope.site_url = "<?php echo $site_url; ?>";
                 scope.controller = "<?php echo $controller; ?>";
                 scope.method = "<?php echo $method; ?>";
+		if(typeof window.sessionStorage.getItem("store_id"))
+		{
+		    scope.store_id = parseInt(window.sessionStorage.getItem("store_id"));
+		}
                 scope.getProducts();
             });
   	});
