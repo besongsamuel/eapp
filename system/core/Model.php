@@ -297,7 +297,7 @@ class CI_Model {
         
     }
     
-    public function get_store_products_limit($limit, $offset, $latest_products = true, $filter = null, $order = null)
+    public function get_store_products_limit($limit, $offset, $latest_products = true, $filter = null, $order = null, $store_id = null)
     {
 	$result = array();
 	// Get the distinct product id's present 
@@ -306,12 +306,12 @@ class CI_Model {
         
 	if($latest_products)
 	{
-            $result = $this->get_latest_products($filter);
+            $result = $this->get_latest_products($filter, $store_id);
 	}
         else
         {
             // since we are not getting the latest products, return all the products
-            $result = $this->get_all_products($filter);
+            $result = $this->get_all_products($filter, $store_id);
         }
         
         // Perform sorting here if required
@@ -333,7 +333,7 @@ class CI_Model {
         return $result;
     }
     
-    private function get_latest_products($filter = null)
+    private function get_latest_products($filter = null, $store_id = null)
     {
         $result = array();
         $products = array();
@@ -343,6 +343,12 @@ class CI_Model {
             $this->db->join(PRODUCT_TABLE, $join);
             $this->db->like("name", $filter);
         }
+	    
+	if($store_id != null)
+	{
+	    $this->db->where(array("retailer_id" => $store_id));
+	}
+	    
         $where = array('period_from <=' => date("Y-m-d"), 'period_to >=' => date("Y-m-d"));
         $product_ids = $this->get_distinct(STORE_PRODUCT_TABLE, "product_id", $where);
         
@@ -353,6 +359,10 @@ class CI_Model {
             $this->db->join(PRODUCT_TABLE, $join);
             $this->db->like("name", $filter);
         }
+	if($store_id != null)
+	{
+	    $this->db->where(array("retailer_id" => $store_id));
+	}
         $this->db->where(array('period_from <=' => date("Y-m-d"), 'period_to >=' => date("Y-m-d")));
         $non_limited_product_ids = $this->get_distinct(STORE_PRODUCT_TABLE, "product_id", $where);
         
@@ -396,7 +406,7 @@ class CI_Model {
         return $result;
     }
     
-    private function get_all_products($filter = null)
+    private function get_all_products($filter = null, $store_id = null)
     {
         $result = array();
         $products = array();
@@ -407,6 +417,10 @@ class CI_Model {
             $this->db->join(PRODUCT_TABLE, $join);
             $this->db->like("name", $filter);
         }
+	if($store_id != null)
+	{
+	    $this->db->where(array("retailer_id" => $store_id));
+	}
         $product_ids = $this->get_distinct(STORE_PRODUCT_TABLE, STORE_PRODUCT_TABLE.".id", null);
         
         if($filter != null)
@@ -415,6 +429,10 @@ class CI_Model {
             $this->db->join(PRODUCT_TABLE, $join);
             $this->db->like("name", $filter);
         }
+	if($store_id != null)
+	{
+	    $this->db->where(array("retailer_id" => $store_id));
+	}
         $non_limited_product_ids = $this->get_distinct(STORE_PRODUCT_TABLE, STORE_PRODUCT_TABLE.".id", null);
         $result["count"] = sizeof($non_limited_product_ids);
         
