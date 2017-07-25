@@ -10,5 +10,13 @@ angular.module("eappApp").controller("MenuController", ["$rootScope", "$http", f
    {
        
    };
+	
+	$rootScope.gotoShop()
+	{
+	    sessionStorage.removeItem('store_id');
+		 
+		 window.location = "http://" + $rootScope.site_url.concat("/shop");
+	}
+	
 }]);
 
