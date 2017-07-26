@@ -49,6 +49,24 @@ class Shop extends CI_Controller {
         $this->data['body'] = $this->load->view('shop/select_flyer_store', $this->data, TRUE);
         $this->parser->parse('eapp_template', $this->data);
     }
+	
+    public function select_category()
+    {
+        $categories = $this->admin_model->get_all(CATEGORY_TABLE);
+        
+        foreach ($categories as $key => $value) 
+        {
+            $path = ASSETS_DIR_PATH."img/stores/".$value->image;
+            
+            if(!file_exists($path) || empty($value->image))
+            {
+                $categories[$key]->image = "no_image_available.png";
+            }
+        }
+        $this->data['categories'] = addslashes(json_encode($categories));
+        $this->data['body'] = $this->load->view('shop/select_category', $this->data, TRUE);
+        $this->parser->parse('eapp_template', $this->data);
+    }
     
     public function get_store_products()
     {
@@ -63,10 +81,11 @@ class Shop extends CI_Controller {
         $order = $this->input->post('order');
 	    
 	$store_id = $this->input->post('store_id');
+	$category_id = $this->input->post('category_id');
 	
 	$get_latest_products = true;
                 
-        $products = $this->shop_model->get_store_products_limit($limit, $offset, $get_latest_products, $filter, $order, $store_id);
+        $products = $this->shop_model->get_store_products_limit($limit, $offset, $get_latest_products, $filter, $order, $store_id, $category_id);
         
         echo json_encode($products);
     }

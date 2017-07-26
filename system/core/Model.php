@@ -309,7 +309,7 @@ class CI_Model {
         
     }
     
-    public function get_store_products_limit($limit, $offset, $latest_products = true, $filter = null, $order = null, $store_id = null)
+    public function get_store_products_limit($limit, $offset, $latest_products = true, $filter = null, $order = null, $store_id = null, $category_id = null)
     {
 	$result = array();
 	// Get the distinct product id's present 
@@ -318,12 +318,12 @@ class CI_Model {
         
 	if($latest_products)
 	{
-            $result = $this->get_latest_products($filter, $store_id);
+            $result = $this->get_latest_products($filter, $store_id, $category_id);
 	}
         else
         {
             // since we are not getting the latest products, return all the products
-            $result = $this->get_all_products($filter, $store_id);
+            $result = $this->get_all_products($filter, $store_id, $category_id);
         }
         
         // Perform sorting here if required
@@ -345,12 +345,13 @@ class CI_Model {
         return $result;
     }
     
-    private function get_latest_products($filter = null, $store_id = null)
+    private function get_latest_products($filter = null, $store_id = null, $category_id = null)
     {
         $result = array();
         $products = array();
         $latest_products_condition = array('period_from <=' => date("Y-m-d"), 'period_to >=' => date("Y-m-d"));
 	$store_product_product_join = sprintf("%s.product_id = %s.id", STORE_PRODUCT_TABLE, PRODUCT_TABLE);
+	$store_product_subcategory_join = sprintf("%s.subcategory_id = %s.id", STORE_PRODUCT_TABLE, SUB_CATEGORY_TABLE);
         
         if($filter != null)
         {
@@ -362,6 +363,11 @@ class CI_Model {
 	{
 	    $this->db->where(array("retailer_id" => $store_id));
 	}
+	if($category_id != null)
+	{
+	    $this->db->join(SUB_CATEGORY_TABLE, $store_product_subcategory_join);	
+	    $this->db->where(array("product_category_id" => $category_id));
+	}    
 	
 	// Get products that satisfy conditions
         $product_ids = $this->get_distinct(STORE_PRODUCT_TABLE, "product_id", $latest_products_condition);
@@ -376,6 +382,11 @@ class CI_Model {
 	if($store_id != null)
 	{
 	    $this->db->where(array("retailer_id" => $store_id));
+	}
+	if($category_id != null)
+	{
+	    $this->db->join(SUB_CATEGORY_TABLE, $store_product_subcategory_join);	
+	    $this->db->where(array("product_category_id" => $category_id));
 	}
         $non_limited_product_ids = $this->get_distinct(STORE_PRODUCT_TABLE, "product_id", $latest_products_condition);
         $result["count"] = sizeof($non_limited_product_ids);
@@ -399,6 +410,11 @@ class CI_Model {
             {
                 $this->db->where(array("retailer_id" => $store_id));
             }
+            if($category_id != null)
+	    {
+	        $this->db->join(SUB_CATEGORY_TABLE, $store_product_subcategory_join);	
+	        $this->db->where(array("product_category_id" => $category_id));
+	    }
             
             $res = $this->db->get(STORE_PRODUCT_TABLE)->row();
             
@@ -420,32 +436,42 @@ class CI_Model {
         return $result;
     }
     
-    private function get_all_products($filter = null, $store_id = null)
+    private function get_all_products($filter = null, $store_id = null, $category_id = null)
     {
         $result = array();
         $products = array();
+	$store_product_product_join = sprintf("%s.product_id = %s.id", STORE_PRODUCT_TABLE, PRODUCT_TABLE);
+	$store_product_subcategory_join = sprintf("%s.subcategory_id = %s.id", STORE_PRODUCT_TABLE, SUB_CATEGORY_TABLE);
         
         if($filter != null)
         {
-            $join = sprintf("%s.product_id = %s.id", STORE_PRODUCT_TABLE, PRODUCT_TABLE);
-            $this->db->join(PRODUCT_TABLE, $join);
+            $this->db->join(PRODUCT_TABLE, $store_product_product_join);
             $this->db->like("name", $filter);
         }
 	if($store_id != null)
 	{
 	    $this->db->where(array("retailer_id" => $store_id));
 	}
+	if($category_id != null)
+	{
+	    $this->db->join(SUB_CATEGORY_TABLE, $store_product_subcategory_join);	
+	    $this->db->where(array("product_category_id" => $category_id));
+	}
         $product_ids = $this->get_distinct(STORE_PRODUCT_TABLE, STORE_PRODUCT_TABLE.".id", null);
         
         if($filter != null)
         {
-            $join = sprintf("%s.product_id = %s.id", STORE_PRODUCT_TABLE, PRODUCT_TABLE);
-            $this->db->join(PRODUCT_TABLE, $join);
+            $this->db->join(PRODUCT_TABLE, $store_product_product_join);
             $this->db->like("name", $filter);
         }
 	if($store_id != null)
 	{
 	    $this->db->where(array("retailer_id" => $store_id));
+	}
+	if($category_id != null)
+	{
+	    $this->db->join(SUB_CATEGORY_TABLE, $store_product_subcategory_join);	
+	    $this->db->where(array("product_category_id" => $category_id));
 	}
         $non_limited_product_ids = $this->get_distinct(STORE_PRODUCT_TABLE, STORE_PRODUCT_TABLE.".id", null);
         $result["count"] = sizeof($non_limited_product_ids);
@@ -463,11 +489,15 @@ class CI_Model {
             {
                 $this->db->where(array("retailer_id" => $store_id));
             }
+	    if($category_id != null)
+	    {
+	        $this->db->join(SUB_CATEGORY_TABLE, $store_product_subcategory_join);	
+	        $this->db->where(array("product_category_id" => $category_id));
+	    }
             
             $this->db->order_by("price", "ASC");
             $this->db->select(STORE_PRODUCT_TABLE.".id, price, product_id, name");
-            $join = sprintf("%s.product_id = %s.id", STORE_PRODUCT_TABLE, PRODUCT_TABLE);
-            $this->db->join(PRODUCT_TABLE, $join);
+            $this->db->join(PRODUCT_TABLE, $store_product_product_join);
             $this->db->where(STORE_PRODUCT_TABLE.".id", $product_id->id);
             $res = $this->db->get(STORE_PRODUCT_TABLE)->row();
             
