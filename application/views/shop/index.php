@@ -21,8 +21,6 @@ and open the template in the editor.
             
             var scope = angular.element($("#shop-container")).scope();
 	    
-            
-
             scope.$apply(function()
             {
                 scope.base_url = "<?php echo $base_url; ?>";
@@ -32,6 +30,10 @@ and open the template in the editor.
 		if(window.sessionStorage.getItem("store_id"))
 		{
 		    scope.store_id = parseInt(window.sessionStorage.getItem("store_id"));
+		}
+		if(window.sessionStorage.getItem("category_id"))
+		{
+		    scope.category_id = parseInt(window.sessionStorage.getItem("category_id"));
 		}
                 scope.getProducts();
             });
