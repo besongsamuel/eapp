@@ -66,7 +66,7 @@ class Shop extends CI_Controller {
 	
 	$get_latest_products = true;
                 
-        $products = $this->shop_model->get_store_products_limit($this->user, $limit, $offset, $get_latest_products, $filter, $order, $store_id);
+        $products = $this->shop_model->get_store_products_limit($limit, $offset, $get_latest_products, $filter, $order, $store_id);
         
         echo json_encode($products);
     }
