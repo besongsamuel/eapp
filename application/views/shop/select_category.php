@@ -19,13 +19,11 @@ $(document).ready(function(){
 <div id="admin-container" class="container" ng-controller="ShopController">    
 
       <div id="signupbox" style=" margin-top:50px" class="container">
-	      <div class="panel panel-info">
-
+        <div class="panel panel-info">
             <div class="panel-heading">
                 <div class="panel-title">Sélectionnez une categorie pour voire son contenu </div>
             </div>  
-		        <md-content id="retailer-contents">
-
+            <md-content id="retailer-contents">
                 <div class="form-group-inline" ng-repeat="category in categories">
                     <div class="col-md-2" style="padding-top:25px;">
                         <label class="btn"  style="background-color : #1abc9c;">
@@ -35,7 +33,7 @@ $(document).ready(function(){
                         </label>
                     </div>
                 </div>
-	          </md-content>
+            </md-content>
          </div> 
        </div> 
 </div>
