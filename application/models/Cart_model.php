@@ -101,36 +101,54 @@ class Cart_model extends CI_Model
         
         $store_product = null;
         
-        while($distance <= $max_distance && !$product_found)
-        {
-            $this->db->select(STORE_PRODUCT_TABLE.".id, ".CHAIN_STORE_TABLE.".id AS department_store_id, distance");
-            $this->db->join(CHAIN_TABLE, CHAIN_TABLE.'.id = '.STORE_PRODUCT_TABLE.'.retailer_id');
-            $this->db->join(CHAIN_STORE_TABLE, CHAIN_TABLE.'.id = '.CHAIN_STORE_TABLE.'.chain_id');
-            $this->db->join(USER_CHAIN_STORE_TABLE, USER_CHAIN_STORE_TABLE.'.chain_store_id = '.CHAIN_STORE_TABLE.'.id');
-            $this->db->where
-            (
-                array
-                (
-                    "distance <= " => $distance,
-                    "user_id" => $user->id,
-                    "product_id" => $product_id
-                )
-            );
-            $this->db->order_by("price", "ASC");
-            $query = $this->db->get_compiled_select(STORE_PRODUCT_TABLE);
-            $store_product = $this->db->query($query)->row();
-            $product_found = $store_product != null;
-            $distance += DEFAULT_DISTANCE;
-        }
+	if($user != null)
+	{
+	    while($distance <= $max_distance && !$product_found)
+            {
+		    $this->db->select(STORE_PRODUCT_TABLE.".id, ".CHAIN_STORE_TABLE.".id AS department_store_id, distance");
+		    $this->db->join(CHAIN_TABLE, CHAIN_TABLE.'.id = '.STORE_PRODUCT_TABLE.'.retailer_id');
+		    $this->db->join(CHAIN_STORE_TABLE, CHAIN_TABLE.'.id = '.CHAIN_STORE_TABLE.'.chain_id');
+		    $this->db->join(USER_CHAIN_STORE_TABLE, USER_CHAIN_STORE_TABLE.'.chain_store_id = '.CHAIN_STORE_TABLE.'.id');
+		    $this->db->where
+		    (
+			array
+			(
+			    "distance <= " => $distance,
+			    "user_id" => $user->id,
+			    "product_id" => $product_id
+			)
+		    );
+		    $this->db->order_by("price", "ASC");
+		    $query = $this->db->get_compiled_select(STORE_PRODUCT_TABLE);
+		    $store_product = $this->db->query($query)->row();
+		    $product_found = $store_product != null;
+		    $distance += DEFAULT_DISTANCE;
+            }
+	}
+        
         
         $best_Store_product = null;
-        
+	
         if($store_product != null)
         {
             $best_Store_product = $this->getStoreProduct($store_product->id, false, false);
             $best_Store_product->department_store = $this->get(CHAIN_STORE_TABLE, $store_product->department_store_id);
             $best_Store_product->department_store->distance = $store_product->distance;
         }
+	
+	// There was no best product wrt the user. Get the cheapest product    
+	if($store_product == null)
+	{
+	    $this->db->order_by("price", "ASC");
+	    $store_product = $this->get_specific(STORE_PRODUCT_TABLE, array("product_id" => $product_id));
+	    if($store_product != null)
+	    {
+	    	$best_Store_product = $this->getStoreProduct($store_product->id, false, false);
+		$best_Store_product->department_store = new stdObject();
+		$best_Store_product->department_store->name = "RAS";
+	        $best_Store_product->department_store->distance = "RAS";
+	    }
+	}
         
         return $best_Store_product;
     }
