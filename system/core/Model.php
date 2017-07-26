@@ -318,12 +318,12 @@ class CI_Model {
         
 	if($latest_products)
 	{
-            $result = $this->get_latest_products($filter, $store_id);
+            $result = $this->get_latest_products($user, $filter, $store_id);
 	}
         else
         {
             // since we are not getting the latest products, return all the products
-            $result = $this->get_all_products($filter, $store_id);
+            $result = $this->get_all_products($user, $filter, $store_id);
         }
         
         // Perform sorting here if required
@@ -350,11 +350,11 @@ class CI_Model {
         $result = array();
         $products = array();
         $latest_products_condition = array('period_from <=' => date("Y-m-d"), 'period_to >=' => date("Y-m-d"));
+	$store_product_product_join = sprintf("%s.product_id = %s.id", STORE_PRODUCT_TABLE, PRODUCT_TABLE);
         
         if($filter != null)
         {
-            $join = sprintf("%s.product_id = %s.id", STORE_PRODUCT_TABLE, PRODUCT_TABLE);
-            $this->db->join(PRODUCT_TABLE, $join);
+            $this->db->join(PRODUCT_TABLE, $store_product_product_join);
             $this->db->like("name", $filter);
         }
 	    
@@ -362,9 +362,8 @@ class CI_Model {
 	{
 	    $this->db->where(array("retailer_id" => $store_id));
 	}
-	    
-        
-        
+	
+	// Get products that satisfy conditions
         $product_ids = $this->get_distinct(STORE_PRODUCT_TABLE, "product_id", $latest_products_condition);
         
         // Determine the complete list number
@@ -379,10 +378,10 @@ class CI_Model {
 	    $this->db->where(array("retailer_id" => $store_id));
 	}
         $non_limited_product_ids = $this->get_distinct(STORE_PRODUCT_TABLE, "product_id", $latest_products_condition);
-        
         $result["count"] = sizeof($non_limited_product_ids);
         
         // Get cheapest store product for each product
+	// close to the user    
 	foreach($product_ids as $product_id)
 	{
             // Add filter for search puroses
@@ -391,11 +390,9 @@ class CI_Model {
             {
                 $this->db->like("name", $filter);
             }
-            
             $this->db->order_by("price", "ASC");
             $this->db->select(STORE_PRODUCT_TABLE.".id, price, product_id, name");
-            $join = sprintf("%s.product_id = %s.id", STORE_PRODUCT_TABLE, PRODUCT_TABLE);
-            $this->db->join(PRODUCT_TABLE, $join);
+            $this->db->join(PRODUCT_TABLE, $store_product_product_join);
             $this->db->where("product_id", $product_id->product_id);
             $this->db->where($latest_products_condition);
             if($store_id != null)
