@@ -52,7 +52,10 @@ angular.module('eappApp').controller('ShopController', ["$scope", "$q", "$http",
       {
           formData.append("store_id", $scope.store_id);
       }
-	  
+      if(typeof $scope.category_id !== 'undefined')
+      {
+          formData.append("category_id", $scope.category_id);
+      }	  
       
       $scope.promise = $http.post("http://" + $scope.site_url.concat("/shop/get_store_products"), formData, {
           transformRequest: angular.identity,
@@ -109,6 +112,14 @@ angular.module('eappApp').controller('ShopController', ["$scope", "$q", "$http",
         var element = $event.target;
 	var store_id = parseInt(element.id);
 	window.sessionStorage.setItem("store_id", store_id);    
+	window.location = "http://" + $scope.site_url.concat("/shop");
+    };
+	
+    $scope.select_category = function($event)
+    {
+        var element = $event.target;
+	var category_id = parseInt(element.id);
+	window.sessionStorage.setItem("category_id", category_id);    
 	window.location = "http://" + $scope.site_url.concat("/shop");
     };
  
