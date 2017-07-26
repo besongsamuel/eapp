@@ -144,7 +144,7 @@ class Cart_model extends CI_Model
 	    if($store_product != null)
 	    {
 	    	$best_Store_product = $this->getStoreProduct($store_product->id, false, false);
-		$best_Store_product->department_store = new stdObject();
+		$best_Store_product->department_store = new stdClass();
 		$best_Store_product->department_store->name = "RAS";
 	        $best_Store_product->department_store->distance = "RAS";
 	    }

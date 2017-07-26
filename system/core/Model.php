@@ -318,12 +318,12 @@ class CI_Model {
         
 	if($latest_products)
 	{
-            $result = $this->get_latest_products($user, $filter, $store_id);
+            $result = $this->get_latest_products($filter, $store_id);
 	}
         else
         {
             // since we are not getting the latest products, return all the products
-            $result = $this->get_all_products($user, $filter, $store_id);
+            $result = $this->get_all_products($filter, $store_id);
         }
         
         // Perform sorting here if required
