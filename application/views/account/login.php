@@ -58,12 +58,12 @@ $(document).ready(function(){
                      </label>
                   </div>
                </div>
-               <div style="margin-top:10px" class="form-group">
+               <div style="margin-top:10px;" class="">
                     <!-- Button -->
-                    <div class="form-group" >
+                    <div class="" >
                         <!-- Boutton -->                                        
-                        <div class="col-md-offset-3 col-md-9" style=" margin-top:20px;">
-                            <button id="btn-signup" type="submit" class="btn btn-info col-md-12"><i class="icon-hand-right"></i> &nbsp Se connecter</button>
+                        <div class="pull-right" style=" margin-top:20px; margin-bottom: 10px;">
+                            <button id="btn-signup" type="submit" class="btn"><i class=""></i> &nbsp Se connecter</button>
                         </div>
                     </div>
                </div>

@@ -27,7 +27,7 @@ class Account extends CI_Controller {
      */
     public function update_user_store_table()
     {
-         $this->account_model->update_user_store_table($this->user); 
+        $this->account_model->update_user_store_table($this->user); 
     }
     
     public function login() 
@@ -57,7 +57,7 @@ class Account extends CI_Controller {
         }
         $this->data['retailers'] = addslashes(json_encode($retailers));
         $this->data['body'] = $this->load->view('account/select_store', $this->data, TRUE);
-        $this->parser->parse('eapp_simple_template', $this->data);
+        $this->parser->parse('eapp_template', $this->data);
     }
     
     public function submit_favorite_stores() 
@@ -70,8 +70,12 @@ class Account extends CI_Controller {
         // Get user account associated with email
         $user_account = $this->account_model->get_specific(USER_ACCOUNT_TABLE, array("email" => $email));
         
+        $this->account_model->clear_user_favorite_stores($user_account->id);
+        
         if($user_account != null)
         {
+            $this->account_model->clear_user_favorite_stores($user_account->id);
+            
             $result["success"] = true;
             
             foreach ($selected_retailers as $retailer_id) 
@@ -81,6 +85,8 @@ class Account extends CI_Controller {
                 $this->account_model->create(USER_FAVORITE_STORE_TABLE, $data);
             }
         }
+        
+        $this->account_model->update_user_store_table($this->account_model->get_user($user_account->id));
         
         echo json_encode($result);
     }

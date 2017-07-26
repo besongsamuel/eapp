@@ -56,8 +56,14 @@
         <td md-cell>{{product.format}}</td>
         <td md-cell>{{product.unit.name}}</td>
         <td md-cell>{{product.price}}</td>
-        <td md-cell><input type="number" ng-model="product.quantity" md-no-autogrow="true"></td>
-        <td md-cell>{{product.price * product.quantity}}</td>
+        <td md-cell>
+            <md-input-container>
+                <input aria-label="Qty" type="number" ng-model="product.quantity">
+            </md-input-container>
+        </td>
+        <td md-cell>
+            {{(product.price * product.quantity) | number : 2}}
+        </td>
         <td md-cell>
             <a href ng-click="add_to_cart(product.id)" ng-show="canAddToCart(product.id)">Add To Cart</a> 
             <a href ng-click="remove_from_cart(product.id)" ng-show="!canAddToCart(product.id)">Remove</a> 

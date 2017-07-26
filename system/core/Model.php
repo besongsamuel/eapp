@@ -185,8 +185,20 @@ class CI_Model {
         {
             // Get associated product
             $store_product->product = $this->get(PRODUCT_TABLE, $store_product->product_id);
+            
+            $product_image_path = ASSETS_DIR_PATH."img/products/".$store_product->product->image;
+            if(!file_exists($product_image_path) || empty($store_product->product->image))
+            {
+                $store_product->product->image = "no_image_available.png";
+            }
+            
             // Get product store
             $store_product->retailer = $this->get(CHAIN_TABLE, $store_product->retailer_id);
+            $store_image_path = ASSETS_DIR_PATH."img/stores/".$store_product->retailer->image;
+            if(!file_exists($store_image_path) || empty($store_product->retailer->image))
+            {
+                $store_product->retailer->image = "no_image_available.png";
+            }
             // Get product unit
             $store_product->unit = $this->get(UNITS_TABLE, $store_product->unit_id);
             // Get subcategory
@@ -337,6 +349,8 @@ class CI_Model {
     {
         $result = array();
         $products = array();
+        $latest_products_condition = array('period_from <=' => date("Y-m-d"), 'period_to >=' => date("Y-m-d"));
+        
         if($filter != null)
         {
             $join = sprintf("%s.product_id = %s.id", STORE_PRODUCT_TABLE, PRODUCT_TABLE);
@@ -349,8 +363,9 @@ class CI_Model {
 	    $this->db->where(array("retailer_id" => $store_id));
 	}
 	    
-        $where = array('period_from <=' => date("Y-m-d"), 'period_to >=' => date("Y-m-d"));
-        $product_ids = $this->get_distinct(STORE_PRODUCT_TABLE, "product_id", $where);
+        
+        
+        $product_ids = $this->get_distinct(STORE_PRODUCT_TABLE, "product_id", $latest_products_condition);
         
         // Determine the complete list number
         if($filter != null)
@@ -363,8 +378,7 @@ class CI_Model {
 	{
 	    $this->db->where(array("retailer_id" => $store_id));
 	}
-        $this->db->where(array('period_from <=' => date("Y-m-d"), 'period_to >=' => date("Y-m-d")));
-        $non_limited_product_ids = $this->get_distinct(STORE_PRODUCT_TABLE, "product_id", $where);
+        $non_limited_product_ids = $this->get_distinct(STORE_PRODUCT_TABLE, "product_id", $latest_products_condition);
         
         $result["count"] = sizeof($non_limited_product_ids);
         
@@ -383,8 +397,11 @@ class CI_Model {
             $join = sprintf("%s.product_id = %s.id", STORE_PRODUCT_TABLE, PRODUCT_TABLE);
             $this->db->join(PRODUCT_TABLE, $join);
             $this->db->where("product_id", $product_id->product_id);
-            $where = array('period_from <=' => date("Y-m-d"), 'period_to >=' => date("Y-m-d"));
-            $this->db->where($where);
+            $this->db->where($latest_products_condition);
+            if($store_id != null)
+            {
+                $this->db->where(array("retailer_id" => $store_id));
+            }
             
             $res = $this->db->get(STORE_PRODUCT_TABLE)->row();
             
@@ -444,6 +461,10 @@ class CI_Model {
             if($filter != null)
             {
                 $this->db->like("name", $filter);
+            }
+            if($store_id != null)
+            {
+                $this->db->where(array("retailer_id" => $store_id));
             }
             
             $this->db->order_by("price", "ASC");

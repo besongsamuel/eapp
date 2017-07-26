@@ -46,6 +46,12 @@ $(document).ready(function(){
 
                                 
                                 </md-content>
+                                <md-content ng-show="registering_user">
+                                    <div style="margin : auto;">
+                                        <p style="text-align: center;">Veillex patienter...</p>
+                                    </div>
+                                    <md-progress-linear md-mode="indeterminate"></md-progress-linear> 
+                                </md-content>
                                 <div class="form-group">
                                     <!-- Button -->                                        
                                     <div class="col-md-offset-0 col-md-3 pull-right" style="padding-top:25px;">

@@ -6,17 +6,16 @@
 
 angular.module("eappApp").controller("MenuController", ["$rootScope", "$http", function($rootScope, $http) 
 {
-   $rootScope.loadPage = function(url)
-   {
-       
-   };
+    $rootScope.loadPage = function(url)
+    {
+
+    };
 	
-	$rootScope.gotoShop()
-	{
-	    sessionStorage.removeItem('store_id');
-		 
-		 window.location = "http://" + $rootScope.site_url.concat("/shop");
-	}
+    $rootScope.gotoShop = function()
+    {
+        window.sessionStorage.removeItem('store_id');
+        window.location = "http://" + $rootScope.site_url.concat("/shop");
+    };
 	
 }]);
 

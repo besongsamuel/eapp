@@ -53,7 +53,7 @@ $(document).ready(function(){
                                 <label>Adresse</label>
                                 <md-icon style="background: #1abc9c;" md-svg-src="{{icons.place | trustUrl}}"></md-icon>
                                 <input required name="address" ng-model="user.address" />
-                                <div ng-messages="signupForm.address.$error" ng-if="!showHints">
+                                <div ng-messages="signupForm.address.$error">
                                     <div ng-message="required">Vous devez entrer une adresse</div>
                                 </div>
                             </md-input-container>
@@ -61,14 +61,14 @@ $(document).ready(function(){
                             <md-input-container class="md-block col-md-6" flex-gt-sm>
                                 <label>City</label>
                                 <input required name="city" ng-model="user.city" />
-                                <div ng-messages="signupForm.city.$error" ng-if="!showHints">
+                                <div ng-messages="signupForm.city.$error">
                                     <div ng-message="required">Vous devex entrer une ville</div>
                                 </div>
                             </md-input-container>
                             <md-input-container class="md-block col-md-6" flex-gt-sm>
                                 <label>Code Postal</label>
                                 <input required name="postcode" ng-model="user.postcode" />
-                                <div ng-messages="signupForm.postcode.$error" ng-if="!showHints">
+                                <div ng-messages="signupForm.postcode.$error">
                                     <div ng-message="required">Veillez entrer votre code postale</div>
                                 </div>
                             </md-input-container>
@@ -139,24 +139,27 @@ $(document).ready(function(){
                                 
                         <div class="form-group" >
                             <!-- Boutton -->                                        
-                            <div class="col-md-offset-3 col-md-9" style=" margin-top:20px;">
+                            <div class="col-md-3 pull-right" style=" margin-top:20px;">
                                 <button id="btn-signup" type="submit" class="btn btn-info col-md-12"><i class="icon-hand-right"></i> &nbsp S'enregister</button>
                             </div>
                         </div>
-                                
+                            
                         <div class="form-group" style="border-top: 1px solid #999; padding-top:20px">
-                            <!-- Button -->                                        
-                            <div class="col-md-offset-3 col-md-9">
+                            <!-- Button -->      
+                            
+                            <div class="col-md-3 pull-right">
                                 <button id="fbsignup" type="button" class="btn btn-primary col-md-12"><i class="icon-facebook"></i></i> &nbsp S'enregistrer avec facebook</button>
                             </div>
+                            
                         </div>
+                          
                                 
                         <div class="col-md-3  condition" style=" margin-top:20px;"> <!-- Lien vers page Terme -->
                             <p class="pg_connex ">
                                 <a href="#">Terme et Condition</a>
                             </p>
                         </div>
-                                
+                                  
                     </form>
                 </div>
             </div> 

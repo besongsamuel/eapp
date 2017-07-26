@@ -244,7 +244,7 @@
 				<a href md-menu-origin  ng-click="$mdMenu.open($event)" class="main-menu-item">Réduisez vos dépenses</a>
 				<md-menu-content>
 					<md-menu-item><a href="http://<?php echo site_url("account/my_list"); ?>">Votre liste d'épicerie</a></md-menu-item>
-					<md-menu-item><a href="http://<?php echo site_url("shop/flyers"); ?>">Les circulaires des magasins</a></md-menu-item>
+					<md-menu-item><a href="http://<?php echo site_url("shop/select_flyer_store"); ?>">Les circulaires des magasins</a></md-menu-item>
 					<md-menu-item><a href="http://<?php echo site_url("shop/categories"); ?>">Les catégories de produits</a></md-menu-item>
 				</md-menu-content>
 			    </md-menu>

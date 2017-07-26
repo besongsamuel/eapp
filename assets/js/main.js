@@ -209,7 +209,7 @@ eappApp.controller('AccountController', ["$scope", "$http", "$mdToast", function
         };
     };
     
-   $scope.showHints = true;
+   $scope.registering_user = false;
    
    $scope.securityQuestions = 
     [
@@ -284,6 +284,7 @@ eappApp.controller('AccountController', ["$scope", "$http", "$mdToast", function
         }
         else
         {
+            $scope.registering_user = true;
             var formData = new FormData();
             formData.append("selected_retailers", JSON.stringify($scope.selected_retailers));
             formData.append("email", $scope.registered_email);
@@ -302,6 +303,8 @@ eappApp.controller('AccountController', ["$scope", "$http", "$mdToast", function
                 {
                     $scope.showSimpleToast("une erreur inattendue est apparue. Veuillez réessayer plus tard.", "signupform");
                 }
+                
+                $scope.registering_user = false;
             });
         }
     };
@@ -313,6 +316,7 @@ eappApp.controller('AccountController', ["$scope", "$http", "$mdToast", function
         
         if($scope.signupForm.$valid)
         {
+            
             // Create form data
             var formData = new FormData();
             formData.append("account[email]", $scope.user.email);
@@ -340,6 +344,7 @@ eappApp.controller('AccountController', ["$scope", "$http", "$mdToast", function
                 (
                         function(result)
                         {
+                            
                             if(result.data.success)
                             {
                                 window.sessionStorage.setItem("registered_email", $scope.user.email);

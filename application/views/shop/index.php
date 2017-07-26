@@ -29,7 +29,7 @@ and open the template in the editor.
                 scope.site_url = "<?php echo $site_url; ?>";
                 scope.controller = "<?php echo $controller; ?>";
                 scope.method = "<?php echo $method; ?>";
-		if(typeof window.sessionStorage.getItem("store_id"))
+		if(window.sessionStorage.getItem("store_id"))
 		{
 		    scope.store_id = parseInt(window.sessionStorage.getItem("store_id"));
 		}

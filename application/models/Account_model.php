@@ -18,10 +18,20 @@ class Account_model extends CI_Model
         $this->load->library("geo");
     }
     
+    public function clear_user_favorite_stores($user_id)
+    {
+        $this->db->where(array("user_account_id" => $user_id));
+        $this->db->delete(USER_FAVORITE_STORE_TABLE);
+    }
+
+
     public function update_user_store_table($user) 
     {
-        // Get user stores
+        // Get user favorite stores in city
         $this->db->like("city", trim($user->profile->city));
+        $join = sprintf("%s.chain_id = %s.retailer_id", CHAIN_STORE_TABLE, USER_FAVORITE_STORE_TABLE);
+        $this->db->join(USER_FAVORITE_STORE_TABLE, $join);
+        $this->db->where(array(USER_FAVORITE_STORE_TABLE.".user_account_id" => $user->id));
         $department_stores = $this->get_all(CHAIN_STORE_TABLE);
         
         $this->db->where(array("user_id" => $user->profile->id));
