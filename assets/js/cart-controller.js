@@ -102,6 +102,7 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
         formData.append("distance", $scope.distance);
         formData.append("longitude", $scope.longitude);
         formData.append("latitude", $scope.latitude);
+	formData.append("searchAll", !$rootScope.searchInMyList);
         // Send request to server to get optimized list 	
         $scope.promise = 
             $http.post("http://"+ $scope.site_url.concat("/cart/update_cart_list"), 
@@ -152,6 +153,7 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
         formData.append("distance", $scope.distance);
         formData.append("longitude", $scope.longitude);
         formData.append("latitude", $scope.latitude);
+	formData.append("searchAll", !$rootScope.searchInMyList);
         // Send request to server to get optimized list 	
         $scope.store_cart_promise = 
             $http.post("http://"+ $scope.site_url.concat("/cart/optimize_product_list_by_store"), 
