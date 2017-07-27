@@ -140,12 +140,16 @@ class Cart_model extends CI_Model
             }
 
             $this->db->where(array("product_id" => $product_id));
-
-            $this->db->order_by("price", "ASC");
+            
             if(!empty($range_select))
             {
                 $this->db->order_by("range", "ASC");
             }
+			else
+			{
+				$this->db->order_by("price", "ASC");
+			}
+			
             $query = $this->db->get_compiled_select(STORE_PRODUCT_TABLE);
             $store_product = $this->db->query($query)->row();
             $product_found = $store_product != null;
@@ -158,33 +162,27 @@ class Cart_model extends CI_Model
         {
             $best_Store_product = $this->getStoreProduct($store_product->id, false, false);
             $best_Store_product->department_store = $this->get(CHAIN_STORE_TABLE, $store_product->department_store_id);
-            
-            $best_Store_product->department_store->distance = 0;
-            if(isset($store_product->distance))
-            {
-                $best_Store_product->department_store->distance = $store_product->distance;
-            }
-            
+            $best_Store_product->department_store->distance = $this->compute_driving_distance($best_Store_product->department_store, $user, $coords);;
         }
 	
-	// There was no best product wrt the user. Get the cheapest product    
-	if($store_product == null)
-	{
-	    $this->db->order_by("price", "ASC");
-	    $store_product = $this->get_specific(STORE_PRODUCT_TABLE, array("product_id" => $product_id));
-	    if($store_product != null)
-	    {
-	    	$best_Store_product = $this->getStoreProduct($store_product->id, false, false);
-		$best_Store_product->department_store = new stdClass();
-		$best_Store_product->department_store->name = "RAS";
-	        $best_Store_product->department_store->distance = 0;
-	    }
-	}
+		// There was no best product wrt the user. Get the cheapest product    
+		if($store_product == null)
+		{
+			$this->db->order_by("price", "ASC");
+			$store_product = $this->get_specific(STORE_PRODUCT_TABLE, array("product_id" => $product_id));
+			if($store_product != null)
+			{
+				$best_Store_product = $this->getStoreProduct($store_product->id, false, false);
+			$best_Store_product->department_store = new stdClass();
+			$best_Store_product->department_store->name = "RAS";
+				$best_Store_product->department_store->distance = 0;
+			}
+		}
         
         return $best_Store_product;
     }
     
-    public function get_closest_stores($user, $distance, $products, $searchAll = false, $coords = null, $limit = 5)
+    public function get_closest_stores($user, $distance, $products, $search_all = false, $coords = null, $limit = 5)
 	{
             $stores = array();
             
@@ -200,16 +198,45 @@ class Cart_model extends CI_Model
                 $range = '(3958*3.1415926*sqrt((latitude-'.$coords["latitude"].')*(latitude-'.$coords["latitude"].') + cos(latitude/57.29578)*cos('.$coords["latitude"].'/57.29578)*(longitude-'.$coords["longitude"].')*(longitude-'.$coords["longitude"].'))/180)';
             }
             
+			// join chain stores with chain
             $range_select = empty($range) ? "" : ", (".$range.") AS 'range'";
-            
+			$this->db->select(CHAIN_STORE_TABLE.'.* '.$range_select)
             $this->db->join(CHAIN_TABLE, CHAIN_TABLE.'.id = '.CHAIN_STORE_TABLE.'.chain_id');
-            $result = $this->db->get(CHAIN_STORE_TABLE);
+		
+			if(!$search_all && $user != null)
+            {
+				// Join with user favorites and get the closest to set distance
+                $this->db->join(USER_FAVORITE_STORE_TABLE, USER_FAVORITE_STORE_TABLE.'.retailer_id = '.CHAIN_TABLE.'.id');
+                $this->db->where(array("user_account_id" => $user->id));
+				$this->db->where(array($range.' <=' => $distance));
+            }
             
-            $this->db->where(array("user_id" => $user->id, "distance <=" => $distance));
-
+            if($search_all && $user != null)
+            {
+				// get closest to user. Search from all stores
+                $this->db->where(array($range.' <=' => $distance));
+            }
+		
+			// No user is logged in. If we have the current coordinates, search using them
+            if($user == null && $coords != null && $coords["latitude"] != 0 && $coords["longitude"] != 0)
+            {
+				$this->db->where(array($range.' <=' => $distance));
+            }
+	    
+            $result = $this->db->get(CHAIN_STORE_TABLE);
+			
+			if(!empty($range_select))
+            {
+                $this->db->order_by("range", "ASC");
+            }
+			else
+			{
+				$this->db->order_by("price", "ASC");
+			}
+            
             foreach($result->result() as $row)
             {
-                $department_store = $this->get(CHAIN_STORE_TABLE, $row->chain_store_id);
+                $department_store = $row;
 
                 if($department_store != null)
                 {
@@ -225,7 +252,9 @@ class Cart_model extends CI_Model
                         $stores[$department_store->chain_id]->store = $department_store;
                         $stores[$department_store->chain_id]->store_items_cost = $result['store_total_cost'];
                         $stores[$department_store->chain_id]->num_items = $result['num_items'];
-                        $stores[$department_store->chain_id]->distance = $row->distance;
+						
+						// COMPUTE DRIVING DISTANCE HERE						
+                        $stores[$department_store->chain_id]->distance = $this->compute_driving_distance($department_store, $user, $coords);
                     }
 
                 }
@@ -241,6 +270,30 @@ class Cart_model extends CI_Model
             }
 
             return $stores;
+	}
+	
+	private function compute_driving_distance($department_store, $user, $coords)
+	{
+		$driving_distance = 0;
+		
+		$distance_time = array();
+
+		if($user != null)
+		{
+			$distance_time = $this->geo->GetDrivingDistance($department_store->latitude, $user->profile->latitude, $department_store->longitude, $user->profile->longitude);
+		}
+		if($user == null && $coords != null && $coords["latitude"] != 0 && $coords["longitude"] != 0)
+		{
+			$distance_time = $this->geo->GetDrivingDistance($department_store->latitude, $coords["latitude"], $department_store->longitude, $coords["longitude"]);
+		}
+
+		if($distance_time["distance"] != null)
+		{
+			$dist = intval(trim(str_replace("km","",$distance_time["distance"])));
+			$driving_distance = $dist;
+		}
+		
+		return $driving_distance;
 	}
         
     public function get_user_closest_retailer_store($user, $distance, $retailer_id)
