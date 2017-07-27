@@ -109,10 +109,27 @@
     $(document).ready(function()
     {
         var rootScope = angular.element($("html")).scope();
-        
+        $rootScope.longitude = 0;
+		$rootScope.latitude = 0;
         rootScope.$apply(function()
         {
-            rootScope.get_user_coordinates();
+			// Get the current geo location only if it's not yet the case
+            if ("geolocation" in navigator && !window.sessionStorage.getItem("longitude")) 
+			{
+				navigator.geolocation.getCurrentPosition(function(position) 
+				{
+					$rootScope.longitude = position.coords.longitude;
+					$rootScope.latitude = position.coords.latitude;
+					window.sessionStorage.setItem("longitude", $rootScope.longitude);
+					window.sessionStorage.setItem("longitude", $rootScope.latitude);
+				});
+			}
+			else
+			{
+				$rootScope.longitude = parseFloat(window.sessionStorage.getItem("longitude"));
+				$rootScope.latitude = parseFloat(window.sessionStorage.getItem("latitude"));
+			}
+			
             rootScope.base_url = "<?php echo $base_url; ?>";
             rootScope.site_url = "<?php echo $site_url; ?>";
             rootScope.controller = "<?php echo $controller; ?>";
