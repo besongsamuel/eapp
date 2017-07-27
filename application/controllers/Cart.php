@@ -150,12 +150,12 @@ class Cart extends CI_Controller {
 	$optimizedList = array();    
     	$distance = $this->input->post("distance");
 	$products = json_decode($this->input->post("products"));
-        
+        $search_all = $this->input->post("searchAll");
         $coords = array("longitude" => $this->input->post("longitude"), "latitude" => $this->input->post("latitude"));
         
 	foreach($products as $product)
 	{
-            $store_product = $this->cart_model->get_best_store_product($product->id, $distance, $distance, $this->user, true, $coords);
+            $store_product = $this->cart_model->get_best_store_product($product->id, $distance, $distance, $this->user, $search_all, $coords);
             $cart_item = new stdClass();
             $cart_item->store_product = $store_product == null ? $this->create_empty_store_product() : $store_product;
             $cart_item->product = $this->cart_model->get(PRODUCT_TABLE, $product->id);
@@ -218,10 +218,11 @@ class Cart extends CI_Controller {
 	$result = array();
 	$distance = $this->input->post("distance");
 	$products = json_decode($this->input->post("products"));
+	$coords = array("longitude" => $this->input->post("longitude"), "latitude" => $this->input->post("latitude"));  
+	$search_all = $this->input->post("searchAll");
     	// get top 5 or less closest department stores 
         // that contain at least one of the products
-	$close_stores = $this->cart_model->get_closest_stores($this->user, $distance, $products);
-        $coords = array("longitude" => $this->input->post("longitude"), "latitude" => $this->input->post("latitude"));
+	$close_stores = $this->cart_model->get_closest_stores($this->user, $distance, $products, $search_all, $coords);
         
         $result['products'] = array();
         
