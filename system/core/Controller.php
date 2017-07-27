@@ -103,7 +103,6 @@ class CI_Controller {
                 'site_url' => site_url(),
                 'controller' => $this->router->fetch_class(),
                 'method' => $this->router->fetch_method(),
-                'cart' => addslashes(json_encode($this->getCartItems())),
                 'user' => json_encode($this->user)
             );            
 	}
@@ -123,9 +122,11 @@ class CI_Controller {
 		return self::$instance;
 	}
         
-        private function getCartItems()
+        public function get_cached_cart_contents()
         {
             $cart = array();
+            
+            $coords = array("longitude" => $this->input->post("longitude"), "latitude" => $this->input->post("latitude"));
 
             foreach ($this->cart->contents() as $item) 
             {
@@ -134,7 +135,7 @@ class CI_Controller {
                 $product_id = $item['id'];
                 $rowid = $item['rowid'];
                 // Get best match close to user
-                $store_product = $this->cart_model->get_best_store_product($product_id, DEFAULT_DISTANCE, MAX_DISTANCE, $this->user);
+                $store_product = $this->cart_model->get_best_store_product($product_id, DEFAULT_DISTANCE, MAX_DISTANCE, $this->user, true, $coords);
                 
                 if($store_product === null)
                 {
@@ -148,8 +149,15 @@ class CI_Controller {
 
                 array_push($cart, $cart_item);
             }
-
-            return $cart;
+            
+            if(sizeof($cart) > 0)
+            {
+                return json_encode($cart);
+            }
+            else
+            {
+                return "";
+            }
         }
         
         public function set_user()

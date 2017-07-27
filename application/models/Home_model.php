@@ -16,5 +16,5 @@ class Home_model extends CI_Model
     {
 	parent::__construct();
 	// Your own constructor code
-    }
+    } 
 }

@@ -109,33 +109,67 @@
     $(document).ready(function()
     {
         var rootScope = angular.element($("html")).scope();
-        $rootScope.longitude = 0;
-		$rootScope.latitude = 0;
+        
         rootScope.$apply(function()
         {
-			// Get the current geo location only if it's not yet the case
-            if ("geolocation" in navigator && !window.sessionStorage.getItem("longitude")) 
-			{
-				navigator.geolocation.getCurrentPosition(function(position) 
-				{
-					$rootScope.longitude = position.coords.longitude;
-					$rootScope.latitude = position.coords.latitude;
-					window.sessionStorage.setItem("longitude", $rootScope.longitude);
-					window.sessionStorage.setItem("longitude", $rootScope.latitude);
-				});
-			}
-			else
-			{
-				$rootScope.longitude = parseFloat(window.sessionStorage.getItem("longitude"));
-				$rootScope.latitude = parseFloat(window.sessionStorage.getItem("latitude"));
-			}
+            
 			
             rootScope.base_url = "<?php echo $base_url; ?>";
             rootScope.site_url = "<?php echo $site_url; ?>";
             rootScope.controller = "<?php echo $controller; ?>";
             rootScope.method = "<?php echo $method; ?>";
+            rootScope.longitude = 0;
+            rootScope.latitude = 0;
+            rootScope.cart = [];
+            // Get the current geo location only if it's not yet the case
+            if ("geolocation" in navigator && !window.sessionStorage.getItem("longitude") && !window.sessionStorage.getItem("latitude")) 
+            {
+                navigator.geolocation.getCurrentPosition(function(position) 
+                {
+                    rootScope.longitude = position.coords.longitude;
+                    rootScope.latitude = position.coords.latitude;
+                    window.sessionStorage.setItem("longitude", rootScope.longitude);
+                    window.sessionStorage.setItem("latitude", rootScope.latitude);
+                    
+                    $.ajax(
+                    {
+                        type : 'POST',
+                        url : "http://" + rootScope.site_url.concat("/cart/get_cart_contents"),
+                        data : { longitude : rootScope.longitude, latitude : rootScope.latitude},
+                        success : function(data)
+                        {
+                            if(data)
+                            {
+                                rootScope.cart = JSON.parse(data);
+                            }
+                        },
+                        async : false
+                    });
+                    
+                });
+            }
+            else
+            {
+                rootScope.longitude = parseFloat(window.sessionStorage.getItem("longitude"));
+                rootScope.latitude = parseFloat(window.sessionStorage.getItem("latitude"));
+                
+                // get cart contents
+                $.ajax(
+                {
+                    type : 'POST',
+                    url : "http://" + rootScope.site_url.concat("/cart/get_cart_contents"),
+                    data : { longitude : rootScope.longitude, latitude : rootScope.latitude},
+                    success : function(data)
+                    {
+                        if(data)
+                        {
+                            rootScope.cart = JSON.parse(data);
+                        }
+                    },
+                    async : false
+                });
+            }
             rootScope.is_loading = false;
-            rootScope.cart = JSON.parse("<?php echo $cart; ?>");
             rootScope.valid = true;
             rootScope.success_message = "";
             rootScope.error_message = "";
@@ -153,6 +187,7 @@
             
             rootScope.isUserLogged = rootScope.loggedUser !== null;
         });
+        
     });
     </script>
   </head>

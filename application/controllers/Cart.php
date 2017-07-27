@@ -56,13 +56,15 @@ class Cart extends CI_Controller {
     {
         $product_id = $this->input->post("product_id");
         
+        $coords = array("longitude" => $this->input->post("longitude"), "latitude" => $this->input->post("latitude"));
+        
         $result = array
 	(
             "success" => false,
 	);
 	
         // Get best match close to user
-        $store_product = $this->cart_model->get_best_store_product($product_id, DEFAULT_DISTANCE, MAX_DISTANCE, $this->user);
+        $store_product = $this->cart_model->get_best_store_product($product_id, DEFAULT_DISTANCE, MAX_DISTANCE, $this->user, true, $coords);
         
         if($store_product == null)
         {
@@ -124,6 +126,11 @@ class Cart extends CI_Controller {
     public function destroy()
     {
         $this->cart->destroy();
+    }
+    
+    public function get_cart_contents() 
+    {
+        echo $this->get_cached_cart_contents();
     }
     
     /**

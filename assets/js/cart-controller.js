@@ -281,9 +281,11 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
     {
 	var data = 
 	{
-            product_id : product_id
+            product_id : product_id,
+            longitude : $scope.longitude,
+            latitude : $scope.latitude
 	};
-
+        
 	$.ajax({
             type: 'POST',
             url:  "http://" + $scope.site_url.concat("/cart/insert"),

@@ -31,7 +31,5 @@ class Home extends CI_Controller {
         $this->data['body'] = $this->load->view('home/index', $this->data, TRUE);
         $this->rememberme->recordOrigPage();
         $this->parser->parse('eapp_template', $this->data);
-    }
-    
-    
+    }    
 }

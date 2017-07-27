@@ -103,29 +103,49 @@ class Cart_model extends CI_Model
         
         while($distance <= $max_distance && !$product_found)
         {
-            $this->db->select(STORE_PRODUCT_TABLE.".id, ".CHAIN_STORE_TABLE.".id AS department_store_id");
+            $range = "";
+            
+            if($user != null)
+            {
+                $range = '(3958*3.1415926*sqrt((latitude-'.$user->profile->latitude.')*(latitude-'.$user->profile->latitude.') + cos(latitude/57.29578)*cos('.$user->profile->latitude.'/57.29578)*(longitude-'.$user->profile->longitude.')*(longitude-'.$user->profile->longitude.'))/180)';
+            }
+            
+            if($user == null && $coords != null && $coords["latitude"] != 0 && $coords["longitude"] != 0)
+            {
+                $range = '(3958*3.1415926*sqrt((latitude-'.$coords["latitude"].')*(latitude-'.$coords["latitude"].') + cos(latitude/57.29578)*cos('.$coords["latitude"].'/57.29578)*(longitude-'.$coords["longitude"].')*(longitude-'.$coords["longitude"].'))/180)';
+            }
+            
+            $range_select = empty($range) ? "" : ", (".$range.") AS 'range'";
+            
+            $this->db->select(STORE_PRODUCT_TABLE.".id, ".CHAIN_STORE_TABLE.".id AS department_store_id".$range_select);
             $this->db->join(CHAIN_TABLE, CHAIN_TABLE.'.id = '.STORE_PRODUCT_TABLE.'.retailer_id');
             $this->db->join(CHAIN_STORE_TABLE, CHAIN_TABLE.'.id = '.CHAIN_STORE_TABLE.'.chain_id');
 
             if(!$search_all && $user != null)
             {
-                $this->db->join(USER_CHAIN_STORE_TABLE, USER_CHAIN_STORE_TABLE.'.chain_store_id = '.CHAIN_STORE_TABLE.'.id');
-                $this->db->where(array("user_id" => $user->id));
+                $this->db->join(USER_FAVORITE_STORE_TABLE, USER_FAVORITE_STORE_TABLE.'.retailer_id = '.CHAIN_TABLE.'.id');
+                $this->db->where(array("user_account_id" => $user->id));
+                $this->db->where(array('(3958*3.1415926*sqrt((latitude-'.$user->profile->latitude.')*(latitude-'.$user->profile->latitude.') + cos(latitude/57.29578)*cos('.$user->profile->latitude.'/57.29578)*(longitude-'.$user->profile->longitude.')*(longitude-'.$user->profile->longitude.'))/180) <=' => $distance));
             }
-
-            if($user == null)
-            {
-                $this->db->where(array('(3958*3.1415926*sqrt((latitude-'.$coords["latitude"].')*(latitude-'.$coords["latitude"].') + cos(latitude/57.29578)*cos('.$coords["latitude"].'/57.29578)*(longitude-'.$coords["longitude"].')*(longitude-'.$coords["longitude"].'))/180) <=' => $distance));
-            }
-
+            
             if($search_all && $user != null)
             {
                 $this->db->where(array('(3958*3.1415926*sqrt((latitude-'.$user->profile->latitude.')*(latitude-'.$user->profile->latitude.') + cos(latitude/57.29578)*cos('.$user->profile->latitude.'/57.29578)*(longitude-'.$user->profile->longitude.')*(longitude-'.$user->profile->longitude.'))/180) <=' => $distance));
+            }
+            
+            // Check if coordinates are set
+            if($user == null && $coords != null && $coords["latitude"] != 0 && $coords["longitude"] != 0)
+            {
+                $this->db->where(array('(3958*3.1415926*sqrt((latitude-'.$coords["latitude"].')*(latitude-'.$coords["latitude"].') + cos(latitude/57.29578)*cos('.$coords["latitude"].'/57.29578)*(longitude-'.$coords["longitude"].')*(longitude-'.$coords["longitude"].'))/180) <=' => $distance));
             }
 
             $this->db->where(array("product_id" => $product_id));
 
             $this->db->order_by("price", "ASC");
+            if(!empty($range_select))
+            {
+                $this->db->order_by("range", "ASC");
+            }
             $query = $this->db->get_compiled_select(STORE_PRODUCT_TABLE);
             $store_product = $this->db->query($query)->row();
             $product_found = $store_product != null;
@@ -138,7 +158,13 @@ class Cart_model extends CI_Model
         {
             $best_Store_product = $this->getStoreProduct($store_product->id, false, false);
             $best_Store_product->department_store = $this->get(CHAIN_STORE_TABLE, $store_product->department_store_id);
-            $best_Store_product->department_store->distance = $store_product->distance;
+            
+            $best_Store_product->department_store->distance = 0;
+            if(isset($store_product->distance))
+            {
+                $best_Store_product->department_store->distance = $store_product->distance;
+            }
+            
         }
 	
 	// There was no best product wrt the user. Get the cheapest product    
@@ -158,13 +184,28 @@ class Cart_model extends CI_Model
         return $best_Store_product;
     }
     
-    public function get_closest_stores($user, $distance, $products, $limit = 5)
+    public function get_closest_stores($user, $distance, $products, $searchAll = false, $coords = null, $limit = 5)
 	{
             $stores = array();
-
+            
+            $range = "";
+            
+            if($user != null)
+            {
+                $range = '(3958*3.1415926*sqrt((latitude-'.$user->profile->latitude.')*(latitude-'.$user->profile->latitude.') + cos(latitude/57.29578)*cos('.$user->profile->latitude.'/57.29578)*(longitude-'.$user->profile->longitude.')*(longitude-'.$user->profile->longitude.'))/180)';
+            }
+            
+            if($user == null && $coords != null && $coords["latitude"] != 0 && $coords["longitude"] != 0)
+            {
+                $range = '(3958*3.1415926*sqrt((latitude-'.$coords["latitude"].')*(latitude-'.$coords["latitude"].') + cos(latitude/57.29578)*cos('.$coords["latitude"].'/57.29578)*(longitude-'.$coords["longitude"].')*(longitude-'.$coords["longitude"].'))/180)';
+            }
+            
+            $range_select = empty($range) ? "" : ", (".$range.") AS 'range'";
+            
+            $this->db->join(CHAIN_TABLE, CHAIN_TABLE.'.id = '.CHAIN_STORE_TABLE.'.chain_id');
+            $result = $this->db->get(CHAIN_STORE_TABLE);
+            
             $this->db->where(array("user_id" => $user->id, "distance <=" => $distance));
-            $this->db->order_by("distance", "ASC");
-            $result = $this->db->get(USER_CHAIN_STORE_TABLE);
 
             foreach($result->result() as $row)
             {
