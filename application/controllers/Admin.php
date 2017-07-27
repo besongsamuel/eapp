@@ -24,6 +24,32 @@ class Admin extends CI_Controller
     {
         
     }
+    
+    /*
+     * Sets longitude and latitude for all stores
+     */
+    public function set_chain_store_coordinates() 
+    {
+        // get all chain stores
+        $chain_stores = $this->admin_model->get_all(CHAIN_STORE_TABLE);
+        
+        foreach ($chain_stores as $store) 
+        {
+            if($store->longitude == 0 && $store->latitude == 0)
+            {
+                $data = array("longitude" => 0, "latitude" => 0, "id" => $store->id);
+                $coordinates = $this->geo->get_coordinates($store->city, $store->address, $store->state, $store->country);
+                if($coordinates)
+                {
+                    $data["longitude"] = $coordinates["long"];
+                    $data["latitude"] = $coordinates["lat"];
+                }
+
+                $this->admin_model->create(CHAIN_STORE_TABLE, $data);
+            }
+            
+        }
+    }
 	
     public function searchProducts()
     {

@@ -7,7 +7,8 @@ class Account extends CI_Controller {
      public function __construct()
     {
         parent::__construct();
-	   $this->load->library('form_validation');
+        $this->load->library('form_validation');
+        $this->load->library('geo');
     }
     
     /**
@@ -157,6 +158,14 @@ class Account extends CI_Controller {
 		{
                     // create user profile
                     $user_profile['user_account_id'] = $insert;
+                    // get longitude and latitude
+                    $coordinates = $this->geo->get_coordinates($user_profile["city"], $user_profile["address"], $user_profile["state"], $user_profile["country"]);
+                    if($coordinates)
+                    {
+                        $user_profile["longitude"] = $coordinates["long"];
+                        $user_profile["latitude"] = $coordinates["lat"];
+                    }
+                    
                     $insert = $this->account_model->create(USER_PROFILE_TABLE, $user_profile);
                     $this->session->set_userdata('success_msg', 'Your registration was successfully. Please login to your account.');
                     $data["success"] = true;

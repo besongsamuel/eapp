@@ -112,6 +112,7 @@
         
         rootScope.$apply(function()
         {
+            rootScope.get_user_coordinates();
             rootScope.base_url = "<?php echo $base_url; ?>";
             rootScope.site_url = "<?php echo $site_url; ?>";
             rootScope.controller = "<?php echo $controller; ?>";
@@ -249,7 +250,7 @@
 				</md-menu-content>
 			    </md-menu>
 		  	</li>
-                        <li><a ng-click="gotoShop()">Trouvez un produit</a></li>
+                        <li><a href ng-click="gotoShop()">Trouvez un produit</a></li>
 			<li><a href="http://<?php echo site_url("cart"); ?>">Votre panier</a></li>
                         <li style="padding : 20px;">
 				<md-menu>

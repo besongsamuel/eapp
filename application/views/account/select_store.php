@@ -32,19 +32,16 @@ $(document).ready(function(){
                         
                         
                             <form id="signupform" class="form-horizontal panel-body" role="form" novalidate ng-submit="submit_favorite_stores()">
-                                <md-content id="retailer-contents" style="overflow : scroll; height: 400px;">
-                                
-                                <div class="form-group-inline" ng-repeat="store in retailers">
-                                    <div class="col-md-2" style="padding-top:25px;">
-                                        <label class="btn"  style="background-color : #1abc9c;">
-                                            <md-tooltip md-direction="top">{{store.name}}</md-tooltip>
-                                            <img  ng-click="select_retailer($event)" id="{{store.id}}" ng-src="http://<?php echo base_url("assets/img/stores/"); ?>{{store.image}}" alt="{{store.name}}" class="img-thumbnail img-check">
-                                            <input type="checkbox" name="store_{{store.id}}" value="{{store.id}}" class="hidden" autocomplete="off">
-                                        </label>
+                                <md-content id="retailer-contents" style="overflow : scroll; height: 400px;" style="padding : 10px;">
+                                    <div class="form-group-inline" ng-repeat="store in retailers">
+                                        <div class="col-md-2" style="padding-top:25px;">
+                                            <label  class="btn item-block">
+                                                <md-tooltip md-direction="top">{{store.name}}</md-tooltip>
+                                                <img  ng-click="select_retailer($event)" id="{{store.id}}" ng-src="http://<?php echo base_url("assets/img/stores/"); ?>{{store.image}}" alt="{{store.name}}" class="img-thumbnail img-check">
+                                                <input type="checkbox" name="store_{{store.id}}" value="{{store.id}}" class="hidden" autocomplete="off">
+                                            </label>
+                                        </div>
                                     </div>
-                                </div>
-
-                                
                                 </md-content>
                                 <md-content ng-show="registering_user">
                                     <div style="margin : auto;">

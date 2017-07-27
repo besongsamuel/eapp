@@ -23,12 +23,12 @@ $(document).ready(function(){
             <div class="panel-heading">
                 <div class="panel-title">Sélectionnez une categorie pour voire son contenu </div>
             </div>  
-            <md-content id="retailer-contents">
+            <md-content id="retailer-contents" style="padding : 10px;">
                 <div class="form-group-inline" ng-repeat="category in categories">
-                    <div class="col-md-2" style="padding-top:25px;">
-                        <label class="btn"  style="background-color : #1abc9c;">
+                    <div class="col-md-2" style="padding-top:40px;">
+                        <label class="btn item-block">
                             <md-tooltip md-direction="top">{{category.name}}</md-tooltip>
-                            <img  ng-click="select_category($event)" id="{{store.id}}" ng-src="http://<?php echo base_url("assets/img/categories/"); ?>{{category.image}}" alt="{{category.name}}" class="img-thumbnail img-check">
+                            <img  ng-click="select_category($event)" id="{{category.id}}" ng-src="http://<?php echo base_url("assets/img/categories/"); ?>{{category.image}}" alt="{{category.name}}" class="img-thumbnail img-check">
                             <input type="checkbox" name="category_{{category.id}}" value="{{category.id}}" class="hidden" autocomplete="off">
                         </label>
                     </div>

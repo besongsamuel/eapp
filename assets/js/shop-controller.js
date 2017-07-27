@@ -106,9 +106,16 @@ angular.module('eappApp').controller('ShopController', ["$scope", "$q", "$http",
     
       $scope.getProducts();
   });
+  
+    $scope.clearSessionItems = function()
+    {
+        window.sessionStorage.removeItem("store_id");
+        window.sessionStorage.removeItem("category_id");
+    };
 	
     $scope.select_retailer = function($event)
     {
+        $scope.clearSessionItems();  
         var element = $event.target;
 	var store_id = parseInt(element.id);
 	window.sessionStorage.setItem("store_id", store_id);    
@@ -117,6 +124,7 @@ angular.module('eappApp').controller('ShopController', ["$scope", "$q", "$http",
 	
     $scope.select_category = function($event)
     {
+        $scope.clearSessionItems();
         var element = $event.target;
 	var category_id = parseInt(element.id);
 	window.sessionStorage.setItem("category_id", category_id);    

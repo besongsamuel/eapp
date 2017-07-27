@@ -6,7 +6,7 @@
         var scope = angular.element($("#cart-optimization-container")).scope();
         scope.$apply(function()
         {
-            scope.update_cart_list();
+            scope.get_user_coordinates();
         });
     });
     
@@ -35,6 +35,11 @@
                 <md-radio-button ng-value="false_value">Optimisation par magasin</md-radio-button>
             </md-radio-group>
             
+            <md-radio-group ng-model="searchInMyList" ng-change="optimizationListChanged()">
+                <md-radio-button ng-value="true_value">Rechercher dans votre liste prefere</md-radio-button>
+                <md-radio-button ng-value="false_value">Rechercher dans tout les magasins</md-radio-button>
+            </md-radio-group>
+            
             <md-slider-container>
                 <span>Km</span>
                 <md-slider min="0" max="255" ng-model="distance" aria-label="red" id="red-slider">
@@ -48,7 +53,7 @@
     </md-content>
     </div>
 
-    <div id="cart-optimization-container" class="container" ng-show="viewing_cart_optimization.value">
+    <div id="cart-optimization-container" class="" ng-show="viewing_cart_optimization.value">
         <!-- Cart Optimizations -->
         <md-content>
             <md-table-container>
@@ -60,7 +65,6 @@
                         <th md-column>Address</th>
                         <th md-column>Product</th>
                         <th md-column>Product Description</th>
-                        <th md-column md-numeric>Price (CAD)</th>
                         <th md-column md-numeric>Quantity</th>
                         <th md-column md-numeric>Total (CAD)</th>
                         <th md-column><i class="fa fa-heart"></i></th>
@@ -96,15 +100,12 @@
                         <td md-cell>
                             <p><b><a href="single-product.html">{{item.store_product.product.name}}</a></b></p>
                             <p>Format : {{item.store_product.format}}</p>
-                        </td>
-
-                        <td md-cell>
-                            <span class="amount">CAD {{item.store_product.price | number: 2}}</span> 
+                            <p><span class="amount">CAD {{item.store_product.price | number: 2}}</span> </p>
                         </td>
 
                         <td md-cell>
                             <md-input-container>
-                                <input aria-label="Qty" type="number" ng-model="item.quantity">
+                                <input aria-label="Qty" style="width : 50px;" type="number" ng-model="item.quantity">
                             </md-input-container>
                         </td>
 

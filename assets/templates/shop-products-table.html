@@ -34,12 +34,12 @@
   <table md-table md-row-select multiple ng-model="selected" md-progress="promise">
     <thead md-head md-order="query.order" md-on-reorder="getProducts">
       <tr md-row>
+        <th md-column><span>Magasin</span></th>
         <th md-column><span>Image</span></th>
-        <th md-column md-order-by="name"><span>Name</span></th>
-        <th md-column><span>Store</span></th>
-        <th md-column>Brand</th>
-        <th md-column>Format</th>
-        <th md-column>Unit</th>
+        <th md-column md-order-by="name">
+            <span>Description</span>
+        </th>
+        
         <th md-column md-numeric>Price (CAD)</th>
         <th md-column md-numeric>Quantity</th>
         <th md-column md-numeric>Total Price (CAD)</th>
@@ -48,17 +48,18 @@
     </thead>
     <tbody md-body>
       <tr md-row md-select="product" md-select-id="product.id" ng-repeat="product in products">
-        
-        <td md-cell><div class="admin-image"><a href=""><img alt="" ng-src="http://{{base_url}}assets/img/products/{{product.product.image}}"></a></div></td>
-        <td md-cell>{{product.product.name}}</td>
         <td md-cell><div class="admin-image"><a href=""><img alt="" ng-src="http://{{base_url}}assets/img/stores/{{product.retailer.image}}"></a></div></td>
-        <td md-cell>{{product.brand}}</td>
-        <td md-cell>{{product.format}}</td>
-        <td md-cell>{{product.unit.name}}</td>
+        <td md-cell><div class="admin-image"><a href=""><img alt="" ng-src="http://{{base_url}}assets/img/products/{{product.product.image}}"></a></div></td>
+        <td md-cell>
+            <p><b>{{product.product.name}}</b></p>
+            <p>Marque : {{product.brand}}</p>
+            <p>Format : {{product.format}}</p>
+            <p>Unité : {{product.unit.name}}</p>
+        </td>
         <td md-cell>{{product.price}}</td>
         <td md-cell>
             <md-input-container>
-                <input aria-label="Qty" type="number" ng-model="product.quantity">
+                <input style="width: 40px;" aria-label="Qty" type="number" ng-model="product.quantity   ">
             </md-input-container>
         </td>
         <td md-cell>

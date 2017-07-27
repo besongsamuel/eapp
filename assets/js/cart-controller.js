@@ -13,6 +13,8 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
      */
     $rootScope.viewing_cart_optimization = { value: true};
     
+    $rootScope.searchInMyList = false;
+    
     /**
      * List of selected cart items. 
      * With this list we can batch remove cart items. 
@@ -71,6 +73,23 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
     
     $rootScope.travel_distance = 0;
     
+    $rootScope.get_user_coordinates = function()
+    {
+        if ("geolocation" in navigator) 
+        {
+            navigator.geolocation.getCurrentPosition(function(position) 
+            {
+                $rootScope.longitude = position.coords.longitude;
+                $rootScope.latitude = position.coords.latitude;
+            });
+        } 
+        else 
+        {
+            $rootScope.longitude = 0;
+            $rootScope.latitude = 0;
+        }
+    };
+    
     /**
      * Updates the cart list by finding cheap products 
      * close to you
@@ -98,6 +117,8 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
         var formData = new FormData();
         formData.append("products", JSON.stringify(store_products));
         formData.append("distance", $scope.distance);
+        formData.append("longitude", $scope.longitude);
+        formData.append("latitude", $scope.latitude);
         // Send request to server to get optimized list 	
         $scope.promise = 
             $http.post("http://"+ $scope.site_url.concat("/cart/update_cart_list"), 
@@ -146,6 +167,8 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
         var formData = new FormData();
         formData.append("products", JSON.stringify(store_products));
         formData.append("distance", $scope.distance);
+        formData.append("longitude", $scope.longitude);
+        formData.append("latitude", $scope.latitude);
         // Send request to server to get optimized list 	
         $scope.store_cart_promise = 
             $http.post("http://"+ $scope.site_url.concat("/cart/optimize_product_list_by_store"), 

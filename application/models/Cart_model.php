@@ -95,37 +95,42 @@ class Cart_model extends CI_Model
         return $closest;
     }
     
-    public function get_best_store_product($product_id, $distance, $max_distance, $user) 
+    public function get_best_store_product($product_id, $distance, $max_distance, $user, $search_all = false, $coords = null) 
     {
         $product_found = false;
         
         $store_product = null;
         
-	if($user != null)
-	{
-	    while($distance <= $max_distance && !$product_found)
+        while($distance <= $max_distance && !$product_found)
+        {
+            $this->db->select(STORE_PRODUCT_TABLE.".id, ".CHAIN_STORE_TABLE.".id AS department_store_id");
+            $this->db->join(CHAIN_TABLE, CHAIN_TABLE.'.id = '.STORE_PRODUCT_TABLE.'.retailer_id');
+            $this->db->join(CHAIN_STORE_TABLE, CHAIN_TABLE.'.id = '.CHAIN_STORE_TABLE.'.chain_id');
+
+            if(!$search_all && $user != null)
             {
-		    $this->db->select(STORE_PRODUCT_TABLE.".id, ".CHAIN_STORE_TABLE.".id AS department_store_id, distance");
-		    $this->db->join(CHAIN_TABLE, CHAIN_TABLE.'.id = '.STORE_PRODUCT_TABLE.'.retailer_id');
-		    $this->db->join(CHAIN_STORE_TABLE, CHAIN_TABLE.'.id = '.CHAIN_STORE_TABLE.'.chain_id');
-		    $this->db->join(USER_CHAIN_STORE_TABLE, USER_CHAIN_STORE_TABLE.'.chain_store_id = '.CHAIN_STORE_TABLE.'.id');
-		    $this->db->where
-		    (
-			array
-			(
-			    "distance <= " => $distance,
-			    "user_id" => $user->id,
-			    "product_id" => $product_id
-			)
-		    );
-		    $this->db->order_by("price", "ASC");
-		    $query = $this->db->get_compiled_select(STORE_PRODUCT_TABLE);
-		    $store_product = $this->db->query($query)->row();
-		    $product_found = $store_product != null;
-		    $distance += DEFAULT_DISTANCE;
+                $this->db->join(USER_CHAIN_STORE_TABLE, USER_CHAIN_STORE_TABLE.'.chain_store_id = '.CHAIN_STORE_TABLE.'.id');
+                $this->db->where(array("user_id" => $user->id));
             }
-	}
-        
+
+            if($user == null)
+            {
+                $this->db->where(array('(3958*3.1415926*sqrt((latitude-'.$coords["latitude"].')*(latitude-'.$coords["latitude"].') + cos(latitude/57.29578)*cos('.$coords["latitude"].'/57.29578)*(longitude-'.$coords["longitude"].')*(longitude-'.$coords["longitude"].'))/180) <=' => $distance));
+            }
+
+            if($search_all && $user != null)
+            {
+                $this->db->where(array('(3958*3.1415926*sqrt((latitude-'.$user->profile->latitude.')*(latitude-'.$user->profile->latitude.') + cos(latitude/57.29578)*cos('.$user->profile->latitude.'/57.29578)*(longitude-'.$user->profile->longitude.')*(longitude-'.$user->profile->longitude.'))/180) <=' => $distance));
+            }
+
+            $this->db->where(array("product_id" => $product_id));
+
+            $this->db->order_by("price", "ASC");
+            $query = $this->db->get_compiled_select(STORE_PRODUCT_TABLE);
+            $store_product = $this->db->query($query)->row();
+            $product_found = $store_product != null;
+            $distance += DEFAULT_DISTANCE;
+        }
         
         $best_Store_product = null;
 	
@@ -237,5 +242,12 @@ class Cart_model extends CI_Model
         $result['num_items'] = $num_items;
         $result['store_total_cost'] = $store_items_cost;
         return $result;
+    }
+    
+    // get all the zipcodes within the specified radius - default 20
+    function get_stores_within($lat, $lon, $radius)
+    {
+        $this->db->where(array('(3958*3.1415926*sqrt((latitude-'.$lat.')*(latitude-'.$lat.') + cos(latitude/57.29578)*cos('.$lat.'/57.29578)*(longitude-'.$lon.')*(longitude-'.$lon.'))/180) <=' => $radius));
+        return $this->db->get(CHAIN_STORE_TABLE)->result();
     }
 }
