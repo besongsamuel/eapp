@@ -73,23 +73,6 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
     
     $rootScope.travel_distance = 0;
     
-    $rootScope.get_user_coordinates = function()
-    {
-        if ("geolocation" in navigator) 
-        {
-            navigator.geolocation.getCurrentPosition(function(position) 
-            {
-                $rootScope.longitude = position.coords.longitude;
-                $rootScope.latitude = position.coords.latitude;
-            });
-        } 
-        else 
-        {
-            $rootScope.longitude = 0;
-            $rootScope.latitude = 0;
-        }
-    };
-    
     /**
      * Updates the cart list by finding cheap products 
      * close to you
