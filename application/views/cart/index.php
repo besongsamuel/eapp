@@ -6,7 +6,7 @@
         var scope = angular.element($("#cart-optimization-container")).scope();
         scope.$apply(function()
         {
-            scope.get_user_coordinates();
+            scope.update_cart_list();
         });
     });
     
