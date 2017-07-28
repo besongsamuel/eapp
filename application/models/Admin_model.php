@@ -73,6 +73,14 @@ class Admin_model extends CI_Model
 	    
         foreach ($query->result() as $value) 
         {
+			$value->subcategory = $this->get(SUB_CATEGORY_TABLE, $value->subcategory_id);
+			
+			// Get category
+			if($value->subcategory != null)
+			{
+				$value->category = $this->get(CATEGORY_TABLE, $value->subcategory->product_category_id);
+			}
+			
             $result[$value->id] = $value;
         }
         
