@@ -50,7 +50,7 @@ class Shop extends CI_Controller {
         $this->parser->parse('eapp_template', $this->data);
     }
 	
-    public function select_category()
+    public function categories()
     {
         $categories = $this->admin_model->get_all(CATEGORY_TABLE);
         

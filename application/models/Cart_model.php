@@ -198,41 +198,39 @@ class Cart_model extends CI_Model
                 $range = '(3958*3.1415926*sqrt((latitude-'.$coords["latitude"].')*(latitude-'.$coords["latitude"].') + cos(latitude/57.29578)*cos('.$coords["latitude"].'/57.29578)*(longitude-'.$coords["longitude"].')*(longitude-'.$coords["longitude"].'))/180)';
             }
             
-			// join chain stores with chain
+            // join chain stores with chain
             $range_select = empty($range) ? "" : ", (".$range.") AS 'range'";
-			$this->db->select(CHAIN_STORE_TABLE.'.* '.$range_select)
+            $this->db->select(CHAIN_STORE_TABLE.'.* '.$range_select);
             $this->db->join(CHAIN_TABLE, CHAIN_TABLE.'.id = '.CHAIN_STORE_TABLE.'.chain_id');
 		
-			if(!$search_all && $user != null)
+            if(!$search_all && $user != null)
             {
-				// Join with user favorites and get the closest to set distance
+                // Join with user favorites and get the closest to set distance
                 $this->db->join(USER_FAVORITE_STORE_TABLE, USER_FAVORITE_STORE_TABLE.'.retailer_id = '.CHAIN_TABLE.'.id');
                 $this->db->where(array("user_account_id" => $user->id));
-				$this->db->where(array($range.' <=' => $distance));
+                $this->db->where(array($range.' <=' => $distance));
             }
             
             if($search_all && $user != null)
             {
-				// get closest to user. Search from all stores
+                // get closest to user. Search from all stores
                 $this->db->where(array($range.' <=' => $distance));
             }
 		
-			// No user is logged in. If we have the current coordinates, search using them
+            // No user is logged in. If we have the current coordinates, search using them
             if($user == null && $coords != null && $coords["latitude"] != 0 && $coords["longitude"] != 0)
             {
-				$this->db->where(array($range.' <=' => $distance));
+                $this->db->where(array($range.' <=' => $distance));
+            }
+            
+            if(!empty($range_select))
+            {
+                $this->db->order_by("range", "ASC");
             }
 	    
             $result = $this->db->get(CHAIN_STORE_TABLE);
 			
-			if(!empty($range_select))
-            {
-                $this->db->order_by("range", "ASC");
-            }
-			else
-			{
-				$this->db->order_by("price", "ASC");
-			}
+            
             
             foreach($result->result() as $row)
             {
