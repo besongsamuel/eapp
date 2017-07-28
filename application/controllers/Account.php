@@ -42,6 +42,12 @@ class Account extends CI_Controller {
         $this->data['body'] = $this->load->view('account/register', $this->data, TRUE);
         $this->parser->parse('eapp_template', $this->data);
     }
+	
+	public function my_grocery_list() 
+    {
+        $this->data['body'] = $this->load->view('account/my_list', $this->data, TRUE);
+        $this->parser->parse('eapp_template', $this->data);
+    }
     
     public function select_store() 
     {
