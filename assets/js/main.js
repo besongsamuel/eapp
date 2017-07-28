@@ -185,6 +185,35 @@ eappApp.controller('HomeController', ["$scope", function($scope)
 
 eappApp.controller('AccountController', ["$scope", "$http", "$mdToast", function($scope, $http, $mdToast) 
 {
+	$scope.selectedProduct = null;
+    $scope.searchProductText = "";
+	
+	$scope.querySearch = function(searchProductText)
+    {
+    	var q = $q.defer();
+		var formData = new FormData();
+		formData.append("name", searchProductText);
+
+		$http.post("http://" + $scope.site_url.concat("/admin/searchProducts"), formData, {
+			transformRequest: angular.identity,
+			headers: {'Content-Type': undefined}
+		}).then(function(response)
+		{
+			var array = $.map(response.data, function(value, index) {
+				return [value];
+			});
+			q.resolve( array );
+
+		});
+
+		return q.promise;
+    };
+	
+	$scope.product_selected = function(item)
+    {
+        if(typeof item === 'undefined')
+        	return;
+    };
    
    $scope.showSimpleToast = function(message, parent_id) {
         $mdToast.show(
@@ -205,7 +234,8 @@ eappApp.controller('AccountController', ["$scope", "$http", "$mdToast", function
             place : "http://" + $scope.base_url + "/assets/icons/ic_place_white_24px.svg",
             phone : "http://" + $scope.base_url + "/assets/icons/ic_local_phone_white_24px.svg",
             email : "http://" + $scope.base_url + "/assets/icons/ic_email_white_24px.svg",
-            lock : "http://" + $scope.base_url + "/assets/icons/ic_lock_white_24px.svg"
+            lock : "http://" + $scope.base_url + "/assets/icons/ic_lock_white_24px.svg",
+	    	favorite : "http://" + $scope.base_url + "/assets/icons/ic_lock_white_24px.svg"
         };
     };
     
