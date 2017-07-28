@@ -183,10 +183,10 @@ eappApp.controller('HomeController', ["$scope", function($scope)
   
 }]);
 
-eappApp.controller('AccountController', ["$scope", "$http", "$mdToast", function($scope, $http, $mdToast) 
+eappApp.controller('AccountController', ["$scope", "$http", "$mdToast", "$q", function($scope, $http, $mdToast, $q) 
 {
-	$scope.selectedProduct = null;
-    $scope.searchProductText = "";
+	$scope.currentProduct = null;
+        $scope.searchProductText = "";
 	$scope.myCategories = [];
 	
 	$scope.querySearch = function(searchProductText)
@@ -214,22 +214,24 @@ eappApp.controller('AccountController', ["$scope", "$http", "$mdToast", function
     {
         if(typeof item === 'undefined')
         	return;
+            
+            $scope.currentProduct = item;
     };
 	
 	$scope.AddItemToList = function()
 	{
-		if($scope.SelectedProduct != null)
+		if($scope.currentProduct != null)
 		{
-			var product = $scope.SelectedProduct;
+			var product = $scope.currentProduct;
 			// get product category id
-			var category = $scope.SelectedProduct.category;
+			var category = $scope.currentProduct.category;
 			// Check if category exists
 			var index = $scope.myCategories.indexOf(category);
 			
 			if(index != -1)
 			{
 				// Check if product exists in categories
-				var product_index =  = $scope.myCategories.products.map(function(e) { return e.id; }).indexOf($scope.SelectedProduct.id);
+				var product_index = $scope.myCategories.products.map(function(e) { return e.id; }).indexOf($scope.currentProduct.id);
 				if(product_index != -1)
 				{
 					$scope.myCategories.products[product_index].quantity++;
@@ -244,6 +246,7 @@ eappApp.controller('AccountController', ["$scope", "$http", "$mdToast", function
 			}
 			else
 			{
+                                product.quantity = 1;
 				// create category
 				category.products = [];
 				category.products.push(product);
@@ -272,7 +275,8 @@ eappApp.controller('AccountController', ["$scope", "$http", "$mdToast", function
             phone : "http://" + $scope.base_url + "/assets/icons/ic_local_phone_white_24px.svg",
             email : "http://" + $scope.base_url + "/assets/icons/ic_email_white_24px.svg",
             lock : "http://" + $scope.base_url + "/assets/icons/ic_lock_white_24px.svg",
-	    	favorite : "http://" + $scope.base_url + "/assets/icons/ic_lock_white_24px.svg"
+            favorite : "http://" + $scope.base_url + "/assets/icons/ic_favorite_white_24px.svg",
+            delete : "http://" + $scope.base_url + "/assets/icons/ic_delete_white_24px.svg"
         };
     };
     

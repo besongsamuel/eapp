@@ -73,13 +73,19 @@ class Admin_model extends CI_Model
 	    
         foreach ($query->result() as $value) 
         {
-			$value->subcategory = $this->get(SUB_CATEGORY_TABLE, $value->subcategory_id);
-			
-			// Get category
-			if($value->subcategory != null)
-			{
-				$value->category = $this->get(CATEGORY_TABLE, $value->subcategory->product_category_id);
-			}
+            $store_image_path = ASSETS_DIR_PATH."img/products/".$value->image;
+            if(!file_exists($store_image_path) || empty($value->image))
+            {
+                $value->image = "no_image_available.png";
+            }
+            
+            $value->subcategory = $this->get(SUB_CATEGORY_TABLE, $value->subcategory_id);
+
+            // Get category
+            if($value->subcategory != null)
+            {
+                    $value->category = $this->get(CATEGORY_TABLE, $value->subcategory->product_category_id);
+            }
 			
             $result[$value->id] = $value;
         }
