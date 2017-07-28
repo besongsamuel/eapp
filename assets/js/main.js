@@ -187,6 +187,7 @@ eappApp.controller('AccountController', ["$scope", "$http", "$mdToast", function
 {
 	$scope.selectedProduct = null;
     $scope.searchProductText = "";
+	$scope.myCategories = [];
 	
 	$scope.querySearch = function(searchProductText)
     {
@@ -214,6 +215,42 @@ eappApp.controller('AccountController', ["$scope", "$http", "$mdToast", function
         if(typeof item === 'undefined')
         	return;
     };
+	
+	$scope.AddItemToList = function()
+	{
+		if($scope.SelectedProduct != null)
+		{
+			var product = $scope.SelectedProduct;
+			// get product category id
+			var category = $scope.SelectedProduct.category;
+			// Check if category exists
+			var index = $scope.myCategories.indexOf(category);
+			
+			if(index != -1)
+			{
+				// Check if product exists in categories
+				var product_index =  = $scope.myCategories.products.map(function(e) { return e.id; }).indexOf($scope.SelectedProduct.id);
+				if(product_index != -1)
+				{
+					$scope.myCategories.products[product_index].quantity++;
+				}
+				else
+				{
+					$scope.myCategories[index].products = [];
+					$scope.myCategories[index].products.push(product);
+				}
+				
+				$scope.myCategories[index];
+			}
+			else
+			{
+				// create category
+				category.products = [];
+				category.products.push(product);
+				$scope.myCategories.push(category);
+			}
+		}
+	}
    
    $scope.showSimpleToast = function(message, parent_id) {
         $mdToast.show(
