@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{title}</title>
     
-     <script src="https://maps.googleapis.com/maps/api/js?sensor=false"></script> 
+     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBdUBJq3Y93iEd29Q6GAK5SHQJniqZiHu0&sensor=false"></script> 
      <!-- Angular Material style sheet -->
     <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.4/angular-material.min.css">
     <link rel="stylesheet" href="http://<?php echo base_url("assets/css/lf-ng-md-file-input.css")?>">
@@ -142,6 +142,8 @@
             
             rootScope.isUserLogged = rootScope.loggedUser !== null;
             
+	  	    // THis is called for a non logged user to prompt for his zip code
+			// If that's not already the case. 
             rootScope.promptForZipCode();
             
         });
