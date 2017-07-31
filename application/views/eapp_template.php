@@ -142,6 +142,8 @@
             
             rootScope.isUserLogged = rootScope.loggedUser !== null;
             
+	  	    // THis is called for a non logged user to prompt for his zip code
+			// If that's not already the case. 
             rootScope.promptForZipCode();
             
         });
