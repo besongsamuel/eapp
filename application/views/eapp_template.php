@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{title}</title>
     
-     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCHPEJxbRwEZ2ATEaoFuGnPkrXxoa1VXxg&sensor=false"></script> 
+     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBSFeatuF84KEMXL5XpKIYb_t80brdAfSc&sensor=false"></script> 
      <!-- Angular Material style sheet -->
     <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.4/angular-material.min.css">
     <link rel="stylesheet" href="http://<?php echo base_url("assets/css/lf-ng-md-file-input.css")?>">
