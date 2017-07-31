@@ -19,7 +19,7 @@ class Geo {
     {
         $street = rtrim($street, ',');
         $address = urlencode($city.','.rtrim($street, ',').','.$state);
-        $url = "http://maps.google.com/maps/api/geocode/json?address=$address&sensor=false&region=".trim($country);
+        $url = "http://maps.google.com/maps/api/geocode/json?key=AIzaSyCHPEJxbRwEZ2ATEaoFuGnPkrXxoa1VXxg&address=$address&sensor=false&region=".trim($country);
         $curl_handle = curl_init();
         curl_setopt($curl_handle, CURLOPT_URL, $url);
         curl_setopt($curl_handle, CURLOPT_RETURNTRANSFER, 1);
@@ -50,7 +50,7 @@ class Geo {
      */
     function GetDrivingDistance($lat1, $lat2, $long1, $long2)
     {
-        $url = "https://maps.googleapis.com/maps/api/distancematrix/json?origins=".$lat1.",".$long1."&destinations=".$lat2.",".$long2."&mode=driving&language=en-US";
+        $url = "https://maps.googleapis.com/maps/api/distancematrix/json?key=AIzaSyCHPEJxbRwEZ2ATEaoFuGnPkrXxoa1VXxg&origins=".$lat1.",".$long1."&destinations=".$lat2.",".$long2."&mode=driving&language=en-US";
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
