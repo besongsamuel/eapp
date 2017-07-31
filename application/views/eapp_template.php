@@ -32,6 +32,7 @@
     
     <!-- Font Awesome -->
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="http://<?php echo base_url("assets/css/owl.carousel.css")?>">
     <link rel="stylesheet" href="http://<?php echo base_url("assets/css/style.css")?>">
