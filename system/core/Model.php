@@ -283,6 +283,28 @@ class CI_Model {
         return $result;
     }
     
+     public function get_product($product_id) 
+    {
+        $value = $this->get(PRODUCT_TABLE, $product_id);
+        
+        $store_image_path = ASSETS_DIR_PATH."img/products/".$value->image;
+        
+        if(!file_exists($store_image_path) || empty($value->image))
+        {
+            $value->image = "no_image_available.png";
+        }
+
+        $value->subcategory = $this->get(SUB_CATEGORY_TABLE, $value->subcategory_id);
+
+        // Get category
+        if($value->subcategory != null)
+        {
+                $value->category = $this->get(CATEGORY_TABLE, $value->subcategory->product_category_id);
+        }
+
+        return $value;
+    }
+    
     /**
      * Create an EAPP object
      * @param type $table_name
@@ -524,6 +546,12 @@ class CI_Model {
         }
 
         return $this->db->get($table_name)->result();
+    }
+    
+    public function delete($table_name, $data)
+    {
+        $this->db->where($data);
+        $this->db->delete($table_name);
     }
 
 }

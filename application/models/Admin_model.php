@@ -93,6 +93,8 @@ class Admin_model extends CI_Model
         return $result;
     }
     
+   
+    
     public function get($table_name, $id)
     {
         $this->db->select("*");

@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-angular.module("eappApp").controller("MenuController", ["$rootScope", "$http", function($rootScope, $http) 
+angular.module("eappApp").controller("MenuController", ["$rootScope", "$http", "$mdDialog", function($rootScope, $http, $mdDialog) 
 {
     $rootScope.loadPage = function(url)
     {
@@ -17,6 +17,7 @@ angular.module("eappApp").controller("MenuController", ["$rootScope", "$http", f
         window.sessionStorage.removeItem("category_id");
         window.location = "http://" + $rootScope.site_url.concat("/shop");
     };
+
 	
 }]);
 

@@ -109,4 +109,5 @@ defined('USER_CHAIN_STORE_TABLE')   OR define('USER_CHAIN_STORE_TABLE', 'eapp_us
 defined('USER_ACCOUNT_TABLE')       OR define('USER_ACCOUNT_TABLE', 'eapp_user_account');
 defined('USER_PROFILE_TABLE')       OR define('USER_PROFILE_TABLE', 'eapp_user_profile');
 defined('USER_FAVORITE_STORE_TABLE')       OR define('USER_FAVORITE_STORE_TABLE', 'eapp_user_favorite_store');
+defined('USER_GROCERY_LIST_TABLE')       OR define('USER_GROCERY_LIST_TABLE', 'eapp_user_grocery_list');
 

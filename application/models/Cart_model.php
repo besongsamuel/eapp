@@ -285,10 +285,10 @@ class Cart_model extends CI_Model
 			$distance_time = $this->geo->GetDrivingDistance($department_store->latitude, $coords["latitude"], $department_store->longitude, $coords["longitude"]);
 		}
 
-		if($distance_time["distance"] != null)
+		if(isset($distance_time["distance"]) != null)
 		{
-			$dist = intval(trim(str_replace("km","",$distance_time["distance"])));
-			$driving_distance = $dist;
+                    $dist = intval(trim(str_replace("km","",$distance_time["distance"])));
+                    $driving_distance = $dist;
 		}
 		
 		return $driving_distance;

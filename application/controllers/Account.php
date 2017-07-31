@@ -43,10 +43,20 @@ class Account extends CI_Controller {
         $this->parser->parse('eapp_template', $this->data);
     }
 	
-	public function my_grocery_list() 
+    public function my_grocery_list() 
     {
-        $this->data['body'] = $this->load->view('account/my_list', $this->data, TRUE);
-        $this->parser->parse('eapp_template', $this->data);
+        
+        if($this->user != null)
+        {
+            $this->data['body'] = $this->load->view('account/my_list', $this->data, TRUE);
+            $this->parser->parse('eapp_template', $this->data);
+        }
+        else
+        {
+            $this->rememberme->recordOrigPage();
+            header('Location: '.  site_url('/account/login'));
+        }
+        
     }
     
     public function select_store() 
@@ -98,6 +108,29 @@ class Account extends CI_Controller {
         echo json_encode($result);
     }
     
+    public function save_user_list()
+    {
+        $data = array("success" => false);
+        
+        if($this->user != null)
+        {
+            $data = array
+            (
+                "user_account_id" => $this->user->id,
+                "grocery_list" => $this->input->post("my_list")
+            );
+            
+            $this->account_model->delete(USER_GROCERY_LIST_TABLE, array("user_account_id" => $this->user->id));
+            
+            $this->account_model->create(USER_GROCERY_LIST_TABLE, $data);
+            
+            $data["success"] = true; 
+        }
+        
+        echo json_encode($data);
+    }
+
+
     /*
      * User login
      */

@@ -5,6 +5,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{title}</title>
+    
+     <script src="https://maps.googleapis.com/maps/api/js?sensor=false"></script> 
      <!-- Angular Material style sheet -->
     <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.4/angular-material.min.css">
     <link rel="stylesheet" href="http://<?php echo base_url("assets/css/lf-ng-md-file-input.css")?>">
@@ -121,54 +123,6 @@
             rootScope.longitude = 0;
             rootScope.latitude = 0;
             rootScope.cart = [];
-            // Get the current geo location only if it's not yet the case
-            if ("geolocation" in navigator && !window.sessionStorage.getItem("longitude") && !window.sessionStorage.getItem("latitude")) 
-            {
-                navigator.geolocation.getCurrentPosition(function(position) 
-                {
-                    rootScope.longitude = position.coords.longitude;
-                    rootScope.latitude = position.coords.latitude;
-                    window.sessionStorage.setItem("longitude", rootScope.longitude);
-                    window.sessionStorage.setItem("latitude", rootScope.latitude);
-                    
-                    $.ajax(
-                    {
-                        type : 'POST',
-                        url : "http://" + rootScope.site_url.concat("/cart/get_cart_contents"),
-                        data : { longitude : rootScope.longitude, latitude : rootScope.latitude},
-                        success : function(data)
-                        {
-                            if(data)
-                            {
-                                rootScope.cart = JSON.parse(data);
-                            }
-                        },
-                        async : false
-                    });
-                    
-                });
-            }
-            else
-            {
-                rootScope.longitude = parseFloat(window.sessionStorage.getItem("longitude"));
-                rootScope.latitude = parseFloat(window.sessionStorage.getItem("latitude"));
-                
-                // get cart contents
-                $.ajax(
-                {
-                    type : 'POST',
-                    url : "http://" + rootScope.site_url.concat("/cart/get_cart_contents"),
-                    data : { longitude : rootScope.longitude, latitude : rootScope.latitude},
-                    success : function(data)
-                    {
-                        if(data)
-                        {
-                            rootScope.cart = JSON.parse(data);
-                        }
-                    },
-                    async : false
-                });
-            }
             rootScope.is_loading = false;
             rootScope.valid = true;
             rootScope.success_message = "";
@@ -186,6 +140,9 @@
             rootScope.hideSearchArea = (rootScope.controller == "account" && (rootScope.method == "login" || rootScope.method == "register"));
             
             rootScope.isUserLogged = rootScope.loggedUser !== null;
+            
+            rootScope.promptForZipCode();
+            
         });
         
     });
@@ -296,9 +253,9 @@
 			    <md-menu>
 				<a href md-menu-origin  ng-click="$mdMenu.open($event)" class="main-menu-item">Réduisez vos dépenses</a>
 				<md-menu-content>
-					<md-menu-item><a href="http://<?php echo site_url("account/my_list"); ?>">Votre liste d'épicerie</a></md-menu-item>
-					<md-menu-item><a href="http://<?php echo site_url("shop/select_flyer_store"); ?>">Les circulaires des magasins</a></md-menu-item>
-					<md-menu-item><a href="http://<?php echo site_url("shop/categories"); ?>">Les catégories de produits</a></md-menu-item>
+                                    <md-menu-item><a href="http://<?php echo site_url("account/my_grocery_list"); ?>">Votre liste d'épicerie</a></md-menu-item>
+                                    <md-menu-item><a href="http://<?php echo site_url("shop/select_flyer_store"); ?>">Les circulaires des magasins</a></md-menu-item>
+                                    <md-menu-item><a href="http://<?php echo site_url("shop/categories"); ?>">Les catégories de produits</a></md-menu-item>
 				</md-menu-content>
 			    </md-menu>
 		  	</li>

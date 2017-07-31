@@ -65,6 +65,25 @@ class Account_model extends CI_Model
         
         $user_account->profile = $this->get_specific(USER_PROFILE_TABLE, array("user_account_id" => $user_account->id));
         
+        
+        $product_list = $this->get_specific(USER_GROCERY_LIST_TABLE, array("user_account_id" => $user_account->id));
+        
+        if($product_list == null)
+        {
+            $user_account->grocery_list = array();
+        }
+        else
+        {
+            $user_account->grocery_list = array();
+            
+            $product_list = json_decode($product_list->grocery_list);
+            
+            foreach ($product_list as $id) 
+            {
+                array_push($user_account->grocery_list, $this->get_product($id));
+            }
+        }
+        
         return $user_account;
     }
 	

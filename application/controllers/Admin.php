@@ -289,7 +289,7 @@ class Admin extends CI_Controller
             $config['upload_path'] = ASSETS_DIR_PATH."files/";
             $config['file_name'] = $fileName.'-'.date("Y-m-d").'.csv';
             $config['overwrite'] = true;
-            $config['allowed_types'] = 'csv|xlsx';
+            $config['allowed_types'] = '*';
             $this->upload->initialize($config);
             // Upload the store logo
             $upload_success = $this->upload->do_upload($fileName);

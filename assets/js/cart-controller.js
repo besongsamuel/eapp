@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "$http", function($scope, $rootScope, $http) 
+angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "$http", "$mdDialog", function($scope, $rootScope, $http, $mdDialog) 
 {
     /**
      * When this is true, the user is viewing optimizations
@@ -317,7 +317,12 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
                             // Create new cart. 
                             scope.cart = [];
                         }
-
+                        
+                        if(scope.cart == null || typeof scope.cart === 'undefined')
+                        {
+                            scope.cart = [];
+                        }
+                        
                         scope.cart.push(cart_item);
                     });
                 }
@@ -418,5 +423,125 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
 	
 	return true;
      }; 
+     
+         
+    $rootScope.promptForZipCode = function(ev) 
+    {
+        // Get the current geo location only if it's not yet the case
+        if ("geolocation" in navigator && !window.sessionStorage.getItem("longitude") && !window.sessionStorage.getItem("latitude") && false) 
+        {
+            navigator.geolocation.getCurrentPosition(function(position) 
+            {
+                $rootScope.longitude = position.coords.longitude;
+                $rootScope.latitude = position.coords.latitude;
+                window.sessionStorage.setItem("longitude", $rootScope.longitude);
+                window.sessionStorage.setItem("latitude", $rootScope.latitude);
+
+                $.ajax(
+                {
+                    type : 'POST',
+                    url : "http://" + $rootScope.site_url.concat("/cart/get_cart_contents"),
+                    data : { longitude : $rootScope.longitude, latitude : $rootScope.latitude},
+                    success : function(data)
+                    {
+                        if(data)
+                        {
+                            $rootScope.cart = JSON.parse(data);
+                        }
+                    },
+                    async : false
+                });
+
+            });
+        }
+        
+        // Appending dialog to document.body to cover sidenav in docs app
+        var confirm = $mdDialog.prompt()
+          .title('Veillez entrer votre code postale. ')
+          .textContent('Ceci vas aider a optimiser les resultats.')
+          .placeholder('Votre Code Postale E.g. H1H 1H1')
+          .ariaLabel('Code Postale')
+          .initialValue('')
+          .targetEvent(ev)
+          .ok('Valider!')
+          .cancel('Annuler');
+
+        $mdDialog.show(confirm).then(function(result) 
+        {
+            var address = result;
+            var geocoder = new google.maps.Geocoder();
+            geocoder.geocode( { 'address': address}, function(results, status) 
+            {
+                if (status === google.maps.GeocoderStatus.OK) 
+                {
+                     $rootScope.latitude = results[0].geometry.location.lat();
+                     $rootScope.longitude = results[0].geometry.location.lng();
+                     window.sessionStorage.setItem("longitude", $rootScope.longitude);
+                     window.sessionStorage.setItem("latitude", $rootScope.latitude);
+                     $rootScope.getCartContents();
+                }
+            });
+
+          
+        }, function() 
+        {
+            $rootScope.latitude = 0;
+            $rootScope.longitude = 0;
+            window.sessionStorage.setItem("longitude", $rootScope.longitude);
+            window.sessionStorage.setItem("latitude", $rootScope.latitude);
+        });
+  };
+  
+    $rootScope.getCartContents = function()
+    {
+        // Get the current geo location only if it's not yet the case
+        if ("geolocation" in navigator && !window.sessionStorage.getItem("longitude") && !window.sessionStorage.getItem("latitude") && false) 
+        {
+            navigator.geolocation.getCurrentPosition(function(position) 
+            {
+                $rootScope.longitude = position.coords.longitude;
+                $rootScope.latitude = position.coords.latitude;
+                window.sessionStorage.setItem("longitude", $rootScope.longitude);
+                window.sessionStorage.setItem("latitude", $rootScope.latitude);
+
+                $.ajax(
+                {
+                    type : 'POST',
+                    url : "http://" + $rootScope.site_url.concat("/cart/get_cart_contents"),
+                    data : { longitude : $rootScope.longitude, latitude : $rootScope.latitude},
+                    success : function(data)
+                    {
+                        if(data)
+                        {
+                            $rootScope.cart = JSON.parse(data);
+                        }
+                    },
+                    async : false
+                });
+
+            });
+        }
+        else
+        {
+            $rootScope.longitude = parseFloat(window.sessionStorage.getItem("longitude"));
+            $rootScope.latitude = parseFloat(window.sessionStorage.getItem("latitude"));
+
+            // get cart contents
+            $.ajax(
+            {
+                type : 'POST',
+                url : "http://" + $rootScope.site_url.concat("/cart/get_cart_contents"),
+                data : { longitude : $rootScope.longitude, latitude : $rootScope.latitude},
+                success : function(data)
+                {
+                    if(data)
+                    {
+                        $rootScope.cart = JSON.parse(data);
+                    }
+                },
+                async : true
+            });
+        }
+    };
 	
 }]);

@@ -3,6 +3,8 @@ jQuery(document).ready(function($){
     // jQuery sticky Menu
     $(".mainmenu-area").sticky({topSpacing:0});
     
+    $(".my-list-info").sticky({topSpacing:50});
+    
     $('.product-carousel').owlCarousel({
         loop:true,
         nav:true,
@@ -96,7 +98,7 @@ eappApp.directive('equals', function() {
         ngModel.$setValidity('equals', ! val1 || ! val2 || val1 === val2);
       };
     }
-  }
+  };
 });
 
 eappApp.filter('trustUrl', function ($sce) {
@@ -190,7 +192,7 @@ eappApp.controller('AccountController', ["$scope", "$http", "$mdToast", "$q", fu
 	$scope.myCategories = [];
 	
 	$scope.querySearch = function(searchProductText)
-    {
+        {
     	var q = $q.defer();
 		var formData = new FormData();
 		formData.append("name", searchProductText);
@@ -217,43 +219,148 @@ eappApp.controller('AccountController', ["$scope", "$http", "$mdToast", "$q", fu
             
             $scope.currentProduct = item;
     };
+    
+    $scope.getUserProductList = function()
+    {
+        if($scope.loggedUser !== null)
+        {
+            for(var i in $scope.loggedUser.grocery_list)
+            {
+                $scope.currentProduct = $scope.loggedUser.grocery_list[i];
+                $scope.AddItemToList();
+            }
+        }
+        
+        $scope.currentProduct = null;
+        
+    };
 	
-	$scope.AddItemToList = function()
-	{
-		if($scope.currentProduct != null)
-		{
-			var product = $scope.currentProduct;
-			// get product category id
-			var category = $scope.currentProduct.category;
-			// Check if category exists
-			var index = $scope.myCategories.indexOf(category);
-			
-			if(index != -1)
-			{
-				// Check if product exists in categories
-				var product_index = $scope.myCategories.products.map(function(e) { return e.id; }).indexOf($scope.currentProduct.id);
-				if(product_index != -1)
-				{
-					$scope.myCategories.products[product_index].quantity++;
-				}
-				else
-				{
-					$scope.myCategories[index].products = [];
-					$scope.myCategories[index].products.push(product);
-				}
-				
-				$scope.myCategories[index];
-			}
-			else
-			{
-                                product.quantity = 1;
-				// create category
-				category.products = [];
-				category.products.push(product);
-				$scope.myCategories.push(category);
-			}
-		}
-	}
+    $scope.AddItemToList = function()
+    {
+        if($scope.currentProduct != null)
+        {
+            var product = $scope.currentProduct;
+            product.quantity = 1;
+            // get product category id
+            var category = $scope.currentProduct.category;
+            // Check if category exists
+            var index = $scope.myCategories.map(function(e) { return e.id; }).indexOf(category.id);
+
+            if(index !== -1)
+            {
+                // Check if product exists in categories
+                var product_index = $scope.myCategories[index].products.map(function(e) { return e.id; }).indexOf($scope.currentProduct.id);
+                if(product_index !== -1)
+                {
+                    $scope.myCategories[index].products[product_index].quantity++;
+                }
+                else
+                {
+                    if($scope.myCategories[index].products === null || typeof $scope.myCategories[index].products === 'undefined')
+                    {
+                        $scope.myCategories[index].products = [];
+                    }
+
+                    $scope.myCategories[index].products.push(product);
+                }
+            }
+            else
+            {
+                product.quantity = 1;
+                // create category
+                category.products = [];
+                category.products.push(product);
+                $scope.myCategories.push(category);
+            }
+        }
+    };
+    
+    $scope.removeProduct = function(product_id, $event)
+    {
+        for(var index in $scope.myCategories)
+        {
+            var pos = $scope.myCategories[index].products.map(function(e) { return e.id; }).indexOf(product_id);
+            if(pos > -1)
+            {
+                $scope.myCategories[index].products.splice(pos, 1);
+                
+                if($scope.myCategories[index].products.length === 0)
+                {
+                    $scope.myCategories.splice(index, 1);
+                }
+                
+                break;
+            }
+        }
+    };
+    
+    $scope.my_list_count = function()
+    {
+        var count = 0;
+        
+        for(var index in $scope.myCategories)
+        {
+            count += $scope.myCategories[index].products.length;
+        }
+        
+        return count;
+    };
+    
+    $scope.flyers_count = function()
+    {
+        var count = 0;
+        
+        return count;
+    };
+    
+    $scope.coupons_count = function()
+    {
+        var count = 0;
+        
+        return count;
+    };
+    
+    $scope.clearMyList = function()
+    {
+        $scope.myCategories = [];
+    };
+    
+    $scope.getProductList = function()
+    {
+        var result = [];
+        
+        for(var index in $scope.myCategories)
+        {
+            for(var i in $scope.myCategories[index].products)
+            {
+                result.push($scope.myCategories[index].products[i].id);
+            }
+        }
+        
+        return result;
+    };
+    
+    $scope.saveMyList = function()
+    {
+        var formData = new FormData();
+        formData.append("my_list", JSON.stringify($scope.getProductList()));
+        // Send request to server to get optimized list 	
+        $http.post("http://"+ $scope.site_url.concat("/account/save_user_list"), 
+        formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}}).then(
+        function(response)
+        {
+            if(response.data.success)
+            {
+                $scope.showSimpleToast("Votre liste a été enregistrée.", "row my-list-info");  
+            }
+            else
+            {
+                $scope.showSimpleToast("une erreur inattendue est apparue. Veuillez réessayer plus tard.", "row my-list-info");
+            }
+
+            $scope.registering_user = false;
+        });
+    };
    
    $scope.showSimpleToast = function(message, parent_id) {
         $mdToast.show(
@@ -276,7 +383,9 @@ eappApp.controller('AccountController', ["$scope", "$http", "$mdToast", "$q", fu
             email : "http://" + $scope.base_url + "/assets/icons/ic_email_white_24px.svg",
             lock : "http://" + $scope.base_url + "/assets/icons/ic_lock_white_24px.svg",
             favorite : "http://" + $scope.base_url + "/assets/icons/ic_favorite_white_24px.svg",
-            delete : "http://" + $scope.base_url + "/assets/icons/ic_delete_white_24px.svg"
+            delete : "http://" + $scope.base_url + "/assets/icons/ic_delete_white_24px.svg",
+            add : "http://" + $scope.base_url + "/assets/icons/ic_add_circle_white_24px.svg",
+            search : "http://" + $scope.base_url + "/assets/icons/ic_search_black_24px.svg",
         };
     };
     
