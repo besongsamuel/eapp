@@ -1,16 +1,4 @@
 
-<script>
-    
-    $(document).ready(function()
-    {
-        var scope = angular.element($("#cart-optimization-container")).scope();
-        scope.$apply(function()
-        {
-            scope.update_cart_list();
-        });
-    });
-    
-</script>
     
 <div class="product-big-title-area">
     <div class="container">
@@ -28,29 +16,29 @@
     
     <div>
         <md-content style="margin: 15px; padding:15px">
-			<fieldset>
-				<legend>Optimizations</legend>
-				<md-radio-group ng-model="viewing_cart_optimization.value" ng-change="optimization_preference_changed()">
-					<md-radio-button ng-value="true_value">Optimisation du panier</md-radio-button>
-					<md-radio-button ng-value="false_value">Optimisation par magasin</md-radio-button>
-				</md-radio-group>
-				
-				<h2 class="search-preference">Rechercher dans ...</h2>
-				<md-radio-group ng-model="searchInMyList" ng-change="optimization_preference_changed()">
-					<md-radio-button ng-value="true_value">Votre liste prefere</md-radio-button>
-					<md-radio-button ng-value="false_value">Tout les magasins</md-radio-button>
-				</md-radio-group>
+            <fieldset>
+                <legend>Optimizations</legend>
+                <md-radio-group ng-model="viewing_cart_optimization.value" ng-change="optimization_preference_changed()">
+                    <md-radio-button ng-value="true_value">Optimisation du panier</md-radio-button>
+                    <md-radio-button ng-value="false_value">Optimisation par magasin</md-radio-button>
+                </md-radio-group>
 
-				<md-slider-container>
-					<span>Km</span>
-					<md-slider min="0" max="255" ng-model="distance" aria-label="red" id="red-slider">
-					</md-slider>
-					<md-input-container>
-						<input type="number" ng-model="distance" aria-label="red" aria-controls="red-slider">
-					</md-input-container>
-				</md-slider-container>
-				<md-button class="md-raised" ng-click="optimization_preference_changed()">Mettre à jour</md-button>
-			</fieldset>
+                <h4 class="search-preference">Rechercher dans ...</h4>
+                <md-radio-group ng-model="searchInMyList" ng-change="optimization_preference_changed()">
+                    <md-radio-button ng-value="true_value">Votre liste prefere</md-radio-button>
+                    <md-radio-button ng-value="false_value">Tout les magasins</md-radio-button>
+                </md-radio-group>
+
+                <md-slider-container style="width : 50%;">
+                    <md-slider min="1" max="50" ng-model="distance" aria-label="red" id="red-slider" >
+                    </md-slider>
+                    <md-input-container>
+                        <input type="number" ng-model="distance" ng-min="1" ng-max="50" aria-label="red" aria-controls="red-slider">
+                    </md-input-container>
+                    Km
+                </md-slider-container>
+                <md-button class="md-raised" ng-click="optimization_preference_changed()">Mettre à jour</md-button>
+            </fieldset>
     	</md-content>
     </div>
 
@@ -62,11 +50,11 @@
                     <thead md-head md-order="query.order" md-on-reorder="update_cart_list">
                     <tr md-row>
                         <th md-column>&nbsp;</th>
-                        <th md-column>Store</th>
-                        <th md-column>Address</th>
+                        <th md-column>Magasin</th>
+                        <th md-column>Address / Distance en voiture</th>
                         <th md-column>Product</th>
-                        <th md-column>Product Description</th>
-                        <th md-column md-numeric>Quantity</th>
+                        <th md-column>PDescription du produit</th>
+                        <th md-column md-numeric>Quantité</th>
                         <th md-column md-numeric>Total (CAD)</th>
                         <th md-column><i class="fa fa-heart"></i></th>
                         <th md-column>Coupon</th>

@@ -442,75 +442,73 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
 		{
 			$rootScope.getCartContents();
 		}
-	}
+	};
          
     $rootScope.promptForZipCode = function(ev) 
     {
-		$rootScope.longitude = null;
-		$rootScope.latitude = null;
-		
-		if(!window.localStorage.getItem("longitude") && !window.localStorage.getItem("latitude"))
-		{
-			// Appending dialog to document.body to cover sidenav in docs app
-			var confirm = $mdDialog.prompt()
-			  .title('Veillez entrer votre code postale. ')
-			  .textContent('Ceci vas aider a optimiser les resultats.')
-			  .placeholder('Votre Code Postale E.g. H1H 1H1')
-			  .ariaLabel('Code Postale')
-			  .initialValue('')
-			  .targetEvent(ev)
-			  .ok('Valider!')
-			  .cancel('Annuler');
+        $rootScope.longitude = window.localStorage.getItem("longitude");
+        $rootScope.latitude = window.localStorage.getItem("latitude");
 
-			$mdDialog.show(confirm).then(function(result) 
-			{
-				var address = result;
-				var geocoder = new google.maps.Geocoder();
-				geocoder.geocode( { 'address': address}, function(results, status) 
-				{
-					if (status === google.maps.GeocoderStatus.OK) 
-					{
-						 $rootScope.latitude = results[0].geometry.location.lat();
-						 $rootScope.longitude = results[0].geometry.location.lng();
-						 window.localStorage.setItem("longitude", $rootScope.longitude);
-						 window.localStorage.setItem("latitude", $rootScope.latitude);
-						 $rootScope.getCartContents();
-					}
-					else
-					{
-						$rootScope.getUserCoordinates();
-					}
-				});
+        if(!window.localStorage.getItem("longitude") && !window.localStorage.getItem("latitude"))
+        {
+                // Appending dialog to document.body to cover sidenav in docs app
+                var confirm = $mdDialog.prompt()
+                  .title('Veillez entrer votre code postale. ')
+                  .textContent('Ceci vas aider a optimiser les resultats.')
+                  .placeholder('Votre Code Postale E.g. H1H 1H1')
+                  .ariaLabel('Code Postale')
+                  .initialValue('')
+                  .targetEvent(ev)
+                  .ok('Valider!')
+                  .cancel('Annuler');
+
+                $mdDialog.show(confirm).then(function(result) 
+                {
+                        var address = result;
+                        var geocoder = new google.maps.Geocoder();
+                        geocoder.geocode( { 'address': address}, function(results, status) 
+                        {
+                                if (status === google.maps.GeocoderStatus.OK) 
+                                {
+                                         $rootScope.latitude = results[0].geometry.location.lat();
+                                         $rootScope.longitude = results[0].geometry.location.lng();
+                                         window.localStorage.setItem("longitude", $rootScope.longitude);
+                                         window.localStorage.setItem("latitude", $rootScope.latitude);
+                                         $rootScope.getCartContents();
+                                }
+                                else
+                                {
+                                        $rootScope.getUserCoordinates();
+                                }
+                        });
 
 
-			}, function() 
-			{
-				$rootScope.getUserCoordinates();
-			});
-		}
-		else
-		{
-			$rootScope.getCartContents();
-		}
+                }, function() 
+                {
+                        $rootScope.getUserCoordinates();
+                });
+        }
+        else
+        {
+                $rootScope.getCartContents();
+        }
   };
   
     $rootScope.getCartContents = function()
-    {
-        // get cart contents
-		$.ajax(
-		{
-			type : 'POST',
-			url : "http://" + $rootScope.site_url.concat("/cart/get_cart_contents"),
-			data : { longitude : $rootScope.longitude, latitude : $rootScope.latitude},
-			success : function(data)
-			{
-				if(data)
-				{
-					$rootScope.cart = JSON.parse(data);
-				}
-			},
-			async : true
-		});
+    {                
+        var formData = new FormData();
+        formData.append("longitude", $rootScope.longitude);
+        formData.append("latitude", $rootScope.latitude);
+        // Send request to server to get optimized list 	
+        $scope.promise = $http.post("http://"+ $scope.site_url.concat("/cart/get_cart_contents"), 
+        formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}}).then(
+        function(response)
+        {
+            if(response.data)
+            {
+                $rootScope.cart = response.data;
+            }
+        });
     };
 	
 }]);

@@ -238,7 +238,7 @@
     </div>
 		
 		<!-- Begin mainmenu area -->
-    <div class="mainmenu-area" ng-controller="MenuController">
+    <div id="mainmenu-area" class="mainmenu-area" ng-controller="MenuController">
         <div class="container">
             <div class="row">
                 <div class="navbar-header">

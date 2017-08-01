@@ -54,7 +54,7 @@ class Account extends CI_Controller {
         else
         {
             $this->rememberme->recordOrigPage();
-            header('Location: '.  site_url('/account/login'));
+            header('Location: http://'.  site_url('/account/login'));
         }
         
     }

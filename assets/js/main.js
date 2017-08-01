@@ -3,8 +3,6 @@ jQuery(document).ready(function($){
     // jQuery sticky Menu
     $(".mainmenu-area").sticky({topSpacing:0});
     
-    $(".my-list-info").sticky({topSpacing:50});
-    
     $('.product-carousel').owlCarousel({
         loop:true,
         nav:true,
@@ -187,37 +185,37 @@ eappApp.controller('HomeController', ["$scope", function($scope)
 
 eappApp.controller('AccountController', ["$scope", "$http", "$mdToast", "$q", function($scope, $http, $mdToast, $q) 
 {
-	$scope.currentProduct = null;
-        $scope.searchProductText = "";
-	$scope.myCategories = [];
+    $scope.currentProduct = null;
+    $scope.searchProductText = "";
+    $scope.myCategories = [];
 	
-	$scope.querySearch = function(searchProductText)
-        {
+    $scope.querySearch = function(searchProductText)
+    {
     	var q = $q.defer();
-		var formData = new FormData();
-		formData.append("name", searchProductText);
+        var formData = new FormData();
+        formData.append("name", searchProductText);
 
-		$http.post("http://" + $scope.site_url.concat("/admin/searchProducts"), formData, {
-			transformRequest: angular.identity,
-			headers: {'Content-Type': undefined}
-		}).then(function(response)
-		{
-			var array = $.map(response.data, function(value, index) {
-				return [value];
-			});
-			q.resolve( array );
+        $http.post("http://" + $scope.site_url.concat("/admin/searchProducts"), formData, {
+                transformRequest: angular.identity,
+                headers: {'Content-Type': undefined}
+        }).then(function(response)
+        {
+            var array = $.map(response.data, function(value, index) {
+                    return [value];
+            });
+            q.resolve( array );
 
-		});
+        });
 
-		return q.promise;
+        return q.promise;
     };
 	
-	$scope.product_selected = function(item)
+    $scope.product_selected = function(item)
     {
         if(typeof item === 'undefined')
         	return;
             
-            $scope.currentProduct = item;
+        $scope.currentProduct = item;
     };
     
     $scope.getUserProductList = function()
@@ -351,11 +349,11 @@ eappApp.controller('AccountController', ["$scope", "$http", "$mdToast", "$q", fu
         {
             if(response.data.success)
             {
-                $scope.showSimpleToast("Votre liste a été enregistrée.", "row my-list-info");  
+                $scope.showSimpleToast("Votre liste a été enregistrée.", "mainmenu-area");  
             }
             else
             {
-                $scope.showSimpleToast("une erreur inattendue est apparue. Veuillez réessayer plus tard.", "row my-list-info");
+                $scope.showSimpleToast("une erreur inattendue est apparue. Veuillez réessayer plus tard.", "mainmenu-area");
             }
 
             $scope.registering_user = false;
