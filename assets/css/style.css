@@ -29,7 +29,11 @@ h6 {
 }
 body { font-family: 'Titillium Web', sans-serif; }
 
-
+.eapp-container
+{
+	padding-left : 20px;
+	padding-right : 20px;
+}
 
 .header-area {
     background: none repeat scroll 0 0 #f4f4f4;
