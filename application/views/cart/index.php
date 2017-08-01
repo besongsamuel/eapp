@@ -15,7 +15,7 @@
 <md-content class="admin-container" ng-controller="CartController">
     
     <div>
-        <md-content style="margin: 15px; padding:15px">
+        <md-content class="eapp-container">
             <fieldset>
                 <legend>Optimizations</legend>
                 <md-radio-group ng-model="viewing_cart_optimization.value" ng-change="optimization_preference_changed()">
