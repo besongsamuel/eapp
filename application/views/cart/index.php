@@ -25,7 +25,7 @@
 
                 <h4 class="search-preference">Rechercher dans ...</h4>
                 <md-radio-group ng-model="searchInMyList" ng-change="optimization_preference_changed()">
-                    <md-radio-button ng-value="true_value">Votre liste prefere</md-radio-button>
+                    <md-radio-button ng-value="true_value" ng-disabled="!isUserLogged">Votre liste prefere</md-radio-button>
                     <md-radio-button ng-value="false_value">Tout les magasins</md-radio-button>
                 </md-radio-group>
 
