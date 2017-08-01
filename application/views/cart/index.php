@@ -118,7 +118,7 @@
         </md-content>
     </div>
 
-    <div id="store-optimization-container" class="container" ng-hide="viewing_cart_optimization.value">
+    <div id="store-optimization-container" class="eapp-container" ng-hide="viewing_cart_optimization.value">
         <!-- Store Optimizations -->
         <md-content layout-padding >
             <table class="table table-condensed" style="table-layout: fixed;">
