@@ -183,7 +183,7 @@
     </div>
 
     <div>
-        <div class="container">
+        <div class="eapp-container">
 
             <div class="cart_totals ">
                 <h2>Détails d'optimisation</h2>
