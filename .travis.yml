@@ -1,0 +1,10 @@
+
+php:
+  - '5.6'
+ 
+services:
+  - mysql
+  
+before_install:
+  #- run commands to prepare your environment e.g install required software etc 
+  

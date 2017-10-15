@@ -1,0 +1,30 @@
+
+<md-dialog>
+    
+    <form name="createBrand" ng-submit="submit()" novalidate>
+        <md-dialog-content class="md-dialog-content">
+            
+            <h4 ng-show="selectedProduct">{{selectedProduct.name}}</h4>
+            <p ng-hide="selectedProduct">No product selected. Your brand will be universal. </p>
+            
+            <md-input-container class="col-sm-12">
+                <label>Brand Name</label>
+                <input name="name" ng-model="searchText" required />
+                <div ng-messages="createBrand.name.$error">
+                    <div ng-message="required">You need to enter a brand name!</div>
+                </div>
+            </md-input-container>
+            
+            <lf-ng-md-file-input lf-files="brand_image_files" lf-api="api2" style="width:100%" preview>
+            </lf-ng-md-file-input>
+        
+        </md-dialog-content>
+
+        <md-dialog-actions>
+            <input type="button" value="Cancel" class="btn" style="margin-left : 5px; margin-right: 5px;"  ng-click="cancel()" />
+            <input type="submit" value="Create" class="btn" style="margin-left : 5px; margin-right: 5px;" />
+        </md-dialog-actions>
+    </form>
+    
+
+</md-dialog>

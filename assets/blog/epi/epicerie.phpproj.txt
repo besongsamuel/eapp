@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Name>epicerie</Name>
+    <ProjectGuid>{cffe0a52-2c19-4d51-a7b5-7eb0ac00bb2c}</ProjectGuid>
+    <RootNamespace>
+    </RootNamespace>
+    <OutputType>Library</OutputType>
+    <ProjectTypeGuids>{A0786B88-2ADB-4C21-ABE8-AA2D79766269}</ProjectTypeGuids>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <IncludeDebugInformation>true</IncludeDebugInformation>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <IncludeDebugInformation>false</IncludeDebugInformation>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="ajout.php" />
+    <Compile Include="db.php" />
+    <Compile Include="index.php" />
+    <Compile Include="recherche.php" />
+    <Compile Include="recherche.zip" />
+    <Compile Include="ajout_process.php" />
+    <Compile Include="recherchepremuim.php" />
+    <Compile Include="search.php" />
+    <Compile Include="skills.sql" />
+  </ItemGroup>
+</Project>

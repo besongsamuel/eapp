@@ -1,0 +1,78 @@
+
+
+
+<md-table-container class="container">
+    <md-toolbar class="md-table-toolbar md-default" ng-hide="selected.length || filter.show">
+        <div class="md-toolbar-tools">
+        <div flex></div>
+        <md-button class="md-icon-button" ng-click="filter.show = true">
+            <md-icon>filter_list</md-icon>
+        </md-button>
+      </div>
+    </md-toolbar>
+
+    <md-toolbar class="md-table-toolbar md-default" ng-show="filter.show && !selected.length">
+        <div class="md-toolbar-tools">
+        <md-icon>search</md-icon>
+        <form flex name="filter.form">
+          <input type="text" ng-model="query.filter" ng-model-options="filter.options" placeholder="search">
+        </form>
+        <md-button class="md-icon-button" ng-click="removeFilter()">
+          <md-icon>close</md-icon>
+        </md-button>
+      </div>
+    </md-toolbar>
+
+    <md-toolbar class="md-table-toolbar alternate" ng-show="selected.length">
+      <div class="md-toolbar-tools" layout-align="space-between">
+        <div>{{selected.length}} {{selected.length > 1 ? 'items' : 'item'}} selected</div>
+        <md-button class="md-icon-button" ng-click="add_to_cart($event)">
+            <md-icon>add_shopping_cart</md-icon>
+        </md-button>
+      </div>
+    </md-toolbar>
+  <table md-table ng-model="selected" md-progress="promise">
+    <thead md-head md-order="query.order" md-on-reorder="getProducts">
+      <tr md-row>
+        <th md-column><span>Magasin</span></th>
+        <th md-column><span>Image</span></th>
+        <th md-column md-order-by="name">
+            <span>Description</span>
+        </th>
+        
+        <th md-column md-numeric>Price (CAD)</th>
+        <th md-column md-numeric>Quantity</th>
+        <th md-column md-numeric>Total Price (CAD)</th>
+        <th md-column>Actions</th>
+      </tr>
+    </thead>
+    <tbody md-body>
+      <tr md-row md-select="product" md-select-id="product.id" ng-repeat="product in products">
+        <td md-cell><div class="admin-image"><a href=""><img alt="" ng-src="{{product.retailer.image}}"></a></div></td>
+        <td md-cell><div class="admin-image"><a href=""><img alt="" ng-src="{{product.product.image}}"></a></div></td>
+        <td md-cell>
+            <p><b><a  href="{{site_url}}/cart/product/{{product.product.id}}">{{product.product.name}}</a></b></p>
+            <p ng-show="product.size">{{product.size}}</p>
+            <p ng-show="product.brand">{{product.brand.name}}</p>
+            <p>{{product.format}} <span ng-show="product.unit">{{product.unit.name}}</span></p>
+            <p ng-show="product.state">Origine : {{product.state}}</p>
+        </td>
+        <td md-cell>CAD {{product.price}}</td>
+        <td md-cell>
+            <md-input-container>
+                <input style="width: 40px;" aria-label="Qty" type="number" ng-model="product.quantity   ">
+            </md-input-container>
+        </td>
+        <td md-cell>
+            CAD {{(product.price * product.quantity) | number : 2}}
+        </td>
+        <td md-cell>
+            <a href ng-click="add_product_to_cart(product.product_id)" ng-show="can_add_to_cart(product.product_id)">Add To Cart</a> 
+            <a href ng-click="remove_product_from_cart(product.product_id)" ng-hide="can_add_to_cart(product.product_id)">Remove</a> 
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</md-table-container>
+
+<md-table-pagination md-limit="query.limit" md-limit-options="[50, 100, 200]" md-page="query.page" md-total="{{count}}" md-on-paginate="getProducts" md-page-select></md-table-pagination>
