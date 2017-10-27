@@ -68,9 +68,7 @@ class Account_model extends CI_Model
         $user_account->optimizations = $this->get_user_optimizations($user_account);
         
         $product_list = $this->get_specific(USER_GROCERY_LIST_TABLE, array("user_account_id" => $user_account->id));
-		
-        $favorite_stores = array();
-        
+		        
         $favorite_stores = $this->get_favorite_stores($account_id);
         
         if($product_list == null)
@@ -82,6 +80,11 @@ class Account_model extends CI_Model
             $user_account->grocery_list = array();
             
             $product_list = json_decode($product_list->grocery_list);
+            
+            if($product_list == NULL)
+            {
+                $product_list = array();
+            }
             
             foreach ($product_list as $item) 
             {

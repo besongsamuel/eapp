@@ -10,21 +10,21 @@
         
         <div class="row search-products">
 
-                <md-autocomplete class="col-sm-11" style="display : inline-block;"
+            <md-autocomplete class="col-sm-11" style="display : inline-block;"
                 md-search-text="searchProductText"
                 md-selected-item-change="product_selected(item)"
                 md-items="item in querySearch(searchProductText)"
                 md-item-text="item.name"
                 md-min-length="2"
                 md-floating-label="Recherche de produits"
-                >
+            >
                 <md-item-template>
                     <span md-highlight-text="searchProductText" md-highlight-flags="^i">{{item.name}}</span>
                 </md-item-template>
                 <md-not-found>
-                        Aucun produit correspondant à "{{searchProductText}}" n'a été trouvé.
+                    Aucun produit correspondant à "{{searchProductText}}" n'a été trouvé.
                 </md-not-found>
-                </md-autocomplete>
+            </md-autocomplete>
             
             
             <md-button ng-click="addNewProductToList()" class="md-fab md-mini md-primary" style="background-color : #1abc9c;" aria-label="Ajouter">

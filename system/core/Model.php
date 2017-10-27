@@ -203,19 +203,14 @@ class CI_Model {
             // Get associated product
             $store_product->product = $this->get_product($store_product->product_id, $minified);
             
-            // Get product store
-            $store_product->retailer = $this->get(CHAIN_TABLE, $store_product->retailer_id, $chain_columns);
-            $store_image_path = ASSETS_DIR_PATH."img/stores/".$store_product->retailer->image;
-            
-            if(strpos($store_product->retailer->image, 'http') === FALSE)
+            // If the name of the store product is not set, use that of the product
+            if(!isset($store_product->name) || empty($store_product->name))
             {
-                if(!file_exists($store_image_path) || empty($store_product->retailer->image))
-                {
-                    $store_product->retailer->image = "no_image_available.png";
-                }
-                $store_product->retailer->image = base_url('/assets/img/stores/').$store_product->retailer->image;
+                $store_product->name = $store_product->product->name;
             }
             
+            // Get product store
+            $store_product->retailer = $this->get_retailer($store_product->retailer_id, $chain_columns);
             // Get product unit
             $store_product->unit = $this->get(UNITS_TABLE, $store_product->unit_id, $units_columns);
             // Get subcategory
@@ -224,22 +219,20 @@ class CI_Model {
                 $store_product->similar_products = $this->get_related_products($store_product);
             }
             
+            // Get the brand from the database
             $store_product->brand = $this->get(PRODUCT_BRAND_TABLE, $store_product->brand_id, $brand_columns);
-            
-            if($store_product->brand != null)
+            // If the brand contains a web image and the product has no image
+            if($store_product->brand != null 
+                    && strpos($store_product->brand->image, 'http') !== FALSE
+                    && (empty($store_product->product->image) || isset($store_product->product->image)))
             {
-                if(strpos($store_product->brand->image, 'http') !== FALSE)
-                {
-                    $store_product->product->image = $store_product->brand->image;
-                }
-                else
-                {
-                    $brand_image = ASSETS_DIR_PATH."img/products/".$store_product->brand->image;
-                    if(file_exists($brand_image) && !empty($store_product->brand->image) && $store_product->product != null)
-                    {
-                        $store_product->product->image = base_url("/assets/img/products/").$store_product->brand->image;
-                    }
-                }
+                $store_product->product->image = $store_product->brand->image;
+            }
+            else if($store_product->brand != null 
+                    && file_exists(base_url("/assets/img/products/").$store_product->brand->image) !== FALSE
+                    && (empty($store_product->product->image) || isset($store_product->product->image)))
+            {
+                $store_product->product->image = base_url("/assets/img/products/").$store_product->brand->image;
             }
         }
         
@@ -379,6 +372,32 @@ class CI_Model {
         }	 
 
         return $value;
+    }
+    
+    public function get_retailer($retailer_id, $chain_columns) 
+    {
+        $retailer = $this->get(CHAIN_TABLE, $retailer_id, $chain_columns);
+            
+        if($retailer == null)
+        {
+            return $retailer;
+        }
+        
+        $store_image_path = base_url('/assets/img/stores/').$retailer->image;
+
+        // Retailer Image does not contain http, set its path
+        if(strpos($retailer->image, 'http') === FALSE)
+        {
+            if(!file_exists($store_image_path) || empty($retailer->image))
+            {
+                $retailer->image = base_url('/assets/img/stores/no_image_available.png');
+            }
+
+            $retailer->image = $store_image_path;
+        }
+        
+        return $retailer;
+        
     }
 	
     private function get_flyer_products($product_id, $minified)

@@ -1,17 +1,3 @@
-<script>
-    $(document).ready(function()
-    {
-        var scope = angular.element($("#admin-container")).scope();
-    
-        scope.$apply(function()
-        {
-           scope.load_icons(); 
-           
-           scope.getUserProductList();
-        });
-    });
-</script>
-
 <div class="product-big-title-area">
     <div class="container">
         <div class="row">
@@ -24,10 +10,10 @@
     </div>
 </div> <!-- End Page title area -->
 
-<div id="admin-container" class="container" ng-controller="AccountController">
+<div id="admin-container" class="container" ng-controller="UserListController">
     
     <div id="groceryListContainer" ng-include="'<?php echo base_url(); ?>/assets/templates/user_grocery_list.html'"></div>
     
 </div>
 
-
+<script src="<?php echo base_url("assets/js/userlist-controller.js")?>"></script>

@@ -115,7 +115,6 @@ class CI_Controller {
                 'controller' => $this->router->fetch_class(),
                 'method' => $this->router->fetch_method(),
                 'user' => addslashes(json_encode($this->user)),
-                'cart' => $this->get_cached_cart_contents(),
                 'mostviewed_categories' => addslashes(json_encode($this->home_model->get_mostviewed_categories()))
             ); 
             
@@ -193,11 +192,11 @@ class CI_Controller {
             
             if(sizeof($cart) > 0)
             {
-                return addslashes(json_encode($cart));
+                return json_encode($cart);
             }
             else
             {
-                return addslashes(json_encode(array()));
+                return json_encode(array());
             }
         }
         

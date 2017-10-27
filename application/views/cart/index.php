@@ -1,17 +1,4 @@
 <!DOCTYPE html>
-
-<script>
-    $(document).ready(function()
-    {
-        var scope = angular.element($("#cart-container")).scope();
-        
-        scope.$apply(function()
-        {
-            scope.getUserProductList();
-            scope.optimization_preference_changed();
-        });
-    })
-</script>
     
 <div class="product-big-title-area">
     <div class="container">
@@ -25,7 +12,7 @@
     </div>
 </div> <!-- End Page title area -->
 
-<md-content id="cart-container" class="admin-container" ng-controller="CartController">
+<md-content id="cart-container" class="admin-container" ng-controller="CartController" ng-cloak>
     
     <div>
         <md-content class="eapp-container md-whiteframe-3dp">
@@ -54,7 +41,6 @@
             </fieldset>
             <md-progress-linear md-mode="indeterminate" ng-show="promise.$$state.status === 0"></md-progress-linear> 
     	</md-content>
-        
     </div>
 
     <div id="cart-optimization-container" ng-show="viewing_cart_optimization.value">
@@ -78,11 +64,11 @@
                     
                     <tr>
                         <td colspan="6">
-                            <md-subheader class="" ng-show="departmentStore.distance > 0">
+                            <md-subheader class="" ng-show="departmentStore.fullName">
                                 <img alt="{{ product.name }}" ng-src="{{departmentStore.image}}" style="height : 44px;" />
-                                <b> <a href ng-click="InitMap($event, departmentStore)">{{departmentStore.address}}, {{departmentStore.city}}, {{departmentStore.state}}, {{departmentStore.postcode}}, {{departmentStore.distance}} Km en voiture (environs {{departmentStore.time | number : 0}} Minutes)</a></b>
+                                <b> <a href ng-click="InitMap($event, departmentStore)">{{departmentStore.fullName}}, {{departmentStore.distanceText}} en voiture (environs {{departmentStore.timeText}} )</a></b>
                             </md-subheader>
-                            <md-subheader class="md-warn" ng-hide="departmentStore.distance > 0">
+                            <md-subheader class="md-warn" ng-hide="departmentStore.distance">
                                 <img alt="{{ product.name }}" ng-src="{{departmentStore.image}}" style="height : 44px;" />
                                 <b> Le magasin n'est pas disponible près de chez vous.</b>
                             </md-subheader> 
@@ -100,7 +86,7 @@
                         </td>
 
                         <td md-cell width = "30%">
-                            <p><b><a href="<?php echo site_url("cart/product/"); ?>{{item.store_product.product.id}}">{{item.store_product.product.name}}</a></b></p>
+                            <p><b><a href="<?php echo site_url("cart/product/"); ?>{{item.store_product.product.id}}">{{item.store_product.name}}</a></b></p>
                             <p ng-show="item.different_store_products.length !== 0">{{item.store_product.retailer.name}} | <a href ng-click="productStoreChanged($event, item)">Changer Marchand</a></p>
                             <p ng-show="item.store_product.size">{{item.store_product.size}}</p>
                             <p ng-show="item.store_product.brand">{{item.store_product.brand.name}}</p>
@@ -148,13 +134,13 @@
           
             <md-tabs md-dynamic-height md-border-bottom>
               
-                <md-tab label="{{store.name}} ({{store.store_products.length}} / {{cart.length}})" ng-repeat="store in stores" md-on-select="storeTabSelected(store)">
+                <md-tab label="{{store.name}} ({{store.store_products.length}} / {{cart.length}})" ng-repeat="store in stores.slice(0, 5)" md-on-select="storeTabSelected(store)">
                   <md-content class="md-padding">
-                        <md-subheader class="md-primary"><a href  ng-click="InitMap($event, store.department_store)">{{store.department_store.address}}, {{store.department_store.city}}, {{store.department_store.state}}, {{store.department_store.postcode}}, {{store.department_store.distance}} Km en voiture (environs {{store.department_store.time | number : 0}} Minutes)</a></md-subheader>
+                        <md-subheader class="md-primary"><a href  ng-click="InitMap($event, store.department_store)">{{store.department_store.fullName}}, {{store.department_store.distanceText}} en voiture (environs {{store.department_store.timeText}})</a></md-subheader>
                         <md-subheader>Produits disponibles <span class="badge">{{store.store_products.length}}</md-subheader>
 
                         <md-list-item ng-repeat="item in store.store_products" class="noright">
-                            <img alt="{{ item.product.name }}" ng-src="{{ item.store_product.product.image }}" class="md-avatar" />
+                            <img alt="{{ item.store_product.name }}" ng-src="{{ item.store_product.product.image }}" class="md-avatar" />
                             <div class="md-list-item-text" layout="column">
                                 <a  href="<?php echo site_url("cart/product/"); ?>{{item.store_product.product.id}}">{{ item.store_product.product.name }}</a>
                                 <p ng-show="item.store_product.format">{{item.store_product.format}}<span ng-show="item.store_product.unit"> {{item.store_product.unit.name}}</span></p>
@@ -169,7 +155,7 @@
                         <md-subheader class="md-warn"><a class="md-warn" href  data-toggle="collapse" data-target="#products_{{store.id}}">Voir produits indisponibles</a> <span class="badge">{{store.missing_products.length}}</md-subheader>
                         <div id="products_{{store.id}}" class="collapse">
                             <md-list-item ng-repeat="item in store.missing_products" class="noright">
-                              <img alt="{{ item.store_product.product.name }}" ng-src="{{ item.store_product.product.image }}" class="md-avatar" />
+                              <img alt="{{ item.store_product.name }}" ng-src="{{ item.store_product.product.image }}" class="md-avatar" />
                               <div class="md-list-item-text" layout="column">
                                 <a  href="<?php echo site_url("cart/product/"); ?>{{item.store_product.product.id}}">{{ item.store_product.product.name }}</a>
                                 <p ng-show="item.store_product.format">{{item.store_product.format}}<span ng-show="item.store_product.unit"> {{item.store_product.unit.name}}</span></p>
@@ -187,7 +173,7 @@
             </md-tabs>
         </md-content>
     </div>
-
+    
     <div>
         <div class="container" style="margin-bottom: 10px; margin-top: 10px;">
 
@@ -199,12 +185,12 @@
                         
                         <tr class="cart-subtotal">
                             <th>Total des produits disponibles</th>
-                            <td><span class="amount md-warn"><b>$ CAD {{get_cart_total_available_products() | number : 2}}</b></span></td>
+                            <td><span class="amount md-warn"><b>$ CAD {{totalPriceAvailableProducts | number : 2}}</b></span></td>
                         </tr>
                         
                         <tr class="cart-subtotal">
                             <th>Total des produits non disponibles</th>
-                            <td><span class="amount" style="color : gray;"><b>$ CAD {{get_cart_total_unavailable_products() | number : 2}}</b></span></td>
+                            <td><span class="amount" style="color : gray;"><b>$ CAD {{totalPriceUnavailableProducts | number : 2}}</b></span></td>
                         </tr>
                         
                         <tr class="cart-subtotal">

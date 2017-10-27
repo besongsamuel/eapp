@@ -11,9 +11,9 @@ $(document).ready(function(){
 </script>
 
 
-<div id="admin-container" class="container" ng-controller="AccountController">    
+<div id="admin-container" class="container loginbox" ng-controller="AccountController">    
 
-        <div id="signupbox" style=" margin-top:50px" class="mainbox">
+        <div id="signupbox" class="mainbox">
             <div class="panel panel-info">
                 <div class="panel-heading">
                     <div class="panel-title">FORMULAIRE D'INSCRIPTION</div>
@@ -143,16 +143,6 @@ $(document).ready(function(){
                                 <button id="btn-signup" type="submit" class="btn btn-info col-md-12"><i class="icon-hand-right"></i> &nbsp S'enregister</button>
                             </div>
                         </div>
-                            
-                        <div class="form-group" style="border-top: 1px solid #999; padding-top:20px">
-                            <!-- Button -->      
-                            
-                            <div class="col-md-3 pull-right">
-                                <button id="fbsignup" type="button" class="btn btn-primary col-md-12"><i class="icon-facebook"></i></i> &nbsp S'enregistrer avec facebook</button>
-                            </div>
-                            
-                        </div>
-                          
                                 
                         <div class="col-md-3  condition" style=" margin-top:20px;"> <!-- Lien vers page Terme -->
                             <p class="pg_connex ">

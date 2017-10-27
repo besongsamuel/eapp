@@ -35,20 +35,6 @@ $(document).ready(function()
         /* CART */
         
         /**
-         * When this is true, the user is viewing optimizations
-         * based on the cart. When false, he is viewing optimization 
-         * based on the closest stores. 
-         */
-        rootScope.viewing_cart_optimization = { value: true};
-
-        rootScope.searchInMyList = { value: false};
-        
-        /**
-         * List of optimized cart store product items
-         */
-        rootScope.optimized_cart = [];
-        
-        /**
          * When this variable is true, the application is loading store optimizations. 
          * We display the progress bar
          */
@@ -145,34 +131,7 @@ $(document).ready(function()
 
             return total;
         };
-        
-        rootScope.get_cart_total_unavailable_products = function()
-        {
-            var total = 0;
-            
-            if(rootScope.viewing_cart_optimization.value)
-            {
-                for(var key in rootScope.cart)
-                {
-                    var sp = rootScope.cart[key].store_product;
-                    if(parseFloat(sp.department_store.distance) > 0)
-                    {
-                        continue;
-                    }
-                    total += parseFloat(rootScope.cart[key].quantity * sp.price);
-                }
-            }
-            else
-            {
-                for(var i in rootScope.selectedStore.missing_products)
-                {
-                    total += parseFloat(rootScope.selectedStore.missing_products[i].quantity * rootScope.selectedStore.missing_products[i].store_product.price);
-                }
-            }
 
-            return total;
-        };
-        
         /*
         * Get total number of items in the cart
         */
@@ -394,18 +353,16 @@ $(document).ready(function()
                     var geocoder = new google.maps.Geocoder();
                     geocoder.geocode( { 'address': address}, function(results, status) 
                     {
-                        if (status === google.maps.GeocoderStatus.OK) 
-                        {
-                            rootScope.latitude = results[0].geometry.location.lat();
-                            rootScope.longitude = results[0].geometry.location.lng();
-                            window.localStorage.setItem("longitude", rootScope.longitude);
-                            window.localStorage.setItem("latitude", rootScope.latitude);
-                            rootScope.getCartContents();
-                        }
-                        else
+                        rootScope.latitude = results[0].geometry.location.lat();
+                        rootScope.longitude = results[0].geometry.location.lng();
+                        window.localStorage.setItem("longitude", rootScope.longitude);
+                        window.localStorage.setItem("latitude", rootScope.latitude);
+                        
+                        if (status !== google.maps.GeocoderStatus.OK) 
                         {
                             rootScope.getUserCoordinates();
                         }
+                        
                     });
 
                 }, function() 
@@ -419,96 +376,7 @@ $(document).ready(function()
 		
 	/* ACCOUNT */
         
-        rootScope.selectedProduct = null;
-        rootScope.searchProductText = "";
-        rootScope.myCategories = [];
-        rootScope.maxNumItems = 50;
-        
-        rootScope.addNewProductToList = function()
-        {
-            rootScope.addToMyList(rootScope.selectedProduct);
-        }
-		
-        rootScope.addToMyList = function(product)
-        {
-            product.quantity = 1;
-
-            rootScope.AddProductToList(product);
-
-            rootScope.saveMyList();
-        };
-        
-        rootScope.AddProductToList = function(product)
-        {
-            if(typeof product !== "undefined" && product !== null &&  rootScope.my_list_count() < rootScope.maxNumItems)
-            {
-                product.quantity = (typeof product.quantity !== "undefined" && product.quantity) ? product.quantity : 1;
-                // get product category id
-                var category = product.category;
-                // Check if category exists
-                var index = rootScope.myCategories.map(function(e) { return e.id; }).indexOf(category.id);
-
-                if(index !== -1)
-                {
-                    // Check if product exists in categories
-                    var product_index = rootScope.myCategories[index].products.map(function(e) { return e.id; }).indexOf(product.id);
-                    if(product_index !== -1)
-                    {
-                        rootScope.myCategories[index].products[product_index].quantity += product.quantity;
-                    }
-                    else
-                    {
-                        if(rootScope.myCategories[index].products === null || typeof rootScope.myCategories[index].products === 'undefined')
-                        {
-                            rootScope.myCategories[index].products = [];
-                        }
-
-                        rootScope.myCategories[index].products.push(product);
-                    }
-                }
-                else
-                {
-                    // create category
-                    category.products = [];
-                    category.products.push(product);
-                    rootScope.myCategories.push(category);
-                }
-            }
-        };
-        
-        
-
-        rootScope.removeFromMyList = function(product)
-        {
-            rootScope.removeProductFromList(product.id, null, false);
-        };
-
-        rootScope.favoriteChanged = function(product)
-        {
-            if(product.in_user_grocery_list)
-            {
-                rootScope.addToMyList(product);
-            }
-            else
-            {
-                rootScope.removeFromMyList(product);
-            }
-        };
-        
-        rootScope.getUserProductList = function()
-        {
-            if(rootScope.loggedUser !== null)
-            {
-                for(var i in rootScope.loggedUser.grocery_list)
-                {
-                    rootScope.AddProductToList(rootScope.loggedUser.grocery_list[i]);
-                }
-            }
-
-            rootScope.currentProduct = null;
-
-        };
-		
+	
         rootScope.inMyList = function(product_id)
         {
             if(rootScope.isUserLogged)
@@ -524,38 +392,6 @@ $(document).ready(function()
 
             return false;
         };
-        
-        rootScope.my_list_count = function()
-        {
-            var count = 0;
-
-            for(var index in rootScope.myCategories)
-            {
-                count += rootScope.myCategories[index].products.length;
-            }
-
-            return count;
-        };
-	
-    rootScope.flyer_products_count = function()
-    {
-        var count = 0;
-
-        for(var index in rootScope.myCategories)
-        {
-            for(var i in rootScope.myCategories[index].products)
-            {
-                var product = rootScope.myCategories[index].products[i];
-                
-                if(typeof product.store_products !== "undefined" && product.store_products !== null)
-                {
-                    count += product.store_products.length;
-                }
-                
-            }
-        }
-        return count;
-    };
         
 	/*ACCOUNT END*/
         

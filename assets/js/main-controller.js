@@ -49,6 +49,11 @@ function convert_to_string_date(date)
     return date.getFullYear().toString() + "-" + date.getMonth().toString() + "-" + date.getDate().toString();
 }
 
+angular.isNullOrUndefined = function(value)
+{
+    return angular.isUndefined(value) || value === null;
+};
+
 // Define the `eapp Application` module
 var eappApp = angular.module('eappApp', ['ngMaterial', 'md.data.table', 'lfNgMdFileInput', 'ngMessages', 'ngSanitize', 'mdCountrySelect', 'ngNotificationsBar', 'ngAnimate', 'angularCountryState']);
 
@@ -74,10 +79,55 @@ eappApp.factory('eapp', ['$http','$rootScope', function($http, $rootScope)
         return "http://" + siteName + "index.php/";
     };
     
+    
+    eappService.siteUrl = function()
+    {
+        return $http.post(eappService.getSiteUrl().concat("eapp/site_url"), null);
+    };
+    
+    eappService.baseUrl = function()
+    {
+        return $http.post(eappService.getSiteUrl().concat("eapp/base_url"), null);
+    };
+    
+    eappService.getRetailers = function()
+    {
+        return $http.post(eappService.getSiteUrl().concat("eapp/get_retailers"), null);
+    };
+    
     eappService.getLatestProducts = function()
     {
         return $http.post(eappService.getSiteUrl().concat("cart/get_latest_products"), null);
     };
+    
+    eappService.addProductToList = function(product)
+    {
+        var formData = new FormData();
+        formData.append("product_id", product.id);
+        
+        return $http.post(eappService.getSiteUrl().concat("eapp/add_product_to_list"), formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}});
+    };
+    
+    eappService.removeProductFromList = function(product)
+    {
+        var formData = new FormData();
+        formData.append("product_id", product.id);
+        
+        return $http.post(eappService.getSiteUrl().concat("eapp/remove_product_from_list"), formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}});
+    };
+    
+    eappService.getCart = function()
+    {
+        return $http.post(eappService.getSiteUrl().concat("eapp/get_cart_contents"), null);
+    };
+    
+    eappService.removeFromCart = function(rowid)
+    {
+        var formData = new FormData();
+        formData.append("rowid", rowid);
+        
+        return $http.post(eappService.getSiteUrl().concat("cart/remove"), formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}});
+    }
 
     return eappService;
 }]);
@@ -242,80 +292,7 @@ eappApp.controller('HomeController', ["$scope", "$http", function($scope, $http)
 eappApp.controller('AccountController', ["$scope", "$http", "$mdToast", "$q", "$rootScope", "$mdDialog", function($scope, $http, $mdToast, $q, $rootScope, $mdDialog) 
 {
     
-    $scope.querySearch = function(searchProductText)
-    {
-    	var q = $q.defer();
-        var formData = new FormData();
-        formData.append("name", searchProductText);
-
-        $http.post( $scope.site_url.concat("/admin/searchProducts"), formData, {
-                transformRequest: angular.identity,
-                headers: {'Content-Type': undefined}
-        }).then(function(response)
-        {
-            var array = $.map(response.data, function(value, index) {
-                    return [value];
-            });
-            q.resolve( array );
-
-        });
-
-        return q.promise;
-    };
-	
-    $rootScope.product_selected = function(item)
-    {
-        if(typeof item === 'undefined')
-            return;
-            
-        $rootScope.selectedProduct = item;
-    };
     
-    $scope.getUserListStorePrices = function()
-    {
-        var stores = [];
-
-        if($scope.loggedUser !== null && typeof $scope.loggedUser !== "undefined" && typeof $scope.loggedUser.grocery_list !== "undefined")
-        {
-            for(var i in $scope.loggedUser.grocery_list)
-            {
-                var product = $scope.loggedUser.grocery_list[i];
-                
-                for (var x in product.store)
-                {
-                    var productStore = product.store[x];
-                    
-                    var index = stores.map(function(e) { return e.id; }).indexOf(productStore.id);
-
-                    if(index === -1) 
-                    {
-                        productStore.price = 0;
-                        productStore.count = 0;
-                        stores.push(productStore);
-                        index = stores.length - 1;
-                    }
-
-                    if(typeof productStore.store_product !== "undefined")
-                    {
-                        stores[index].price += parseFloat(productStore.store_product.price);
-                        stores[index].count++;
-                    }
-                }
-                
-            }
-        }
-	    
-        // remove all stores with no items 
-        var index = stores.map(function(e) { return e.count; }).indexOf(0);
-
-        while(index > -1)
-        {
-            stores.splice(index, 1);
-            var index = stores.map(function(e) { return e.count; }).indexOf(0);
-        }    
-
-        return stores;
-    };
 	
     $scope.flyers_count = function()
     {
@@ -331,43 +308,6 @@ eappApp.controller('AccountController', ["$scope", "$http", "$mdToast", "$q", "$
         return count;
     };
     
-    $scope.clearMyList = function($event)
-    {
-		var confirmDialog = $rootScope.createConfirmDIalog($event, "Cela effacera tous les contenus de votre liste d'épicerie.");
-		
-		$mdDialog.show(confirmDialog).then(function() 
-        {
-            $http.post($rootScope.site_url.concat("/cart/destroy"), null).then(function(response)
-            {
-                $rootScope.myCategories = [];
-				$scope.loggedUser.grocery_list = [];
-				$rootScope.saveMyList();
-				
-            });
-
-        });
-        
-    };
-    
-    $scope.getProductList = function()
-    {
-        var result = [];
-        
-        for(var index in $scope.myCategories)
-        {
-            for(var i in $scope.myCategories[index].products)
-            {
-                var data = 
-                {
-                        id : $scope.myCategories[index].products[i].id,
-                        quantity : $scope.myCategories[index].products[i].quantity
-                };    
-                result.push(data);
-            }
-        }
-        
-        return result;
-    };
     
     $rootScope.createConfirmDIalog = function(ev, contentText) 
     {
@@ -427,66 +367,7 @@ eappApp.controller('AccountController', ["$scope", "$http", "$mdToast", "$q", "$
         
     };
     
-    $rootScope.removeProductFromList = function(product_id, $event, showDialog)
-    {
-        var confirmDialog = $rootScope.createConfirmDIalog ($event, "Ce produit sera supprimé de votre liste.");
-        
-        if(showDialog)
-        {
-            $mdDialog.show(confirmDialog).then(function() 
-            {
-                $rootScope.removeFromList(product_id);
-                $rootScope.saveMyList();
-                
-            }, function() 
-            {
-                
-            });
-        }
-        else
-        {
-            $rootScope.removeFromList(product_id);
-            $rootScope.saveMyList();
-        }
-    };
-    
-    $rootScope.removeFromList = function(product_id)
-    {
-        for(var index in $rootScope.myCategories)
-        {
-            var pos = $rootScope.myCategories[index].products.map(function(e) { return e.id; }).indexOf(product_id);
-            if(pos > -1)
-            {
-                $rootScope.myCategories[index].products.splice(pos, 1);
 
-                if($rootScope.myCategories[index].products.length === 0)
-                {
-                    $rootScope.myCategories.splice(index, 1);
-                }
-
-                break;
-            }
-        }
-    };
-  
-    $rootScope.saveMyList = function()
-    {
-        var formData = new FormData();
-        formData.append("my_list", JSON.stringify($scope.getProductList()));
-        // Send request to server to get optimized list 	
-        $http.post( $scope.site_url.concat("/account/save_user_list"), 
-        formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}}).then(
-        function(response)
-        {
-            if(!response.data.success)
-            {
-                $scope.showSimpleToast("une erreur inattendue est apparue. Veuillez réessayer plus tard.", "mainmenu-area");
-            }
-
-            $scope.registering_user = false;
-        });
-    };
-   
    $rootScope.showSimpleToast = function(message, parent_id) {
         $mdToast.show(
           $mdToast.simple()
@@ -497,9 +378,9 @@ eappApp.controller('AccountController', ["$scope", "$http", "$mdToast", "$q", "$
         );
     };
     
-    $scope.load_icons = function()
+    $rootScope.load_icons = function()
     {
-        $scope.icons = 
+        $rootScope.icons = 
         {
             person :  $scope.base_url + "/assets/icons/ic_person_white_24px.svg",
             flag :  $scope.base_url + "/assets/icons/ic_flag_white_24px.svg",

@@ -197,12 +197,7 @@ class Cart extends CI_Controller {
     {
         $this->cart->destroy();
     }
-    
-    public function get_cart_contents() 
-    {
-        echo $this->get_cached_cart_contents();
-    }
-    
+        
     /**
      * Get cart contents
      */

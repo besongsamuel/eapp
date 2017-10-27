@@ -138,7 +138,6 @@
 
                 rootScope.longitude = 0;
                 rootScope.latitude = 0;
-                rootScope.cart = JSON.parse('<?php echo $cart; ?>');
 
                 var user = '<?php echo $user; ?>';
                 if(user === "" || user == "null")
@@ -175,27 +174,23 @@
   <body>
     <notifications-bar class="notifications"></notifications-bar>
 
-    <div class="container search-box" id="search-box" ng-controller="ShopController" ng-hide="hideSearchArea" style="margin-top: 60px;" ng-cloak>
+    <div class="container search-box" id="search-box" ng-controller="ShopController" ng-hide="hideSearchArea" style="margin-top: 100px;" ng-cloak>
         
-            <div class="row">
-                <div ng-class="{'col-sm-12 col-md-12' : isUserLogged, 'col-sm-12 col-md-6' : !isUserLogged}">
-                    <form ng-submit="searchProducts(searchText)">
-                        <md-input-container class="md-icon-float md-icon-right md-block">
-                            <label>Rechercher produits</label>
-                            <input name="searchText" ng-model="searchText" aria-label="Rechercher" />
-                            <md-icon ng-hide="true"><i class="material-icons">search</i></md-icon>
-                    
-                        </md-input-container>
-                    </form>
-                </div>
-                <div class="col-sm-12 col-md-6">
-                    <p ng-hide="isUserLogged">Résultats optimisés pour {{currentAddress}} | <a href="<?php echo site_url("/home/change_location"); ?>">Changer</a></p>
-                </div>
-            </div>
-            
-            
-            
-        
+    <div class="row">
+        <div ng-class="{'col-sm-12 col-md-12' : isUserLogged, 'col-sm-12 col-md-6' : !isUserLogged}">
+            <form ng-submit="searchProducts(searchText)">
+                <md-input-container class="md-icon-float md-icon-right md-block">
+                    <label>Rechercher produits</label>
+                    <input name="searchText" ng-model="searchText" aria-label="Rechercher" />
+                    <md-icon ng-hide="true"><i class="material-icons">search</i></md-icon>
+
+                </md-input-container>
+            </form>
+        </div>
+        <div class="col-sm-12 col-md-6">
+            <p ng-hide="isUserLogged">Résultats optimisés pour {{currentAddress}} | <a href="<?php echo site_url("/home/change_location"); ?>">Changer</a></p>
+        </div>
+    </div>
         
     </div>
     
@@ -215,7 +210,6 @@
                     
                     <div id="navbar" class="navbar-collapse collapse">
                         <ul class="nav navbar-nav"  ng-controller="MenuController">
-                            
                             <li class=" dropdown" ng-show="loggedUser.subscription > 0">
                                 <a href="#" class="dropdown-toggle " data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Admin<span class="caret"></span></a>
                                 <ul class="dropdown-menu">
@@ -225,9 +219,9 @@
                                 </ul>
                             </li>
                             
-                            <li class="active"><a href="<?php echo site_url("home"); ?>" class="">Accueil</a></li>
+                            <li ng-class="{active : isHome}"><a href="<?php echo site_url("home"); ?>" class="">Accueil</a></li>
                             
-                            <li class=" dropdown">
+                            <li class=" dropdown" ng-class="{active : isMainMenu}">
                                 <a href="#" class="dropdown-toggle " data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Réduisez vos dépenses<span class="caret"></span></a>
                                 <ul class="dropdown-menu">
                                     <li><a href="<?php echo site_url("account/my_grocery_list"); ?>">Votre liste d'épicerie</a></li>
@@ -278,7 +272,7 @@
     	{body}
     </div>
 
-    <div id="eapp-footer" class="footer-top-area" ng-controller="FooterController">
+    <div id="eapp-footer" class="footer-top-area" ng-controller="FooterController" ng-cloak>
         <div class="container">
             <div class="row">
                 <div class="col-md-3 col-sm-6">

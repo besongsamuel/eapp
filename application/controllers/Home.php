@@ -26,7 +26,6 @@ class Home extends CI_Controller {
      */
     public function index()
     {
-        $this->data['stores'] = $this->admin_model->get_chains();
         $this->data['latestProducts'] = $this->home_model->get_store_products_limit(25, 0)["products"];
         $this->data['body'] = $this->load->view('home/index', $this->data, TRUE);
         $this->rememberme->recordOrigPage();

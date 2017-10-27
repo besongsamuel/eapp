@@ -27,6 +27,13 @@ h6 {
     font-weight: 700;
     margin: 0 0 15px;
 }
+
+
+html
+{
+    background-color: white;
+}
+
 body { font-family: 'Titillium Web', sans-serif; }
 
 .eapp-container
@@ -200,6 +207,7 @@ z-index: 9;
   font-size: 50px;
   font-weight: 100;
   margin-bottom: 20px;
+  margin-top: 50px;
   text-align: center;
 }
 
@@ -937,6 +945,11 @@ div.cart-collaterals ul.products li.product:hover .add_to_cart_button{background
 }
 #login-form-wrap input[type="submit"] {
     margin-bottom: 15px;
+}
+
+.loginbox
+{
+    margin-top : 80px;
 }
 
 
