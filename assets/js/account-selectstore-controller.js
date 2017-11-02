@@ -3,6 +3,10 @@ angular.module('eappApp').controller('SelectAccountStoreController', ["$scope", 
     $rootScope.isAccountMenu = true;
     
     $scope.max_stores = 4;
+	
+	$scope.selected_retailers = [];
+	
+	$scope.favoriteStores = []
     
     $scope.Init = function()
     {
@@ -22,6 +26,21 @@ angular.module('eappApp').controller('SelectAccountStoreController', ["$scope", 
 	window.location =  $scope.site_url.concat("/shop");
     };
     
+	
+	$scope.$watch("selected_retailers", function(newValue, oldValue)
+  	{		
+		$scope.favoriteStores = [];
+		
+		for(var x in $scope.selected_retailers)
+		{
+			var retailer_id = parseInt($scope.selected_retailers[x]);
+			 
+			$scope.favoriteStores.push($scope.retailers[retailer_id]);
+			
+		}
+		
+	});
+	
     $scope.select_retailer = function($event)
     {
         var element = $event.target;
