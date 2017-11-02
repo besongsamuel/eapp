@@ -35,19 +35,6 @@ class Shop extends CI_Controller {
     
     public function select_flyer_store()
     {
-        $retailers = $this->cart_model->get_closest_merchants($this->user);
-        
-        foreach ($retailers as $key => $value) 
-        {
-            $path = ASSETS_DIR_PATH."img/stores/".$value->image;
-            
-            if(!file_exists($path))
-            {
-                $retailers[$key]->image = "no_image_available.png";
-            }
-           $retailers[$key]->image = base_url('/assets/img/stores/').$retailers[$key]->image;
-        }
-        $this->data['retailers'] = addslashes(json_encode($retailers));
         $this->data['body'] = $this->load->view('shop/select_flyer_store', $this->data, TRUE);
         $this->parser->parse('eapp_template', $this->data);
     }
@@ -91,19 +78,6 @@ class Shop extends CI_Controller {
 	
     public function categories()
     {
-        $categories = $this->admin_model->get_all(CATEGORY_TABLE);
-        
-        foreach ($categories as $key => $value) 
-        {
-            $path = ASSETS_DIR_PATH."img/categories/".$value->image;
-            
-            if(!file_exists($path) || empty($value->image))
-            {
-                $categories[$key]->image = "no_image_available.png";
-            }
-            $categories[$key]->image = base_url('/assets/img/categories/').$categories[$key]->image;
-        }
-        $this->data['categories'] = addslashes(json_encode($categories));
         $this->data['body'] = $this->load->view('shop/select_category', $this->data, TRUE);
         $this->parser->parse('eapp_template', $this->data);
     }

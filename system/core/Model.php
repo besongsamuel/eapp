@@ -344,7 +344,7 @@ class CI_Model {
         }
         
         $value = $this->get(PRODUCT_TABLE, $product_id, $product_columns);
-        
+                        
         $store_image_path = ASSETS_DIR_PATH."img/products/".$value->image;
         
         if(strpos($value->image, 'http') === false)

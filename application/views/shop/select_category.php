@@ -1,14 +1,4 @@
-<script>
-$(document).ready(function(){
-    
-    var scope = angular.element($("#admin-container")).scope();
-    
-    scope.$apply(function()
-    {
-        scope.categories = JSON.parse('<?php echo $categories; ?>');
-    });
-})
-</script>
+<script src="<?php echo base_url("assets/js/category-controller.js")?>"></script>
 
 <!-- Main Script -->
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -28,7 +18,7 @@ $(document).ready(function(){
     </div>
 </div> <!-- End Page title area -->
 
-<div id="admin-container" class="container" ng-controller="ShopController">    
+<div id="admin-container" class="container" ng-controller="CategoryController">    
 
       <div id="signupbox" style=" margin-top:50px" class="container">
         <div class="panel panel-info">
@@ -44,7 +34,7 @@ $(document).ready(function(){
                     
                     <div class="col-md-3" style="padding-top:40px;">
                         <label class="btn item-block">
-                            <img  ng-click="select_category($event)" id="{{category.id}}" ng-src="{{category.image}}" alt="{{category.name}}" class="category-block img-check">
+                            <img  ng-click="select_category($event, category.id)" id="{{category.id}}" ng-src="{{category.image}}" alt="{{category.name}}" class="category-block img-check">
                             <input type="checkbox" name="category_{{category.id}}" value="{{category.id}}" class="hidden" autocomplete="off">
                         </label>
                         <b><p style="text-align: center;">{{category.name}}</p></b>

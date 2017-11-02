@@ -21,48 +21,6 @@ and open the template in the editor.
     </div>
 </div> <!-- End Page title area -->
 
-<script>
-	$(document).ready(function()
-  	{
-            var rootScope = angular.element($("html")).scope();
-            rootScope.$apply(function()
-            {
-                rootScope.menu = "shop";
-                rootScope.searchText = "";
-                if(window.sessionStorage.getItem("searchText"))
-                {
-                    rootScope.searchText = window.sessionStorage.getItem("searchText");
-                    window.sessionStorage.removeItem("searchText");
-                }
-            });
-            
-            var scope = angular.element($("#shop-container")).scope();
-	    
-            scope.$apply(function()
-            {
-                scope.base_url = "<?php echo $base_url; ?>";
-                scope.site_url = "<?php echo $site_url; ?>";
-                scope.controller = "<?php echo $controller; ?>";
-                scope.method = "<?php echo $method; ?>";
-                
-                scope.categories = JSON.parse('<?php echo $categories; ?>');
-                scope.stores = JSON.parse('<?php echo $stores; ?>');
-                
-                if(window.sessionStorage.getItem("store_id"))
-                {
-                    scope.store_id = parseInt(window.sessionStorage.getItem("store_id"));
-                }
-                if(window.sessionStorage.getItem("category_id"))
-                {
-                    scope.category_id = parseInt(window.sessionStorage.getItem("category_id"));
-                }
-                scope.query.filter = scope.searchText;
-				
-                scope.getProducts();
-            });
-  	});
-</script>
-
 <div id="shop-container" class="white-container" ng-controller="ShopController">
 	
     <div class="container" style="margin-top : 10px;" ng-show="category_id">

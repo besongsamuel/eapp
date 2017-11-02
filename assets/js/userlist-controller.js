@@ -100,7 +100,9 @@ angular.module("eappApp").controller("UserListController", ["$rootScope", "$scop
                 var product_index = $scope.myCategories[index].products.map(function(e) { return e.id; }).indexOf(product.id);
                 if(product_index !== -1)
                 {
-                    $scope.myCategories[index].products[product_index].quantity += product.quantity;
+                    // Update Quantity
+                    var quantity = parseInt($scope.myCategories[index].products[product_index].quantity) + 1;
+                    $scope.myCategories[index].products[product_index].quantity = quantity;
                 }
                 else
                 {
@@ -318,6 +320,49 @@ angular.module("eappApp").controller("UserListController", ["$rootScope", "$scop
         }    
 
         return stores;
+    };
+    
+    $scope.optimizeMyList = function($event)
+    {
+        var confirmDialog = $rootScope.createConfirmDIalog($event, "Cela effacera tous les contenus de votre panier.");
+        
+        $mdDialog.show(confirmDialog).then(function() 
+        {
+            $http.post($rootScope.site_url.concat("/cart/destroy"), null).then(function(response)
+            {
+                $rootScope.cart = [];
+                var items = [];
+                
+                // add cart contents from my list
+                for(var index in $rootScope.myCategories)
+                {
+                    for(var i in $rootScope.myCategories[index].products)
+                    {
+                        var product = $rootScope.myCategories[index].products[i];
+                        
+                        var item = 
+                        {
+                            product_id : product.id,
+                            quantity : product.quantity
+                        };
+                        
+                        items.push(item);
+                    }
+                }
+                
+                var formData = new FormData();
+                formData.append("items", JSON.stringify(items));
+
+                $http.post($rootScope.site_url.concat("/cart/insert_batch"), 
+                formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}}).then(function(response)
+                {
+                    window.location = $rootScope.site_url.concat("/cart");
+                });
+            });
+
+        });
+        
+        
     };
     
     angular.element(document).ready(function()

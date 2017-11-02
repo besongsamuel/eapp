@@ -12,7 +12,13 @@
     </div>
 </div> <!-- End Page title area -->
 
-<md-content id="cart-container" class="admin-container" ng-controller="CartController" ng-cloak>
+<div id="cart-container" class="admin-container" ng-controller="CartController" ng-cloak>
+    
+    <div class="col-12">
+        <p style="text-align: center;">Résultats dans un rayon de {{getDistance()}} km
+            <span> | <a href ng-click="changeDistance($event)">Changer</a></span>
+        </p>
+    </div>
     
     <div>
         <md-content class="eapp-container md-whiteframe-3dp">
@@ -28,16 +34,7 @@
                         <md-radio-button ng-value="false_value">Rechercher dans tout les magasins</md-radio-button>
                     </md-radio-group>
                 </div>
-                
-                <div layout class="col-sm-12">
-                    <div flex="15" layout layout-align="center center">
-                      <span class="md-body-1">Distance : {{distance}} Km</span>
-                    </div>
-                    <md-slider flex class="md-primary" md-discrete ng-model="distance" step="1" min="1" max="100" aria-label="Distance">
-                    </md-slider>
-                    <md-button class="md-raised" ng-click="optimization_preference_changed()">Mettre à jour</md-button>
-                </div>
-                
+                                
             </fieldset>
             <md-progress-linear md-mode="indeterminate" ng-show="promise.$$state.status === 0"></md-progress-linear> 
     	</md-content>
@@ -86,14 +83,14 @@
                         </td>
 
                         <td md-cell width = "30%">
-                            <p><b><a href="<?php echo site_url("cart/product/"); ?>{{item.store_product.product.id}}">{{item.store_product.name}}</a></b></p>
-                            <p ng-show="item.different_store_products.length !== 0">{{item.store_product.retailer.name}} | <a href ng-click="productStoreChanged($event, item)">Changer Marchand</a></p>
+                            <p><b><a href ng-click="viewProduct(item.store_product.id, $event)">{{item.store_product.name}}</a></b></p>
+                            <p ng-show="item.different_store_products.length !== 0">{{item.store_product.retailer.name}} | <a href ng-click="changeProductStore($event, item)">Changer Marchand</a></p>
                             <p ng-show="item.store_product.size">{{item.store_product.size}}</p>
                             <p ng-show="item.store_product.brand">{{item.store_product.brand.name}}</p>
                             <p>
                                 {{item.store_product.format}} <span ng-show="item.store_product.unit"> {{item.store_product.unit.name}}</span>
                                 <span ng-hide="item.different_format_products.length === 0">
-                                   | <a href ng-click="productFormatChanged($event, item)">Changer Format</a>
+                                   | <a href ng-click="changeProductFormat($event, item)">Changer Format</a>
                                 </span>
                             </p>
                             
@@ -252,7 +249,7 @@
             </div>
         </div>
     </div>
-</md-content>
+</div>
 
 
 

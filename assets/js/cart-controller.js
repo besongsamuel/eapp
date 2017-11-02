@@ -7,7 +7,6 @@
 angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "$http", "$mdDialog","eapp", function($scope, $rootScope, $http, $mdDialog, eapp) 
 {
     
-    
     /**
      * List of selected cart items. 
      * With this list we can batch remove cart items. 
@@ -76,12 +75,7 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
             $scope.getStoreDrivingDistances();
         }
     };
-    
-    /**
-     * Set distance
-     */
-    $scope.distance = 4;
-    
+        
     $scope.true_value = true;
     $scope.false_value = false;
     
@@ -109,6 +103,23 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
         else
         {
             eapp.removeProductFromList();
+        }
+    };
+    
+    $scope.getDistance = function()
+    {
+        if($scope.isUserLogged)
+        {
+            return parseInt($scope.loggedUser.profile.cart_distance);
+        }
+        else if(window.localStorage.getItem('cart_distance'))
+        {
+            return parseInt(window.localStorage.getItem('cart_distance'));
+        }
+        else
+        {
+            // return a default distance
+            return 4;
         }
     };
     
@@ -143,7 +154,7 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
 		
         var formData = new FormData();
         formData.append("products", JSON.stringify(store_products));
-        formData.append("distance", $scope.distance);
+        formData.append("distance", $scope.getDistance());
         // User's longitude
         formData.append("longitude", $scope.longitude);
         // user's latitude
@@ -176,9 +187,10 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
                 
                 // orders the stores and assigns the distance and times to each of the
                 // department stores
-                $scope.groupByStore();
+                groupByStore();
                 
-                $scope.update_price_optimization();
+                
+                
             });
         
     };
@@ -215,7 +227,7 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
      * group by store
      * @returns {undefined}
      */
-    $scope.groupByStore = function()
+    groupByStore = function()
     {
         var currentDepartmentStoreID = 0;
         
@@ -619,16 +631,27 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
 	  
     };
 	
-    $scope.productStoreChanged = function(ev, currentStoreProduct)
+    /**
+     * Callback when the user wants to change the store
+     * of a given store product. 
+     * @param {type} ev
+     * @param {type} currentStoreProduct
+     * @returns {undefined}
+     */    
+    $scope.changeProductStore = function(ev, cartItem)
     {
-        $scope.selectedStoreProduct = currentStoreProduct.store_product;
-	$scope.selectedStoreProduct.different_store_products = 	currentStoreProduct.different_store_products;
+        // The currentlu selected store product. 
+        $scope.selectedStoreProduct = cartItem.store_product;
+        $scope.different_store_products = cartItem.different_store_products;
+        $scope.related_products = cartItem.store_product.related_products;
+        // Show dialog for user to change the store of the product. 
         $mdDialog.show({
             controller: ChangeStoreController,
             templateUrl:  $scope.base_url + 'assets/templates/change-store-product.html',
             parent: angular.element(document.body),
             targetEvent: ev,
             clickOutsideToClose:true,
+            disableParentScroll : true,
             preserveScope:true,
             scope : $scope,
             fullscreen: false //
@@ -640,16 +663,57 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
           });
     };
     
-    $scope.productFormatChanged = function(ev, currentStoreProduct)
+    function ChangeStoreController($scope, $mdDialog) 
     {
-        $scope.selectedStoreProduct = currentStoreProduct.store_product;
-	$scope.selectedStoreProduct.different_format_products = currentStoreProduct.different_format_products;
+        $scope.hide = function() 
+        {
+            $mdDialog.hide();
+        };
+
+        $scope.cancel = function() 
+        {
+            $mdDialog.cancel();
+        };
+        
+        $scope.change = function(sp)
+        {
+            // Get reference to in_user_grocery_list
+            var in_user_grocery_list = $scope.selectedStoreProduct.product.in_user_grocery_list;
+            // Assign references to the newly selected product
+            $scope.selectedStoreProduct = sp;
+            $scope.selectedStoreProduct.different_store_products = $scope.different_store_products;
+            $scope.selectedStoreProduct.related_products = $scope.related_products;
+            $scope.selectedStoreProduct.product.in_user_grocery_list = in_user_grocery_list;
+        };
+
+        $scope.selectStoreProduct = function() 
+        {
+            var currentStoreProduct = $scope.selectedStoreProduct;
+            $scope.productChanged(currentStoreProduct);
+            $mdDialog.hide();
+        };
+    };
+    
+    /**
+     * This is the callback when the user desires to
+     * change the products format
+     * @param {type} ev
+     * @param {type} currentStoreProduct
+     * @returns {undefined}
+     */
+    $scope.changeProductFormat = function(ev, cartItem)
+    {
+        $scope.selectedStoreProduct = cartItem.store_product;
+	$scope.different_format_products = cartItem.different_format_products;
+        $scope.related_products = cartItem.store_product.related_products;
+        
         $mdDialog.show({
             controller: ChangeFormatController,
             templateUrl:  $scope.base_url + 'assets/templates/change-format-product.html',
             parent: angular.element(document.body),
             targetEvent: ev,
             clickOutsideToClose:true,
+            disableParentScroll : true,
             preserveScope:true,
             scope : $scope,
             fullscreen: false //
@@ -659,6 +723,35 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
           }, function() {
                 
           });
+    };
+    
+    function ChangeFormatController($scope, $mdDialog) 
+    {
+        $scope.hide = function() 
+        {
+            $mdDialog.hide();
+        };
+
+        $scope.cancel = function() 
+        {
+            $mdDialog.cancel();
+        };
+        
+        $scope.change = function(sp)
+        {
+            var in_user_grocery_list = $scope.selectedStoreProduct.product.in_user_grocery_list;
+            $scope.selectedStoreProduct = sp;
+            $scope.selectedStoreProduct.different_store_products = $scope.different_store_products;
+            $scope.selectedStoreProduct.related_products = $scope.related_products;
+            $scope.selectedStoreProduct.product.in_user_grocery_list = in_user_grocery_list;
+        };
+
+        $scope.selectStoreProduct = function() 
+        {
+            var currentStoreProduct = $scope.selectedStoreProduct;
+            $scope.productChanged(currentStoreProduct);
+            $mdDialog.hide();
+        };
     };
     
     $scope.InitMap = function(ev, departmentStore)
@@ -669,6 +762,7 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
             parent: angular.element(document.body),
             targetEvent: ev,
             clickOutsideToClose:true,
+            disableParentScroll : true,
             preserveScope:true,
             scope : $scope,
             fullscreen: true,
@@ -717,72 +811,8 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
             $mdDialog.cancel();
         };
     };
-	
-    function ChangeStoreController($scope, $mdDialog) 
-    {
-        $scope.hide = function() 
-        {
-            $mdDialog.hide();
-        };
-
-        $scope.cancel = function() 
-        {
-            $mdDialog.cancel();
-        };
-        
-        $scope.change = function(sp)
-        {
-            var related_store_products = $scope.selectedStoreProduct.different_store_products;
-            var related_products = $scope.selectedStoreProduct.related_products;
-            var in_user_grocery_list = $scope.selectedStoreProduct.product.in_user_grocery_list;
-            $scope.selectedStoreProduct = sp;
-            $scope.selectedStoreProduct.different_store_products = related_store_products;
-            $scope.selectedStoreProduct.related_products = related_products;
-            $scope.selectedStoreProduct.product.in_user_grocery_list = in_user_grocery_list;
-        };
-
-        $scope.selectStoreProduct = function() 
-        {
-            var currentStoreProduct = $scope.selectedStoreProduct;
-            $scope.storeChanged(currentStoreProduct);
-            $mdDialog.hide();
-        };
-    };
     
-   
-    
-    function ChangeFormatController($scope, $mdDialog) 
-    {
-        $scope.hide = function() 
-        {
-            $mdDialog.hide();
-        };
-
-        $scope.cancel = function() 
-        {
-            $mdDialog.cancel();
-        };
-        
-        $scope.change = function(sp)
-        {
-            var related_store_products = $scope.selectedStoreProduct.different_format_products;
-            var related_products = $scope.selectedStoreProduct.related_products;
-            var in_user_grocery_list = $scope.selectedStoreProduct.product.in_user_grocery_list;
-            $scope.selectedStoreProduct = sp;
-            $scope.selectedStoreProduct.different_format_products = related_store_products;
-            $scope.selectedStoreProduct.related_products = related_products;
-            $scope.selectedStoreProduct.product.in_user_grocery_list = in_user_grocery_list;
-        };
-
-        $scope.selectStoreProduct = function() 
-        {
-            var currentStoreProduct = $scope.selectedStoreProduct;
-            $scope.storeChanged(currentStoreProduct);
-            $mdDialog.hide();
-        };
-    };
-    
-    $scope.storeChanged = function(currentStoreProduct)
+    $scope.productChanged = function(currentStoreProduct)
     {
         for(var i in $rootScope.cart)
         {
@@ -798,17 +828,22 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
                 $rootScope.cart[i].different_format_products = relatedProducts[1];  
                 
                 $rootScope.sortCart();
-                $scope.groupByStore();
-                $scope.update_price_optimization();
+                groupByStore();
+                $rootScope.totalPriceAvailableProducts = $scope.getCartTotalPrice(true);
+                $rootScope.totalPriceUnavailableProducts = $scope.getCartTotalPrice(false);
                 
                 break;
             }
         }
     };
+    
+    $rootScope.$watch('cart', function(newValue, oldValue)
+    {
+        $scope.update_price_optimization();
+    });
 	
     $scope.update_price_optimization = function()
     {
-        $scope.distance_optimization = 0;
         $scope.price_optimization = 0;
 
         for(var key in $scope.cart)
@@ -833,7 +868,6 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
         return (parseFloat(cart_item.store_product.worst_product.unit_price) - parseFloat(cart_item.store_product.unit_price));
     };
    
-    
     $scope.get_price_label = function(store_product, product)
     {
         return parseFloat(store_product.price) === 0 ? "Item pas disponible" : "CAD " + store_product.price * product.quantity;
@@ -864,36 +898,20 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
         }
     }; 
     
-    $scope.update_travel_distance = function()
-    {
-        var traval_distance = 0;
-        var stores = [];
-        
-        for(var key in $rootScope.cart)
-        {
-            var product = $rootScope.cart[key];
-            
-            if(typeof product.store_product.department_store !== 'undefined' && $.inArray(product.store_product.department_store.id, stores) === -1)
-            {
-                stores.push(product.store_product.department_store.id);
-                traval_distance += parseInt(product.store_product.department_store.distance);
-            }
-        }
-        
-        $rootScope.travel_distance = traval_distance;
-    };
-    
     $rootScope.clearCart = function($event)
     {
         var confirmDialog = $rootScope.createConfirmDIalog($event, "Cela effacera tous les contenus de votre panier.");
         
         $mdDialog.show(confirmDialog).then(function() 
         {
-            $http.post($rootScope.site_url.concat("/cart/destroy"), null).then(function(response)
+            var cartClearedPromise = eapp.clearCart();
+            
+            cartClearedPromise.then(function(response)
             {
                 $rootScope.cart = [];
-                $rootScope.stores = [];
-                $rootScope.departmenStores = [];
+                $scope.stores = [];
+                $scope.departmenStores = [];
+                
             });
 
         });
@@ -1097,11 +1115,6 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
 
     };
     
-    $scope.selectProduct = function(store_product)
-    {
-        window.location = $scope.site_url.concat("/cart/product/").concat(store_product.product.id).concat("/").concat(store_product.id);
-    };
-	
     $scope.getCartHtmlContent = function()
     {
 
@@ -1230,6 +1243,72 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
             
         });
     };
+    
+    $scope.changeDistance = function(ev)
+    {
+        $scope.default_distance = $scope.getDistance();
+        $scope.scrollTop = $(document).scrollTop();
+        $mdDialog.show({
+            controller: ChangeDistanceController,
+            templateUrl:  $scope.base_url + 'assets/templates/change-distance.html',
+            parent: angular.element(document.body),
+            targetEvent: ev,
+            clickOutsideToClose:true,
+            preserveScope:true,
+            scope : $scope,
+            fullscreen: true,
+            onRemoving : function()
+            {
+                // Restore scroll
+                $(document).scrollTop($scope.scrollTop);
+            }
+          })
+          .then(function(answer) {
+                
+          }, function() {
+                
+          });
+    };
+    
+    function ChangeDistanceController($scope, $mdDialog) 
+    {
+        $scope.hide = function() 
+        {
+            $mdDialog.hide();
+        };
+
+        $scope.cancel = function() 
+        {
+            $mdDialog.cancel();
+        };
+        
+        $scope.change = function()
+        {
+            if($scope.isUserLogged)
+            {
+                var changePromise = eapp.changeDistance('cart_distance', $scope.default_distance);
+            
+                changePromise.then(function(response)
+                {
+                    if(response.data)
+                    {
+                        // Update Logged User
+                        $scope.loggedUser = response.data;
+                        $scope.optimization_preference_changed();
+                    }
+                });
+            }
+            else
+            {
+                // Change in the session
+                window.localStorage.setItem('cart_distance', $scope.default_distance);
+            }
+            
+            
+            
+            $mdDialog.cancel();
+        };
+    };
            
     /**
      * This method gets the cart details
@@ -1260,6 +1339,83 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
         return items;
     }
     
+    $rootScope.viewProduct = function(product_id, ev)
+    {
+        // Get the latest products
+        var promise = eapp.getProduct(product_id);
+    
+        promise.then(function(response)
+        {
+            $scope.storeProduct = response.data;
+            
+            $scope.scrollTop = $(document).scrollTop();
+            
+            // Open dialog
+            $mdDialog.show({
+                controller: ViewProductController,
+                templateUrl:  $scope.base_url + 'assets/templates/otiprix-product.html',
+                parent: angular.element(document.body),
+                targetEvent: ev,
+                clickOutsideToClose:true,
+                disableParentScroll : true,
+                preserveScope:true,
+                scope : $scope,
+                fullscreen: true,
+                onRemoving : function()
+                {
+                    // Restore scroll
+                    $(document).scrollTop($scope.scrollTop);
+                }
+            })
+            .then(function(answer) {
+
+            }, function() {
+
+            });
+        },
+        function(errorResponse)
+        {
+            $scope.storeProduct = null;
+        });
+    };
+    
+    $rootScope.selectProduct = function(store_product)
+    {
+        // Get the latest products
+        var promise = eapp.getProduct(store_product.id);
+    
+        promise.then(function(response)
+        {
+            $scope.storeProduct = response.data;
+        },
+        function(errorResponse)
+        {
+            $scope.storeProduct = null;
+        });
+    };
+    
+    function ViewProductController($scope, $mdDialog)
+    {
+        $scope.close = function() 
+        {
+            $mdDialog.cancel();
+        };
+    }
+    
+    
+    $rootScope.productInCart = function(product_id)
+    {
+        for(var key in $rootScope.cart)
+        {
+            if(parseInt($rootScope.cart[key].store_product.product_id) === parseInt(product_id))
+            {
+                return true;
+            }
+        }
+
+         return false;
+    };
+    
     angular.element(document).ready(function()
     {
         var cartPromise = eapp.getCart();
@@ -1270,6 +1426,11 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
             $rootScope.cart = cartResponse.data;
             
             $scope.Init();
+            
+            if($scope.controller === "cart")
+            {
+                $rootScope.isCart = true;
+            }
             
         });
     });

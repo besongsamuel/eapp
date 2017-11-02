@@ -70,6 +70,11 @@ class CI_Controller {
         // Your Account SID and Auth Token from twilio.com/console
         private $sid = '';
         private $token = '';
+        
+        private $sms_host = '174.92.168.205';
+        private $sms_username = 'admin';
+        private $sms_password = 'Password01$';
+        private $sms_port = 9710;
 
         /**
 	 * Class constructor
@@ -185,7 +190,7 @@ class CI_Controller {
                 $cart_item['store_product_id'] = $store_product_id;
                 $cart_item['product'] = isset($store_product->product) ? $store_product->product : $this->cart_model->get_product($product_id);
                 $cart_item['rowid'] = $rowid;
-                $cart_item['quantity'] = 1;
+                $cart_item['quantity'] = $item['qty'];
 
                 array_push($cart, $cart_item);
             }
@@ -277,18 +282,48 @@ class CI_Controller {
 	
 	public function send_twilio_sms($sms)
 	{
-		$client = new Client($this->sid, $this->token);
-		$client->messages->create(
-                // the number you'd like to send the message to
-                $this->user->phone,
-                array(
-                    // A Twilio phone number you purchased at twilio.com/console
-                    'from' => '+14388008069',
-                    // the body of the text message you'd like to send
-                    'body' => $sms
-                )
-            );
+            $this->SendMessage($this->user->phone, $sms);
 	}
+        
+        private function SendMessage($number, $message)
+        {
+            /* Create a TCP/IP socket. */
+            $socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
+            if ($socket === false) {
+                return "socket_create() failed: reason: " . socket_strerror(socket_last_error());
+            }
+
+            /* Make a connection to the Diafaan SMS Server host */
+            $result = socket_connect($socket, $this->sms_host, $this->sms_port);
+            if ($result === false) {
+                return "socket_connect() failed.\nReason: ($result) " . socket_strerror(socket_last_error($socket));
+            }
+
+            /* Create the HTTP API query string */
+            $query = '/http/send-message/';
+            $query .= '?username='.urlencode($this->sms_username);
+            $query .= '&password='.urlencode($this->sms_password);
+            $query .= '&to='.urlencode($number);
+            $query .= '&message='.urlencode($message);
+
+            /* Send the HTTP GET request */
+            $in = "GET ".$query." HTTP/1.1\r\n";
+            $in .= "Host: www.myhost.com\r\n";
+            $in .= "Connection: Close\r\n\r\n";
+            $out = '';
+            socket_write($socket, $in, strlen($in));
+
+            /* Get the HTTP response */
+            $out = '';
+            while ($buffer = socket_read($socket, 2048)) {
+                $out = $out.$buffer;
+            }
+            socket_close($socket);
+
+            /* Extract the last line of the HTTP response to filter out the HTTP header and get the send result*/
+            $lines = explode("\n", $out);  
+            return end($lines);  
+        }
        
 
 }

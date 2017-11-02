@@ -27,9 +27,9 @@ class Cart extends CI_Controller {
         echo json_encode($this->home_model->get_store_products_limit(25, 0)["products"]);
     }
     
-    public function get_product($product_id) 
+    public function get_product($store_product_id) 
     {
-        echo json_encode($this->cart_model->get_best_store_product(-1, DEFAULT_DISTANCE, MAX_DISTANCE, $this->user, false, null, $product_id));
+        echo json_encode($this->cart_model->getStoreProduct($store_product_id));
     }
     
     /**
@@ -80,7 +80,7 @@ class Cart extends CI_Controller {
             $data = array
             (
                 'id'      => $item->product_id,
-                'qty'     => 1,
+                'qty'     => $item->quantity,
                 'price'   => $store_product->price,
                 'name'    => 'name_'.$item->product_id
             );	    

@@ -516,10 +516,10 @@ width: 10px;
 
 .product-bit-title h2 {
   font-family: raleway;
-  font-size: 50px;
-  font-weight: 200;
+  font-size: 30px;
+  font-weight: 500;
   margin: 0;
-  padding: 50px 0;color: #fff;
+  padding: 20px 0;color: #fff;
 }
 
 .single-product-area .zigzag-bottom {background-color: #333333}
@@ -1272,4 +1272,7 @@ div.cart-collaterals ul.products li.product:hover .add_to_cart_button{background
     margin-top: 50px;
 }
 
-
+.actions-section
+{
+    margin : 10px;
+}

@@ -207,7 +207,6 @@
                         </button>
                         <a class="navbar-brand" href="#"><img src="<?php echo base_url("assets/img/logo.png"); ?>" class="eapp-logo" /></a>
                     </div>
-                    
                     <div id="navbar" class="navbar-collapse collapse">
                         <ul class="nav navbar-nav"  ng-controller="MenuController">
                             <li class=" dropdown" ng-show="loggedUser.subscription > 0">
@@ -229,8 +228,8 @@
                                     <li><a href="<?php echo site_url("shop/categories"); ?>">Les catégories de produits</a></li>
                                 </ul>
                             </li>
-                            <li><a href ng-click="gotoShop()">Trouvez un produit</a></li>
-                            <li><a href="<?php echo site_url("cart"); ?>">Votre panier</a></li>
+                            <li ng-class="{active : isSearch}"><a href ng-click="gotoShop()">Trouvez un produit</a></li>
+                            <li ng-class="{active : isCart}"><a href="<?php echo site_url("cart"); ?>">Votre panier</a></li>
                             <li class=" dropdown"><a href="#" class="dropdown-toggle " data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Blogue<span class="caret"></span></a>
                                 <ul class="dropdown-menu">
                                     <li><a href="<?php echo site_url("blog/press_release"); ?>">Épicerie dans la presse</a></li>
@@ -252,8 +251,7 @@
                                     <li><a href ng-click="logout()">Logout</a></li>
                                 </ul>
                             </li>
-                            
-                            <li>
+                            <li ng-class="{active : isCart}">
                                 <a href="<?php echo site_url("cart"); ?>" class="md-icon-button" aria-label="Cart">
                                     <md-icon><i class="material-icons">shopping_cart</i> </md-icon>
                                     <span class="badge" ng-show="get_cart_item_total() > 0">{{get_cart_item_total()}} | CAD {{get_cart_total_price() | number : 2}}</span>

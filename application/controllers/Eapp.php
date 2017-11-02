@@ -36,6 +36,32 @@ class Eapp extends CI_Controller
         echo addslashes(json_encode($retailers));
     }
     
+    public function get_close_retailers() 
+    {
+        $distance = $this->input->post("distance");
+        
+        $coords = array
+        (
+            'longitude' => $this->input->post("distance"),
+            'latitude' => $this->input->post("latitude")
+         );
+        
+        $retailers = $this->cart_model->get_closest_merchants($this->user, $coords, $distance);
+        
+        foreach ($retailers as $key => $value) 
+        {
+            $path = ASSETS_DIR_PATH."img/stores/".$value->image;
+            
+            if(!file_exists($path))
+            {
+                $retailers[$key]->image = "no_image_available.png";
+            }
+           $retailers[$key]->image = base_url('/assets/img/stores/').$retailers[$key]->image;
+        }
+        
+        echo json_encode($retailers);
+    }
+    
     public function add_product_to_list() 
     {
         if($this->user != null)
@@ -146,6 +172,45 @@ class Eapp extends CI_Controller
     public function get_cart_contents() 
     {
         echo $this->get_cached_cart_contents();
+    }
+    
+    public function change_distance() 
+    {
+        if($this->user != null)
+        {
+            $data = array
+            (
+                'id' => $this->user->profile->id,
+                $this->input->post("distance_to_change") => $this->input->post("value")
+            );
+            
+            // Update the user
+            $this->shop_model->create(USER_PROFILE_TABLE, $data);
+            $this->set_user();
+            
+            // Return the user
+            echo json_encode($this->user);
+        }
+    }
+    
+    public function get_categories() 
+    {
+        $categories = $this->admin_model->get_all(CATEGORY_TABLE);
+        
+        foreach ($categories as $key => $value) 
+        {
+            $path = ASSETS_DIR_PATH."img/categories/".$value->image;
+            
+            if(!file_exists($path) || empty($value->image))
+            {
+                $categories[$key]->image = "no_image_available.png";
+            }
+            
+            $categories[$key]->image = base_url('/assets/img/categories/').$categories[$key]->image;
+        } 
+        
+        echo json_encode($categories);
+        
     }
    
 }

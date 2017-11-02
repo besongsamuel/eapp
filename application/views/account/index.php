@@ -1,9 +1,13 @@
 <!DOCTYPE html>
 
 <link rel="stylesheet" href="<?php echo base_url("assets/css/intlTelInput.css")?>">
+<script src="<?php echo base_url("assets/js/account-controller.js")?>"></script> 
+<script src="<?php echo base_url("assets/js/userlist-controller.js")?>"></script> 
+
 <script src="<?php echo base_url("assets/js/intlTelInput.js")?>"></script>
 <script src="<?php echo base_url("assets/js/utils.js")?>"></script>
 <script>
+    
 $(document).ready(function()
 {
     $("#phone").intlTelInput({utilsScript : "<?php echo base_url("assets/js/utils.js")?>"});
@@ -17,8 +21,6 @@ $(document).ready(function()
     
         scope.$apply(function()
         {
-           scope.load_icons(); 
-           
            scope.getUserProductList();
            
            scope.retailers = JSON.parse('<?php echo $retailers; ?>');
@@ -44,47 +46,7 @@ $(document).ready(function()
             }
         });
         
-        scope.optimizations = [];
-        if(scope.isUserLogged)
-        {
-            var data = 
-            {
-                label : "Économies général",
-                value : optimization_avg(scope.loggedUser.optimizations.overall),
-                count : items_count(scope.loggedUser.optimizations.overall)
-            };
-            
-            scope.optimizations.push(data);
-            
-            var data = 
-            {
-                label : "Économies cette semaine",
-                value : optimization_avg(scope.loggedUser.optimizations.currentWeek),
-                count : items_count(scope.loggedUser.optimizations.currentWeek)
-            };
-            
-            scope.optimizations.push(data);
-            
-            
-            var data = 
-            {
-                label : "Économies ce mois",
-                value : optimization_avg(scope.loggedUser.optimizations.currentMonth),
-                count : items_count(scope.loggedUser.optimizations.currentMonth)
-            };
-            
-            scope.optimizations.push(data);
-            
-            var data = 
-            {
-                label : "Économies cette année",
-                value : optimization_avg(scope.loggedUser.optimizations.currentYear),
-                count : items_count(scope.loggedUser.optimizations.currentYear)
-            };
-            
-            scope.optimizations.push(data);
-            
-        }
+        
         
     });
     
@@ -131,12 +93,11 @@ $(document).ready(function()
     
 </script>
 
-<div id="admin-container" ng-controller="AccountController">
+<div id="admin-container">
     <md-tabs md-dynamic-height md-border-bottom class="container" layout-padding>
-        
         <md-content>
             
-            <md-tab label="Historique de mes économies">
+            <md-tab label="Historique de mes économies" md-on-select="onTabSelected(1)" ng-controller="AccountOptimizationController">
                 <div class="md-padding">
                 <md-list>
                     <md-list-item class="md-3-line" ng-repeat="item in optimizations">
@@ -152,11 +113,11 @@ $(document).ready(function()
                 </div>
             </md-tab>
             
-            <md-tab label="Modifier ma liste d’épicerie">
+            <md-tab label="Modifier ma liste d’épicerie" md-on-select="onTabSelected(1)" ng-controller="UserListController">
                 <div id="groceryListContainer" ng-include="'<?php echo base_url(); ?>/assets/templates/user_grocery_list.html'"></div>
             </md-tab>
             
-            <md-tab label="Modifier mes renseignements personnels">
+            <md-tab label="Modifier mes renseignements personnels" md-on-select="onTabSelected(1)" ng-controller="AccountController">
 
                 <div class="alert alert-danger" ng-show="saveProfileError">
                     <strong>Erreur!</strong> {{saveProfileErrorMessage}}.
@@ -268,11 +229,11 @@ $(document).ready(function()
                 </div>
             </md-tab>
 
-            <md-tab label="Modifier mes magasins préférés">
+            <md-tab label="Modifier mes magasins préférés" md-on-select="onTabSelected(1)" ng-controller="SelectAccountStoreController">
                 <div class="alert alert-success" ng-show="listChangedSuccess">
                     <strong>Success!</strong> {{listChangedSuccessMessage}}
                 </div>
-                <div id="select-store-container" ng-include="'<?php echo base_url(); ?>/assets/templates/select-favorite-stores.html'"></div>
+                <div id="select-store-container" ng-include="'<?php echo base_url(); ?>/assets/templates/account-select-favorite-stores.html'"></div>
                 <div class="form-group">
                     <!-- Button -->  
                     <div class="col-md-offset-0 col-md-3 pull-right" style="padding-top:25px;">
@@ -281,7 +242,7 @@ $(document).ready(function()
                 </div>
             </md-tab>
            
-            <md-tab label="Sécurité du compte">
+            <md-tab label="Sécurité du compte" md-on-select="onTabSelected(1)">
                 
                 <md-content class="md-padding">
                     
@@ -380,8 +341,11 @@ $(document).ready(function()
             </md-tab>
         </md-content>
     </md-tabs>
-    
    
 </div>
+
+<script src="<?php echo base_url("assets/js/userlist-controller.js")?>"></script>
+<script src="<?php echo base_url("assets/js/account-optimization-controller.js")?>"></script>
+<script src="<?php echo base_url("assets/js/account-selectstore-controller.js")?>"></script>
  
 

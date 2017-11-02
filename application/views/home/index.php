@@ -48,13 +48,13 @@
                                     <div class="product-f-image">
                                         <img ng-src="<?php echo $product->product->image;?>" style="height: 100%;" alt="">
                                         <div class="product-hover">
-                                            <a href ng-show="can_add_to_cart(<?php echo $product->product_id; ?>)" class="add-to-cart-link" ng-click="add_product_to_cart(<?php echo $product->product_id; ?>)"><i class="fa fa-shopping-cart"></i>Ajouter</a>
-                                            <a href ng-hide="can_add_to_cart(<?php echo $product->product_id; ?>)" class="add-to-cart-link" ng-click="remove_product_from_cart(<?php echo $product->product_id; ?>)"><i class="fa fa-shopping-cart"></i>Retirer</a>
-                                            <a href="<?php echo site_url("cart/product/").$product->product_id; ?>" class="view-details-link"><i class="fa fa-link"></i>Détails</a>
+                                            <a href ng-hide="productInCart(<?php echo $product->product_id; ?>)" class="add-to-cart-link" ng-click="add_product_to_cart(<?php echo $product->product_id; ?>)"><i class="fa fa-shopping-cart"></i>Ajouter</a>
+                                            <a href ng-show="productInCart(<?php echo $product->product_id; ?>)" class="add-to-cart-link" ng-click="remove_product_from_cart(<?php echo $product->product_id; ?>)"><i class="fa fa-shopping-cart"></i>Retirer</a>
+                                            <a href ng-click="viewProduct(<?php echo $product->id; ?>)" class="view-details-link"><i class="fa fa-link"></i>Détails</a>
                                         </div>
                                     </div>
 
-                                    <h2 style="font-size: 14px; text-align: center;"><a href="<?php echo site_url("cart/product/").$product->product_id; ?>"><?php echo $product->product->name; ?></a></h2>
+                                    <h2 style="font-size: 14px; text-align: center;"><a href ng-click="viewProduct(<?php echo $product->id; ?>)"><?php echo $product->product->name; ?></a></h2>
 
                                     <div class="product-carousel-price" ng-hide="true">
                                         <ins>CAD <?php echo $product->price; ?></ins><del>CAD <?php echo $product->regular_price; ?></del>

@@ -42,38 +42,10 @@ $(document).ready(function()
 
         rootScope.travel_distance = 0;
         
-        /**
-         *  This is called whenever we want to record a click
-         *  on an item
-         * @param {type} table_name
-         * @param {type} id
-         */
-        rootScope.hit = function(table_name, id)
-        {
-            var formData = new FormData();
-            formData.append("table_name", table_name);
-            formData.append("id", id);
-            
-            $.post(rootScope.site_url.concat("/admin/hit"), {table_name : table_name, id : id}).then(function(data)
-            {
-                
-            });
-        };
-        
         rootScope.clearSessionItems = function()
         {
             window.sessionStorage.removeItem("store_id");
             window.sessionStorage.removeItem("category_id");
-        };
-        
-        rootScope.select_category = function($event)
-        {
-            rootScope.clearSessionItems();
-            var element = $event.target;
-            var category_id = parseInt(element.id);
-            rootScope.hit("eapp_product_category ",category_id);
-            window.sessionStorage.setItem("category_id", category_id);    
-            window.location =  rootScope.site_url.concat("/shop");
         };
         
         rootScope.get_store_total = function(store_index)
@@ -211,20 +183,7 @@ $(document).ready(function()
                 async:true
             });
         };
-		
-	rootScope.can_add_to_cart = function(product_id)
-        {
-           for(var key in rootScope.cart)
-            {
-                if(parseInt(rootScope.cart[key].store_product.product_id) === parseInt(product_id))
-                {
-                    return false;
-                }
-            }
-
-            return true;
-       };
-		
+			
 	rootScope.getRowID = function(product_id)
         {
             var rowid = -1;

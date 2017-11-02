@@ -1,25 +1,4 @@
-<script>
-$(document).ready(function(){
-    
-    var scope = angular.element($("#admin-container")).scope();
-    
-    scope.$apply(function()
-    {
-        scope.retailers = JSON.parse('<?php echo $retailers; ?>');
-        
-        // initialize initial distance
-        scope.distance = 10;
-        
-        if(window.sessionStorage.getItem('distance'))
-        {
-            scope.distance = parseInt(window.sessionStorage.getItem('distance'));
-        }
-        
-        scope.distance = parseInt(scope.isUserLogged ? scope.loggedUser.profile.optimization_distance : scope.distance);
-        
-    });
-})
-</script>
+<script src="<?php echo base_url("assets/js/selectstore-controller.js")?>"></script>
 
 <!-- Main Script -->
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -38,11 +17,12 @@ $(document).ready(function(){
     </div>
 </div> <!-- End Page title area -->
 
-<div id="admin-container" class="container" ng-controller="ShopController">    
+<div id="admin-container" class="container" ng-controller="SelectStoreController" ng-cloak>    
         
         <div id="signupbox" style=" margin-top:50px" class="container">
+            
             <div class="col-12">
-                <p style="text-align: center;">Résultats dans un rayon de {{distance}} km
+                <p style="text-align: center;">Résultats dans un rayon de {{getDistance()}} km
                     <span> | <a href ng-click="changeDistance($event)">Changer</a></span>
                 </p>
             </div>
@@ -58,7 +38,7 @@ $(document).ready(function(){
 		<md-content id="retailer-contents" style="padding : 10px;">
                     <div class="form-group-inline" ng-repeat="store in retailers">
                         <div class="col-md-3 col-sm-4" style="height: 160px;">
-                            <a href><img  ng-click="select_retailer($event)" id="{{store.id}}" ng-src="{{store.image}}" alt="{{store.name}}" style="height: 80px; display: block; margin: 0 auto;" class="img-thumbnail img-check"></a>
+                            <a href><img  ng-click="select_retailer($event, store.id)" id="{{store.id}}" ng-src="{{store.image}}" alt="{{store.name}}" style="height: 80px; display: block; margin: 0 auto;" class="img-thumbnail img-check"></a>
                             <input type="checkbox" name="store_{{store.id}}" value="{{store.id}}" class="hidden" autocomplete="off">
                             <a href ng-click="select_retailer($event)" id="{{store.id}}">
                             <p class="md-otiprix-text" style="text-align: center;" ng-hide="true">{{store.department_store.address}}, {{store.department_store.city}}</p>

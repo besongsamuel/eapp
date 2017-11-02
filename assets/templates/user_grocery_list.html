@@ -71,14 +71,28 @@
             </md-list-item>
         </div>
         
-        <div class="row actions-section">
-			
-            <div class="col-sm-6">
-                <md-button ng-click="clearMyList($event)" class="md-raised md-warn">Effacer ma liste</md-button>
+        <div class="container actions-section">
+		
+            <div class="col-md-offset-10">
+                
+                <md-button class="md-fab md-warn"  ng-click="clearMyList($event)" aria-label="Effacer votre liste">
+                    <md-tooltip
+                        md-direction="top">
+                        Effacer votre liste
+                    </md-tooltip>
+                    <md-icon><i class="material-icons">clear_all</i></md-icon>
+                </md-button>
+                
+                <md-button class="md-fab md-otiprix" aria-label="Optimizer votre liste" ng-click="optimizeMyList()">
+                    <md-tooltip
+                        md-direction="top">
+                        Optimizer votre liste
+                    </md-tooltip>
+                    <md-icon><i class="material-icons">build</i></md-icon>
+                </md-button>
+                
             </div>
-            <div class="col-sm-6">
-                <md-button ng-click="optimizeMyList()" class="md-raised md-primary pull-right" style="background-color : #1abc9c;">Optimiser ma liste</md-button>
-            </div>
+            
             
         </div>
         
