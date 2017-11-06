@@ -23,6 +23,20 @@ class Account_model extends CI_Model
         $this->db->where(array("user_account_id" => $user_id));
         $this->db->delete(USER_FAVORITE_STORE_TABLE);
     }
+    
+    public function get_user_favorite_stores($user_id)
+    {
+        $this->db->where(array("user_account_id" => $user_id));
+        $this->db->select("retailer_id");
+        $query = $this->db->get(USER_FAVORITE_STORE_TABLE);
+        $result = array();
+        foreach ($query->result() as $value) 
+        {
+            $result[$value->retailer_id] = $value->retailer_id;
+        }
+        
+        return $result;
+    }
 
 
     public function update_user_store_table($user) 

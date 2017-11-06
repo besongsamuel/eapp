@@ -76,7 +76,7 @@ eappApp.factory('eapp', ['$http','$rootScope', function($http, $rootScope)
             siteName = siteName.concat("/eapp/");
         }
         
-        return "http://" + siteName + "index.php/";
+        return "http://" + siteName + "/index.php/";
     };
     
     
@@ -151,7 +151,7 @@ eappApp.factory('eapp', ['$http','$rootScope', function($http, $rootScope)
         var formData = new FormData();
         formData.append("product_id", product.id);
         
-        return $http.post(eappService.getSiteUrl().concat("eapp/add_product_to_list"), formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}});
+        return $http.post(eappService.getSiteUrl().concat("/eapp/add_product_to_list"), formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}});
     };
     
     eappService.removeProductFromList = function(product)
@@ -159,7 +159,7 @@ eappApp.factory('eapp', ['$http','$rootScope', function($http, $rootScope)
         var formData = new FormData();
         formData.append("product_id", product.id);
         
-        return $http.post(eappService.getSiteUrl().concat("eapp/remove_product_from_list"), formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}});
+        return $http.post(eappService.getSiteUrl().concat("/eapp/remove_product_from_list"), formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}});
     };
     
     eappService.getCart = function()
@@ -209,6 +209,67 @@ eappApp.factory('eapp', ['$http','$rootScope', function($http, $rootScope)
         formData.append("table_name", tableName);
         formData.append("id", id);
         return $http.post(eappService.getSiteUrl().concat("admin/hit"), formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}});
+    };
+    
+    eappService.saveFavoriteStores = function(favoriteStores)
+    {
+        var formData = new FormData();
+        formData.append("selected_retailers", favoriteStores);
+        return $http.post(eappService.getSiteUrl().concat("account/save_favorite_stores"), formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}});
+    };
+    
+    eappService.getFavoriteStores = function()
+    {
+        return $http.post(eappService.getSiteUrl().concat("account/get_favorite_stores"), null);
+    };
+    
+    eappService.updateUserProfile = function(userObject)
+    {
+        var formData = new FormData();
+        formData.append("profile[firstname]", userObject.profile.firstname);
+        formData.append("profile[lastname]", userObject.profile.lastname);
+        formData.append("profile[country]", userObject.profile.country);
+        formData.append("profile[state]", userObject.profile.state);
+        formData.append("profile[city]", userObject.profile.city);
+        formData.append("profile[address]", userObject.profile.address);
+        formData.append("profile[postcode]", userObject.profile.postcode);
+        
+        return $http.post(eappService.getSiteUrl().concat("account/save_profile"), formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}});
+
+    };
+    
+    eappService.registerUser = function(user)
+    {
+        // Create form data
+        var formData = new FormData();
+        formData.append("account[email]", user.email);
+        formData.append("account[password]", user.password);
+        formData.append("account[security_question_id]", user.security_question_id);
+        formData.append("account[security_question_answer]", user.security_question_answer);
+
+        formData.append("profile[firstname]", user.firstname);
+        formData.append("profile[lastname]", user.lastname);
+        formData.append("profile[country]", user.country);
+        formData.append("profile[state]", user.state);
+        formData.append("profile[city]", user.city);
+        formData.append("profile[address]", user.address);
+        formData.append("profile[postcode]", user.postcode);
+        
+        return $http.post(eappService.getSiteUrl().concat("account/registration"), formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}});
+
+    };
+    
+    eappService.getSecurityQuestions = function()
+    {
+        return $http.post(eappService.getSiteUrl().concat("eapp/get_security_questions"), null);
+    };
+    
+    eappService.sendPasswordReset = function(email)
+    {
+        var formData = new FormData();
+        formData.append("email", email);
+        
+        return $http.post(eappService.getSiteUrl().concat("account/send_password_reset"), formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}});
     };
         
 

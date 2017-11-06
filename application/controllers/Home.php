@@ -38,6 +38,11 @@ class Home extends CI_Controller {
         $this->parser->parse('eapp_template', $this->data);
     }
     
+    public function testing()
+    {
+        $this->load->view('home/testing');
+    }
+    
     public function contact()
     {
         $this->data['body'] = $this->load->view('home/contact-us', $this->data, TRUE);

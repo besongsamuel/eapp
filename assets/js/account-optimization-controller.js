@@ -1,3 +1,45 @@
+    
+function optimization_avg(list)
+{
+    var average = 0;
+    var count = 0;
+    var display = "-";
+
+    for(var i in list)
+    {
+        average += parseFloat(list[i].price_optimization);
+        count++;
+    }
+
+    if(parseFloat(average) !== 0)
+    {
+        display = parseInt(average / count);
+    }
+
+    return display;
+}
+
+function items_count(list)
+{
+    var average = 0;
+    var display = "-";
+    var count = 0;
+
+    for(var i in list)
+    {
+        var items = JSON.parse(list[i].items);
+        average += items.length;
+        count++;
+    }
+
+    if(parseFloat(average) !== 0)
+    {
+        display = parseInt(average / count);
+    }
+
+    return display;
+}
+    
 angular.module('eappApp').controller('AccountOptimizationController', ["$scope", "$rootScope", function ($scope, $rootScope) 
 {
     $rootScope.isAccountMenu = true;

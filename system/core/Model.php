@@ -234,6 +234,19 @@ class CI_Model {
             {
                 $store_product->product->image = base_url("/assets/img/products/").$store_product->brand->image;
             }
+            
+            // The store product has its own specific image. 
+            // Override the product image. 
+            if(!empty($store_product->image) && strpos($store_product->image, 'http') === true)
+            {
+                $store_product->product->image = $store_product->image;
+            }
+            
+            // It has it's own store name. Override the product name with this
+            if(!empty($store_product->store_name))
+            {
+                $store_product->product->name = $store_product->store_name;
+            }
         }
         
         return $store_product;

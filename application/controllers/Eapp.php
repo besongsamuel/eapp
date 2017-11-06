@@ -31,9 +31,18 @@ class Eapp extends CI_Controller
             {
                 $retailers[$key]->image = "no_image_available.png";
             }
+            
+            $retailers[$key]->image = base_url('/assets/img/stores/').$retailers[$key]->image;
         }
         
-        echo addslashes(json_encode($retailers));
+        echo json_encode($retailers);
+    }
+    
+    public function get_security_questions() 
+    {
+        $security_questions = $this->admin_model->get_all(SECURITY_QUESTIONS);
+        
+        echo json_encode($security_questions);
     }
     
     public function get_close_retailers() 

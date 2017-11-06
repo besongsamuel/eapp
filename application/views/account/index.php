@@ -14,92 +14,14 @@ $(document).ready(function()
 });
 </script>
 
-<script>
-    $(document).ready(function()
-    {
-        var scope = angular.element($("#admin-container")).scope();
-    
-        scope.$apply(function()
-        {
-           scope.getUserProductList();
-           
-           scope.retailers = JSON.parse('<?php echo $retailers; ?>');
-           
-           scope.enterVerificationNumber = true;
-           
-            if(sessionStorage.getItem("registered_email") || scope.isUserLogged)
-            {
-                if(sessionStorage.getItem("registered_email"))
-                {
-                    scope.registered_email = sessionStorage.getItem("registered_email");
-                    window.sessionStorage.removeItem("registered_email");
-                }
-                else
-                {
-                    scope.registered_email = scope.loggedUser.email;
-                }
-            }
-            else
-            {
-                // redirect to home page
-                window.location = scope.site_url.concat("/home");
-            }
-        });
-        
-        
-        
-    });
-    
-    function optimization_avg(list)
-    {
-        var average = 0;
-        var count = 0;
-        var display = "-";
-        
-        for(var i in list)
-        {
-            average += parseFloat(list[i].price_optimization);
-            count++;
-        }
-        
-        if(parseFloat(average) !== 0)
-        {
-            display = parseInt(average / count);
-        }
-        
-        return display;
-    }
-    
-    function items_count(list)
-    {
-        var average = 0;
-        var display = "-";
-        var count = 0;
-        
-        for(var i in list)
-        {
-            var items = JSON.parse(list[i].items);
-            average += items.length;
-            count++;
-        }
-        
-        if(parseFloat(average) !== 0)
-        {
-            display = parseInt(average / count);
-        }
-        
-        return display;
-    }
-    
-</script>
 
 <div id="admin-container">
-    <md-tabs md-dynamic-height md-border-bottom class="container" layout-padding>
-        <md-content>
+    <md-tabs md-dynamic-height md-border-bottom class="container" layout-padding md-selected = "<?php echo $tabIndex; ?>">
+        <div>
             
-            <md-tab label="Historique de mes économies" md-on-select="onTabSelected(1)" ng-controller="AccountOptimizationController">
+            <md-tab label="Historique de mes économies" md-on-select="onTabSelected(0)">
                 <div class="md-padding">
-                <md-list>
+                <md-list ng-controller="AccountOptimizationController">
                     <md-list-item class="md-3-line" ng-repeat="item in optimizations">
                       <div class="md-list-item-text"  style="margin-bottom: 10px;">
                         <h3 style="color : #1abc9c;">{{item.label}}</h3>
@@ -113,136 +35,134 @@ $(document).ready(function()
                 </div>
             </md-tab>
             
-            <md-tab label="Modifier ma liste d’épicerie" md-on-select="onTabSelected(1)" ng-controller="UserListController">
-                <div id="groceryListContainer" ng-include="'<?php echo base_url(); ?>/assets/templates/user_grocery_list.html'"></div>
+            <md-tab label="Modifier ma liste d’épicerie" md-on-select="onTabSelected(1)">
+                <div  ng-controller="UserListController" id="groceryListContainer" ng-include="'<?php echo base_url(); ?>/assets/templates/user_grocery_list.html'"></div>
             </md-tab>
             
-            <md-tab label="Modifier mes renseignements personnels" md-on-select="onTabSelected(1)" ng-controller="AccountController">
+            <md-tab label="Modifier mes renseignements personnels" md-on-select="onTabSelected(2)">
 
-                <div class="alert alert-danger" ng-show="saveProfileError">
-                    <strong>Erreur!</strong> {{saveProfileErrorMessage}}.
-                </div>
-                
-                <div class="alert alert-success" ng-show="saveProfileSucess">
-                    <strong>Success!</strong> {{saveProfileSuccessMessage}}
-                </div>
+                <div  ng-controller="AccountController">
+                    <div class="alert alert-danger" ng-show="saveProfileError" id="saveProfileError">
+                        <strong>Erreur!</strong> {{saveProfileErrorMessage}}.
+                    </div>
 
-                <div layout-padding>
+                    <div class="alert alert-success" ng-show="saveProfileSucess" id="saveProfileSucess">
+                        <strong>Success!</strong> {{saveProfileSuccessMessage}}
+                    </div>
 
-                    <form name="userInfoForm" novalidate ng-submit="saveProfile()">
-                        <md-input-container class="md-block col-md-12 col-sm-12" flex-gt-sm>
-                            <label>Email</label>
-                            <md-icon style="color: #1abc9c;"><i class="material-icons">email</i></md-icon>
-                            <input disabled="true" style="border-left: none; border-top: none; border-right: none;" type="email" name="email" ng-model="loggedUser.email" />
-                        </md-input-container>
-                        <!-- -->
-                        <md-input-container class="md-block col-md-6 col-sm-12" flex-gt-sm>
-                            <label>Prenom</label>
-                            <md-icon style="color: #1abc9c;"><i class="material-icons">person</i></md-icon>
-                            <input name="profile[firstname]" ng-model="loggedUser.profile.firstname" />
-                        </md-input-container>
-                        <!-- -->
-                        <md-input-container class="md-block col-md-6 col-sm-12" flex-gt-sm>
-                            <label>Nom</label>
-                            <md-icon style="color: #1abc9c;"><i class="material-icons">person</i></md-icon>
-                            <input required name="profile[lastname]" ng-model="loggedUser.profile.lastname" />
-                            <div ng-messages="userInfoForm.lastname.$error">
-                                <div ng-message="required">Vous devez entrer au moins un nom</div>
-                            </div>
-                        </md-input-container>
+                    <div layout-padding>
 
-                        <!--Select the country and state origin of the product-->
-                        <country-state-select country="loggedUser.profile.country" flag="icons.flag" country-state="loggedUser.profile.state" show-hints="showHints"></country-state-select>
-
-                        <md-input-container class="md-block col-md-12 col-sm-12" flex-gt-sm>
-                            <label>Adresse</label>
-                            <md-icon style="color: #1abc9c;"><i class="material-icons">place</i></md-icon>
-                            <input required name="profile[address]" ng-model="loggedUser.profile.address" />
-                            <div ng-messages="userInfoForm.address.$error">
-                                <div ng-message="required">Vous devez entrer une adresse</div>
-                            </div>
-                        </md-input-container>
-                        <!-- -->
-                        <md-input-container class="md-block col-md-6 col-sm-12" flex-gt-sm>
-                            <label>City</label>
-                            <md-icon style="color: #1abc9c;"><i class="material-icons">place</i></md-icon>
-                            <input required name="profile[city]" ng-model="loggedUser.profile.city" />
-                            <div ng-messages="userInfoForm.city.$error">
-                                <div ng-message="required">Vous devex entrer une ville</div>
-                            </div>
-                        </md-input-container>
-                        <md-input-container class="md-block col-md-6 col-sm-12" flex-gt-sm>
-                            <label>Code Postal</label>
-                            <md-icon style="color: #1abc9c;"><i class="material-icons">place</i></md-icon>
-                            <input required name="profile[postcode]" ng-model="loggedUser.profile.postcode" />
-                            <div ng-messages="userInfoForm.postcode.$error">
-                                <div ng-message="required">Veillez entrer votre code postale</div>
-                            </div>
-                        </md-input-container>
-
-                        <div layout-padding>
-                            <md-subheader class="md-warn" ng-hide="loggedUser.phone_verified == 1">Vérifier votre numéro de téléphone</md-subheader>
-                    
-                            <div class="col-sm-12" ng-show="enterVerificationNumber">
-                                <div class="alert alert-danger" ng-show="phoneNumberError">
-                                    <strong>Erreur!</strong> {{phoneNumberError}}.
+                        <form name="userInfoForm" novalidate ng-submit="updateProfile()">
+                            <md-input-container class="md-block col-md-12 col-sm-12" flex-gt-sm>
+                                <label>Email</label>
+                                <md-icon style="color: #1abc9c;"><i class="material-icons">email</i></md-icon>
+                                <input disabled="true" style="border-left: none; border-top: none; border-right: none;" type="email" name="email" ng-model="loggedUserClone.email" />
+                            </md-input-container>
+                            <!-- -->
+                            <md-input-container class="md-block col-md-6 col-sm-12" flex-gt-sm>
+                                <label>Prenom</label>
+                                <md-icon style="color: #1abc9c;"><i class="material-icons">person</i></md-icon>
+                                <input name="profile[firstname]" ng-model="loggedUserClone.profile.firstname" />
+                            </md-input-container>
+                            <!-- -->
+                            <md-input-container class="md-block col-md-6 col-sm-12" flex-gt-sm>
+                                <label>Nom</label>
+                                <md-icon style="color: #1abc9c;"><i class="material-icons">person</i></md-icon>
+                                <input required name="profile[lastname]" ng-model="loggedUserClone.profile.lastname" />
+                                <div ng-messages="userInfoForm.lastname.$error">
+                                    <div ng-message="required">Vous devez entrer au moins un nom</div>
                                 </div>
-                                <div class="alert alert-success" ng-show="validateCodeMessage">
-                                    <strong>Success!</strong> {{validateCodeMessage}}
-                                </div>
-                                <p style="text-align: center; color: green;" ng-show="loggedUser.phone_verified == 1">Verified : {{loggedUser.phone}}</p>
-                                <p style="text-align: center;">Veuillez entrer ci-dessous un numéro de téléphone où nous vous enverrons le code de vérification.</p>
-                                <md-input-container class="col-sm-12 col-md-6 col-md-offset-3">
-                                    <md-icon style="color: #1abc9c;"><i class="material-icons">phone</i></md-icon>
-                                    <input class="form-control" style="border-radius: 2px;" type="tel" id="phone">
-                                </md-input-container>
-                                <div class="col-sm-12">
-                                    <md-button class="md-primary md-raised col-md-4 col-md-offset-4" ng-click="sendVerificationCode()">
-                                        Valider
-                                    </md-button>
-                                </div>
-                            </div>
-                        
-                            <div class="col-sm-12" ng-hide="enterVerificationNumber">
-                                <div class="alert alert-danger" ng-show="validateCodeMessage">
-                                    <strong>Erreur!</strong> {{validateCodeMessage}}
-                                </div>
-                                <p style="text-align: center;">Veuillez entrer ci-dessous le code que vous avez reçu ou cliquez sur <a href ng-click="enterVerificationNumber = true">réessayez</a> pour renvoyer un autre code de vérification.</p>
-                                <md-input-container class="col-sm-12 col-md-6 col-md-offset-3">
-                                    <label>Code</label>
-                                    <input ng-model="verificationCode">
-                                </md-input-container>
-                                <div class="col-sm-12">
-                                    <md-button class="md-primary md-raised col-md-4 col-md-offset-4" ng-click="validateCode()">
-                                        Valider
-                                    </md-button>
-                                </div>
-                            </div>
-                    
-                        </div>
+                            </md-input-container>
 
-                        <div class="pull-right">
-                            <input type="submit" class="btn btn-primary" value="Changer" />
-                        </div>
-                        
-                    </form>
-                </div>
-            </md-tab>
+                            <!--Select the country and state origin of the product-->
+                            <country-state-select country="loggedUser.profile.country" flag="icons.flag" country-state="loggedUser.profile.state" show-hints="showHints"></country-state-select>
 
-            <md-tab label="Modifier mes magasins préférés" md-on-select="onTabSelected(1)" ng-controller="SelectAccountStoreController">
-                <div class="alert alert-success" ng-show="listChangedSuccess">
-                    <strong>Success!</strong> {{listChangedSuccessMessage}}
-                </div>
-                <div id="select-store-container" ng-include="'<?php echo base_url(); ?>/assets/templates/account-select-favorite-stores.html'"></div>
-                <div class="form-group">
-                    <!-- Button -->  
-                    <div class="col-md-offset-0 col-md-3 pull-right" style="padding-top:25px;">
-                        <md-button id="btn-signup"  ng-click="submit_favorite_stores()" class="md-otiprix md-raised col-md-12">Sélectionner</md-button>
+                            <md-input-container class="md-block col-md-12 col-sm-12" flex-gt-sm>
+                                <label>Adresse</label>
+                                <md-icon style="color: #1abc9c;"><i class="material-icons">place</i></md-icon>
+                                <input required name="profile[address]" ng-model="loggedUserClone.profile.address" />
+                                <div ng-messages="userInfoForm.address.$error">
+                                    <div ng-message="required">Vous devez entrer une adresse</div>
+                                </div>
+                            </md-input-container>
+                            <!-- -->
+                            <md-input-container class="md-block col-md-6 col-sm-12" flex-gt-sm>
+                                <label>City</label>
+                                <md-icon style="color: #1abc9c;"><i class="material-icons">place</i></md-icon>
+                                <input required name="profile[city]" ng-model="loggedUserClone.profile.city" />
+                                <div ng-messages="userInfoForm.city.$error">
+                                    <div ng-message="required">Vous devex entrer une ville</div>
+                                </div>
+                            </md-input-container>
+                            <md-input-container class="md-block col-md-6 col-sm-12" flex-gt-sm>
+                                <label>Code Postal</label>
+                                <md-icon style="color: #1abc9c;"><i class="material-icons">place</i></md-icon>
+                                <input required name="profile[postcode]" ng-model="loggedUserClone.profile.postcode" />
+                                <div ng-messages="userInfoForm.postcode.$error">
+                                    <div ng-message="required">Veillez entrer votre code postale</div>
+                                </div>
+                            </md-input-container>
+
+                            <div layout-padding>
+                                <md-subheader class="md-warn" ng-hide="loggedUserClone.phone_verified == 1">Vérifier votre numéro de téléphone</md-subheader>
+
+                                <div class="col-sm-12" ng-show="enterVerificationNumber">
+                                    <div class="alert alert-danger" ng-show="phoneNumberError">
+                                        <strong>Erreur!</strong> {{phoneNumberError}}.
+                                    </div>
+                                    <div class="alert alert-success" ng-show="validateCodeMessage">
+                                        <strong>Success!</strong> {{validateCodeMessage}}
+                                    </div>
+                                    <p style="text-align: center; color: green;" ng-show="loggedUserClone.phone_verified == 1">Verified : {{loggedUserClone.phone}}</p>
+                                    <p style="text-align: center;">Veuillez entrer ci-dessous un numéro de téléphone où nous vous enverrons le code de vérification.</p>
+                                    <md-input-container class="col-sm-12 col-md-6 col-md-offset-3">
+                                        <md-icon style="color: #1abc9c;"><i class="material-icons">phone</i></md-icon>
+                                        <input class="form-control" style="border-radius: 2px;" type="tel" id="phone">
+                                    </md-input-container>
+                                    <div class="col-sm-12">
+                                        <md-button class="md-primary md-raised col-md-4 col-md-offset-4" ng-click="sendVerificationCode()">
+                                            Valider
+                                        </md-button>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-12" ng-hide="enterVerificationNumber">
+                                    <div class="alert alert-danger" ng-show="validateCodeMessage">
+                                        <strong>Erreur!</strong> {{validateCodeMessage}}
+                                    </div>
+                                    <p style="text-align: center;">Veuillez entrer ci-dessous le code que vous avez reçu ou cliquez sur <a href ng-click="enterVerificationNumber = true">réessayez</a> pour renvoyer un autre code de vérification.</p>
+                                    <md-input-container class="col-sm-12 col-md-6 col-md-offset-3">
+                                        <label>Code</label>
+                                        <input ng-model="verificationCode">
+                                    </md-input-container>
+                                    <div class="col-sm-12">
+                                        <md-button class="md-primary md-raised col-md-4 col-md-offset-4" ng-click="validateCode()">
+                                            Valider
+                                        </md-button>
+                                    </div>
+                                </div>
+
+                            </div>
+                             
+                            
+                            
+                            <div class="pull-right form-group">
+                                <input type="submit" class="btn btn-primary" value="Changer" />
+                            </div>
+
+                        </form>
                     </div>
                 </div>
+                
+            </md-tab>
+
+            <md-tab label="Modifier mes magasins préférés" md-on-select="onTabSelected(3)">
+                
+                <div  ng-controller="SelectAccountStoreController" id="select-store-container" ng-include="'<?php echo base_url(); ?>/assets/templates/account-select-favorite-stores.html'"></div>
+                
             </md-tab>
            
-            <md-tab label="Sécurité du compte" md-on-select="onTabSelected(1)">
+            <md-tab label="Sécurité du compte" md-on-select="onTabSelected(4)">
                 
                 <md-content class="md-padding">
                     
@@ -339,7 +259,7 @@ $(document).ready(function()
                 
                 
             </md-tab>
-        </md-content>
+        </div>
     </md-tabs>
    
 </div>

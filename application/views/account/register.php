@@ -123,7 +123,7 @@ $(document).ready(function(){
                             <md-input-container class="md-block col-md-12" flex-gt-sm>
                                 <label>Question secrète</label>
                                 <md-select ng-model="user.security_question_id">
-                                    <md-option ng-value="$index" ng-repeat="question in securityQuestions">{{ question }}</md-option>
+                                    <md-option ng-value="$index" ng-repeat="question in securityQuestions">{{ question.name }}</md-option>
                                 </md-select>
                             </md-input-container>
 

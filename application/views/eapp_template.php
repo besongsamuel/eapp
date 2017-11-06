@@ -82,6 +82,8 @@
     <!-- Main Script -->
     <script src="<?php echo base_url("assets/js/main-controller.js")?>"></script>
     
+    <script src="<?php echo base_url("assets/js/account-controller.js")?>"></script> 
+    
     <!-- Admin Script -->
     <script src="<?php echo base_url("assets/js/admin.js")?>"></script>
     

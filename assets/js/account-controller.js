@@ -4,12 +4,24 @@
  * and open the template in the editor.
  */
 
-angular.module('eappApp').controller('AccountController', ["$scope", "$http", "$mdToast", "$q", "$rootScope", "$mdDialog", function($scope, $http, $mdToast, $q, $rootScope, $mdDialog) 
+angular.module('eappApp').controller('AccountController', ["$scope", "$http", "$mdToast", "eapp", "$rootScope", "$mdDialog", function($scope, $http, $mdToast, eapp, $rootScope, $mdDialog) 
 {
+    $scope.selectedAccountTab = 3;
     
     $scope.Init = function()
     {
         $scope.load_icons();
+        
+        var securityQuestionsPromise = eapp.getSecurityQuestions();
+        
+        securityQuestionsPromise.then(function(response)
+        {
+            $scope.securityQuestions = response.data;
+        });
+        
+        // Create a copy of the logged user
+        $scope.loggedUserClone = angular.copy($scope.loggedUser);
+        
     };
     
     $rootScope.createConfirmDIalog = function(ev, contentText) 
@@ -55,15 +67,6 @@ angular.module('eappApp').controller('AccountController', ["$scope", "$http", "$
     
    $scope.registering_user = false;
    
-   $scope.securityQuestions = 
-    [
-        "Choisissez une question",
-        "La destination de votre premier voyage",
-        "Quel était l'héros de votre enfance",
-        "Le prénom de votre meilleur ami",
-        "Le prénom de votre premier amour",
-        "Le deuxième prenom de votre plus jeune enfant"
-    ];
     
     $scope.user = 
     {
@@ -86,11 +89,6 @@ angular.module('eappApp').controller('AccountController', ["$scope", "$http", "$
 	
     $scope.message = null;
     
-    $scope.retailers = [];
-        
-    $scope.selected_retailers = [];
-    
-    $scope.max_stores = 3;
 
     $scope.submit_favorite_stores = function()
     {
@@ -137,58 +135,40 @@ angular.module('eappApp').controller('AccountController', ["$scope", "$http", "$
      
     $scope.register = function()
     {
-        
         $scope.message = null;
         
         if($scope.signupForm.$valid)
         {
-            
-            // Create form data
-            var formData = new FormData();
-            formData.append("account[email]", $scope.user.email);
-            formData.append("account[password]", $scope.user.password);
-            formData.append("account[security_question_id]", $scope.user.security_question_id);
-            formData.append("account[security_question_answer]", $scope.user.security_question_answer);
+            var registrationPromise = eapp.registerUser($scope.user);
 
-            formData.append("profile[firstname]", $scope.user.firstname);
-            formData.append("profile[lastname]", $scope.user.lastname);
-            formData.append("profile[country]", $scope.user.country);
-            formData.append("profile[state]", $scope.user.state);
-            formData.append("profile[city]", $scope.user.city);
-            formData.append("profile[address]", $scope.user.address);
-            formData.append("profile[postcode]", $scope.user.postcode);
-
-            $http.post(
-                 $scope.site_url.concat("/account/registration"),formData,
+            registrationPromise.then
+            (
+                function(result)
                 {
-                        transformRequest: angular.identity,
-                        headers: {'Content-Type': undefined}
-                }).then
-                (
-                        function(result)
-                        {
-                            
-                            if(result.data.success)
-                            {
-                                window.sessionStorage.setItem("registered_email", $scope.user.email);
-                                // Redirect to select store page.
-                                window.location =  $scope.site_url.concat("/account/select_store");
-                            }
 
-                            if(!result.data.success)
-                            {
-                                $scope.message = result.data.message;
-                                document.getElementById("error_message").scrollIntoView();
-                            }
-                        },
-                        function(error)
-                        {
-                            if(!error.data.success)
-                            {
-                                $scope.message = error.data.message;
-                            }
-                        }
-                );
+                    if(result.data.success)
+                    {
+                        $rootScope.loggedUser = result.data.user;
+                        
+                        window.location =  $scope.site_url.concat("/account");
+                        
+                    }
+
+                    if(!result.data.success)
+                    {
+                        $scope.message = result.data.message;
+                        
+                        document.getElementById("error_message").scrollIntoView();
+                    }
+                },
+                function(error)
+                {
+                    if(!error.data.success)
+                    {
+                        $scope.message = error.data.message;
+                    }
+                }
+            );
         }
             
     };
@@ -232,7 +212,7 @@ angular.module('eappApp').controller('AccountController', ["$scope", "$http", "$
         });
     };
     
-    $scope.saveProfile = function()
+    $scope.updateProfile = function()
     {
         if(!$scope.userInfoForm.$valid)
         {
@@ -241,36 +221,29 @@ angular.module('eappApp').controller('AccountController', ["$scope", "$http", "$
         
         $scope.saveProfileError = false;
         $scope.saveProfileSucess = false;
-        var formData = new FormData();
-        formData.append("profile[firstname]", $scope.loggedUser.profile.firstname);
-        formData.append("profile[lastname]", $scope.loggedUser.profile.lastname);
-        formData.append("profile[country]", $scope.loggedUser.profile.country);
-        formData.append("profile[state]", $scope.loggedUser.profile.state);
-        formData.append("profile[city]", $scope.loggedUser.profile.city);
-        formData.append("profile[address]", $scope.loggedUser.profile.address);
-        formData.append("profile[postcode]", $scope.loggedUser.profile.postcode);
-        formData.append("profile[phone1]", $scope.loggedUser.profile.phone1);
-        formData.append("profile[phone2]", $scope.loggedUser.profile.phone2);
         
-        $http.post( $scope.site_url.concat("/account/save_profile"), 
-        formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}}).then(
-        function(response)
-        {
-            if(response.data.success)
+        var updatePromise = eapp.updateUserProfile($scope.loggedUserClone);
+        
+        updatePromise.then
+        (
+            function(response)
             {
-                $scope.saveProfileSucess = true;
+                if(response.data.success)
+                {
+                    $scope.saveProfileSucess = true;
+                    $rootScope.loggedUser = response.data.user;
+                    $scope.saveProfileSuccessMessage = "Les informations de votre profil ont été modifiées.";
+                    document.getElementById('saveProfileSucess').scrollIntoView();
+                }
+                else
+                {
+                    $scope.saveProfileError = true;
+                    $scope.saveProfileErrorMessage = "Une erreur de serveur est survenue. Veuillez réessayer plus tard.";
+                    document.getElementById('saveProfileError').scrollIntoView();
+                }
                 
-                $scope.loggedUser = response.data.user;
-                
-                $scope.saveProfileSuccessMessage = "Les informations de votre profil ont été modifiées.";
             }
-            else
-            {
-                $scope.saveProfileError = true;
-                $scope.saveProfileSuccessError = "Une erreur de serveur est survenue. Veuillez réessayer plus tard.";
-            }
-            
-        });
+        );
     };
     
     $scope.changePassword = function()
@@ -434,6 +407,11 @@ angular.module('eappApp').controller('AccountController', ["$scope", "$http", "$
         });
         
     };
+    
+    angular.element(document).ready(function()
+    {
+        $scope.Init();
+    });
    
 }]);
 

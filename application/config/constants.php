@@ -100,18 +100,18 @@ defined('POST_TYPE_STAT')        OR define('POST_TYPE_STAT', 1);
 
 
 /* Database Tables */
-defined('CHAIN_STORE_TABLE')        OR define('CHAIN_STORE_TABLE', 'eapp_chain_store'); 
-defined('PRODUCT_TABLE')            OR define('PRODUCT_TABLE', 'eapp_product'); 
-defined('STORE_PRODUCT_TABLE')      OR define('STORE_PRODUCT_TABLE', 'eapp_store_product');
-defined('CATEGORY_TABLE')           OR define('CATEGORY_TABLE', 'eapp_product_category'); 
-defined('SUB_CATEGORY_TABLE')       OR define('SUB_CATEGORY_TABLE', 'eapp_product_subcategory');
-defined('CHAIN_TABLE')              OR define('CHAIN_TABLE', 'eapp_chain');
-defined('UNITS_TABLE')              OR define('UNITS_TABLE', 'eapp_units');
-defined('BRANDS_TABLE')             OR define('BRANDS_TABLE', 'eapp_brands');
-defined('COMPAREUNITS_TABLE')       OR define('COMPAREUNITS_TABLE', 'eapp_compareunits');
-defined('USER_CHAIN_STORE_TABLE')   OR define('USER_CHAIN_STORE_TABLE', 'eapp_user_chain_store');
-defined('USER_ACCOUNT_TABLE')       OR define('USER_ACCOUNT_TABLE', 'eapp_user_account');
-defined('USER_PROFILE_TABLE')       OR define('USER_PROFILE_TABLE', 'eapp_user_profile');
+defined('CHAIN_STORE_TABLE')            OR define('CHAIN_STORE_TABLE', 'eapp_chain_store'); 
+defined('PRODUCT_TABLE')                OR define('PRODUCT_TABLE', 'eapp_product'); 
+defined('STORE_PRODUCT_TABLE')          OR define('STORE_PRODUCT_TABLE', 'eapp_store_product');
+defined('CATEGORY_TABLE')               OR define('CATEGORY_TABLE', 'eapp_product_category'); 
+defined('SUB_CATEGORY_TABLE')           OR define('SUB_CATEGORY_TABLE', 'eapp_product_subcategory');
+defined('CHAIN_TABLE')                  OR define('CHAIN_TABLE', 'eapp_chain');
+defined('UNITS_TABLE')                  OR define('UNITS_TABLE', 'eapp_units');
+defined('BRANDS_TABLE')                 OR define('BRANDS_TABLE', 'eapp_brands');
+defined('COMPAREUNITS_TABLE')           OR define('COMPAREUNITS_TABLE', 'eapp_compareunits');
+defined('USER_CHAIN_STORE_TABLE')       OR define('USER_CHAIN_STORE_TABLE', 'eapp_user_chain_store');
+defined('USER_ACCOUNT_TABLE')           OR define('USER_ACCOUNT_TABLE', 'eapp_user_account');
+defined('USER_PROFILE_TABLE')           OR define('USER_PROFILE_TABLE', 'eapp_user_profile');
 defined('USER_FAVORITE_STORE_TABLE')    OR define('USER_FAVORITE_STORE_TABLE', 'eapp_user_favorite_store');
 defined('USER_GROCERY_LIST_TABLE')      OR define('USER_GROCERY_LIST_TABLE', 'eapp_user_grocery_list');
 defined('PRODUCT_BRAND_TABLE')          OR define('PRODUCT_BRAND_TABLE', 'eapp_product_brand');
@@ -119,7 +119,9 @@ defined('BLOG_POSTS')                   OR define('BLOG_POSTS', 'eapp_blog_posts
 defined('BLOG_POSTS_COMMENTS')          OR define('BLOG_POSTS_COMMENTS', 'eapp_blog_posts_comments');
 defined('BLOG_POSTS_LIKES')             OR define('BLOG_POSTS_LIKES', 'eapp_blog_posts_likes');
 defined('USER_OPTIMIZATION_TABLE')      OR define('USER_OPTIMIZATION_TABLE', 'eapp_user_optimization');
-defined('CONTACTS_TABLE')             OR define('CONTACTS_TABLE', 'eapp_contacts');
+defined('CONTACTS_TABLE')               OR define('CONTACTS_TABLE', 'eapp_contacts');
+defined('SECURITY_QUESTIONS')           OR define('SECURITY_QUESTIONS', 'eapp_security_question');
+
 
 
 
