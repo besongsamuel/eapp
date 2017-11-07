@@ -55,7 +55,7 @@ angular.isNullOrUndefined = function(value)
 };
 
 // Define the `eapp Application` module
-var eappApp = angular.module('eappApp', ['ngMaterial', 'md.data.table', 'lfNgMdFileInput', 'ngMessages', 'ngSanitize', 'mdCountrySelect', 'ngNotificationsBar', 'ngAnimate', 'angularCountryState']);
+var eappApp = angular.module('eappApp', ['ngMaterial', 'md.data.table', 'lfNgMdFileInput', 'ngMessages', 'ngSanitize', 'mdCountrySelect', 'ngNotificationsBar', 'ngRoute', 'ngAnimate', 'angularCountryState']);
 
 // Create eapp service to get and update our data
 eappApp.factory('eapp', ['$http','$rootScope', function($http, $rootScope)
@@ -270,6 +270,15 @@ eappApp.factory('eapp', ['$http','$rootScope', function($http, $rootScope)
         formData.append("email", email);
         
         return $http.post(eappService.getSiteUrl().concat("account/send_password_reset"), formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}});
+    };
+    
+    eappService.resetPassword = function(password, reset_token)
+    {
+        var formData = new FormData();
+        formData.append("password", password);
+        formData.append("reset_token", reset_token);
+        return $http.post(eappService.getSiteUrl().concat("account/modify_password"), formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}});
+
     };
         
 

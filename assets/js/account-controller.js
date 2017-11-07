@@ -150,7 +150,9 @@ angular.module('eappApp').controller('AccountController', ["$scope", "$http", "$
                     {
                         $rootScope.loggedUser = result.data.user;
                         
-                        window.location =  $scope.site_url.concat("/account");
+                        window.sessionStorage.setItem('newAccount', 'true');
+                        
+                        window.location =  $scope.site_url.concat("/account/account_created");
                         
                     }
 

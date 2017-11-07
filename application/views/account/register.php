@@ -17,7 +17,6 @@ $(document).ready(function(){
             <div class="panel panel-info">
                 <div class="panel-heading">
                     <div class="panel-title">FORMULAIRE D'INSCRIPTION</div>
-                    <div style="float:right; font-size: 85%; position: relative; top:-10px; ">Vous avez un compte!  <a id="signinlink" href="<?php echo addslashes(site_url("account/login")); ?>">Se connecter</a></div>
                 </div>  
                 <div class="panel-body" >
                     <form id="signupForm" name="signupForm" class="form-horizontal" novalidate ng-submit="register()">
@@ -73,17 +72,6 @@ $(document).ready(function(){
                                 </div>
                             </md-input-container>
 
-                            <md-input-container class="md-block col-md-6" flex-gt-sm>
-                                <label>Numbero de telephone principale</label>
-                                <md-icon style="color: #1abc9c;"><i class="material-icons">local_phone</i></md-icon>
-                                <input name="phone1" ng-model="user.phone1" />
-                            </md-input-container>
-
-                            <md-input-container class="md-block col-md-6" flex-gt-sm>
-                                <label>Numbero de telephone secondaire</label>
-                                <input name="phone2" ng-model="user.phone2" />
-                            </md-input-container>
-
                         </fieldset>
                                 
                         <fieldset style="margin: 10px;">
@@ -136,20 +124,22 @@ $(document).ready(function(){
                             </md-input-container>
 
                         </fieldset>
-                                
-                        <div class="form-group" >
-                            <!-- Boutton -->                                        
-                            <div class="col-md-3 pull-right" style=" margin-top:20px;">
-                                <button id="btn-signup" type="submit" class="btn btn-info col-md-12"><i class="icon-hand-right"></i> &nbsp S'enregister</button>
-                            </div>
+                        
+                        <p style="text-align: center;">
+                            Vous avez deja un compte? 
+                            <a href="<?php echo site_url("/account/login") ?>" >Se Connecter</a>
+                        </p>
+                        
+                        <p class="pg_connex " style="text-align: center;">
+                            <a  href  onclick="window.open('<?php echo base_url("/assets/files/terms_and_conditions.pdf")?>', '_blank', 'fullscreen=yes'); return false;">Terme et Condition</a>
+                        </p>
+                        
+                        <div class="col-sm-12">
+                            <md-button class="md-raised md-otiprix pull-right" type="submit">
+                                &nbsp S'enregister
+                            </md-button>
                         </div>
                                 
-                        <div class="col-md-3  condition" style=" margin-top:20px;"> <!-- Lien vers page Terme -->
-                            <p class="pg_connex ">
-                                <a  href  onclick="window.open('<?php echo base_url("/assets/files/terms_and_conditions.pdf")?>', '_blank', 'fullscreen=yes'); return false;">Terme et Condition</a>
-                            </p>
-                        </div>
-                                  
                     </form>
                 </div>
             </div> 

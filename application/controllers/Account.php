@@ -61,6 +61,12 @@ class Account extends CI_Controller {
         $this->parser->parse('eapp_template', $this->data);
     }
     
+    public function account_created() 
+    {
+        $this->data['body'] = $this->load->view('account/account_created', $this->data, TRUE);
+        $this->parser->parse('eapp_template', $this->data);
+    }
+    
     public function password_forgotten() 
     {
         $this->data['body'] = $this->load->view('account/password_forgotten', $this->data, TRUE);
@@ -123,11 +129,12 @@ class Account extends CI_Controller {
         $header = "Content-type: text/html; charset=".$encoding." \r\n";
         $header .= "From: ".$from_name." <".$from_mail."> \r\n";
         $header .= "MIME-Version: 1.0 \r\n";
+        $header .= 'Reply-To: infos@otiprix.com' . "\r\n";
         $header .= "Content-Transfer-Encoding: 8bit \r\n";
         $header .= "Date: ".date("r (T)")." \r\n";
         $header .= iconv_mime_encode("Subject", $mail_subject, $subject_preferences);
         
-        $reset_url = site_url('\account\password_reset\\').$reset_token;
+        $reset_url = html_entity_decode(site_url('/account/reset_password?reset_token=').$reset_token);
         
         $message = '<div style="padding: 30px; margin-left: 20px; margin-right: 20px;">';
         $message .= '<p style="font-size: 12px; color : #1abc9c; text-align: center;">L’ÉPICERIE AU PETIT PRIX</p>';
@@ -166,6 +173,33 @@ class Account extends CI_Controller {
         $message .= '</div>';
         
         mail($this->user->email, $mail_subject, $message, $header);
+    }
+    
+    public function reset_password() 
+    {
+        // Get account with reset token
+        $account = $this->account_model->get_specific(USER_ACCOUNT_TABLE, array("reset_token" => $this->input->get('reset_token')));
+        
+        if($account && !empty($account->reset_token))
+        {
+            // Load the reset view
+            $this->data['body'] = $this->load->view('account/reset_password', $this->data, TRUE);
+            $this->parser->parse('eapp_template', $this->data);
+        }
+        else
+        {
+            // Load page that token is no longer available
+            // Load the reset view
+            $this->data['body'] = $this->load->view('errors/message', $this->data, TRUE);
+            $this->parser->parse('eapp_template', $this->data);
+        }
+        
+    }
+    
+    public function invalid() 
+    {
+        $this->data['body'] = $this->load->view('errors/message', $this->data, TRUE);
+        $this->parser->parse('eapp_template', $this->data);    
     }
     
     public function page_under_construction() 
@@ -555,6 +589,52 @@ class Account extends CI_Controller {
         
         echo json_encode($result);
         
+    }
+    
+    public function modify_password() 
+    {
+        $result = array
+        (
+            'success' => false,
+        );
+        
+        $condition = array
+        (
+            'reset_token' => $this->input->post('reset_token')
+        );
+            
+        $account = $this->account_model->get_specific(USER_ACCOUNT_TABLE, $condition);
+        
+        if($account)
+        {
+            $data = array
+            (
+                'id' => $account->id,
+                'reset_token' => ''
+            );
+            
+            // Change the password
+            $user_account = array();
+            $user_account['password'] = md5($this->input->post('password'));
+            $user_account['id'] = $account->id;
+            $insert = $this->account_model->create(USER_ACCOUNT_TABLE, $user_account);
+
+            $result["message"] = "Une erreur de serveur est survenue. Veuillez réessayer plus tard.";
+
+            if($insert)
+            {
+                $result["success"] = true;
+                $result["message"] = "Votre mot de passe a été changé.";
+                // Remove token
+                $this->account_model->create(USER_ACCOUNT_TABLE, $data);
+            }
+        }
+        else
+        {
+            $result["message"] = "Le code de réinitialisation fourni n'est plus disponible.";
+        }
+        
+        echo json_encode($result);
     }
     
     public function change_password() 
