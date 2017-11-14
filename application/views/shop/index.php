@@ -26,19 +26,19 @@ and open the template in the editor.
     <div class="container" style="margin-top : 10px;" ng-show="category_id">
         <ul class="breadcrumb" style="text-align: center; background: white;">
             <li><a href="<?php echo site_url("shop/categories")?>">Categories</a></li>
-            <li class="active">{{categories[category_id].name}}</li>
+            <li class="active">{{category_name}}</li>
         </ul>
     </div>
     
     <div class="container" style="margin-top : 10px;" ng-show="store_id">
         <ul class="breadcrumb" style="text-align: center; background: white;">
             <li><a href="<?php echo site_url("shop/select_flyer_store")?>">Circulaires</a></li>
-            <li class="active">{{stores[store_id].name}}</li>
+            <li class="active">{{store_name}}</li>
         </ul>
     </div>
     <div layout="column" style="white-container">
 
-     	<md-card id="shopController" ng-include="'../assets/templates/shop-products-table.html'"></md-card>
+     	<md-card id="shopController" ng-include="'<?php echo base_url(); ?>/assets/templates/shop-products-table.html'"></md-card>
 
     </div>
 </div>

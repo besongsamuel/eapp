@@ -8,6 +8,10 @@ angular.module('eappApp').controller('AccountController', ["$scope", "$http", "$
 {
     $scope.selectedAccountTab = 3;
     
+    $scope.enterVerificationNumber = true;
+    
+    $scope.message = null;
+    
     $scope.Init = function()
     {
         $scope.load_icons();
@@ -64,9 +68,7 @@ angular.module('eappApp').controller('AccountController', ["$scope", "$http", "$
             search :  $scope.base_url + "/assets/icons/ic_search_black_24px.svg",
         };
     };
-    
-   $scope.registering_user = false;
-   
+       
     
     $scope.user = 
     {
@@ -87,9 +89,6 @@ angular.module('eappApp').controller('AccountController', ["$scope", "$http", "$
 
     };
 	
-    $scope.message = null;
-    
-
     $scope.submit_favorite_stores = function()
     {
         $scope.listChangedSuccess = false;
@@ -317,26 +316,15 @@ angular.module('eappApp').controller('AccountController', ["$scope", "$http", "$
         if(isValid)
         {
             var intlNumber = $("#phone").intlTelInput("getNumber");
-
-            $.ajax({
-                type: 'POST',
-                url:   $scope.site_url.concat("/account/send_verification"),
-                data: { number : intlNumber},
-                success: function(response)
+            
+            var sendVerificationPromise = eapp.sendVerification(intlNumber);
+            
+            sendVerificationPromise.then(function(response)
+            {
+                if(response.data)
                 {
-                    if(Boolean(response.toString()))
-                    {
-                        var accountScope = angular.element($("#admin-container")).scope();
-
-                        accountScope.$apply(function()
-                        {
-                            accountScope.enterVerificationNumber = false;
-                        });
-
-                    }
-
-                },
-                async:true
+                    $scope.enterVerificationNumber = false;
+                }
             });
         }
         else

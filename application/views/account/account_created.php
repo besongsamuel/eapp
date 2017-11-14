@@ -9,7 +9,6 @@ and open the template in the editor.
 
 <div id="admin-container" class="container" ng-controller="AccountCreatedController" ng-cloak>
     
-    
     <div class="mainbox col-md-8 col-md-offset-2 col-sm-12" ng-show="visible">
        
         <div class="panel panel-info" >
@@ -39,6 +38,25 @@ and open the template in the editor.
                         Commencez a reduire votre epicerie
                     </md-button>
                 </md-input-container>
+            </div>
+
+        </div>
+          
+      </div>
+   </div>
+    
+    <div class="mainbox col-md-8 col-md-offset-2 col-sm-12" ng-show="invalid">
+       
+        <div class="panel panel-info" >
+          
+            <div class="panel-heading">
+               <div class="panel-title">Erreur</div>
+            </div>
+            
+            <div style="padding-top:30px" class="panel-body">
+            
+            <div class="alert alert-danger col-sm-12" ng-show="message">
+                <p style="text-align: center;">{{message}}</p>
             </div>
 
         </div>

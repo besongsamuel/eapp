@@ -74,7 +74,7 @@
                     <tr  md-row md-select="item"  md-select-id="name" class="cart_item" ng-repeat="item in departmentStore.products">
 
                         <td md-cell>
-                            <a title="Remove this item" class="remove" href ng-click="remove_product_from_cart(item.product.id)">×</a> 
+                            <a title="Remove this item" class="remove" href ng-click="removeFromCart(item.product.id)">×</a> 
                         </td>
 
 

@@ -5,6 +5,7 @@ $(document).ready(function()
     rootScope.$apply(function()
     {
         
+        
         rootScope.is_loading = false;
         rootScope.valid = true;
         rootScope.success_message = "";
@@ -219,6 +220,20 @@ $(document).ready(function()
             }
         };
 		
+        rootScope.productInCart = function(product_id)
+        {
+            for(var key in rootScope.cart)
+            {
+                if(parseInt(rootScope.cart[key].store_product.product_id) === parseInt(product_id))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        };
+    
+                
 	rootScope.getUserCoordinates = function()
         {
             // Get the current geo location only if it's not yet the case

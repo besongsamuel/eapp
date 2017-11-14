@@ -51,7 +51,7 @@
         <td md-cell><div class="admin-image"><a href=""><img alt="" ng-src="{{product.retailer.image}}"></a></div></td>
         <td md-cell><div class="admin-image"><a href=""><img alt="" ng-src="{{product.product.image}}"></a></div></td>
         <td md-cell>
-            <p><b><a  href="{{site_url}}/cart/product/{{product.product.id}}">{{product.product.name}}</a></b></p>
+            <p><b><a  href ng-click="viewProduct(product.id, $event)">{{product.product.name}}</a></b></p>
             <p ng-show="product.size">{{product.size}}</p>
             <p ng-show="product.brand">{{product.brand.name}}</p>
             <p>{{product.format}} <span ng-show="product.unit">{{product.unit.name}}</span></p>

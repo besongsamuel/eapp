@@ -71,7 +71,7 @@ class CI_Controller {
         private $sid = '';
         private $token = '';
         
-        private $sms_host = '174.92.168.205';
+        private $sms_host = '';
         private $sms_username = 'admin';
         private $sms_password = 'Password01$';
         private $sms_port = 9710;
@@ -130,6 +130,8 @@ class CI_Controller {
             $this->sid = $this->config->item("sid");
             
             $this->token = $this->config->item("token");
+            
+            $this->sms_host = gethostbyname('otiprix.sytes.net');
 	}
         
         
@@ -245,26 +247,15 @@ class CI_Controller {
         
         public function send_verification_code($phone_number)
         {
-            $client = new Client($this->sid, $this->token);
             
             $code = $this->generatePIN(4);
             
             // insert code in user account
-            $data = array("phone" => $phone_number, "code" => $code, "id" => $this->user->id);
+            $data = array("phone" => $phone_number, "code" => $code, "id" => $this->user->id, "phone_verified" => 0);
             
             $this->account_model->create(USER_ACCOUNT_TABLE, $data);
-
-            // Use the client to do fun stuff like send text messages!
-            $client->messages->create(
-                // the number you'd like to send the message to
-                $phone_number,
-                array(
-                    // A Twilio phone number you purchased at twilio.com/console
-                    'from' => '+14388008069',
-                    // the body of the text message you'd like to send
-                    'body' => "Votre code de vérification est : ".$code
-                )
-            );
+            
+            $this->SendMessage($phone_number, "Votre code de vérification est : ".$code);
             
             echo json_encode(true);
         }
@@ -283,6 +274,8 @@ class CI_Controller {
 	public function send_twilio_sms($sms)
 	{
             $this->SendMessage($this->user->phone, $sms);
+            
+            echo json_encode(true);
 	}
         
         private function SendMessage($number, $message)

@@ -48,6 +48,12 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
     {
         $scope.viewing_cart_optimization.value = true;
         $scope.update_cart_list();
+        
+        if(!$scope.initialized)
+        {
+            $scope.initialized = true;
+        }
+        
     };
     
     /**
@@ -79,20 +85,7 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
     $scope.true_value = true;
     $scope.false_value = false;
     
-    $rootScope.remove_product_from_cart = function(product_id)
-    {
-        var removePromise = eapp.removeFromCart($rootScope.getRowID(product_id));
-        
-        removePromise.then(function(response)
-        {
-            if(Boolean(response.data.success))
-            {
-                $rootScope.removeItemFromCart(product_id);
-                $scope.orderByStore();
-            }
-        });
-
-    };
+    
     
     $scope.favoriteChanged = function(product)
     {
@@ -189,10 +182,9 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
                 // department stores
                 groupByStore();
                 
-                
+                $scope.update_price_optimization();
                 
             });
-        
     };
 	
     $scope.getRelatedProducts = function(cartItem)
@@ -280,7 +272,7 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
         });
         
         $scope.getDepartmentStoreInfo();
-        
+                
         // Get department store address, time to and distance
     };
     
@@ -455,6 +447,8 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
         
         $rootScope.totalPriceAvailableProducts = $scope.getCartTotalPrice(true);
         $rootScope.totalPriceUnavailableProducts = $scope.getCartTotalPrice(false);
+        
+        $scope.update_price_optimization();
     };
 	
     /**
@@ -506,7 +500,8 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
                             $scope.departmenStores[x].distance = response.rows[0].elements[x].distance.value;
                             $scope.departmenStores[x].distanceText = response.rows[0].elements[x].distance.text;
                             $scope.departmenStores[x].timeText = response.rows[0].elements[x].duration.text;
-                            $scope.departmenStores[x].fullName = response.destinationAddresses[x];
+                            //$scope.departmenStores[x].fullName = response.destinationAddresses[x];
+                            $scope.departmenStores[x].fullName = $scope.departmenStores[x].address + ', ' + $scope.departmenStores[x].state + ', ' + $scope.departmenStores[x].city + ', ' + $scope.departmenStores[x].postcode;
                         }
                         
                     }
@@ -841,6 +836,22 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
     {
         $scope.update_price_optimization();
     });
+    
+    $scope.removeFromCart = function(product_id)
+    {
+        var removePromise = eapp.removeFromCart($rootScope.getRowID(product_id));
+        
+        removePromise.then(function(response)
+        {
+            if(Boolean(response.data.success))
+            {
+                $rootScope.removeItemFromCart(product_id);
+                groupByStore();
+                $scope.update_price_optimization();
+            }
+        });
+
+    };
 	
     $scope.update_price_optimization = function()
     {
@@ -1341,43 +1352,9 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
     
     $rootScope.viewProduct = function(product_id, ev)
     {
-        // Get the latest products
-        var promise = eapp.getProduct(product_id);
-    
-        promise.then(function(response)
-        {
-            $scope.storeProduct = response.data;
-            
-            $scope.scrollTop = $(document).scrollTop();
-            
-            // Open dialog
-            $mdDialog.show({
-                controller: ViewProductController,
-                templateUrl:  $scope.base_url + 'assets/templates/otiprix-product.html',
-                parent: angular.element(document.body),
-                targetEvent: ev,
-                clickOutsideToClose:true,
-                disableParentScroll : true,
-                preserveScope:true,
-                scope : $scope,
-                fullscreen: true,
-                onRemoving : function()
-                {
-                    // Restore scroll
-                    $(document).scrollTop($scope.scrollTop);
-                }
-            })
-            .then(function(answer) {
-
-            }, function() {
-
-            });
-        },
-        function(errorResponse)
-        {
-            $scope.storeProduct = null;
-        });
+        eapp.viewProduct($scope, product_id, ev);
     };
+    
     
     $rootScope.selectProduct = function(store_product)
     {
@@ -1394,45 +1371,22 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
         });
     };
     
-    function ViewProductController($scope, $mdDialog)
+    
+    
+    $rootScope.$watch('cartReady', function(newValue, oldValue)
     {
-        $scope.close = function() 
+        if(newValue)
         {
-            $mdDialog.cancel();
-        };
-    }
-    
-    
-    $rootScope.productInCart = function(product_id)
-    {
-        for(var key in $rootScope.cart)
-        {
-            if(parseInt($rootScope.cart[key].store_product.product_id) === parseInt(product_id))
-            {
-                return true;
-            }
-        }
-
-         return false;
-    };
-    
-    angular.element(document).ready(function()
-    {
-        var cartPromise = eapp.getCart();
-    
-        cartPromise.then(function(cartResponse)
-        {
-            // Get the cart data when the menu is loaded
-            $rootScope.cart = cartResponse.data;
-            
-            $scope.Init();
             
             if($scope.controller === "cart")
             {
                 $rootScope.isCart = true;
+                
+                $scope.Init();
             }
-            
-        });
+        }
+        
+        $scope.update_price_optimization();
     });
 	
 }]);

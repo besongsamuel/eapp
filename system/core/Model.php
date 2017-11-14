@@ -190,7 +190,7 @@ class CI_Model {
         $brand_columns = "*";
         if($minified)
         {
-            $store_product_columns = "id, product_id, retailer_id, brand_id, unit_id, country, state, organic, format, size, quantity, price, unit_price, period_from, period_to";
+            $store_product_columns = "id, product_id, retailer_id, brand_id, unit_id, country, state, organic, format, size, quantity, price, unit_price, period_from, period_to, image";
             $chain_columns = "id, name, image";
             $units_columns = "id, name";
             $brand_columns = "id, name, image";
@@ -237,7 +237,7 @@ class CI_Model {
             
             // The store product has its own specific image. 
             // Override the product image. 
-            if(!empty($store_product->image) && strpos($store_product->image, 'http') === true)
+            if(strpos($store_product->image, 'http') !== FALSE)
             {
                 $store_product->product->image = $store_product->image;
             }
@@ -553,7 +553,11 @@ class CI_Model {
         
         if($filter != null)
         {
+            $this->db->group_start();
             $this->db->like(PRODUCT_TABLE.".name", $filter);
+            $this->db->or_like("tags", $filter);
+            $this->db->or_like("store_name", $filter);
+            $this->db->group_end();
         }
 
         if($store_id != null)
@@ -578,7 +582,11 @@ class CI_Model {
 
         if($filter != null)
         {
+            $this->db->group_start();
             $this->db->like("name", $filter);
+            $this->db->or_like("tags", $filter);
+            $this->db->or_like("store_name", $filter);
+            $this->db->group_end();
         }
         
         $this->db->order_by("price", "ASC");
@@ -635,7 +643,11 @@ class CI_Model {
         
         if($filter != null)
         {
+            $this->db->group_start();
             $this->db->like(PRODUCT_TABLE.".name", $filter);
+            $this->db->or_like("tags", $filter);
+            $this->db->or_like("store_name", $filter);
+            $this->db->group_end();
         }
         if($store_id != null)
         {
@@ -657,7 +669,11 @@ class CI_Model {
 		
         if($filter != null)
         {
+            $this->db->group_start();
             $this->db->like("name", $filter);
+            $this->db->or_like("tags", $filter);
+            $this->db->or_like("store_name", $filter);
+            $this->db->group_end();
         }
         if($store_id != null)
         {
@@ -699,7 +715,19 @@ class CI_Model {
         $this->db->select(CHAIN_TABLE.".*");
         $this->db->join(USER_FAVORITE_STORE_TABLE, USER_FAVORITE_STORE_TABLE.'.retailer_id = '.CHAIN_TABLE.'.id');
         $this->db->where(array("user_account_id" => $user_id));
-        return $this->db->get(CHAIN_TABLE)->result();
+        $result = $this->db->get(CHAIN_TABLE)->result();
+        
+        foreach ($result as $key => $value) 
+        {
+            if(strpos($result[$key]->image, 'http://') == FALSE)
+            {
+                 $result[$key]->image = base_url('/assets/img/stores/').$result[$key]->image;
+            }
+           
+        }
+        
+        return $result;
+       
     }
     
     public function delete($table_name, $data)

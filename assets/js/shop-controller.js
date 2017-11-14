@@ -1,24 +1,34 @@
 angular.module('eappApp').controller('ShopController', ["$scope", "$q", "$http", "$mdDialog", "$rootScope", "eapp", function ($scope, $q, $http, $mdDialog, $rootScope, eapp) 
 {
+    $rootScope.query = 
+    {
+        filter: '',
+        limit: '50',
+        order: 'name',
+        page: 1
+    };
  
- 
+    $rootScope.searchText = "";
+    
+    $scope.ready = false;
+    
     angular.element(document).ready(function()
     {
         $scope.Init();
+        
+        $scope.ready = true;
     });
     var bookmark;
     
-    $scope.assets_dir = "http://" + window.location.hostname + "/eapp/assets/";
-    
     $scope.Init = function()
     {
-        $rootScope.searchText = "";
+        $scope.assets_dir = $scope.base_url.concat("/eapp/assets/");
         
         if(window.sessionStorage.getItem("searchText"))
         {
             $rootScope.searchText = window.sessionStorage.getItem("searchText");
             window.sessionStorage.removeItem("searchText");
-            $scope.query.filter = $scope.searchText;
+            $rootScope.query.filter = $rootScope.searchText;
         }
         
         // Get the products for the store
@@ -28,12 +38,14 @@ angular.module('eappApp').controller('ShopController', ["$scope", "$q", "$http",
             if(window.sessionStorage.getItem("store_id"))
             {
                 $scope.store_id = parseInt(window.sessionStorage.getItem("store_id"));
+                $scope.store_name = window.sessionStorage.getItem("store_name");
             }
 
             // We selected a specific category
             if(window.sessionStorage.getItem("category_id"))
             {
                 $scope.category_id = parseInt(window.sessionStorage.getItem("category_id"));
+                $scope.category_name = window.sessionStorage.getItem("category_name");
             }
             
             $rootScope.isSearch = true;
@@ -61,16 +73,12 @@ angular.module('eappApp').controller('ShopController', ["$scope", "$q", "$http",
         }
     };
 
-    $scope.query = 
-    {
-        filter: '',
-        limit: '50',
-        order: 'name',
-        page: 1
-    };
-  
     $scope.getProducts = function () 
     {
+        if(!$scope.ready)
+        {
+            return;
+        }
         
         var q = $q.defer();
 
@@ -138,6 +146,21 @@ angular.module('eappApp').controller('ShopController', ["$scope", "$q", "$http",
         $scope.clearSessionItems();
         window.sessionStorage.setItem("searchText", searchText);
         window.location.href =  $scope.site_url.concat("/shop");
+    };
+    
+    $rootScope.select_category = function($event, category)
+    {
+        $scope.clearSessionItems();
+        var category_id = parseInt(category.id);
+        eapp.recordHit("eapp_product_category ",category_id);
+        window.sessionStorage.setItem("category_id", category_id);    
+        window.sessionStorage.setItem("category_name", category.name);
+        window.location =  $scope.site_url.concat("/shop");
+    };
+    
+    $scope.viewProduct = function(product_id, ev)
+    {
+        eapp.viewProduct($scope, product_id, ev);
     };
   
 }]);

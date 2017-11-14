@@ -2,13 +2,19 @@ angular.module('eappApp').controller('SelectStoreController', ["$scope", "$mdDia
 {
     $rootScope.isMainMenu = true;
     
+    $scope.loading = false;
+    
     $scope.Init = function()
     {
         var retailersPromise = eapp.getCloseRetailers($scope.getDistance());
         
+        $scope.loading = true;
+        
         retailersPromise.then(function(response)
         {
             $scope.retailers = response.data;
+            
+            $scope.loading = false;
         });
     };
     
@@ -94,11 +100,12 @@ angular.module('eappApp').controller('SelectStoreController', ["$scope", "$mdDia
         };
     };
     
-    $scope.select_retailer = function($event, store_id)
+    $scope.select_retailer = function($event, store)
     {
         $scope.clearSessionItems();  
-	var store_id = parseInt(store_id);
-	window.sessionStorage.setItem("store_id", store_id);    
+	var store_id = parseInt(store.id);
+	window.sessionStorage.setItem("store_id", store_id); 
+        window.sessionStorage.setItem("store_name", store.name); 
 	window.location =  $scope.site_url.concat("/shop");
     };
     

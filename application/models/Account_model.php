@@ -33,6 +33,7 @@ class Account_model extends CI_Model
         foreach ($query->result() as $value) 
         {
             $result[$value->retailer_id] = $value->retailer_id;
+            
         }
         
         return $result;
@@ -118,6 +119,7 @@ class Account_model extends CI_Model
                     if($store_product != null)
                     {
 			array_push($product->store_products, $store_product);
+                        
                         $product->store[$favorite_store->id] = $favorite_store;
                         $product->store[$favorite_store->id]->store_product = $store_product;
                     }
@@ -125,6 +127,7 @@ class Account_model extends CI_Model
 				
                 $product->quantity = $item->quantity;
                 array_push($user_account->grocery_list, $product);
+                
             }
         }
         

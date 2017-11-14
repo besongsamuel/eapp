@@ -176,12 +176,8 @@
 	  
   </head>
   <body>
-      
-      <div ng-controller="CartController">
-          
-      </div>  
-      
-    <notifications-bar class="notifications"></notifications-bar>
+            
+  <notifications-bar class="notifications"></notifications-bar>
 
     <div class="container search-box" id="search-box" ng-controller="ShopController" ng-hide="hideSearchArea" style="margin-top: 100px;" ng-cloak>
         
@@ -315,7 +311,7 @@
                     <div class="footer-menu">
                         <h2 class="footer-wid-title">Categories</h2>
                         <ul>
-                            <li ng-click="select_category($event)" id="{{category.id}}"  ng-repeat="category in categories"><a href="#">{{category.name}}</a></li>
+                            <li ng-click="select_category($event, category)" id="{{category.id}}"  ng-repeat="category in categories"><a href>{{category.name}}</a></li>
                         </ul>                        
                     </div>
                 </div>

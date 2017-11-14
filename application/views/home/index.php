@@ -12,7 +12,7 @@
                         <a href="<?php echo site_url("account/my_grocery_list"); ?>" class="category-block"><img class="img-circle" width="100px;" height="100px;" src="<?php echo base_url("/assets/img/grocerylist.png"); ?>"></a>
                         <h2 class="md-otiprix-text">Votre liste d'épicerie</h2>
 <!--                        <i class="fa fa-heart"></i>-->
-                        <p class="md-gray-text">Créez votre liste d'épicerie et économisez sur les dépenses.</p>
+                        <p class="md-gray-text">CUtilisez les circulaires pour créer votre panier d'épicerie et économisez sur les dépenses.</p>
                     </div>
                 </div>
                 <div class="col-md-4 col-sm-8">
@@ -20,7 +20,7 @@
                         <a href="<?php echo site_url("shop/select_flyer_store"); ?>" class="category-block"><img class="img-circle" width="100px;" height="100px;" src="<?php echo base_url("/assets/img/flyers.jpg"); ?>"></a>
 <!--                        <i class="fa fa-unlock"></i>-->
                         <h2 class="md-otiprix-text">Les circulaires</h2>
-                        <p class="md-gray-text">Utilisez notre circulaires pour créer votre panier d'épicerie et économisez sur les dépenses</p>
+                        <p class="md-gray-text">Sélectionnez le magasin pour afficher le contenu de la circulaire. </p>
                     </div>
                 </div>
                 <div class="col-md-4 col-sm-8">
@@ -28,7 +28,7 @@
                         <a href="<?php echo site_url("shop/categories"); ?>" class="category-block"><img class="img-circle" width="100px;" height="100px;" src="<?php echo base_url("/assets/img/categories.png"); ?>"></a>
                         <h2 class="md-otiprix-text">Les catégories de produits</h2>
 <!--                        <i class="fa fa-calendar"></i>-->
-                        <p class="md-gray-text">Utilisez notre catégories de produits pour créer votre panier d'épicerie et économiser sur les dépenses.</p>
+                        <p class="md-gray-text">Utilisez les catégories de produits pour créer votre panier d'épicerie et économiser sur les dépenses.</p>
                     </div>
                 </div>
             </div>

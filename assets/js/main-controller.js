@@ -58,7 +58,7 @@ angular.isNullOrUndefined = function(value)
 var eappApp = angular.module('eappApp', ['ngMaterial', 'md.data.table', 'lfNgMdFileInput', 'ngMessages', 'ngSanitize', 'mdCountrySelect', 'ngNotificationsBar', 'ngRoute', 'ngAnimate', 'angularCountryState']);
 
 // Create eapp service to get and update our data
-eappApp.factory('eapp', ['$http','$rootScope', function($http, $rootScope)
+eappApp.factory('eapp', ['$http','$rootScope', '$mdDialog', function($http, $rootScope, $mdDialog)
 {
     var eappService = {};
     
@@ -77,6 +77,18 @@ eappApp.factory('eapp', ['$http','$rootScope', function($http, $rootScope)
         }
         
         return "http://" + siteName + "/index.php/";
+    };
+    
+    eappService.getBaseUrl = function()
+    {
+        var siteName = window.location.hostname.toString();
+        
+        if(siteName == "localhost")
+        {
+            siteName = siteName.concat("/eapp/");
+        }
+        
+        return "http://" + siteName + "/";
     };
     
     
@@ -280,6 +292,63 @@ eappApp.factory('eapp', ['$http','$rootScope', function($http, $rootScope)
         return $http.post(eappService.getSiteUrl().concat("account/modify_password"), formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}});
 
     };
+    
+    eappService.sendVerification = function(phone_number)
+    {
+        var formData = new FormData();
+        formData.append("number", phone_number);
+        
+        return $http.post(eappService.getSiteUrl().concat("/account/send_verification"), formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}});
+
+    };
+    
+    eappService.viewProduct = function($scope, product_id, ev)
+    {
+        // Get the latest products
+        var promise = eappService.getProduct(product_id);
+    
+        promise.then(function(response)
+        {
+            $scope.storeProduct = response.data;
+            
+            $scope.scrollTop = $(document).scrollTop();
+            
+            // Open dialog
+            $mdDialog.show({
+                controller: ViewProductController,
+                templateUrl:  eappService.getBaseUrl() + 'assets/templates/otiprix-product.html',
+                parent: angular.element(document.body),
+                targetEvent: ev,
+                clickOutsideToClose:true,
+                disableParentScroll : true,
+                preserveScope:true,
+                scope : $scope,
+                fullscreen: true,
+                onRemoving : function()
+                {
+                    // Restore scroll
+                    $(document).scrollTop($scope.scrollTop);
+                }
+            })
+            .then(function(answer) {
+
+            }, function() {
+
+            });
+        },
+        function(errorResponse)
+        {
+            $scope.storeProduct = null;
+        });
+    };
+    
+    function ViewProductController($scope, $mdDialog)
+    {
+        $scope.close = function() 
+        {
+            $mdDialog.cancel();
+        };
+    }
         
 
     return eappService;

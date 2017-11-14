@@ -19,6 +19,11 @@
 
 <div id="admin-container" class="container" ng-controller="SelectStoreController" ng-cloak>    
         
+    
+        <div layout="row" layout-sm="column" style="margin-top: 10px;" layout-align="space-around">
+            <md-progress-circular ng-disabled="!loading"  class="md-hue-2" md-diameter="30px" md-mode="indeterminate" ng-show="loading"></md-progress-circular>
+        </div>
+    
         <div id="signupbox" style=" margin-top:50px" class="container">
             
             <div class="col-12">
@@ -38,9 +43,9 @@
 		<md-content id="retailer-contents" style="padding : 10px;">
                     <div class="form-group-inline" ng-repeat="store in retailers">
                         <div class="col-md-3 col-sm-4" style="height: 160px;">
-                            <a href><img  ng-click="select_retailer($event, store.id)" id="{{store.id}}" ng-src="{{store.image}}" alt="{{store.name}}" style="height: 80px; display: block; margin: 0 auto;" class="img-thumbnail img-check"></a>
+                            <a href><img  ng-click="select_retailer($event, store)" id="{{store.id}}" ng-src="{{store.image}}" alt="{{store.name}}" style="height: 80px; display: block; margin: 0 auto;" class="img-thumbnail img-check"></a>
                             <input type="checkbox" name="store_{{store.id}}" value="{{store.id}}" class="hidden" autocomplete="off">
-                            <a href ng-click="select_retailer($event)" id="{{store.id}}">
+                            <a href ng-click="select_retailer($event, store)" id="{{store.id}}">
                             <p class="md-otiprix-text" style="text-align: center;" ng-hide="true">{{store.department_store.address}}, {{store.department_store.city}}</p>
                             <p class="md-otiprix-text" style="text-align: center;" ng-hide="true"><span ng-show="store.department_store.state">{{store.department_store.state}},</span> <span ng-show="store.department_store.postcode">{{store.department_store.postcode}}</span></p>
                             </a>

@@ -91,6 +91,18 @@ angular.module("eappApp").controller("UserListController", ["$rootScope", "$scop
             product.quantity = (typeof product.quantity !== "undefined" && product.quantity) ? product.quantity : 1;
             // get product category id
             var category = product.category;
+            
+            if(angular.isNullOrUndefined(category))
+            {
+                category = 
+                {
+                    id : 0,
+                    name : 'Aucune catégorie'
+                };
+                
+                product.category = category;
+            }
+            
             // Check if category exists
             var index = $scope.myCategories.map(function(e) { return e.id; }).indexOf(category.id);
 

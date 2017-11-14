@@ -53,6 +53,7 @@ $(document).ready(function()
                     <div layout-padding>
 
                         <form name="userInfoForm" novalidate ng-submit="updateProfile()">
+                            
                             <md-input-container class="md-block col-md-12 col-sm-12" flex-gt-sm>
                                 <label>Email</label>
                                 <md-icon style="color: #1abc9c;"><i class="material-icons">email</i></md-icon>
@@ -94,6 +95,7 @@ $(document).ready(function()
                                     <div ng-message="required">Vous devex entrer une ville</div>
                                 </div>
                             </md-input-container>
+                            
                             <md-input-container class="md-block col-md-6 col-sm-12" flex-gt-sm>
                                 <label>Code Postal</label>
                                 <md-icon style="color: #1abc9c;"><i class="material-icons">place</i></md-icon>

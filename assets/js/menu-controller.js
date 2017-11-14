@@ -9,10 +9,8 @@ angular.module("eappApp").controller("MenuController", ["$rootScope", "$http", "
     
     $rootScope.isHome = false;
     
-    $rootScope.loadPage = function(url)
-    {
-
-    };
+    // This variable prevents us from getting the cart contents twice.
+    $rootScope.cartReady = false;
 	
     $rootScope.gotoShop = function()
     {
@@ -20,6 +18,34 @@ angular.module("eappApp").controller("MenuController", ["$rootScope", "$http", "
         window.sessionStorage.removeItem("category_id");
         window.location =  $rootScope.site_url.concat("/shop");
     };
+    
+    $rootScope.remove_product_from_cart = function(product_id)
+    {
+        var removePromise = eapp.removeFromCart($rootScope.getRowID(product_id));
+
+        removePromise.then(function(response)
+        {
+            if(Boolean(response.data.success))
+            {
+                $rootScope.removeItemFromCart(product_id);
+            }
+        });
+
+    };
+    
+    angular.element(document).ready(function()
+    {
+        var cartPromise = eapp.getCart();
+    
+        cartPromise.then(function(cartResponse)
+        {
+            // Get the cart data when the menu is loaded
+            $rootScope.cart = cartResponse.data;
+            
+            $rootScope.cartReady = true;
+            
+        });
+    });
 
 	
 }]);
