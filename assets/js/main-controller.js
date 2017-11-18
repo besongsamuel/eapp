@@ -302,6 +302,14 @@ eappApp.factory('eapp', ['$http','$rootScope', '$mdDialog', function($http, $roo
 
     };
     
+    eappService.validateCode = function(code)
+    {
+        var formData = new FormData();
+        formData.append("code", code);
+        
+        return $http.post(eappService.getSiteUrl().concat("/account/validate_code"), formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}});
+    };
+    
     eappService.viewProduct = function($scope, product_id, ev)
     {
         // Get the latest products
@@ -328,6 +336,10 @@ eappApp.factory('eapp', ['$http','$rootScope', '$mdDialog', function($http, $roo
                 {
                     // Restore scroll
                     $(document).scrollTop($scope.scrollTop);
+                },
+                onShowing : function()
+                {
+                    $scope.RelatedProductsAvailable = !angular.isNullOrUndefined($scope.storeProduct.similar_products) && $scope.storeProduct.similar_products.length > 0;
                 }
             })
             .then(function(answer) {
@@ -344,6 +356,7 @@ eappApp.factory('eapp', ['$http','$rootScope', '$mdDialog', function($http, $roo
     
     function ViewProductController($scope, $mdDialog)
     {
+        
         $scope.close = function() 
         {
             $mdDialog.cancel();

@@ -24,7 +24,7 @@ $(document).ready(function()
                 <md-list ng-controller="AccountOptimizationController">
                     <md-list-item class="md-3-line" ng-repeat="item in optimizations">
                       <div class="md-list-item-text"  style="margin-bottom: 10px;">
-                        <h3 style="color : #1abc9c;">{{item.label}}</h3>
+                        <h3 style="color : #1abc9c;"><b>{{item.label}}</b></h3>
                         <h4>Économies moyen : <b style="color : red;"><span ng-show="item.value != '-'">$ CAD</span> {{item.value}}</b></h4>
                         <p>Nombre moyen de produits par panier : <b>{{item.count}}</b></p>
                       </div>
@@ -104,10 +104,17 @@ $(document).ready(function()
                                     <div ng-message="required">Veillez entrer votre code postale</div>
                                 </div>
                             </md-input-container>
+                            
+                            <div class="col-sm-12" style="margin-top : 30px; margin-bottom: 30px;">
+                                <md-button type="submit" class="pull-right md-otiprix md-raised">Changer</md-button>
+                            </div>
 
                             <div layout-padding>
-                                <md-subheader class="md-warn" ng-hide="loggedUserClone.phone_verified == 1">Vérifier votre numéro de téléphone</md-subheader>
-
+                                
+                                <div class="col-sm-12"  ng-hide="userPhoneVerified">
+                                    <p class="md-otiprix-text" style="text-align: center; margin: 5px;"><b>Vérifier votre numéro de téléphone</b></p>
+                                </div>
+                                
                                 <div class="col-sm-12" ng-show="enterVerificationNumber">
                                     <div class="alert alert-danger" ng-show="phoneNumberError">
                                         <strong>Erreur!</strong> {{phoneNumberError}}.
@@ -115,7 +122,11 @@ $(document).ready(function()
                                     <div class="alert alert-success" ng-show="validateCodeMessage">
                                         <strong>Success!</strong> {{validateCodeMessage}}
                                     </div>
-                                    <p style="text-align: center; color: green;" ng-show="loggedUserClone.phone_verified == 1">Verified : {{loggedUserClone.phone}}</p>
+                                    
+                                    <div class="col-sm-12"  ng-show="userPhoneVerified">
+                                        <p class="md-otiprix-text" style="text-align: center; margin: 5px;"><b>Verified : {{loggedUserClone.phone}}</b></p>
+                                    </div>
+                                    
                                     <p style="text-align: center;">Veuillez entrer ci-dessous un numéro de téléphone où nous vous enverrons le code de vérification.</p>
                                     <md-input-container class="col-sm-12 col-md-6 col-md-offset-3">
                                         <md-icon style="color: #1abc9c;"><i class="material-icons">phone</i></md-icon>
@@ -127,6 +138,8 @@ $(document).ready(function()
                                         </md-button>
                                     </div>
                                 </div>
+                                
+                                
 
                                 <div class="col-sm-12" ng-hide="enterVerificationNumber">
                                     <div class="alert alert-danger" ng-show="validateCodeMessage">
@@ -145,12 +158,6 @@ $(document).ready(function()
                                 </div>
 
                             </div>
-                             
-                            
-                            
-                            <div class="pull-right form-group">
-                                <input type="submit" class="btn btn-primary" value="Changer" />
-                            </div>
 
                         </form>
                     </div>
@@ -166,9 +173,11 @@ $(document).ready(function()
            
             <md-tab label="Sécurité du compte" md-on-select="onTabSelected(4)">
                 
-                <md-content class="md-padding">
+                <div class="md-padding">
                     
-                    <md-subheader class="md-warn">Changer votre mot de passe</md-subheader>
+                    <div class="col-sm-12">
+                        <p class="md-otiprix-text" style="text-align: center; margin: 5px;"><b>Changer votre mot de passe</b></p>
+                    </div>
                     
                     <div class="alert alert-danger" ng-show="changePasswordError">
                         <strong>Erreur!</strong> {{changePasswordErrorMessage}}
@@ -177,6 +186,7 @@ $(document).ready(function()
                     <div class="alert alert-success" ng-show="changePasswordSuccess">
                         <strong>Success!</strong> {{changePasswordSuccessMessage}}
                     </div>
+                    
                     <form name="userSecurityForm" novalidate ng-submit="changePassword()">
 
                         <md-input-container class="md-block col-md-12" flex-gt-sm>
@@ -215,15 +225,20 @@ $(document).ready(function()
                             </div>
                         </md-input-container>
 
-                        <div class="pull-right">
-                            <input type="submit" class="btn btn-primary" value="Changer" />
+                        <div class="col-md-12">
+                            <md-button class="md-raised md-otiprix pull-right" type="submit">
+                                Changer
+                            </md-button>
                         </div>
 
                     </form>
-                </md-content>    
+                </div>    
                 
-                <md-content class="md-padding">
-                    <md-subheader class="md-warn">Changer la réponse et la question de sécurité</md-subheader>
+                <div class="col-sm-12">
+                    <p class="md-otiprix-text" style="text-align: center; margin: 5px;"><b>Changer la réponse et la question de sécurité</b></p>
+                </div>
+                
+                <div class="md-padding">
                     
                     <form name="securityQuestionForm" ng-submit="changeSecurityQuestion()" novalidate>
 
@@ -235,7 +250,7 @@ $(document).ready(function()
                             <strong>Success!</strong> {{changeSecurityQuestionSuccessMessage}}
                         </div>
 
-                        <md-content class="md-padding">
+                        <div>
                             <md-input-container class="md-block col-md-12" flex-gt-sm>
                                 <label>Question secrète</label>
                                 <md-select ng-model="loggedUser.security_question_id">
@@ -251,14 +266,15 @@ $(document).ready(function()
                                 </div>
                             </md-input-container>
 
-                            <div class="pull-right">
-                                <input type="submit" class="btn btn-primary" value="Changer" />
+                            <div class="col-md-12">
+                                <md-button class="md-raised md-otiprix pull-right" type="submit">
+                                    Changer
+                                </md-button>
                             </div>
-                        </md-content>
+                        </div>
 
                     </form>
-                </md-content>  
-                
+                </div>  
                 
             </md-tab>
         </div>

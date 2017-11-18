@@ -176,6 +176,51 @@ class CI_Model {
         }
     }
     
+    private function get_compare_price($store_product)
+    {                        
+        // Get all units
+        $units = $this->get_all(UNITS_TABLE);
+        
+        $compare_price = $store_product->price;
+        
+        foreach ($units as $unit) 
+        {
+            if((isset($store_product->product->unit) && $unit->id == $store_product->unit_id && $unit->compareunit_id == $store_product->product->unit->id)
+                    || ($store_product->unit_id == $unit->id && $store_product->compareunit_id == $unit->compareunit_id))
+            {
+                $format = 1;
+                
+                // get format
+                $pieces = explode("x", $store_product->format);
+                
+                if(sizeof($pieces) == 1)
+                {
+                    $format = (int)$pieces[0];
+                }
+                
+                if(sizeof($pieces) == 2)
+                {
+                    $format = (int)$pieces[0] * (int)$pieces[1];
+                }
+                
+                // Convert format quantity
+                $compare_format = $format * $unit->equivalent;
+                
+                // Get the unit price
+                $unit_price = (float)$store_product->price / (float)$format;
+                
+                // Get compare unit_price
+                $compare_price = $unit_price * $compare_format;
+                
+                return $compare_price;
+                
+            }
+        }
+        
+        return $compare_price;
+    }
+
+
     public function getStoreProduct($id, $includeRelatedProducts = true, $latestProduct = true, $minified = false) 
     {
         // Get the store product object
@@ -213,6 +258,7 @@ class CI_Model {
             $store_product->retailer = $this->get_retailer($store_product->retailer_id, $chain_columns);
             // Get product unit
             $store_product->unit = $this->get(UNITS_TABLE, $store_product->unit_id, $units_columns);
+            $store_product->compare_price = $this->get_compare_price($store_product);
             // Get subcategory
             if($store_product->product != null && $includeRelatedProducts)
             {
@@ -378,6 +424,9 @@ class CI_Model {
         {
             $value->category = $this->get(CATEGORY_TABLE, $value->subcategory->product_category_id, $category_columns);
         }
+        
+        // Get the product's compare product unit
+        $value->unit = $this->get(UNITS_TABLE, $value->unit_id, "*");
         
         if($get_store_products)
         {
@@ -563,15 +612,21 @@ class CI_Model {
         if($store_id != null)
         {
             $this->db->where(array("retailer_id" => $store_id));
+            $product_ids = $this->get_where(STORE_PRODUCT_TABLE, "product_id", $this->latest_products_condition);
         }
-        if($category_id != null)
+        else if($category_id != null)
         {
             $this->db->join(SUB_CATEGORY_TABLE, $this->store_product_subcategory_join);	
             $this->db->where(array(SUB_CATEGORY_TABLE.".product_category_id" => $category_id));
-        } 
+            $product_ids = $this->get_where(STORE_PRODUCT_TABLE, "product_id", $this->latest_products_condition);
+        }
+        else
+        {
+            // Get products that satisfy conditions
+            $product_ids = $this->get_distinct(STORE_PRODUCT_TABLE, "product_id", $this->latest_products_condition);
+        }
                 
-        // Get products that satisfy conditions
-        $product_ids = $this->get_distinct(STORE_PRODUCT_TABLE, "product_id", $this->latest_products_condition);
+        
 
         return $product_ids;
     }
@@ -698,6 +753,17 @@ class CI_Model {
     {
     	$this->db->distinct();
 
+        $this->db->select($columns);
+
+        if($where != null)
+        {
+            $this->db->where($where, NULL, FALSE);
+        }
+        return $this->db->get($table_name)->result();
+    }
+    
+    public function get_where($table_name, $columns, $where)
+    {
         $this->db->select($columns);
 
         if($where != null)

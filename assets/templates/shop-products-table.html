@@ -34,8 +34,8 @@
   <table md-table ng-model="selected" md-progress="promise">
     <thead md-head md-order="query.order" md-on-reorder="getProducts">
       <tr md-row>
-        <th md-column><span>Magasin</span></th>
-        <th md-column><span>Image</span></th>
+        <th ng-show="showStoreLogo" md-column><span>Magasin</span></th>
+        <th md-column></th>
         <th md-column md-order-by="name">
             <span>Description</span>
         </th>
@@ -48,7 +48,7 @@
     </thead>
     <tbody md-body>
       <tr md-row md-select="product" md-select-id="product.id" ng-repeat="product in products">
-        <td md-cell><div class="admin-image"><a href=""><img alt="" ng-src="{{product.retailer.image}}"></a></div></td>
+        <td  ng-show="showStoreLogo" md-cell><div class="admin-image"><a href=""><img alt="" ng-src="{{product.retailer.image}}"></a></div></td>
         <td md-cell><div class="admin-image"><a href=""><img alt="" ng-src="{{product.product.image}}"></a></div></td>
         <td md-cell>
             <p><b><a  href ng-click="viewProduct(product.id, $event)">{{product.product.name}}</a></b></p>
@@ -67,12 +67,13 @@
             CAD {{(product.price * product.quantity) | number : 2}}
         </td>
         <td md-cell>
-            <a href ng-click="add_product_to_cart(product.product_id)" ng-hide="productInCart(product.product_id)">Ajouter</a> 
+            <a href ng-click="add_product_to_cart(product.product_id, -1, product.quantity)" ng-hide="productInCart(product.product_id)">Ajouter</a> 
             <a href ng-click="remove_product_from_cart(product.product_id)" ng-show="productInCart(product.product_id)">Retirer</a> 
         </td>
       </tr>
     </tbody>
   </table>
 </md-table-container>
-
-<md-table-pagination md-limit="query.limit" md-limit-options="[50, 100, 200]" md-page="query.page" md-total="{{count}}" md-on-paginate="getProducts" md-page-select></md-table-pagination>
+<div class="container">
+    <md-table-pagination md-limit="query.limit" md-limit-options="[50, 100, 200]" md-page="query.page" md-total="{{count}}" md-on-paginate="getProducts" md-page-select></md-table-pagination>
+</div>

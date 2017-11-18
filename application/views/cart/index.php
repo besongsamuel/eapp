@@ -21,7 +21,7 @@
     </div>
     
     <div>
-        <md-content class="eapp-container md-whiteframe-3dp">
+        <div class="eapp-container md-whiteframe-3dp">
             <fieldset>
                 <md-subheader class="md-primary">Configurez votre optimization du panier</md-subheader>
                 <md-radio-group class="col-md-6 col-sm-12" ng-model="viewing_cart_optimization.value" ng-change="optimization_preference_changed()">
@@ -37,12 +37,15 @@
                                 
             </fieldset>
             <md-progress-linear md-mode="indeterminate" ng-show="promise.$$state.status === 0"></md-progress-linear> 
-    	</md-content>
+    	</div>
     </div>
+    
+    <p ng-hide="results_available" class="md-otiprix-text" style="text-align: center; margin-bottom: 50px; margin-top: 20px;"><b>Il n'y a aucun résultat</b></p>
 
     <div id="cart-optimization-container" ng-show="viewing_cart_optimization.value">
+        
         <!-- Cart Optimizations -->
-        <md-content class="container" ng-repeat="departmentStore in departmenStores">
+        <div class="container" ng-repeat="departmentStore in departmenStores">
             
             <md-table-container>
                 <table  md-table cellspacing="0" ng-model="selected"  md-progress="promise">
@@ -123,16 +126,16 @@
                 </tbody>
                 </table>
             </md-table-container>
-        </md-content>
+        </div>
     </div>
 
     <div class="container" ng-cloak ng-hide="viewing_cart_optimization.value">
-        <md-content>
-          
+        
+        <div  ng-show="results_available">
             <md-tabs md-dynamic-height md-border-bottom>
-              
+                
                 <md-tab label="{{store.name}} ({{store.store_products.length}} / {{cart.length}})" ng-repeat="store in stores.slice(0, 5)" md-on-select="storeTabSelected(store)">
-                  <md-content class="md-padding">
+                  <div class="md-padding">
                         <md-subheader class="md-primary"><a href  ng-click="InitMap($event, store.department_store)">{{store.department_store.fullName}}, {{store.department_store.distanceText}} en voiture (environs {{store.department_store.timeText}})</a></md-subheader>
                         <md-subheader>Produits disponibles <span class="badge">{{store.store_products.length}}</md-subheader>
 
@@ -165,10 +168,10 @@
                           </md-list-item>
                         </div>
                       
-                  </md-content>
+                  </div>
               </md-tab>
             </md-tabs>
-        </md-content>
+        </div>
     </div>
     
     <div>

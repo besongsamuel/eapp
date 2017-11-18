@@ -12,6 +12,13 @@ angular.module('eappApp').controller('AccountController', ["$scope", "$http", "$
     
     $scope.message = null;
     
+    $scope.userPhoneVerified = false;
+    
+    $scope.$watch('loggedUserClone', function(oldValue, newVale)
+    {
+        $scope.userPhoneVerified = !angular.isNullOrUndefined($scope.loggedUserClone) && parseInt($scope.loggedUserClone.phone_verified) === 1;
+    });
+    
     $scope.Init = function()
     {
         $scope.load_icons();
@@ -360,40 +367,21 @@ angular.module('eappApp').controller('AccountController', ["$scope", "$http", "$
     $scope.validateCode = function()
     {
         $scope.validateCodeMessage = null;
-
-        $.ajax({
-            type: 'POST',
-            url:   $scope.site_url.concat("/account/validate_code"),
-            data: { code : $scope.verificationCode},
-            success: function(response)
+        
+        var validatePromise = eapp.validateCode($scope.verificationCode);
+        
+        validatePromise.then(function(response)
+        {
+            if(response.data.success)
             {
-                var result = JSON.parse(response);
-                
-                if(result.success)
-                {
-                    
-                    var accountScope = angular.element($("#admin-container")).scope();
-                    accountScope.$apply(function()
-                    {
-                        $scope.loggedUser.phone_verified = 1;
-                        accountScope.enterVerificationNumber = true;
-                        accountScope.validateCodeMessage = result.message;
-                    });
-
-                }
-                else
-                {
-                    var accountScope = angular.element($("#admin-container")).scope();
-                    
-                    accountScope.$apply(function()
-                    {
-                        accountScope.validateCodeMessage = result.message;
-                    });
-                    
-                }
-
-            },
-            async:true
+                $scope.loggedUser.phone_verified = 1;
+                $scope.enterVerificationNumber = true;
+                $scope.validateCodeMessage = response.data.message;
+            }
+            else
+            {
+                $scope.validateCodeMessage = response.data.message;
+            }
         });
         
     };

@@ -3,17 +3,20 @@
 <div id="select-store-box">
     <div>
         
+        <div class="col-sm-12">
+            <p class="md-otiprix-text" style="text-align: center; margin: 5px;"><b>Vos magasins préférés</b></p>
+        </div>
         
-
-        <md-subheader class="md-otiprix-text">Vos magasins préférés</md-subheader>
         <div class="container">
-            <div class="row">
+            <div class="row col-md-12">
                 
-                <div class="form-group-inline" ng-repeat="favoriteStore in favoriteStores">
-                    <div class="col-md-2 col-md-4" style="padding-top:10px; margin-top: 5px; margin-bottom: 10px;">
-                        <label  class="btn item-block">
-                            <img  ng-click="goto_retailer(avoriteStore.id)" id="{{favoriteStore.id}}" ng-src="{{favoriteStore.image}}" alt="{{favoriteStore.name}}" class="store-block img-check">
-                        </label>
+                <div class="col-md-offset-3 col-md-6">
+                    <div class="form-group-inline" ng-repeat="favoriteStore in favoriteStores">
+                        <div class="col-md-3 col-md-6" style="padding-top:10px; margin-top: 5px; margin-bottom: 10px;">
+                            <label  class="btn item-block">
+                                <img  ng-click="goto_retailer(avoriteStore.id)" id="{{favoriteStore.id}}" ng-src="{{favoriteStore.image}}" alt="{{favoriteStore.name}}" class="store-block img-check">
+                            </label>
+                        </div>
                     </div>
                 </div>
                 
@@ -26,7 +29,7 @@
             </div>
 	</md-toolbar>
         
-        <md-content style="" id="retailer-contents">
+        <div style="" id="retailer-contents">
             <div class="form-group-inline" ng-repeat="store in retailers" id="retailer_{{store.id}}">
                 <div class="col-md-2 col-md-4" style="padding-top:10px;">
                     <label  class="btn item-block">
@@ -35,29 +38,25 @@
                     </label>
                 </div>
             </div>
-        </md-content>
+        </div>
 
-        <md-content ng-show="registering_user">
+        <div ng-show="registering_user">
             <div style="margin : auto;">
                 <p style="text-align: center;">Veillex patienter...</p>
             </div>
             <md-progress-linear md-mode="indeterminate"></md-progress-linear> 
-        </md-content>
+        </div>
         
         <div class="alert alert-success" ng-show="listChangedSuccess" style="margin-top: 5px;">
             <strong>Success!</strong> {{listChangedSuccessMessage}}
         </div>
 
-        <div class="form-group">
+        <div class="col-sm-12" style="margin-top: 30px;">
             
             <!-- Button -->  
-            <div class="col-md-offset-0 col-md-3 pull-right" style="padding-top:25px;">
-                <md-button id="btn-signup"  ng-click="saveFavoriteStores()" class="md-otiprix md-raised col-md-12">Sélectionner</md-button>
-            </div>
+            <md-button id="btn-signup"  ng-click="saveFavoriteStores()" class="md-otiprix md-raised pull-right">Sélectionner</md-button>
             
-            <div class="col-md-offset-0 col-md-3 pull-right" style="padding-top:25px;">
-                <md-button id="btn-signup"  ng-click="reset()" class="md-otiprix md-raised col-md-12">Recommencer</md-button>
-            </div>
+            <md-button id="btn-signup"  ng-click="reset()" class="md-otiprix md-raised pull-right">Recommencer</md-button>
             
         </div>
             

@@ -55,7 +55,7 @@
         		<p id="time" style="text-align: center;">35 days</p>
 
 
-                <md-content style="margin : auto; background-color: whitesmoke; min-width : 450px;" class="col-sm-8" layout-padding>
+                <div style="margin : auto; background-color: white; min-width : 450px;" class="col-sm-8" layout-padding>
 	                <form name="loginForm" class="" role="form" ng-submit="login()" novalidate>
 	                    <div id="login-alert" class="alert alert-danger col-sm-12" ng-show="message">
 	                        <p>{{message}}</p>
@@ -87,7 +87,7 @@
 		                    <button id="btn-signup" type="submit" class="pull-right btn btn-primary"><i class=""></i> &nbsp Se connecter</button>
 		                </div>
 	                </form>
-                </md-content>
+                </div>
 
         
     </div>

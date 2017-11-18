@@ -9,7 +9,7 @@
 	</md-toolbar>
         
         <form role="form" novalidate>
-            <md-content style="overflow : scroll; height: 500px;" id="retailer-contents">
+            <div style="overflow : scroll; height: 500px;" id="retailer-contents">
                 <div class="form-group-inline" ng-repeat="store in retailers">
                     <div class="col-md-2 col-md-4" style="padding-top:10px;">
                         <label  class="btn item-block">
@@ -18,13 +18,13 @@
                         </label>
                     </div>
                 </div>
-            </md-content>
-            <md-content ng-show="registering_user">
+            </div>
+            <div ng-show="registering_user">
                 <div style="margin : auto;">
                     <p style="text-align: center;">Veillex patienter...</p>
                 </div>
                 <md-progress-linear md-mode="indeterminate"></md-progress-linear> 
-            </md-content>
+            </div>
             
         </form>
     </div>

@@ -23,7 +23,7 @@
 
 <div id="admin-container" class="admin-container" ng-controller="AdminController">
     
-	<md-content class="container">
+	<div class="container">
 		
 		<md-toolbar style="background-color: #1abc9c; margin-bottom : 10px;">
 			<div>
@@ -128,7 +128,7 @@
         </form>
     </fieldset>
 		
-	</md-content>
+	</div>
 	
 </div>
 

@@ -135,7 +135,7 @@ $(document).ready(function()
             return total;
         };
         
-        rootScope.add_product_to_cart = function(product_id, store_product_id)
+        rootScope.add_product_to_cart = function(product_id, store_product_id = -1, product_quantity = 1)
         {
             if(typeof store_product_id === 'undefined')
             {
@@ -147,7 +147,8 @@ $(document).ready(function()
                 product_id : product_id,
                 longitude : rootScope.longitude,
                 latitude : rootScope.latitude,
-                store_product_id : store_product_id
+                store_product_id : store_product_id,
+                quantity : product_quantity
             };
 
             $.ajax({
@@ -166,9 +167,8 @@ $(document).ready(function()
                             rowid : response_data.rowid,
                             store_product : response_data.store_product,
                             top_five_store_products : [],
-                            quantity : 1
+                            quantity : product_quantity
                         };
-
 
                         rootScope.$apply(function()
                         {

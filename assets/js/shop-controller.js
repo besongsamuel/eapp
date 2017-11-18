@@ -12,6 +12,8 @@ angular.module('eappApp').controller('ShopController', ["$scope", "$q", "$http",
     
     $scope.ready = false;
     
+    $scope.showStoreLogo = false;
+
     angular.element(document).ready(function()
     {
         $scope.Init();
@@ -30,7 +32,7 @@ angular.module('eappApp').controller('ShopController', ["$scope", "$q", "$http",
             window.sessionStorage.removeItem("searchText");
             $rootScope.query.filter = $rootScope.searchText;
         }
-        
+                
         // Get the products for the store
         if($scope.controller === 'shop')
         {
@@ -39,6 +41,7 @@ angular.module('eappApp').controller('ShopController', ["$scope", "$q", "$http",
             {
                 $scope.store_id = parseInt(window.sessionStorage.getItem("store_id"));
                 $scope.store_name = window.sessionStorage.getItem("store_name");
+                $scope.showStoreLogo = true;
             }
 
             // We selected a specific category
@@ -46,6 +49,7 @@ angular.module('eappApp').controller('ShopController', ["$scope", "$q", "$http",
             {
                 $scope.category_id = parseInt(window.sessionStorage.getItem("category_id"));
                 $scope.category_name = window.sessionStorage.getItem("category_name");
+                $scope.showStoreLogo = true;
             }
             
             $rootScope.isSearch = true;

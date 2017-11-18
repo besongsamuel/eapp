@@ -99,6 +99,13 @@ class Cart extends CI_Controller {
         
         $store_product_id = $this->input->post("store_product_id");
         
+        $quantity = $this->input->post("quantity");
+        
+        if(!isset($quantity))
+        {
+            $quantity = 1;
+        }
+        
         $result = array
 	(
             "success" => false,
@@ -127,10 +134,10 @@ class Cart extends CI_Controller {
 	$data = array
         (
             'id'      => $store_product->product_id,
-            'qty'     => 1,
+            'qty'     => $quantity,
             'price'   => $store_product->price,
             'name'    => 'name_'.$store_product->product_id,
-            'options' => array('store_product_id' => $store_product_id)
+            'options' => array('store_product_id' => $store_product_id, "quantity" => $quantity)
 	);	    
         
         $rowid = $this->cart->insert($data);
@@ -141,6 +148,7 @@ class Cart extends CI_Controller {
             $result["success"] = true;
             $result["store_product"] = $store_product;
             $result["product"] = $this->cart_model->get(PRODUCT_TABLE, $product_id);
+            $result["quantity"] = $quantity;
 	}
 		
         echo json_encode($result);

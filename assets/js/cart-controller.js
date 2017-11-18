@@ -39,7 +39,7 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
     * List of optimized cart store product items
     */
     $scope.optimized_cart = [];
-        
+       
     /**
      * This method initializes the cart
      * @returns {undefined}
@@ -54,6 +54,32 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
             $scope.initialized = true;
         }
         
+    };
+    
+    $scope.getFormat = function(storeProduct)
+    {
+        var formatVal = 1;
+        
+        if(storeProduct.format === 'undefined' || storeProduct.format === null)
+        {
+            return 1;
+        }
+        
+        var format = storeProduct.format.toLowerCase().split("x");
+        
+        formatVal = 1;
+        
+        if(format.length === 1)
+        {
+            formatVal = parseFloat(format[0]);
+        }
+        
+        if(format.length === 2)
+        {
+            formatVal = parseFloat(format[0]) * parseFloat(format[1]);
+        }
+        
+        return formatVal;
     };
     
     /**
@@ -175,6 +201,9 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
 					
                     $rootScope.cart.push(cartItem);
                 }
+                
+                $scope.results_available = !angular.isNullOrUndefined($scope.cart) && $scope.cart.length > 0;
+
                 
                 $rootScope.sortCart();
                 
@@ -865,7 +894,7 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
             {
                 continue;
             }
-            $scope.price_optimization += (parseFloat(cart_item.store_product.worst_product.unit_price) - parseFloat(cart_item.store_product.unit_price)) * parseFloat(cart_item.quantity);
+            $scope.price_optimization += (parseFloat(cart_item.store_product.worst_product.compare_price) - parseFloat(cart_item.store_product.compare_price)) * parseFloat(cart_item.quantity);// * parseFloat($scope.getFormat(cart_item.store_product));
         }
     };
     

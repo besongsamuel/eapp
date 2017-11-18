@@ -68,32 +68,38 @@ class Admin_model extends CI_Model
     public function searchProducts($name)
     {
         $result = array();
+        
+        $this->db->group_start();
         $this->db->like('name', $name);
+        $this->db->or_like('tags', $name);
+        $this->db->group_end();
         $query =  $this->db->get(PRODUCT_TABLE);
 	    
         foreach ($query->result() as $value) 
         {
             $result[$value->id] = $this->get_product($value->id, false);
         }
-        
+                
         $begining_products = array();
+        
+        $other_products = array();
         
         foreach ($result as $product)
         {
-            if (0 === strpos(strtolower($product->name), strtolower($name))) 
+            // Check if the product starts with the search parameter
+            if (strpos(strtolower($product->name), strtolower($name)) === 0) 
             {
+                // Add to the begining products
                 array_push($begining_products, $product);
-                
-                $index = array_search($product, $result);
-                
-                if($index)
-                {
-                    array_splice($result, $index, 1);
-                }
+            }
+            else
+            {
+                // Add to the begining products
+                array_push($other_products, $product);
             }
         }
         
-        $resorted_result = array_merge($begining_products, $result);
+        $resorted_result = array_merge($begining_products, $other_products);
         
         return $resorted_result;
         
