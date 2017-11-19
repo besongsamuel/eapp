@@ -4,7 +4,7 @@
 	
 	<body>
 
-	</br></br>
+	</br></br></br>
 		<!-- page builer -->
 		<div class="map-wrapper">
 			<div id="map"></div>
