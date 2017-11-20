@@ -176,48 +176,55 @@ class CI_Model {
         }
     }
     
-    private function get_compare_price($store_product)
+    private function compare_unit_price($store_product)
     {                        
         // Get all units
         $units = $this->get_all(UNITS_TABLE);
         
-        $compare_price = $store_product->price;
+        $format = 1;
+                
+        // get format
+        $pieces = explode("x", $store_product->format);
+
+        if(sizeof($pieces) == 1)
+        {
+            $format = (int)$pieces[0];
+        }
+
+        if(sizeof($pieces) == 2)
+        {
+            $format = (int)$pieces[0] * (int)$pieces[1];
+        }
+        
+        if($format == 0)
+        {
+            $format = 1;
+        }
+        
+        //$compare_unit_price = (float)$store_product->price / (float)$format;
+        
+        // 0 means it can't be used for comparison
+        $compare_unit_price = 0;
+        
+        if(isset($store_product->product->unit) && $store_product->unit_id == $store_product->product->unit->id)
+        {
+            $compare_unit_price = (float)$store_product->price / (float)$format;
+        }
         
         foreach ($units as $unit) 
         {
-            if((isset($store_product->product->unit) && $unit->id == $store_product->unit_id && $unit->compareunit_id == $store_product->product->unit->id)
-                    || ($store_product->unit_id == $unit->id && $store_product->compareunit_id == $unit->compareunit_id))
+            if((isset($store_product->product->unit) && $unit->id == $store_product->unit_id && $unit->compareunit_id == $store_product->product->unit->id))
             {
-                $format = 1;
-                
-                // get format
-                $pieces = explode("x", $store_product->format);
-                
-                if(sizeof($pieces) == 1)
-                {
-                    $format = (int)$pieces[0];
-                }
-                
-                if(sizeof($pieces) == 2)
-                {
-                    $format = (int)$pieces[0] * (int)$pieces[1];
-                }
-                
                 // Convert format quantity
                 $compare_format = $format * $unit->equivalent;
                 
                 // Get the unit price
-                $unit_price = (float)$store_product->price / (float)$format;
-                
-                // Get compare unit_price
-                $compare_price = $unit_price * $compare_format;
-                
-                return $compare_price;
+                $compare_unit_price = (float)$store_product->price / (float)$compare_format;
                 
             }
         }
         
-        return $compare_price;
+        return $compare_unit_price;
     }
 
 
@@ -235,7 +242,7 @@ class CI_Model {
         $brand_columns = "*";
         if($minified)
         {
-            $store_product_columns = "id, product_id, retailer_id, brand_id, unit_id, country, state, organic, format, size, quantity, price, unit_price, period_from, period_to, image";
+            $store_product_columns = "id, product_id, retailer_id, brand_id, unit_id, compareunit_id, country, state, organic, format, size, quantity, price, unit_price, period_from, period_to, image";
             $chain_columns = "id, name, image";
             $units_columns = "id, name";
             $brand_columns = "id, name, image";
@@ -258,7 +265,7 @@ class CI_Model {
             $store_product->retailer = $this->get_retailer($store_product->retailer_id, $chain_columns);
             // Get product unit
             $store_product->unit = $this->get(UNITS_TABLE, $store_product->unit_id, $units_columns);
-            $store_product->compare_price = $this->get_compare_price($store_product);
+            $store_product->compare_unit_price = $this->compare_unit_price($store_product);
             // Get subcategory
             if($store_product->product != null && $includeRelatedProducts)
             {

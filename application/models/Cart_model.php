@@ -27,12 +27,12 @@ function cmp_stores_by_num_items($a, $b)
 
 function cmp_unit_price($a, $b)
 {
-    if($a->unit_price < $b->unit_price)
+    if((float)$a->compare_unit_price < (float)$b->compare_unit_price)
     {
         return -1;
     }
     
-    if($a->unit_price > $b->unit_price)
+    if((float)$a->compare_unit_price > (float)$b->compare_unit_price)
     {
         return 1;
     }
@@ -209,11 +209,17 @@ class Cart_model extends CI_Model
                     }
 					
                     $sp = $this->getStoreProduct($val->id, false, false, false);
-                    $sp->department_store = $this->get(CHAIN_STORE_TABLE, $val->department_store_id);
-                    $sp->department_store->range = $val->range;
-                    $sp->merchant_id = $val->merchant_id;
-                    // Get this when it is selected. 
-                    $close_store_products[$val->id] = $sp;
+                    
+                    // only add if it is comparable
+                    if((float)$sp->compare_unit_price > 0)
+                    {
+                        $sp->department_store = $this->get(CHAIN_STORE_TABLE, $val->department_store_id);
+                        $sp->department_store->range = $val->range;
+                        $sp->merchant_id = $val->merchant_id;
+                        // Get this when it is selected. 
+                        $close_store_products[$val->id] = $sp;
+                    }
+                    
                 }
 				
 		// order by unit price
@@ -232,6 +238,14 @@ class Cart_model extends CI_Model
                     }
                     
                     array_unshift($close_store_products, $user_selected_sp);
+                }
+                
+                if(sizeof($close_store_products) == 0)
+                {
+                    $store_product->department_store = $this->get(CHAIN_STORE_TABLE, $store_product->department_store_id);
+                    $store_product->department_store->range = $store_product->range;
+                    $store_product->merchant_id = $store_product->merchant_id;
+                    array_push($close_store_products, $store_product);
                 }
                 
 		// The best store product (cheapest) will be at the top of the list

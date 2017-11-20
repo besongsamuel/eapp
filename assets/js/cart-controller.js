@@ -261,7 +261,7 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
 
             if(parseFloat(storeProduct.price) === 0)
             {
-                continue;
+                //continue;
             }
 
             if(currentDepartmentStoreID !== parseInt(storeProduct.department_store.id))
@@ -668,6 +668,7 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
         $scope.selectedStoreProduct = cartItem.store_product;
         $scope.different_store_products = cartItem.different_store_products;
         $scope.related_products = cartItem.store_product.related_products;
+        $scope.scrollTop = $(document).scrollTop();
         // Show dialog for user to change the store of the product. 
         $mdDialog.show({
             controller: ChangeStoreController,
@@ -678,9 +679,15 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
             disableParentScroll : true,
             preserveScope:true,
             scope : $scope,
-            fullscreen: false //
+            fullscreen: false,
+            onRemoving : function()
+            {
+                // Restore scroll
+                $(document).scrollTop($scope.scrollTop);
+            }
           })
-          .then(function(answer) {
+          .then(function(answer) 
+            {
                 
           }, function() {
                 
@@ -730,6 +737,7 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
         $scope.selectedStoreProduct = cartItem.store_product;
 	$scope.different_format_products = cartItem.different_format_products;
         $scope.related_products = cartItem.store_product.related_products;
+        $scope.scrollTop = $(document).scrollTop();
         
         $mdDialog.show({
             controller: ChangeFormatController,
@@ -740,7 +748,12 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
             disableParentScroll : true,
             preserveScope:true,
             scope : $scope,
-            fullscreen: false //
+            fullscreen: false,
+            onRemoving : function()
+            {
+                // Restore scroll
+                $(document).scrollTop($scope.scrollTop);
+            }
           })
           .then(function(answer) {
                 
@@ -890,11 +903,15 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
         {
             var cart_item = $scope.cart[key];
 
-            if(typeof cart_item.store_product.worst_product === "undefined" || cart_item.store_product.worst_product === null)
+            if(angular.isNullOrUndefined(cart_item.store_product.worst_product) 
+                    || parseFloat(cart_item.store_product.price) === 0)
             {
                 continue;
             }
-            $scope.price_optimization += (parseFloat(cart_item.store_product.worst_product.compare_price) - parseFloat(cart_item.store_product.compare_price)) * parseFloat(cart_item.quantity);// * parseFloat($scope.getFormat(cart_item.store_product));
+            
+            $scope.price_optimization += 
+                    (parseFloat(cart_item.store_product.worst_product.compare_unit_price) - parseFloat(cart_item.store_product.compare_unit_price)) 
+                    * parseFloat(cart_item.quantity) * parseFloat($scope.getFormat(cart_item.store_product));
         }
     };
     
