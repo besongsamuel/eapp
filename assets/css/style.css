@@ -1243,6 +1243,18 @@ div.cart-collaterals ul.products li.product:hover .add_to_cart_button{background
     height: 120px;
 }
 
+/* Sepia */
+.promo-image img {
+	-webkit-filter: sepia(100%);
+	filter: sepia(100%);
+	-webkit-transition: .3s ease-in-out;
+	transition: .3s ease-in-out;
+}
+.promo-image:hover img {
+	-webkit-filter: sepia(0);
+	filter: sepia(0);
+}
+
 .contact-us
 {
     background-image: url("../img/contact-us-background.jpg");
@@ -1263,3 +1275,8 @@ div.cart-collaterals ul.products li.product:hover .add_to_cart_button{background
 {
     margin : 10px;
 }
+
+
+
+
+
