@@ -48,12 +48,161 @@ function apsUploadFileLink(scope, element, attrs)
     });
 }
 
-angular.module("eappApp").controller('AdminController', ["$scope", "Form", "$http", "notifications", "$q", "$mdDialog", function($scope, Form, $http, notifications, $q, $mdDialog) {
+angular.module("eappApp").controller('AdminController', ["$scope", "Form", "$http", "notifications", "$q", "$mdDialog", "eapp", "$rootScope", function($scope, Form, $http, notifications, $q, $mdDialog, eapp, $rootScope) {
       
     $scope.selectedProduct = null;
     $scope.searchProductText = "";
     $scope.queryProducts = [];
-	
+    $scope.compareUnits = [];
+    
+    $scope.equivalent = 1;
+    $scope.selected_store = 1;
+    
+    $scope.store_product = 
+    {
+        id : -1,
+        organic : 0,
+        in_flyer : 0,
+        retailer_id : 1,
+        country : 'Canada',
+        state : 'Quebec',
+        format : '1x1',
+        quantity : '1',
+        price : 1,
+        unit_id : 1
+    };
+    
+    
+    $scope.Init = function()
+    {
+        $rootScope.menu = "admin_create_product";
+        var spID = angular.getSearchParam("product");
+        
+        $scope.$watch('store_product.period_from', function(newVal, oldVal)
+        {
+            if(!angular.isNullOrUndefined(newVal))
+            {
+                $scope.period_from = new Date($scope.store_product.period_from.toString().replace("-", "/"));
+            }
+            else
+            {
+                $scope.period_from = new Date();
+            }
+            
+        });
+        
+        $scope.$watch('store_product.period_to', function(newVal, oldVal)
+        {
+            if(!angular.isNullOrUndefined(newVal))
+            {
+                $scope.period_to = new Date($scope.store_product.period_to.toString().replace("-", "/"));
+            }
+            else
+            {
+                $scope.period_to = new Date();
+            }
+            
+        });
+        
+        $scope.$watch('equivalent', function()
+        {
+            $scope.updateQuantity();
+        });
+        
+        if(!angular.isNullOrUndefined(spID))
+        {
+            // Get the store product
+            var storeProductPromise = eapp.getStoreProduct(spID);
+            
+            storeProductPromise.then(function(response)
+            {
+                $scope.store_product = response.data;
+                $scope.store_product.price = parseFloat($scope.store_product.price);
+                $scope.store_product.unit_price = parseFloat($scope.store_product.unit_price);
+                $scope.store_product.regular_price = parseFloat($scope.store_product.regular_price);
+                $scope.store_product.organic = parseInt($scope.store_product.organic) === 0 ? false : true;
+                $scope.store_product.in_flyer = parseInt($scope.store_product.in_flyer) === 0 ? false : true;
+                
+                $scope.onProductSelected($scope.store_product.product);
+            });
+        }
+        
+        var brandsPromise = eapp.getBrands();
+        brandsPromise.then(function(response)
+        {
+            var array = $.map(response.data, function(value, index) {
+                return [value];
+            });
+            $scope.brands = array;
+        });
+        
+        var retailersPromise = eapp.getRetailers();
+        retailersPromise.then(function(response)
+        {
+            var array = $.map(response.data, function(value, index) {
+                return [value];
+            });
+            $scope.retailers = array;
+        });
+        
+        
+        $scope.$watch('store_product.compareunit_id', function(newVal)
+        {
+            $scope.updateEquivalent(newVal);
+        });
+        
+        $scope.$watch('store_product.unit_id', function(newVal)
+        {
+            $scope.updateEquivalent(newVal);
+        });
+    };
+    
+    $scope.updateEquivalent = function(newVal)
+    {
+        $scope.equivalent = 0;
+        
+        if(angular.isNullOrUndefined(newVal))
+        {
+            return;
+        }
+
+        if(angular.isNullOrUndefined($scope.unitCompareUnit))
+        {
+            var getUnitCompareUnitPromise = eapp.getUnitCompareUnit();
+        
+            getUnitCompareUnitPromise.then(function(response)
+            {
+                $scope.unitCompareUnit = response.data;
+            });
+            
+            return;
+        }
+        
+        for(var x in $scope.unitCompareUnit)
+        {
+            var unitCompareUnit = $scope.unitCompareUnit[x];
+
+            if(parseInt(unitCompareUnit.unit_id) === parseInt($scope.store_product.unit_id) 
+                    && parseInt(unitCompareUnit.compareunit_id) === parseInt($scope.store_product.compareunit_id))
+            {
+                $scope.equivalent = unitCompareUnit.equivalent;
+
+                return;
+            }
+
+            if(parseInt(unitCompareUnit.unit_id) === parseInt($scope.store_product.compareunit_id) 
+                    && parseInt(unitCompareUnit.compareunit_id) === parseInt($scope.store_product.unit_id))
+            {
+                $scope.equivalent = 1 / unitCompareUnit.equivalent;
+
+                return;
+            }
+
+        }
+        
+        $scope.equivalent = 1;
+    };
+    
     $scope.querySearch = function(searchProductText)
     {
     	var q = $q.defer();
@@ -76,17 +225,6 @@ angular.module("eappApp").controller('AdminController', ["$scope", "Form", "$htt
 	    
     };
     
-    	
-    /**
-     * When true, the user will continue creating other
-     * products after creating te current one. 
-     */ 
-    
-    $scope.store_product = 
-    {
-        id : -1
-    };
-    
     $scope.continue = false;
     
     $scope.product = null;
@@ -95,18 +233,101 @@ angular.module("eappApp").controller('AdminController', ["$scope", "Form", "$htt
     
     $scope.getSaveLabel = function(){ return parseInt($scope.store_product.id) > -1 ? "Edit" : "Create";};
     
-    $scope.product_selected = function(item)
+    $scope.onProductSelected = function(item)
     {
         if(typeof item === 'undefined')
         {
             return;
         }
         
+        $scope.selectedProduct = item;
+        
         var image_url = item.image;
         
         $scope.api.removeAll();
         
         $scope.api.addRemoteFile(image_url, item.image,'image'); 
+        
+        // Manage Unit
+        if(parseInt(item.unit_id) > 0)
+        {
+            $scope.productHasUnit = true;
+            
+            // The product has a compare unit on it. Set the compare unit. 
+            var getCompareUnitsPromise = eapp.getCompareUnits();
+            getCompareUnitsPromise.then(function(response)
+            {
+                var array = $.map(response.data, function(value, index) {
+                    return [value];
+                });
+                
+                $scope.compareUnits = [];
+                
+                for(var x in array)
+                {
+                    if(parseInt(array[x].id) === parseInt(item.unit_id))
+                    {
+                        $scope.compareUnits.push(array[x]);
+                    }
+                }
+                
+                // Set selected
+                $scope.store_product.compareunit_id = parseInt(item.unit_id);
+                
+                // Get the units that are supported by this compare unit
+                var getCompareUnitUnitsPromise = eapp.getCompareUnitUnits(parseInt(item.unit_id));
+                
+                getCompareUnitUnitsPromise.then(function(response)
+                {
+                    $scope.units = $.map(response.data, function(value, index) {
+                        return [value];
+                    });
+                    
+                    if(parseInt($scope.store_product.unit_id) <= 0)
+                    {
+                        // Select the first
+                        for(var x in $scope.units)
+                        {
+                            $scope.store_product.unit_id = $scope.units[x].id;
+                            break;
+                        }
+                    }
+                    else
+                    {
+                        $scope.store_product.unit_id = parseInt($scope.store_product.unit_id);
+                    }
+                    
+                });
+            });
+        }
+        else
+        {
+            $scope.productHasUnit = false;
+            // The selected product has no compare unit on it. 
+            // Load all compare units. 
+            var getCompareUnitsPromise = eapp.getCompareUnits();
+            
+            getCompareUnitsPromise.then(function(response)
+            {
+                // Load compare units
+                $scope.compareUnits = $.map(response.data, function(value, index) {
+                    return [value];
+                });
+                
+                if(parseInt($scope.store_product.compareunit_id) <= 0)
+                {
+                    // Select the first compare unit
+                    for(var x in $scope.compareUnits)
+                    {
+                        $scope.store_product.compareunit_id = $scope.compareUnits[x].id;
+                        break;
+                    }
+                }
+                
+                $scope.updateUnits($scope.store_product.compareunit_id);
+                
+            });
+        }
 
     };
     
@@ -117,14 +338,9 @@ angular.module("eappApp").controller('AdminController', ["$scope", "Form", "$htt
             return;
         }
         
-        if(brand.image !== null && brand.image !== '' && typeof brand.image !== 'undefined' && brand.image !== 'no_image_available.png')
-        {
-            var image_url = $scope.base_url.concat("/assets/img/products/") + brand.image;
-        
-            $scope.api.removeAll();
+        $scope.api.removeAll();
 
-            $scope.api.addRemoteFile(image_url, brand.image,'image'); 
-        }
+        $scope.api.addRemoteFile(brand.image, brand.image,'image');
     };
     
     $scope.createNewBrand = function(ev)
@@ -182,16 +398,10 @@ angular.module("eappApp").controller('AdminController', ["$scope", "Form", "$htt
                         notifications.showSuccess(result.data.message);
                         $mdDialog.cancel();
                     }
-                    else
-                    {
-                    }		
-                },
-                function(err)
-                {
                 });
             }
                 
-            };
+        };
     };
     
     function CreateProductController($scope, $mdDialog, $http) 
@@ -231,13 +441,7 @@ angular.module("eappApp").controller('AdminController', ["$scope", "Form", "$htt
                         $scope.products[$scope.selectedProduct.id] = result.data.newProduct;
                         notifications.showSuccess(result.data.message);
                         $mdDialog.cancel();
-                    }
-                    else
-                    {
                     }		
-                },
-                function(err)
-                {
                 });
             }
                 
@@ -255,25 +459,14 @@ angular.module("eappApp").controller('AdminController', ["$scope", "Form", "$htt
             preserveScope:true,
             scope : $scope,
             fullscreen: false //
-          })
-          .then(function(answer) {
-                
-          }, function() {
-                
           });
-        
     };
     
     $scope.post_create_product = function()
     {
     	var redirect_url = null;
-        
-        if($scope.continue)
-        {
-            redirect_url = $scope.site_url.concat("/admin/create_store_product");
-            redirect_url = redirect_url.concat("#admin-container");
-        }
-        else
+
+        if(!$scope.continue)
         {
             redirect_url =  $scope.site_url.concat("/admin/store_products");
         }
@@ -286,6 +479,7 @@ angular.module("eappApp").controller('AdminController', ["$scope", "Form", "$htt
         formData.append("product[in_flyer]", $scope.store_product.in_flyer ? 1 : 0);
         formData.append("product[country]", $scope.store_product.country);
         formData.append("product[state]", $scope.store_product.state);
+        formData.append("product[id]", $scope.store_product.id);
         if($scope.selectedProduct !== null && typeof $scope.selectedProduct !== 'undefined')
         {
 	    formData.append("product[product_id]", $scope.selectedProduct.id);
@@ -302,8 +496,8 @@ angular.module("eappApp").controller('AdminController', ["$scope", "Form", "$htt
 	if($scope.continue)
         {
             sessionStorage.setItem("retailer_id", $scope.store_product.retailer_id);
-            sessionStorage.setItem("period_from", convert_to_string_date($scope.store_product.period_from));
-            sessionStorage.setItem("period_to", convert_to_string_date($scope.store_product.period_to));
+            sessionStorage.setItem("period_from", convert_to_string_date($scope.period_from));
+            sessionStorage.setItem("period_to", convert_to_string_date($scope.period_to));
 		
 	    $scope.selectedProduct = null;
             $scope.store_product.brand = null;
@@ -320,7 +514,12 @@ angular.module("eappApp").controller('AdminController', ["$scope", "Form", "$htt
 		period_from : $scope.store_product.period_from,
 		period_to : $scope.store_product.period_to
 	    };
+            
 	    $scope.store_product = tmp;
+            
+            $scope.create_store_product_form.$setPristine();
+            $scope.create_store_product_form.$setValidity();
+            $scope.create_store_product_form.$setUntouched();
 	    
         }
 	    
@@ -342,7 +541,7 @@ angular.module("eappApp").controller('AdminController', ["$scope", "Form", "$htt
             if($scope.selectedProduct !== null)
             {
                 formData.append("product_id", $scope.selectedProduct.id);
-				$http.post($scope.site_url.concat("/admin/upload_product_image"), formData, {transformRequest: angular.identity,
+                $http.post($scope.site_url.concat("/admin/upload_product_image"), formData, {transformRequest: angular.identity,
                 headers: {'Content-Type': undefined}}).then(
                 function(result)
                 {
@@ -354,7 +553,6 @@ angular.module("eappApp").controller('AdminController', ["$scope", "Form", "$htt
                     else
                     {
                         $scope.post_create_product();
-                        //notifications.showError(result.data.message);
                     }		
                 },
                 function(err)
@@ -368,9 +566,13 @@ angular.module("eappApp").controller('AdminController', ["$scope", "Form", "$htt
     
     $scope.updateQuantity = function()
     {
+        var formatValue;
+        
+        var quantity = 1;
+        
         if($scope.store_product.format === 'undefined' || $scope.store_product.format === null)
         {
-            return 1;
+            return quantity;
         }
         
         var format = $scope.store_product.format.toLowerCase().split("x");
@@ -379,55 +581,49 @@ angular.module("eappApp").controller('AdminController', ["$scope", "Form", "$htt
         
         if(format.length === 1)
         {
-            $scope.store_product.quantity = parseFloat(format[0]);
+            formatValue = parseFloat(format[0]);
         }
         
         if(format.length === 2)
         {
-            $scope.store_product.quantity = parseFloat(format[0]) * parseFloat(format[1]);
+            formatValue = parseFloat(format[0]) * parseFloat(format[1]);
         }
         
         if(parseInt($scope.store_product.unit_id) > 0 && parseInt($scope.store_product.compareunit_id) > 0)
         {
-            $scope.store_product.quantity = $scope.store_product.quantity * $scope.getEquivalent(parseInt($scope.store_product.unit_id), parseInt($scope.store_product.compareunit_id));
-            return $scope.store_product.quantity;
+            $scope.store_product.quantity = formatValue * $scope.equivalent;
         }
-    };
-    
-    $scope.updateUnitPrice = function()
-    {
-        $scope.store_product.unit_price =  $scope.store_product.price / $scope.updateQuantity();
-    };
-    
-    $scope.updateCompageUnit = function(unit_id)
-    {
-        var unit = $scope.units[unit_id];
         
-        if(unit !== null)
-        {
-            $scope.store_product.compareunit_id = $scope.compareunits[unit.compareunit_id].id;
-        }
+        $scope.store_product.unit_price = $scope.store_product.price / $scope.store_product.quantity;
+        
     };
     
-    $scope.getEquivalent = function(unit_id, compareunit_id)
+    $scope.updateUnits = function(compareUnitID)
     {
-        for(var key in $scope.units)
+        var comareUnitsPromise = eapp.getCompareUnitUnits(compareUnitID);
+        
+        comareUnitsPromise.then(function(response)
         {
-            var unit = $scope.units[key];
+            $scope.units = $.map(response.data, function(value, index) {
+                return [value];
+            });
             
-            if(parseInt(unit.id) === parseInt(unit_id))
+            if($scope.store_product.unit_id <= 0)
             {
-                if(parseInt(unit.compareunit_id) === parseInt(compareunit_id))
+                for(var x in $scope.units)
                 {
-                    return parseFloat(unit.equivalent);
+                    $scope.store_product.unit_id = $scope.units[x].id;
+                    break;
                 }
             }
-        }
-        
-        return 1;
+            else
+            {
+                var value = $scope.store_product.unit_id;
+                $scope.store_product.unit_id = 0;
+                $scope.store_product.unit_id = value;
+            }
+        });
     };
-    
-    $scope.selected_store = 1;
     
     $scope.create_store = function()
     {
@@ -437,52 +633,13 @@ angular.module("eappApp").controller('AdminController', ["$scope", "Form", "$htt
         Form.postForm(formData, url, null);
     };
     
-    $scope.upload_products = function()
-    {
-        var url = $scope.site_url.concat("/admin/upload_products");
-        var form = document.getElementById("upload_products_form");
-        var formData = new FormData(form);
-        Form.postForm(formData, url, null);
-    };
     
-    $scope.upload_chains = function()
+    $scope.upload = function(name, $event)
     {
-        var url = $scope.site_url.concat("/admin/upload_chains");
-        var form = document.getElementById("upload_chains_form");
+        var url = $scope.site_url.concat("/admin/upload_" + name);
+        var form = document.getElementById("upload_" + name + "_form");
         var formData = new FormData(form);
-        Form.postForm(formData, url, null);
-    };
-    
-    $scope.upload_stores = function()
-    {
-        var url = $scope.site_url.concat("/admin/upload_stores");
-        var form = document.getElementById("upload_stores_form");
-        var formData = new FormData(form);
-        Form.postForm(formData, url, null);
-    };
-    
-    $scope.upload_categories = function()
-    {
-        var url = $scope.site_url.concat("/admin/upload_categories");
-        var form = document.getElementById("upload_categories_form");
-        var formData = new FormData(form);
-        Form.postForm(formData, url, null);  
-    };
-    
-    $scope.upload_subcategories = function()
-    {
-        var url = $scope.site_url.concat("/admin/upload_subcategories");
-        var form = document.getElementById("upload_categories_form");
-        var formData = new FormData(form);
-        Form.postForm(formData, url, null);  
-    };
-    
-    $scope.upload_units = function()
-    {
-        var url = $scope.site_url.concat("/admin/upload_units");
-        var form = document.getElementById("upload_units_form");
-        var formData = new FormData(form);
-        Form.postForm(formData, url, null);  
+        Form.postForm(formData, url, null, $event);
     };
         
     $scope.getBrandMatches  = function(query)
@@ -512,13 +669,16 @@ angular.module("eappApp").controller('AdminController', ["$scope", "Form", "$htt
 
     };
    
+    $scope.Init();
     
 }]);
 
 
-angular.module("eappApp").controller('ProductsTableController', ['$scope', '$q', '$http', function($scope, $q, $http) 
+angular.module("eappApp").controller('ProductsTableController', ['$scope', '$q', '$http', '$rootScope', function($scope, $q, $http, $rootScope) 
 {
     $scope.selected = [];
+    
+    $rootScope.menu = "admin_view_products";
   
     $scope.filter = 
     {
@@ -546,10 +706,10 @@ angular.module("eappApp").controller('ProductsTableController', ['$scope', '$q',
                         transformRequest: angular.identity,
                         headers: {'Content-Type': undefined}});
 
-        $scope.promise.then(function(payload)
+        $scope.promise.then(function()
         {
-                // Refresh list
-                $scope.getProducts();
+            // Refresh list
+            $scope.getProducts();
         });
     };
     
@@ -566,7 +726,7 @@ angular.module("eappApp").controller('ProductsTableController', ['$scope', '$q',
         if($scope.prev_order != $scope.query.order)
         {
             $scope.query.page = 1;
-            $scope.prev_order = $scope.query.order
+            $scope.prev_order = $scope.query.order;
         }
         
         var formData = new FormData();
@@ -620,5 +780,6 @@ angular.module("eappApp").controller('ProductsTableController', ['$scope', '$q',
 
         $scope.getProducts();
     });
+    
   
 }]);

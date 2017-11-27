@@ -21,7 +21,7 @@
                         <li class="active">{{storeProduct.product.subcategory.name}}</li>
                     </ul>
                     <p>Prix : <b> $ CAD {{storeProduct.price}} </b></p>
-                    <p ng-show="storeProduct.format">Format : {{storeProduct.format}} <span ng-show="storeProduct.unit"> {{storeProduct.unit.name}}</span></p>
+                    <p ng-show="storeProduct.format">{{storeProduct.format}} <span ng-show="storeProduct.unit"> {{storeProduct.unit.name}}</span></p>
                     <p ng-show="storeProduct.size">{{storeProduct.size}}</p>
                     <p ng-show="storeProduct.brand">{{storeProduct.brand.name}}</p>
                     <p ng-show="storeProduct.state">{{storeProduct.state}}</p>
@@ -41,8 +41,6 @@
                 
             </div>
             
-            
-            
             <!-- Related Products Image Area -->
             <div class="col-sm-12 col-md-12 container" ng-show="RelatedProductsAvailable">
                 <md-list flex>
@@ -50,12 +48,12 @@
                     <md-list-item class="md-3-line" ng-repeat="sp in storeProduct.similar_products" ng-click="selectProduct(sp)">
                       <img ng-src="{{sp.retailer.image}}" class="md-avatar" alt="{{sp.retailer.name}}" />
                       <div class="md-list-item-text" layout="column">
-                        <p>Prix : <b> $ CAD {{sp.price}} <span ng-show="sp.unit"> / {{sp.unit.name}}</span></b></p>
+                        <p>Prix : <b> $ CAD {{sp.price}} </b></p>
                         <p>Marchand : <b><a href>{{sp.retailer.name}}</a></b></p>
-                        <p ng-show="sp.format">Format : {{storeProduct.format}}</p>
+                        <p ng-show="sp.format">{{sp.format}} <span ng-show="sp.unit">{{sp.unit.name}}</span></p>
                         <p ng-show="sp.size">{{sp.size}}</p>
-                        <p ng-show="sp.brand">Marque : {{sp.brand.name}}</p>
-                        <p ng-show="sp.state">Origine : {{sp.state}}</p>
+                        <p ng-show="sp.brand">{{sp.brand.name}}</p>
+                        <p ng-show="sp.state">{{sp.state}}</p>
                         <p>Valide du <b>{{sp.period_from}}</b> au <b>{{sp.period_to}}</b></p>
                         
                         <div class="col-sm-12">

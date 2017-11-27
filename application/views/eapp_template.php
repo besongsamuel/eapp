@@ -2,6 +2,8 @@
 <html lang="en" ng-app="eappApp">
   <head>
     <base href="/" />
+    <link rel="icon" type="image/png" href="<?php echo base_url("assets/img/")?>favicon-32x32.png" sizes="32x32" />
+    <link rel="icon" type="image/png" href="<?php echo base_url("assets/img/")?>favicon-16x16.png" sizes="16x16" />
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -155,8 +157,9 @@
 
                 rootScope.hideSearchArea = 
                         (rootScope.controller == "account" && (rootScope.method == "login" || rootScope.method == "register")) 
-                        || (rootScope.method == "contact" && rootScope.controller == "home");
-
+                        || (rootScope.method == "contact" || (rootScope.method == "about" && rootScope.controller == "home"));
+						
+			
                 rootScope.isUserLogged = rootScope.loggedUser !== null;
 
 
@@ -245,6 +248,7 @@
                                 </ul>
                             </li>
                             <li><a  href="<?php echo site_url("home/contact"); ?>">Contact</a></li>
+							<li><a  href="<?php echo site_url("home/about"); ?>">À propos</a></li>
                         </ul>
                         <ul class="nav navbar-nav pull-right"  ng-controller="AccountController">
                             <li ng-hide="isUserLogged"><a href="<?php echo site_url("account/login"); ?>"><i class="fa fa-user"></i>s'identifier</a></li>

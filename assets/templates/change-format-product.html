@@ -4,7 +4,7 @@
     
     <md-dialog-content class="md-dialog-content">
 
-        <md-list-item class="md-3-line" ng-repeat="store_product in selectedStoreProduct.different_format_products" ng-click="change(store_product)">
+        <md-list-item class="md-3-line" ng-repeat="store_product in different_format_products" ng-click="change(store_product)">
             <img ng-src="{{store_product.retailer.image}}" class="md-avatar" alt="{{store_product.retailer.name}}" />
             <div class="md-list-item-text" layout="column">
                 <h3><a href>{{ store_product.retailer.name }}</a></h3>
