@@ -5,26 +5,7 @@
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <link rel="stylesheet" href="<?php echo base_url("assets/css/shop.css")?>">
 
-<script>
-    $(document).ready(function()
-    {
-        var scope = angular.element($("#admin-container")).scope();
-        
-        var rootScope = angular.element($("html")).scope();
-        
-        scope.$apply(function()
-        {
-            rootScope.menu = "admin_view_products";
-            scope.base_url = "<?php echo $base_url; ?>";
-            scope.site_url = "<?php echo $site_url; ?>";
-            scope.controller = "<?php echo $controller; ?>";
-            scope.method = "<?php echo $method; ?>";
-        });
-    });
-</script>
-
-
-<div id="admin-container" class="admin-container" ng-controller="ProductsTableController">
+<div id="admin-container" class="admin-container" ng-controller="ProductsTableController" ng-cloak>
     
     <md-table-container class="container">
         <md-toolbar style="background-color: #1abc9c; margin-bottom : 10px;">
@@ -62,51 +43,42 @@
         </md-button>
       </div>
     </md-toolbar>
-        <table  md-table md-row-select multiple cellspacing="0" ng-model="selected"  md-progress="promise">
+        <table  md-table cellspacing="0" ng-model="selected"  md-progress="promise">
             <thead md-head md-order="query.order" md-on-reorder="getProducts">
                 <tr md-row>
                     <th md-column>&nbsp;</th>
-                    <th md-column>Store Logo</th>
-                    <th md-column>Image</th>
-                    <th md-column>Product</th>
-                    <th md-column md-numeric>Price</th>
-                    <th md-column md-numeric>Quantity</th>
-                    <th md-column md-numeric>Unit Price</th>
+                    <th md-column></th>
+                    <th md-column></th>
+                    <th md-column>Description</th>
+                    <th md-column>Price</th>
                     <th md-column md-order-by="period_from">Validity Period</th>
                     <th md-column>Actions</th>
                 </tr>
             </thead>
             <tbody>
-                <tr  md-row md-select="store_product"  md-select-id="name" md-auto-select class="cart_item" ng-repeat="store_product in query_products">
+                
+                <tr  md-row md-select="store_product"  md-select-id="name" class="cart_item" ng-repeat="store_product in query_products">
                     <td md-cell>
                         <a title="Remove this item" class="remove" href ng-click="delete_store_product(store_product.id)">×</a> 
                     </td>
 
                     <td md-cell>
-                        <div class="admin-image"><a href=""><img alt="" ng-src="}" ></a></div>
+                        <div class="admin-image"><a href=""><img alt="" ng-src="{{store_product.retailer.image}}" ></a></div>
                     </td>
 
                     <td md-cell>
                         <div class="admin-image"><a href=""><img alt="" ng-src="{{store_product.product.image}}" ></a></div>
                     </td>
 
-                    <td md-cell width="100%">
-                        <p><b><a href="single-product.html">{{products[store_product.product_id].name}}</a></b></p>
-                        <p>Format : {{store_product.format}}</p>
-						<p>Size : {{store_product.size}}</p>
-                        <p>Unit : {{units[store_product.unit_id].name}}</p>
+                    <td md-cell width="30%">
+                        <p><b><a ng-href="<?php echo site_url("admin/create_store_product?product"); ?>={{store_product.id}}">{{products[store_product.product_id].name}}</a></b></p>
+                        <p>Size : {{store_product.size}}</p>
+                        <p>{{store_product.format}} {{store_product.unit.name}}</p>
                     </td>
 
-                    <td md-cell>
-                        <span class="amount">CAD {{store_product.price}}</span> 
-                    </td>
-
-                    <td md-cell>
-                        {{store_product.quantity}}
-                    </td>
-
-                    <td md-cell>
-                        <span class="amount">CAD {{store_product.unit_price}}</span> 
+                    <td md-cell width="30%">
+                        <p><span class="amount">CAD {{store_product.price}}</span></p> 
+                        <p>Unit Price : <span class="amount">CAD {{store_product.unit_price}}</span></p>
                     </td>
 
                     <td md-cell>
@@ -114,7 +86,7 @@
                     </td>
 
                     <td md-cell>
-                        <a ng-href="<?php echo site_url("admin/create_store_product"); ?>/{{store_product.id}}">Edit</a> 
+                        <a ng-href="<?php echo site_url("admin/create_store_product?product"); ?>={{store_product.id}}">Edit</a> 
                     </td>
                 </tr>
             </tbody>
@@ -122,23 +94,3 @@
         <md-table-pagination md-limit="query.limit" md-limit-options="[10, 25, 50]" md-page="query.page" md-total="{{count}}" md-on-paginate="getProducts" md-page-select></md-table-pagination>
     </md-table-container>                        
 </div>
-
-<script>
-$(document).ready(function()
-{
-    var scope = angular.element($("#admin-container")).scope();
-    
-    scope.$apply(function()
-    {
-        scope.store_products = JSON.parse('<?php echo $store_products; ?>');
-        scope.products = JSON.parse('<?php echo $products; ?>');
-        scope.retailers = JSON.parse('<?php echo $retailers; ?>');
-        scope.units = JSON.parse('<?php echo $units; ?>');
-        
-        scope.store_products_count = Object.keys(scope.store_products).length;
-        
-        scope.getProducts();
-        
-    });
-});
-</script>

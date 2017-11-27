@@ -189,38 +189,22 @@ class Admin extends CI_Controller
         }
         else
         {
-            $this->data['products'] = addslashes(json_encode($this->admin_model->get_products()));
-            $this->data['retailers'] = addslashes(json_encode($this->admin_model->get_all(CHAIN_TABLE)));
-            $this->data['compareunits'] = addslashes(json_encode($this->admin_model->get_all(COMPAREUNITS_TABLE)));
-            $this->data['units'] = addslashes(json_encode($this->admin_model->get_all(UNITS_TABLE)));
-            $this->data['brands'] = addslashes(json_encode($this->admin_model->get_all(PRODUCT_BRAND_TABLE)));
-            $this->data['subcategories'] = addslashes(json_encode($this->admin_model->get_all(SUB_CATEGORY_TABLE)));
-		
             // Define default store product
             $this->data['store_product'] = array
             (
-                    'id' => -1,
-                    'organic' => 0,
-                    'in_flyer' => 0,
-		    'retailer_id' => 1,
-                    'country' => 'Canada',
-                    'state' => 'Quebec',
-                    'format' => '1x1',
-                    'quantity' => '1',
-                    'period_from' => date("Y-m-d"),
-                    'period_to' => date("Y-m-d")
+                'id' => -1,
+                'organic' => 0,
+                'in_flyer' => 0,
+                'retailer_id' => 1,
+                'country' => 'Canada',
+                'state' => 'Quebec',
+                'format' => '1x1',
+                'quantity' => '1',
+                'period_from' => date("Y-m-d"),
+                'period_to' => date("Y-m-d")
             );
 		
             $this->data['id'] = $id;
-            
-            if(isset($id) && $id > -1)
-            {
-                $this->data['store_product'] = json_encode($this->admin_model->get(STORE_PRODUCT_TABLE, $id));
-            }
-            else
-            {
-                $this->data['store_product'] = json_encode($this->data['store_product']);
-            }
             
             $this->rememberme->recordOrigPage();
             $this->data['body'] = $this->load->view('admin/create_store_product', $this->data, TRUE);
@@ -235,15 +219,10 @@ class Admin extends CI_Controller
     }
     
     public function store_products() 
-    {
-        $this->data['store_products'] = addslashes(json_encode($this->admin_model->get_all(STORE_PRODUCT_TABLE)));
-        $this->data['products'] = addslashes(json_encode($this->admin_model->get_all(PRODUCT_TABLE)));
-        $this->data['retailers'] = addslashes(json_encode($this->admin_model->get_all(CHAIN_TABLE)));
-        $this->data['units'] = addslashes(json_encode($this->admin_model->get_all(UNITS_TABLE)));
-        
+    {        
         $this->rememberme->recordOrigPage();
         $this->data['body'] = $this->load->view('admin/store_products', $this->data, TRUE);
-            $this->parser->parse('eapp_template', $this->data);
+        $this->parser->parse('eapp_template', $this->data);
     }
     
     public function get_store_products()
@@ -260,121 +239,45 @@ class Admin extends CI_Controller
         
         echo json_encode($products);
     }
+    
     public function upload_chains() 
     {
-        
-        if($this->user->subscription != 2)
-        {
-            return;
-        }
-        
-        if ($this->input->method(TRUE) === 'POST') 
-        {
-            $this->upload_csv_database('chains', CHAIN_TABLE, null);
-            
-            $response = array();
-            $response['success'] = true;
-            $response['message'] = "Retailer were uploaded successfully. ";
-            echo json_encode($response);
-        }
+        $this->upload_to_database("chains", CHAIN_TABLE);
     }
     
     public function upload_stores() 
     {
-        
-        if($this->user->subscription != 2)
-        {
-            return;
-        }
-        
-        if ($this->input->method(TRUE) === 'POST') 
-        {
-            $this->upload_csv_database('stores', CHAIN_STORE_TABLE, null);
-            
-            $response = array();
-            $response['success'] = true;
-            $response['message'] = "Retailer stores were uploaded successfully. ";
-            echo json_encode($response);
-        }
+        $this->upload_to_database("stores", CHAIN_STORE_TABLE);
     }
     
     public function upload_units() 
     {
-        
-        if($this->user->subscription != 2)
-        {
-            return;
-        }
-        
-        if ($this->input->method(TRUE) === 'POST') 
-        {
-            $this->upload_csv_database('units', UNITS_TABLE, null);
-            
-            $response = array();
-            $response['success'] = true;
-            $response['message'] = "Units were uploaded successfully. ";
-            echo json_encode($response);
-        }
+        $this->upload_to_database("units", UNITS_TABLE);
     }
     
-    /**
-     * This method uploads products to a given store
-     */
+    public function upload_unit_compareunit() 
+    {
+        $this->upload_to_database("unit_compareunit", UNIT_CONVERSION);
+    }
+    
+    public function upload_product_unit_compareunit() 
+    {
+        $this->upload_to_database("product_unit_compareunit", PRODUCT_UNIT_CONVERSION);
+    }
+    
     public function upload_products() 
     {
-        
-        if($this->user->subscription != 2)
-        {
-            return;
-        }
-        
-        if ($this->input->method(TRUE) === 'POST') 
-        {
-            $this->upload_csv_database('products', PRODUCT_TABLE, null);
-            
-            $response = array();
-            $response['success'] = true;
-            $response['message'] = "Products were uploaded successfully. ";
-            echo json_encode($response);
-        }
+        $this->upload_to_database("products", PRODUCT_TABLE);
     }
     
     public function upload_categories() 
     {
-        
-        if($this->user->subscription != 2)
-        {
-            return;
-        }
-        
-        if ($this->input->method(TRUE) === 'POST') 
-        {
-            $this->upload_csv_database('categories', CATEGORY_TABLE, null);
-            
-            $response = array();
-            $response['success'] = true;
-            $response['message'] = "Categories were uploaded successfully. ";
-            echo json_encode($response);
-        }
+        $this->upload_to_database("categories", CATEGORY_TABLE);
     }
     
     public function upload_subcategories() 
     {
-        
-        if($this->user->subscription != 2)
-        {
-            return;
-        }
-        
-        if ($this->input->method(TRUE) === 'POST') 
-        {
-            $this->upload_csv_database('subcategories', SUB_CATEGORY_TABLE, null);
-            
-            $response = array();
-            $response['success'] = true;
-            $response['message'] = "Sub Categories were uploaded successfully. ";
-            echo json_encode($response);
-        }
+        $this->upload_to_database("subcategories", SUB_CATEGORY_TABLE);
     }
     
     /**
@@ -385,56 +288,116 @@ class Admin extends CI_Controller
      */
     private function upload_csv_database($fileName, $databaseTableName, $data)
     {
+        $result = array();
+        
+        $result["errors"] = array();
+        
+        $result["bad_data"] = array();
+        
         if($this->user->subscription != 2)
         {
             return;
         }
         
         // Initialize the Upload Library
-            $config['upload_path'] = ASSETS_DIR_PATH."files/";
-            $config['file_name'] = $fileName.'-'.date("Y-m-d").'.csv';
-            $config['overwrite'] = true;
-            $config['allowed_types'] = '*';
-            $this->upload->initialize($config);
-            // Upload the store logo
-            $upload_success = $this->upload->do_upload($fileName);
+        $config['upload_path'] = ASSETS_DIR_PATH."files/";
+        $config['file_name'] = $fileName.'-'.date("Y-m-d").'.csv';
+        $config['overwrite'] = true;
+        $config['allowed_types'] = '*';
+        $this->upload->initialize($config);
+        // Upload the store logo
+        $upload_success = $this->upload->do_upload($fileName);
             
-            if($upload_success)
+        if($upload_success)
+        {
+            // Create csv_array from file uploaded
+            $file_path = ASSETS_DIR_PATH."files/".$fileName."-".date("Y-m-d").".csv";
+            
+            // Map the csv file date to an array
+            $csv_array = array_map('str_getcsv', file($file_path));
+            
+            // Get the header from the csv_array. 
+            $header = array_shift($csv_array);
+            
+            if(sizeof($header) > 20)
             {
-                // Create csv_array from file uploaded
-                $file_path = ASSETS_DIR_PATH."files/".$fileName."-".date("Y-m-d").".csv";
-                $csv_array = array_map('str_getcsv', file($file_path));
-                $header = array_shift($csv_array);
-                
-                // Get Column Names
-                $columns = array();
-                foreach ($header as $key => $value) 
+                // Something went wrong. 
+                array_push($result["errors"], "The file supplied seems to be invalid. ");
+                return $result;
+            }
+
+            // Get Column Names
+            $columns = array();
+            
+            foreach ($header as $key => $value) 
+            {
+                $columns[$key] = utf8_encode($value);
+            }
+            array_walk($csv_array, array($this, 'combine_array'), $columns);
+
+            foreach ($csv_array as  $value) 
+            {
+                // If a data value is available, append it contents to the value
+                if($data != null)
                 {
-                    $columns[$key] = utf8_encode($value);
+                    $query_data = array();
+                    array_push($value, $query_data);
                 }
-                array_walk($csv_array, array($this, 'combine_array'), $columns);
-                
-                foreach ($csv_array as  $value) 
+
+                // UTF-8 enconde the data 
+                $utf8data = array();
+                foreach ($value as $key => $entry) 
                 {
-                    // If a data value is available, append it contents to the value
-                    if($data != null)
-                    {
-                        $query_data = array();
-                        array_push($value, $query_data);
-                    }
-                    
-                    // UTF-8 enconde the data 
-                    $utf8data = array();
-                    foreach ($value as $key => $entry) 
-                    {
-                        $utf8data[$key] = utf8_encode($entry);
-                    }
-                    
-                    //create data
-                    $this->admin_model->create($databaseTableName, $utf8data);
+                    $utf8data[$key] = utf8_encode($entry);
+                }
+
+                //create data
+                if($this->admin_model->create($databaseTableName, $utf8data) === FALSE)
+                {
+                    array_push($result["bad_data"], "An error while occured adding data: ".explode(",", $utf8data).' \n');
                 }
             }
+        }
+        else
+        {
+            // add upload errors to the list of errors. 
+            array_push($result["errors"], $this->upload->display_errors());
+        }
+        
+        return $result;
     }
+    
+    private function upload_to_database($file_name, $database_table_name)
+    {
+        if($this->user->subscription != 2)
+        {
+            return;
+        }
+        
+        if ($this->input->method(TRUE) === 'POST') 
+        {
+            $response = $this->upload_csv_database($file_name, $database_table_name, null);
+            
+            if(sizeof($response["errors"]) > 0)
+            {
+                $response['success'] = false;
+                $response['message'] = "An error occured while trying to upload data. ";
+            }
+            else
+            {
+                $response['success'] = true;
+                $response['message'] =  ucwords($file_name)." were uploaded successfully. ";
+            }
+            
+            if(sizeof($response["bad_data"]) > 0)
+            {
+                $response['message'] .= "Some data was not uploaded. ";
+            }
+            
+            echo json_encode($response);
+        }
+    }
+    
     public function uploads() 
     {
         if($this->user->subscription < 2)

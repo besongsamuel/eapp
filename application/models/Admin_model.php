@@ -49,6 +49,23 @@ class Admin_model extends CI_Model
         }
     }
     
+    public function get_unit_compareunits($data) 
+    {
+        $this->db->select(COMPAREUNITS_TABLE.".*");
+        $this->db->join(UNIT_CONVERSION, UNIT_CONVERSION.'.compareunit_id = '.COMPAREUNITS_TABLE.'.id');
+        $this->db->where($data);
+        return $this->db->get(COMPAREUNITS_TABLE)->result_array();
+    }
+    
+    public function get_compareunit_units($data) 
+    {
+        $this->db->select(UNITS_TABLE.".*");
+        $this->db->join(UNIT_CONVERSION, UNIT_CONVERSION.'.unit_id = '.UNITS_TABLE.'.id', 'inner');
+        $this->db->where($data);
+                
+        return $this->db->get(UNITS_TABLE)->result_array();
+    }
+    
     public function get_like($table_name, $column_name, $check_value)
     {
         $this->db->select("id");
