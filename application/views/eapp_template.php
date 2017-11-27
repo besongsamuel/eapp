@@ -157,7 +157,7 @@
 
                 rootScope.hideSearchArea = 
                         (rootScope.controller == "account" && (rootScope.method == "login" || rootScope.method == "register")) 
-                        || (rootScope.method == "contact" || (rootScope.method == "about" && rootScope.controller == "home");
+                        || (rootScope.method == "contact" || (rootScope.method == "about" && rootScope.controller == "home"));
 						
 				
 
