@@ -157,8 +157,9 @@
 
                 rootScope.hideSearchArea = 
                         (rootScope.controller == "account" && (rootScope.method == "login" || rootScope.method == "register")) 
-                        || (rootScope.method == "contact" && rootScope.controller == "home"));
-
+                        || (rootScope.method == "contact" || (rootScope.method == "about" && rootScope.controller == "home"));
+						
+			
                 rootScope.isUserLogged = rootScope.loggedUser !== null;
 
 
@@ -247,6 +248,7 @@
                                 </ul>
                             </li>
                             <li><a  href="<?php echo site_url("home/contact"); ?>">Contact</a></li>
+							<li><a  href="<?php echo site_url("home/about"); ?>">À propos</a></li>
                         </ul>
                         <ul class="nav navbar-nav pull-right"  ng-controller="AccountController">
                             <li ng-hide="isUserLogged"><a href="<?php echo site_url("account/login"); ?>"><i class="fa fa-user"></i>s'identifier</a></li>
