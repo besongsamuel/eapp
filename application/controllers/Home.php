@@ -53,9 +53,7 @@ class Home extends CI_Controller {
 	
     public function contact()
     {
-		$this->data['css'] = $this->load->view('home/check/css', $this->data, TRUE);
-        $this->data['scripts'] = $this->load->view('home/check/scripts', $this->data, TRUE);
-        $this->data['body'] = $this->load->view('home/contact-us', $this->data, TRUE);
+        $this->data['body'] = $this->load->view('home/new-contact-us', $this->data, TRUE);
         $this->parser->parse('eapp_template', $this->data);
     }
     

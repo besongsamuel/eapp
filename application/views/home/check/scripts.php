@@ -1,6 +1,4 @@
-  <!-- /#wrapper -->
-    <!-- jQuery -->
-    <script src="<?php echo base_url("assets/contact/js/jquery.js"); ?>"></script>
+
 	<script src="<?php echo base_url("assets/contact/js/home-scripts.js"); ?>"></script>
 	<script src="<?php echo base_url("assets/contact/js/jquery.stellar.js"); ?>"></script>
 	<script src="<?php echo base_url("assets/contact/js/wow.min.js"); ?>"></script>
