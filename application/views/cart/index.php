@@ -200,7 +200,7 @@
 			
                         <tr class="optimized-distance" ng-show="price_optimization > 0">
                             <th>Montant épargné</th>
-                            <td><span class="amount"><b style="color : red"><b>$ CAD <span ng-show="show_min_price_optimization">{{min_price_optimization | number : 2}} - </span> {{price_optimization | number : 2}} </b></span></td>
+                            <td><span class="amount"><b style="color : red"><b> $ CAD {{price_optimization | number : 4}} </b></span></td>
                         </tr>
 
                     </tbody>

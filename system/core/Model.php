@@ -177,22 +177,23 @@ class CI_Model {
     }
     
     private function compare_unit_price($store_product)
-    {      
-        $result = array("compare_unit_price" => 0, "equivalent" => 0);
-        
-        // Get all unit conversion table
-        $units = $this->get_all(UNIT_CONVERSION);
-        
-        $product_unit_conversions = $this->get_all(PRODUCT_UNIT_CONVERSION);
+    {                        
+        // Get all units
+        $units = $this->get_all(UNITS_TABLE);
         
         $format = 1;
                 
         // get format
         $pieces = explode("x", $store_product->format);
-        
-        foreach ($pieces as $value) 
+
+        if(sizeof($pieces) == 1)
         {
-            $format *= (int)$value;
+            $format = (int)$pieces[0];
+        }
+
+        if(sizeof($pieces) == 2)
+        {
+            $format = (int)$pieces[0] * (int)$pieces[1];
         }
         
         if($format == 0)
@@ -200,84 +201,30 @@ class CI_Model {
             $format = 1;
         }
         
-        $sp_compare_unit = $this->get_specific(COMPAREUNITS_TABLE, array("id" => $store_product->compareunit_id));
+        //$compare_unit_price = (float)$store_product->price / (float)$format;
         
-        $sp_unit = $this->get_specific(UNITS_TABLE, array("id" => $store_product->unit_id));
+        // 0 means it can't be used for comparison
+        $compare_unit_price = 0;
+        
+        if(isset($store_product->product->unit) && $store_product->unit_id == $store_product->product->unit->id)
+        {
+            $compare_unit_price = (float)$store_product->price / (float)$format;
+        }
         
         foreach ($units as $unit) 
         {
-            if($store_product->unit_id == $unit->unit_id 
-                    && $store_product->compareunit_id == $unit->compareunit_id)
+            if((isset($store_product->product->unit) && $unit->id == $store_product->unit_id && $unit->compareunit_id == $store_product->product->unit->id))
             {
                 // Convert format quantity
                 $compare_format = $format * $unit->equivalent;
                 
-                $result["equivalent"] = (float)$unit->equivalent;
-                $result["compare_unit_price"] = (float)$store_product->price / (float)$compare_format;
-                
-                return $result;
-            }
-            
-            if($store_product->unit_id == $unit->compareunit_id 
-                    && $store_product->compareunit_id == $unit->unit_id)
-            {
-                // Convert format quantity
-                $compare_format = (float)$format / (float)$unit->equivalent;
-                
                 // Get the unit price
-                $result["equivalent"] = 1 / (float)$unit->equivalent;
-                $result["compare_unit_price"] = (float)$store_product->price / (float)$compare_format;
+                $compare_unit_price = (float)$store_product->price / (float)$compare_format;
                 
-                return $result;
-            }
-            
-        }
-        
-        foreach ($product_unit_conversions as $product_unit_conversion) 
-        {
-            if($store_product->product_id == $product_unit_conversion->product_id)
-            {
-                if($store_product->unit_id == $product_unit_conversion->unit_id 
-                        && $store_product->compareunit_id == $product_unit_conversion->compareunit_id)
-                {
-                    // Convert format quantity
-                    $compare_format = $format * $product_unit_conversion->equivalent;
-
-                    // Get the unit price
-                    $result["equivalent"] = $product_unit_conversion->equivalent;
-                    $result["compare_unit_price"] = (float)$store_product->price / (float)$compare_format;
-                
-                    return $result;              
-
-                }
-
-                if($store_product->unit_id == $product_unit_conversion->compareunit_id 
-                        && $store_product->compareunit_id == $product_unit_conversion->unit_id)
-                {
-                    // Convert format quantity
-                    $compare_format = (float)$format / (float)$product_unit_conversion->equivalent;
-
-                    // Get the unit price
-                    $result["equivalent"] = 1/(float)$product_unit_conversion->equivalent;
-                    $result["compare_unit_price"] = (float)$store_product->price / (float)$compare_format;
-                
-                    return $result; 
-                }
             }
         }
         
-        if(isset($sp_unit) && isset($sp_compare_unit))
-        {
-            if($sp_unit->name == $sp_compare_unit->name)
-            {
-                $result["equivalent"] = 1;
-                $result["compare_unit_price"] = (float)$store_product->price / (float)$format;
-
-                return $result;
-            }
-        }
-        
-        return $result;
+        return $compare_unit_price;
     }
 
 
@@ -318,9 +265,7 @@ class CI_Model {
             $store_product->retailer = $this->get_retailer($store_product->retailer_id, $chain_columns);
             // Get product unit
             $store_product->unit = $this->get(UNITS_TABLE, $store_product->unit_id, $units_columns);
-            $compare = $this->compare_unit_price($store_product);
-            $store_product->compare_unit_price = $compare['compare_unit_price'];
-            $store_product->equivalent = $compare['equivalent'];
+            $store_product->compare_unit_price = $this->compare_unit_price($store_product);
             // Get subcategory
             if($store_product->product != null && $includeRelatedProducts)
             {
@@ -428,16 +373,7 @@ class CI_Model {
         
         foreach ($ids as $value) 
         {
-            $store_product = $this->getStoreProduct($value->id, false);
-            
-            // Check that this related store product is comparable. 
-            // i.e. The unit of the store product can be converted to
-            // the compare unit
-            if((float)$store_product->compare_unit_price > 0)
-            {
-                array_push($related_products, $store_product);
-            }
-            
+            array_push($related_products, $this->getStoreProduct($value->id, false));
         }
         
         return $related_products;
@@ -563,40 +499,20 @@ class CI_Model {
             $count = $query->num_rows(); 
             if($count === 0)
             {
-                //$this->db->trans_start();
                 $data['date_created'] = date("Y-m-d H:i:s");
                 $this->db->insert($table_name, $data);
-                //$this->db->trans_complete();
-                
-                //if($this->db->trans_status() === FALSE)
-                {
-                //    return FALSE;
-                }
-                
                 return $this->db->insert_id();
             }
             else
             {
-                //$this->db->trans_start();
                 $this->db->where('id', $data['id']);
                 $this->db->update($table_name, $data);
-                //$this->db->trans_complete();
-                //if($this->db->trans_status() === FALSE)
-                {
-                    //return FALSE;
-                }
                 return $data['id'];
             }
         }
         else
         {
-            //$this->db->trans_start();
             $this->db->insert($table_name, $data);
-            //$this->db->trans_complete();
-            //if($this->db->trans_status() === FALSE)
-            {
-                //return FALSE;
-            }
             return $this->db->insert_id();
         }
         
@@ -853,7 +769,7 @@ class CI_Model {
         return $this->db->get($table_name)->result();
     }
     
-    public function get_where($table_name, $columns, $where, $as_array = false)
+    public function get_where($table_name, $columns, $where)
     {
         $this->db->select($columns);
 
@@ -861,15 +777,7 @@ class CI_Model {
         {
             $this->db->where($where, NULL, FALSE);
         }
-        
-        if($as_array)
-        {
-            return $this->db->get($table_name)->result_array();
-        }
-        else
-        {
-            return $this->db->get($table_name)->result();
-        }
+        return $this->db->get($table_name)->result();
     }
 	
     /*

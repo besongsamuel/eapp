@@ -54,17 +54,6 @@ angular.isNullOrUndefined = function(value)
     return angular.isUndefined(value) || value === null;
 };
 
-angular.getSearchParam = function(name, url)
-{
-    if (!url) url = window.location.href;
-    name = name.replace(/[\[\]]/g, "\\$&");
-    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
-        results = regex.exec(url);
-    if (!results) return null;
-    if (!results[2]) return '';
-    return decodeURIComponent(results[2].replace(/\+/g, " "));
-};
-
 // Define the `eapp Application` module
 var eappApp = angular.module('eappApp', ['ngMaterial', 'md.data.table', 'lfNgMdFileInput', 'ngMessages', 'ngSanitize', 'mdCountrySelect', 'ngNotificationsBar', 'ngRoute', 'ngAnimate', 'angularCountryState']);
 
@@ -72,34 +61,6 @@ var eappApp = angular.module('eappApp', ['ngMaterial', 'md.data.table', 'lfNgMdF
 eappApp.factory('eapp', ['$http','$rootScope', '$mdDialog', function($http, $rootScope, $mdDialog)
 {
     var eappService = {};
-    
-    eappService.showAlert = function(ev, title, message) 
-    {
-        
-        var scrollTop = $(document).scrollTop();
-        // Appending dialog to document.body to cover sidenav in docs app
-        // Modal dialogs should fully cover application
-        // to prevent interaction outside of dialog
-        $mdDialog.show(
-                
-                $mdDialog.alert()
-                .title(title)
-                .textContent(message)
-                .ok('Ok')
-                .targetEvent(ev)
-        )
-        .finally(function()
-        {
-            $(document).scrollTop(scrollTop);
-        });
-    };
-    
-    eappService.scrollTo = function(divID)
-    {
-        $('html, body').animate({
-            scrollTop: $("#" + divID).offset().top
-        }, 2000);
-    };
     
     eappService.getProduct = function(productId)
     {
@@ -144,11 +105,6 @@ eappApp.factory('eapp', ['$http','$rootScope', '$mdDialog', function($http, $roo
     eappService.getRetailers = function()
     {
         return $http.post(eappService.getSiteUrl().concat("eapp/get_retailers"), null);
-    };
-    
-    eappService.getBrands = function()
-    {
-        return $http.post(eappService.getSiteUrl().concat("eapp/get_brands"), null);
     };
     
     eappService.getLatestProducts = function()
@@ -406,50 +362,7 @@ eappApp.factory('eapp', ['$http','$rootScope', '$mdDialog', function($http, $roo
             $mdDialog.cancel();
         };
     }
-    
-    eappService.getUnitCompareUnits = function(id)
-    {
-        var formData = new FormData();
-        formData.append("id", id);
         
-        return $http.post(eappService.getSiteUrl().concat("/eapp/get_unit_compareunits"), formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}});
-    };
-    
-    eappService.getCompareUnitUnits = function(id)
-    {
-        var formData = new FormData();
-        formData.append("id", id);
-        
-        return $http.post(eappService.getSiteUrl().concat("/eapp/get_compareunit_units"), formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}});
-    };
-    
-    eappService.getUnits = function()
-    {
-        return $http.post(eappService.getSiteUrl().concat("eapp/get_units"), null);
-    };
-    
-    eappService.getCompareUnits = function()
-    {
-        return $http.post(eappService.getSiteUrl().concat("eapp/get_compareunits"), null);
-    };
-    
-    eappService.getUnitCompareUnit = function()
-    {
-        return $http.post(eappService.getSiteUrl().concat("eapp/get_unit_compareunit"), null);
-    };
-    
-    eappService.getProductUnitCompareUnit = function()
-    {
-        return $http.post(eappService.getSiteUrl().concat("eapp/get_product_unit_compareunit"), null);
-    };
-    
-    eappService.getStoreProduct = function(spID)
-    {
-        var formData = new FormData();
-        formData.append("id", spID);
-        
-        return $http.post(eappService.getSiteUrl().concat("/eapp/get_store_product"), formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}});
-    };
 
     return eappService;
 }]);
@@ -491,9 +404,9 @@ eappApp.filter('trustUrl', function ($sce) {
     };
 });
 
-eappApp.factory('Form', [ '$http', 'notifications', 'eapp', function($http, notifications, eapp) 
+eappApp.factory('Form', [ '$http', 'notifications', function($http, notifications) 
 {
-    this.postForm = function (formData, url, redirect_url, ev) 
+    this.postForm = function (formData, url, redirect_url) 
     {       
         $http({
             url: url,
@@ -516,26 +429,17 @@ eappApp.factory('Form', [ '$http', 'notifications', 'eapp', function($http, noti
                     window.location.href = redirect_url;
                 }
                 
-                eapp.showAlert(ev, "Success", response.data.message);
+                notifications.showSuccess(response.data.message);
             }
             else
             {
-                var message = response.data.message + "\n\n";
-                
-                for(var x in response.data.errors)
-                {
-                    message += "\n" + response.data.errors[x];
-                }
-                
-                message += '\n';
-                
-                eapp.showAlert(ev, "Error", message);
+                notifications.showError(response.data.message);
             }
             
         }, 
         function errorCallback(response) 
         {
-            eapp.showAlert(ev, "Error", "An unknown error occured. ");
+            notifications.showError("An unexpected server error occured. Please try again later. ");
         });
     };
     

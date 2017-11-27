@@ -416,7 +416,6 @@ class Account extends CI_Controller {
                 {
                     // create user profile
                     $user_profile['user_account_id'] = $insert;
-                    
                     // get longitude and latitude
                     $coordinates = $this->geo->get_coordinates($user_profile["city"], $user_profile["address"], $user_profile["state"], $user_profile["country"]);
                     if($coordinates)
@@ -439,10 +438,10 @@ class Account extends CI_Controller {
                     $data['user'] = $this->user;
                 }
                 else
-                {
+				{
                     $data["success"] = false;
                     $data["message"] = "Des problèmes sont survenus, veuillez réessayer plus tard.";
-                }
+				}
             }
             else
             {

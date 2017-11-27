@@ -78,16 +78,11 @@ class Account_model extends CI_Model
     {
         $user_account = $this->get(USER_ACCOUNT_TABLE, $account_id);
         
-        if($user_account == null)
-        {
-            return null;
-        }
-        
-        $user_account->profile = $this->get_specific(USER_PROFILE_TABLE, array("user_account_id" => $account_id));
+        $user_account->profile = $this->get_specific(USER_PROFILE_TABLE, array("user_account_id" => $user_account->id));
         
         $user_account->optimizations = $this->get_user_optimizations($user_account);
         
-        $product_list = $this->get_specific(USER_GROCERY_LIST_TABLE, array("user_account_id" => $account_id));
+        $product_list = $this->get_specific(USER_GROCERY_LIST_TABLE, array("user_account_id" => $user_account->id));
 		        
         $favorite_stores = $this->get_favorite_stores($account_id);
         

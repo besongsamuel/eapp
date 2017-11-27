@@ -39,15 +39,6 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
     * List of optimized cart store product items
     */
     $scope.optimized_cart = [];
-    
-    $scope.price_optimization = 0;
-            
-    $scope.min_price_optimization = 0;
-    
-    $scope.$watch('min_price_optimization', function()
-    {
-        $scope.show_min_price_optimization = $scope.min_price_optimization > 0 && $scope.price_optimization > 0 && ($scope.price_optimization - $scope.min_price_optimization) > 0.1;
-    });
        
     /**
      * This method initializes the cart
@@ -204,7 +195,7 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
                         cartItem.store_product.related_products = [];
                     }
                     
-                    var relatedProducts = $scope.getRelatedProducts(cartItem.store_product);
+                    var relatedProducts = $scope.getRelatedProducts(cartItem);
                     cartItem.different_store_products = relatedProducts[0];
                     cartItem.different_format_products = relatedProducts[1];
 					
@@ -225,60 +216,26 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
             });
     };
 	
-    $scope.getRelatedProducts = function(store_product)
+    $scope.getRelatedProducts = function(cartItem)
     {
         var results = [];
         // split related products to store related and format related
         var different_format_products = [];
         var different_store_products = [];
 
-        for(var i in store_product.related_products)
+        for(var i in cartItem.store_product.related_products)
         {
-            if(parseInt(store_product.retailer.id) !== parseInt(store_product.related_products[i].retailer.id))
+            if(parseInt(cartItem.store_product.retailer.id) !== parseInt(cartItem.store_product.related_products[i].retailer.id))
             {
-                different_store_products.push(store_product.related_products[i]);
+                different_store_products.push(cartItem.store_product.related_products[i]);
             }
             
-            if(store_product.format.toString().trim() !== store_product.related_products[i].format.toString().trim()
-                    && parseInt(store_product.retailer.id) === parseInt(store_product.related_products[i].retailer.id))
+            if(cartItem.store_product.format.toString().trim() !== cartItem.store_product.related_products[i].format.toString().trim()
+                    && parseInt(cartItem.store_product.retailer.id) === parseInt(cartItem.store_product.related_products[i].retailer.id))
             {
-                different_format_products.push(store_product.related_products[i]);
+                different_format_products.push(cartItem.store_product.related_products[i]);
             }
         }
-        
-        // Sort them in ascending order
-        different_store_products.sort(function(a, b)
-        {
-            if(parseFloat(a.compare_unit_price) < parseFloat(b.compare_unit_price))
-            {
-                return -1;
-            }
-            
-            if(parseFloat(a.compare_unit_price) > parseFloat(b.compare_unit_price))
-            {
-                return 1;
-            }
-            
-            return 0;
-            
-        });
-        
-        // Sort them in ascending order
-        different_format_products.sort(function(a, b)
-        {
-            if(parseFloat(a.compare_unit_price) < parseFloat(b.compare_unit_price))
-            {
-                return -1;
-            }
-            
-            if(parseFloat(a.compare_unit_price) > parseFloat(b.compare_unit_price))
-            {
-                return 1;
-            }
-            
-            return 0;
-            
-        });
 
         results.push(different_store_products);
         results.push(different_format_products);
@@ -755,12 +712,8 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
             var in_user_grocery_list = $scope.selectedStoreProduct.product.in_user_grocery_list;
             // Assign references to the newly selected product
             $scope.selectedStoreProduct = sp;
-            // Assign to the selected product the related products. 
+            $scope.selectedStoreProduct.different_store_products = $scope.different_store_products;
             $scope.selectedStoreProduct.related_products = $scope.related_products;
-            // Recompute format and store products
-            var relatedProducts = $scope.getRelatedProducts($scope.selectedStoreProduct);
-            $scope.selectedStoreProduct.different_store_products = relatedProducts[0];
-            $scope.selectedStoreProduct.different_format_products = relatedProducts[1];
             $scope.selectedStoreProduct.product.in_user_grocery_list = in_user_grocery_list;
         };
 
@@ -821,23 +774,12 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
             $mdDialog.cancel();
         };
         
-        /**
-         * This is called when a user selects a different product
-         * @param {type} sp
-         * @returns {undefined}
-         */
         $scope.change = function(sp)
         {
-            // Get the value indicating if the product is in the user's grocery list
             var in_user_grocery_list = $scope.selectedStoreProduct.product.in_user_grocery_list;
-            // Set this store product as the selected product
             $scope.selectedStoreProduct = sp;
-            // Assign the related products 
+            $scope.selectedStoreProduct.different_store_products = $scope.different_store_products;
             $scope.selectedStoreProduct.related_products = $scope.related_products;
-            var relatedProducts = $scope.getRelatedProducts($scope.selectedStoreProduct);
-            $scope.selectedStoreProduct.different_store_products = relatedProducts[0];
-            $scope.selectedStoreProduct.different_format_products = relatedProducts[1];
-            
             $scope.selectedStoreProduct.product.in_user_grocery_list = in_user_grocery_list;
         };
 
@@ -912,13 +854,16 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
         for(var i in $rootScope.cart)
         {
             var item = $rootScope.cart[i];
+            var mode = "DRIVING";
             
             if(parseInt(item.product.id) === parseInt(currentStoreProduct.product.id))
             {
+                currentStoreProduct.related_products = $rootScope.cart[i].store_product.related_products;
                 $rootScope.cart[i].store_product = currentStoreProduct;
-                var relatedProducts = $scope.getRelatedProducts($rootScope.cart[i].store_product);
+                var relatedProducts = $scope.getRelatedProducts($rootScope.cart[i]);
                 $rootScope.cart[i].different_store_products = relatedProducts[0];
                 $rootScope.cart[i].different_format_products = relatedProducts[1];  
+                
                 $rootScope.sortCart();
                 groupByStore();
                 $rootScope.totalPriceAvailableProducts = $scope.getCartTotalPrice(true);
@@ -953,8 +898,6 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
     $scope.update_price_optimization = function()
     {
         $scope.price_optimization = 0;
-        
-        $scope.min_price_optimization = 0;
 
         for(var key in $scope.cart)
         {
@@ -966,49 +909,9 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
                 continue;
             }
             
-            var value = 
+            $scope.price_optimization += 
                     (parseFloat(cart_item.store_product.worst_product.compare_unit_price) - parseFloat(cart_item.store_product.compare_unit_price)) 
-                    * parseFloat(cart_item.quantity) * parseFloat($scope.getFormat(cart_item.store_product)) * parseFloat(cart_item.store_product.equivalent);
-            
-            if(parseInt(value) > 100)
-            {
-                console.log(cart_item);
-            }
-            
-            $scope.price_optimization += value;
-        }
-        
-        for(var key in $scope.cart)
-        {
-            var cart_item = $scope.cart[key];
-
-            if(angular.isNullOrUndefined(cart_item.store_product.worst_product) 
-                    || parseFloat(cart_item.store_product.price) === 0 || angular.isNullOrUndefined(cart_item.store_product.related_products))
-            {
-                continue;
-            }
-            
-            var min_optimization = 0;
-            
-            for(var i in cart_item.store_product.related_products)
-            {
-                // This is the currently selected item. 
-                if(parseInt(cart_item.store_product.related_products[i].id) === parseInt(cart_item.store_product.id))
-                {
-                    continue;
-                }
-                
-                if(cart_item.store_product.related_products[i].compare_unit_price <  min_optimization || min_optimization === 0)
-                {
-                    min_optimization = cart_item.store_product.related_products[i].compare_unit_price;
-                }
-            }
-            
-            var value = 
-                    (parseFloat(min_optimization) - parseFloat(cart_item.store_product.compare_unit_price)) 
-                    * parseFloat(cart_item.quantity) * parseFloat($scope.getFormat(cart_item.store_product)) * parseFloat(cart_item.store_product.equivalent);
-            
-            $scope.min_price_optimization += value;
+                    * parseFloat(cart_item.quantity) * parseFloat($scope.getFormat(cart_item.store_product));
         }
     };
     

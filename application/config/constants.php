@@ -121,10 +121,6 @@ defined('BLOG_POSTS_LIKES')             OR define('BLOG_POSTS_LIKES', 'eapp_blog
 defined('USER_OPTIMIZATION_TABLE')      OR define('USER_OPTIMIZATION_TABLE', 'eapp_user_optimization');
 defined('CONTACTS_TABLE')               OR define('CONTACTS_TABLE', 'eapp_contacts');
 defined('SECURITY_QUESTIONS')           OR define('SECURITY_QUESTIONS', 'eapp_security_question');
-defined('UNIT_CONVERSION')              OR define('UNIT_CONVERSION', 'otiprix_unit_compareunit');
-defined('PRODUCT_UNIT_CONVERSION')      OR define('PRODUCT_UNIT_CONVERSION', 'otiprix_product_unit_compareunit');
-
-
 
 
 

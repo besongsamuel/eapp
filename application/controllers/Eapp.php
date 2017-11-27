@@ -38,28 +38,6 @@ class Eapp extends CI_Controller
         echo json_encode($retailers);
     }
     
-    public function get_brands() 
-    {
-        $brands = $this->admin_model->get_all(PRODUCT_BRAND_TABLE);
-        
-        foreach ($brands as $key => $value) 
-        {
-            if($value != null && strpos($value->image, 'http') === FALSE)
-            {
-                $path = ASSETS_DIR_PATH."img/stores/".$value->image;
-            
-                if(!file_exists($path))
-                {
-                    $brands[$key]->image = "no_image_available.png";
-                }
-
-                $brands[$key]->image = base_url('/assets/img/stores/').$brands[$key]->image;
-            }
-        }
-        
-        echo json_encode($brands);
-    }
-    
     public function get_security_questions() 
     {
         $security_questions = $this->admin_model->get_all(SECURITY_QUESTIONS);
@@ -242,61 +220,6 @@ class Eapp extends CI_Controller
         
         echo json_encode($categories);
         
-    }
-    
-    public function get_unit_compareunits() 
-    {
-        $data = array
-        (
-            'unit_id' => $this->input->post("id")
-        );
-        
-        echo json_encode($this->admin_model->get_unit_compareunits($data));
-    }
-    
-    public function get_compareunit_units() 
-    {
-        $data = array
-        (
-            UNIT_CONVERSION.'.compareunit_id' => $this->input->post("id")
-        );
-        
-        echo json_encode($this->admin_model->get_compareunit_units($data));
-    }
-    
-    public function get_compareunits() 
-    {
-        $units = $this->admin_model->get_all(COMPAREUNITS_TABLE);
-        
-        echo json_encode($units);
-    }
-    
-    public function get_units() 
-    {
-        $units = $this->admin_model->get_all(UNITS_TABLE);
-        
-        echo json_encode($units);
-    }
-    
-    public function get_unit_compareunit() 
-    {
-        $unit_compareunit = $this->admin_model->get_all(UNIT_CONVERSION);
-        
-        echo json_encode($unit_compareunit);
-    }
-    
-    public function get_product_unit_compareunit() 
-    {
-        $unit_compareunit = $this->admin_model->get_all(PRODUCT_UNIT_CONVERSION);
-        
-        echo json_encode($unit_compareunit);
-    }
-    
-    public function get_store_product() 
-    {
-        $id = $this->input->post("id");
-        
-        echo json_encode($this->admin_model->getStoreProduct($id, false, false));
     }
    
 }
