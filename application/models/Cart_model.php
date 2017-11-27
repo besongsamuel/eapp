@@ -207,7 +207,8 @@ class Cart_model extends CI_Model
                             continue;
                         }
                     }
-					
+                    
+                    // Get the full object
                     $sp = $this->getStoreProduct($val->id, false, false, false);
                     
                     // only add if it is comparable
