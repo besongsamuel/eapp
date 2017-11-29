@@ -527,5 +527,5 @@ $config['rewrite_short_tags'] = FALSE;
 $config['proxy_ips'] = '';
 
 // twirlio
-$config['sid'] = 'AC3afe436140cc93641a56ed107ae5d0f7';
-$config['token'] = 'c6f3904ebf1cc5f4028c69956c6ad1f7';
+$config['sid'] = 'AC2f171c37cc5c0019e946ee6e380a3013';
+$config['token'] = '93dc30b90b3a3bfe648c66778843ac6b';
