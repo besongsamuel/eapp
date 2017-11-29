@@ -41,7 +41,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="latest-product" ng-controller="CartController">
-                        <h2 class="section-title md-otiprix-text">Produits en vedette</h2>
+                        <h2 class="section-title md-otiprix-text">Produits ennnn vedette</h2>
                         <div class="product-carousel row">
                             <?php foreach($latestProducts as $product): ?>
                                 <div class="single-product col-md-12 col-sm-12">
