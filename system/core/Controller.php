@@ -277,8 +277,25 @@ class CI_Controller {
             
             echo json_encode(true);
 	}
-        
-        private function SendMessage($number, $message)
+	
+	
+	private function SendMessage($number, $message)
+	{
+		$client = new Client($this->sid, $this->token);	
+
+		$client->messages->create(		
+			 // the number you'd like to send the message to		
+			 $number,		
+			 array(		
+				 // A Twilio phone number you purchased at twilio.com/console		
+				 'from' => '+14388008069',		
+				 // the body of the text message you'd like to send		
+				 'body' => $message		
+			 )		
+		 );	
+	}
+
+        private function send_message_opsolete($number, $message)
         {
             /* Create a TCP/IP socket. */
             $socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
