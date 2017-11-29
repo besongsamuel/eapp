@@ -10,6 +10,7 @@ jQuery(document).ready(function($){
         autoplayHoverPause:true,
         margin:0,
         responsiveClass:true,
+        navText : ['Précédent', 'Suivant'],
         
         responsive:{
             0:{

@@ -86,7 +86,7 @@
                         </td>
 
                         <td md-cell width = "30%">
-                            <p><b><a href ng-click="viewProduct(item.store_product.id, $event)">{{item.store_product.name}}</a></b></p>
+                            <p><b><a href ng-click="viewProduct(item.store_product.id, $event)">{{item.store_product.product.name}}</a></b></p>
                             <p ng-show="item.different_store_products.length !== 0">{{item.store_product.retailer.name}} | <a href ng-click="changeProductStore($event, item)">Changer Marchand</a></p>
                             <p ng-show="item.store_product.size">{{item.store_product.size}}</p>
                             <p ng-show="item.store_product.brand">{{item.store_product.brand.name}}</p>

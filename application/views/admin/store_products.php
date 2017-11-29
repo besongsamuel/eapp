@@ -71,7 +71,7 @@
                     </td>
 
                     <td md-cell width="30%">
-                        <p><b><a ng-href="<?php echo site_url("admin/create_store_product?product"); ?>={{store_product.id}}">{{products[store_product.product_id].name}}</a></b></p>
+                        <p><b><a ng-href="<?php echo site_url("admin/create_store_product?product"); ?>={{store_product.id}}">{{store_product.product.name}}</a></b></p>
                         <p>Size : {{store_product.size}}</p>
                         <p>{{store_product.format}} {{store_product.unit.name}}</p>
                     </td>
