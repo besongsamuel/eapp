@@ -60,7 +60,6 @@ angular.module("eappApp").controller('AdminController', ["$scope", "Form", "$htt
     
     $scope.store_product = 
     {
-        id : -1,
         organic : 0,
         in_flyer : 0,
         retailer_id : 1,
@@ -482,7 +481,7 @@ angular.module("eappApp").controller('AdminController', ["$scope", "Form", "$htt
         formData.append("product[id]", $scope.store_product.id);
         if($scope.selectedProduct !== null && typeof $scope.selectedProduct !== 'undefined')
         {
-	    formData.append("product[product_id]", $scope.selectedProduct.id);
+	    formData.append("product[product_id]", angular.isNullOrUndefined($scope.selectedProduct.id) ? null : $scope.selectedProduct.id);
         }
         if($scope.store_product.brand !== null && typeof $scope.store_product.brand !== 'undefined')
         {
@@ -504,7 +503,6 @@ angular.module("eappApp").controller('AdminController', ["$scope", "Form", "$htt
 	    $scope.api.removeAll();
 	    var tmp = 
 	    {
-	    	id : -1,
 		organic : 0,
 		in_flyer : 0,
 		format : "1x1",
