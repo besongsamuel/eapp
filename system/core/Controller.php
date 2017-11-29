@@ -125,7 +125,7 @@ class CI_Controller {
             
             if(($this->user == null) && ($this->router->fetch_method() != 'page_under_construction' && $this->router->fetch_method() != 'perform_login'))
             {
-                header('Location: '.  site_url('/account/page_under_construction'));
+                //header('Location: '.  site_url('/account/page_under_construction'));
             }
             $this->sid = $this->config->item("sid");
             
