@@ -217,20 +217,6 @@ class CI_Model {
                 
                 return $result;
             }
-            
-            if($store_product->unit_id == $unit->compareunit_id 
-                    && $store_product->compareunit_id == $unit->unit_id)
-            {
-                // Convert format quantity
-                $compare_format = (float)$format / (float)$unit->equivalent;
-                
-                // Get the unit price
-                $result["equivalent"] = 1 / (float)$unit->equivalent;
-                $result["compare_unit_price"] = (float)$store_product->price / (float)$compare_format;
-                
-                return $result;
-            }
-            
         }
         
         foreach ($product_unit_conversions as $product_unit_conversion) 
@@ -249,19 +235,6 @@ class CI_Model {
                 
                     return $result;              
 
-                }
-
-                if($store_product->unit_id == $product_unit_conversion->compareunit_id 
-                        && $store_product->compareunit_id == $product_unit_conversion->unit_id)
-                {
-                    // Convert format quantity
-                    $compare_format = (float)$format / (float)$product_unit_conversion->equivalent;
-
-                    // Get the unit price
-                    $result["equivalent"] = 1/(float)$product_unit_conversion->equivalent;
-                    $result["compare_unit_price"] = (float)$store_product->price / (float)$compare_format;
-                
-                    return $result; 
                 }
             }
         }
