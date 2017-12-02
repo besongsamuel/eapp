@@ -232,15 +232,18 @@ class Cart extends CI_Controller {
         $coords = array("longitude" => $this->input->post("longitude"), "latitude" => $this->input->post("latitude"));
         // get the store_product id if applicable
 
+        
+        
         foreach($products as $product)
         {
+            $in_user_list = isset($this->user) ? $this->inUserList($product->id) : false;
             // get the best store product based on price
             $store_product = $this->cart_model->get_best_store_product($product->id, $distance, $distance, $this->user, $search_all, $coords, $product->store_product_id);
             $cart_item = new stdClass();
             $cart_item->store_product = $store_product;
-            $cart_item->store_product->product->in_user_grocery_list = $this->inUserList($product->id);
+            $cart_item->store_product->product->in_user_grocery_list = $in_user_list;
             $cart_item->product = $this->cart_model->get_product($product->id);
-            $cart_item->product->in_user_grocery_list = $this->inUserList($product->id);
+            $cart_item->product->in_user_grocery_list = $in_user_list;
             $cart_item->rowid = $product->rowid;
             $cart_item->store_product_id = $product->store_product_id;
             $cart_item->quantity = $product->quantity;

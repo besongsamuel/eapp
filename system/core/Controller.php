@@ -235,13 +235,17 @@ class CI_Controller {
         
         public function inUserList($product_id) 
         {
-            foreach ($this->user->grocery_list as $product) 
+            if(isset($this->user))
             {
-                if($product_id == $product->id)
+                foreach ($this->user->grocery_list as $product) 
                 {
-                    return true;
+                    if($product_id == $product->id)
+                    {
+                        return true;
+                    }
                 }
             }
+            
             return false;
         }
         

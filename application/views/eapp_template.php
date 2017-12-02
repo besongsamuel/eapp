@@ -237,7 +237,7 @@
                                 </ul>
                             </li>
                             <li ng-class="{active : isSearch}"><a href ng-click="gotoShop()">Trouvez un produit</a></li>
-                            <li ng-class="{active : isCart}"><a href="<?php echo site_url("cart"); ?>">Votre panier</a></li>
+                            <li ng-hide="true" ng-class="{active : isCart}"><a href="<?php echo site_url("cart"); ?>">Votre panier</a></li>
                             <li ng-hide="true" class=" dropdown"><a href="#" class="dropdown-toggle " data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Blogue<span class="caret"></span></a>
                                 <ul class="dropdown-menu">
                                     <li><a href="<?php echo site_url("blog/press_release"); ?>">Épicerie dans la presse</a></li>
@@ -251,8 +251,8 @@
 							<li><a  href="<?php echo site_url("home/about"); ?>">À propos</a></li>
                         </ul>
                         <ul class="nav navbar-nav pull-right"  ng-controller="AccountController">
-                            <li ng-hide="isUserLogged"><a href="<?php echo site_url("account/login"); ?>"><i class="fa fa-user"></i>s'identifier</a></li>
-                            <li ng-hide="isUserLogged"><a href="<?php echo site_url("account/register"); ?>"><i class="fa fa-user"></i>créer un compte</a></li>
+                            <li ng-hide="isUserLogged"><a href="<?php echo site_url("account/login"); ?>"><i class="fa fa-user"></i>    S'identifier</a></li>
+                            <li ng-hide="isUserLogged"><a href="<?php echo site_url("account/register"); ?>"><i class="fa fa-user"></i>    Créer un compte</a></li>
                             <li ng-show="isUserLogged" class=" dropdown"><a href="#" class="dropdown-toggle active" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Bonjour <span ng-show="loggedUser.profile.firstname">{{loggedUser.profile.firstname}},</span> {{loggedUser.profile.lastname}}  <span class="caret"></span></a>
                                 <ul class="dropdown-menu">
                                     <li><a  href="<?php echo site_url("account"); ?>"><i class="fa fa-user"></i> Mon compte</a></li>
@@ -289,18 +289,18 @@
                             En un seul clic, otiPrix réduit le coût de votre panier d’épicerie en identifiant les meilleurs et les vrais rabais dans les magasins proches de vous. Avec OTIPRIX, consulter en un seul et même endroit l’ensemble des produits alimentaires en rabais dans les grandes surfaces, mais aussi dans tous les petits magasins situés à proximité de votre lieu de résidence.
                         </p>
                         <div class="footer-social">
-                            <a href="#" target="_blank"><i class="fa fa-facebook"></i></a>
-                            <a href="#" target="_blank"><i class="fa fa-twitter"></i></a>
-                            <a href="#" target="_blank"><i class="fa fa-youtube"></i></a>
-                            <a href="#" target="_blank"><i class="fa fa-linkedin"></i></a>
-                            <a href="#" target="_blank"><i class="fa fa-pinterest"></i></a>
+                            <a href="https://www.facebook.com/otiprix.otiprix.1" target="_blank"><i class="fa fa-facebook"></i></a>
+                            <a ng-hide="true" href="#" target="_blank"><i class="fa fa-twitter"></i></a>
+                            <a href="https://www.youtube.com/channel/UCbwxS8s1WKYgGCRzd9vIl5A" target="_blank"><i class="fa fa-youtube"></i></a>
+                            <a ng-hide="true" href="#" target="_blank"><i class="fa fa-linkedin"></i></a>
+                            <a ng-hide="true" href="#" target="_blank"><i class="fa fa-pinterest"></i></a>
                         </div>
                     </div>
                 </div>
                 
                 <div class="col-md-3 col-sm-6">
                     <div class="footer-menu">
-                        <h2 class="footer-wid-title">User Navigation </h2>
+                        <h2 class="footer-wid-title">Navigation de l'utilisateur</h2>
                         <ul>
                             <li><a href="<?php echo site_url("account"); ?>">Mon compte</a></li>
                             <li><a href="<?php echo site_url("account/my_grocery_list"); ?>">Ma liste d'epicerie</a></li>
@@ -326,10 +326,12 @@
 		    	<p>Inscrivez-vous à notre Infolettre et soyez les premiers informés sur :</p>
 		     	<p> - l’évolution des prix des denrées alimentaires;</p>
 		    	<p> - toutes les opportunités  pour réduire le coût de votre épicerie.</p>
-                        <div class="newsletter-form">
+                        <div class="newsletter-form" ng-hide="true">
                             <form action="#">
                                 <input type="email" placeholder="Entrez votre email">
-                                <input type="submit" value="S’INSCRIRE">
+                                <div class="col-sm-12">
+                                    <md-button type="submit" class="md-raised md-otiprix pull-right" >S’INSCRIRE</md-button>
+                                </div>
                             </form>
                         </div>
                     </div>
