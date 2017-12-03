@@ -2,6 +2,35 @@
 
 <html lang="en">
 	
+	
+	<header>
+ <!-- Bootstrap Core CSS -->
+
+    <link href="<?php echo base_url("assets/css/font-awesome.css"); ?>" rel="stylesheet">
+	<link href="<?php echo base_url("assets/css/style.css"); ?>" rel="stylesheet">
+    <link href="<?php echo base_url("assets/css/about.css"); ?>" rel="stylesheet"> 
+	
+	    <!-- jQuery -->
+    <script src="<?php echo base_url("assets/js/jquery.js"); ?>"></script>
+
+	
+	
+    <!-- Custom Fonts -->
+    <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,300,600,400italic,600italic,700,700italic,900' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+	
+	
+	
+	<header>
+
+		
+	
 	<body>
 	<div class="contact_check">
 	</br></br></br>
@@ -129,6 +158,53 @@
 			</div>
 		</div>
 	</div>
+	
+	 <!-- Map Scripts-->
+    <script src="http://maps.google.com/maps/api/js?key=AIzaSyBsAk_UvdPgPQTgOvXy8oAwsQtcGxLIdjk"></script>
+    <!-- Google Map -->
+    <script type="text/javascript">
+        (function($) {
+          "use strict";
+            var locations = [
+            ['<div class="infobox"><h3 class="title"><a href="about-1.html">Notre Bureau</a></h3><span>550 Avenue Saint-Dominique, </span><br>Saint-Hyacinthe, J2S 5M6</span><br>  </p></div></div></div>', 45.6231815, -72.9508469, 2]
+            ];
+
+            var map = new google.maps.Map(document.getElementById('map'), {
+              zoom: 15,
+                scrollwheel: true,
+                navigationControl: true,
+                mapTypeControl: true,
+                scaleControl: false,
+                draggable: true,
+                styles: [ { "stylers": [ { "hue": "#000" },  {saturation: -200},
+                    {gamma: 0.50} ] } ],
+                center: new google.maps.LatLng(45.6231815, -72.9508469),
+              mapTypeId: google.maps.MapTypeId.ROADMAP
+            });
+
+            var infowindow = new google.maps.InfoWindow();
+
+            var marker, i;
+
+            for (i = 0; i < locations.length; i++) {
+
+                marker = new google.maps.Marker({
+                position: new google.maps.LatLng(locations[i][1], locations[i][2]),
+                map: map ,
+                icon: 'eapp/assets/contact/img/marker.png'
+                });
+
+
+              google.maps.event.addListener(marker, 'click', (function(marker, i) {
+                return function() {
+                  infowindow.setContent(locations[i][0]);
+                  infowindow.open(map, marker);
+                }
+              })(marker, i));
+            }
+        })(jQuery);
+    </script>
+	
 	</body>
 	
 </html>
