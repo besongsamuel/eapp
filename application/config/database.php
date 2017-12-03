@@ -77,7 +77,7 @@ $db['default'] = array(
 	'dsn'	=> '',
 	'hostname' => 'localhost',
 	'username' => (ENVIRONMENT !== 'production') ? 'root' : 'eapp_user',
-	'password' => (ENVIRONMENT !== 'production') ? '' : 'Shaddy12',
+	'password' => (ENVIRONMENT !== 'production') ? '' : '',
 	'database' => (ENVIRONMENT !== 'production') ? 'eapp' : 'eapp_db',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
