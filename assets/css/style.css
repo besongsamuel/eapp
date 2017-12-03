@@ -36,6 +36,13 @@ html
 
 body { font-family: 'Titillium Web', sans-serif; }
 
+.md-dialog-container
+{
+    height: 100% !important;
+    position: fixed !important;
+    top: 0px !important;
+}
+
 .eapp-container
 {
 	padding-left : 20px;

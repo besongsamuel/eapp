@@ -534,11 +534,14 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
         var origins = [];
         var destinations = [];
         var mode = "DRIVING";
+        
+        var longitude = $scope.isUserLogged ? $scope.loggedUser.profile.longitude : $scope.longitude;
+        var latitude = $scope.isUserLogged ? $scope.loggedUser.profile.latitude : $scope.latitude;
 
         for(var i in $scope.departmenStores )
         {
             var department_store = $scope.departmenStores[i];
-            origins.push(new google.maps.LatLng(parseFloat($scope.loggedUser.profile.latitude), parseFloat($scope.loggedUser.profile.longitude)));
+            origins.push(new google.maps.LatLng(parseFloat(latitude), parseFloat(longitude)));
             destinations.push(new google.maps.LatLng(parseFloat(department_store.latitude), parseFloat(department_store.longitude)));
         }
         
@@ -650,11 +653,14 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
         var origins = [];
         var destinations = [];
         var mode = "DRIVING";
+        
+        var longitude = $scope.isUserLogged ? $scope.loggedUser.profile.longitude : $scope.longitude;
+        var latitude = $scope.isUserLogged ? $scope.loggedUser.profile.latitude : $scope.latitude;
 
         for(var i in $scope.stores.slice(0, 5))
         {
             var department_store = $scope.stores[i].department_store;
-            origins.push(new google.maps.LatLng(parseFloat($scope.loggedUser.profile.latitude), parseFloat($scope.loggedUser.profile.longitude)));
+            origins.push(new google.maps.LatLng(parseFloat(latitude), parseFloat(longitude)));
             destinations.push(new google.maps.LatLng(parseFloat(department_store.latitude), parseFloat(department_store.longitude)));
         }
         
@@ -851,6 +857,10 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
     
     $scope.InitMap = function(ev, departmentStore)
     {
+        
+        var longitude = $scope.isUserLogged ? $scope.loggedUser.profile.longitude : $scope.longitude;
+        var latitude = $scope.isUserLogged ? $scope.loggedUser.profile.latitude : $scope.latitude;
+        
         $mdDialog.show({
             controller: GoogleMapsController,
             templateUrl:  $scope.base_url + 'assets/templates/google-map.html',
@@ -863,7 +873,7 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
             fullscreen: true,
             onComplete : function()
             {
-                var origin = {lat: parseFloat($scope.loggedUser.profile.latitude), lng: parseFloat($scope.loggedUser.profile.longitude)};
+                var origin = {lat: parseFloat(latitude), lng: parseFloat(longitude)};
                 var destination = {lat: parseFloat(departmentStore.latitude), lng: parseFloat(departmentStore.longitude)};
 
                 var map = new google.maps.Map(document.getElementById('map'), {

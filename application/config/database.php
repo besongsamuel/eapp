@@ -76,9 +76,9 @@ $query_builder = TRUE;
 $db['default'] = array(
 	'dsn'	=> '',
 	'hostname' => 'localhost',
-	'username' => 'root',
-	'password' => '',
-	'database' => 'eapp',
+	'username' => (ENVIRONMENT !== 'production') ? 'root' : 'eapp_user',
+	'password' => (ENVIRONMENT !== 'production') ? '' : 'Shaddy12',
+	'database' => (ENVIRONMENT !== 'production') ? 'eapp' : 'eapp_db',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
 	'pconnect' => FALSE,

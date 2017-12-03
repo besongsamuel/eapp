@@ -10,12 +10,12 @@ $(document).ready(function()
         rootScope.valid = true;
         rootScope.success_message = "";
         rootScope.error_message = "";
-        rootScope.currentAddress = "1953 Rue Ste-Catherine Ouest, Québec, Montréal";
+        rootScope.currentAddress = "Rue Ste-Catherine Ouest, Québec, Montréal";
         rootScope.longitude = -73.5815;
         rootScope.latitude = 45.4921;
         rootScope.postcode = "";
         
-        if(rootScope.isUserLogged)
+        if(!rootScope.isUserLogged)
         {
             if(window.localStorage.getItem("latitude"))
             {
