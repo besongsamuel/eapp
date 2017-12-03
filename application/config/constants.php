@@ -90,8 +90,8 @@ defined('MAX_DISTANCE')        OR define('MAX_DISTANCE', 255);
 
 
 /* Globals */
-defined('ASSETS_PATH')              OR define('ASSETS_PATH', 'http://'.$_SERVER['HTTP_HOST'].(ENVIRONMENT !== 'production') ? 'eapp' : ''.'/assets/'); // The assets folder of the application
-defined('ASSETS_DIR_PATH')          OR define('ASSETS_DIR_PATH', $_SERVER['DOCUMENT_ROOT'].(ENVIRONMENT !== 'production') ? 'eapp' : ''.'/assets/'); // The assets folder of the application
+defined('ASSETS_PATH')              OR define('ASSETS_PATH', 'http://'.$_SERVER['HTTP_HOST'].((ENVIRONMENT !== 'production') ? '/eapp/assets/' : '/assets/')); // The assets folder of the application
+defined('ASSETS_DIR_PATH')          OR define('ASSETS_DIR_PATH', $_SERVER['DOCUMENT_ROOT'].((ENVIRONMENT !== 'production') ? '/eapp/assets/' : '/assets/')); // The assets folder of the application
 defined('STORE_LOGO_WIDTH')         OR define('STORE_LOGO_WIDTH', 1024); // highest automatically-assigned error code
 defined('STORE_LOGO_HEIGHT')        OR define('STORE_LOGO_HEIGHT', 720); // highest automatically-assigned error code
 
