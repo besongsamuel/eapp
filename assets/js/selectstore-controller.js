@@ -94,6 +94,8 @@ angular.module('eappApp').controller('SelectStoreController', ["$scope", "$mdDia
             {
                 // Change in the session
                 window.localStorage.setItem('optimization_distance', $scope.default_distance);
+                
+                $scope.Init();
             }
             
             $mdDialog.cancel();
