@@ -4,16 +4,16 @@ $(document).ready(function()
     
     rootScope.$apply(function()
     {
-        
-        
         rootScope.is_loading = false;
         rootScope.valid = true;
         rootScope.success_message = "";
         rootScope.error_message = "";
+        rootScope.postcode = "";
+        
+        
         rootScope.currentAddress = "Rue Ste-Catherine Ouest, Québec, Montréal";
         rootScope.longitude = -73.5815;
         rootScope.latitude = 45.4921;
-        rootScope.postcode = "";
         
         if(!rootScope.isUserLogged)
         {
@@ -305,9 +305,6 @@ $(document).ready(function()
         
 	rootScope.promptForZipCode = function(ev) 
         {
-            rootScope.longitude = window.localStorage.getItem("longitude");
-            rootScope.latitude = window.localStorage.getItem("latitude");
-
             if(!window.localStorage.getItem("longitude") && !window.localStorage.getItem("latitude") && !rootScope.isUserLogged && false)
             {
                 // Appending dialog to document.body to cover sidenav in docs app
