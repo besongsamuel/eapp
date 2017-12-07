@@ -254,8 +254,8 @@ eappApp.factory('eapp', ['$http','$rootScope', '$mdDialog', function($http, $roo
     {
         var formData = new FormData();
         formData.append("distance", distance);
-        formData.append("longitude", $rootScope.longitude);
-        formData.append("latitude", $rootScope.latitude);
+        formData.append("longitude", parseFloat($rootScope.longitude));
+        formData.append("latitude", parseFloat($rootScope.latitude));
         
         return $http.post(eappService.getSiteUrl().concat("eapp/get_close_retailers"), formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}});
     };

@@ -73,7 +73,7 @@ class Eapp extends CI_Controller
         
         $coords = array
         (
-            'longitude' => $this->input->post("distance"),
+            'longitude' => $this->input->post("longitude"),
             'latitude' => $this->input->post("latitude")
          );
         
