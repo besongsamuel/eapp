@@ -129,8 +129,7 @@
         </div>
     </div>
 	
-	 <!-- Map Scripts-->
-    <script src="http://maps.google.com/maps/api/js?key=AIzaSyBsAk_UvdPgPQTgOvXy8oAwsQtcGxLIdjk"></script>
+    <!-- Map Scripts-->
     <script src="<?php echo base_url("assets/js/contactus-controller.js")?>"></script>
 
 	

@@ -19,10 +19,9 @@
   font-style: normal;
 }
 
-body { 
-    
-	text-align: justify;
-    text-justify: inter-word;
+body 
+{ 
+    text-align: justify;
 }
 
 p.css{
