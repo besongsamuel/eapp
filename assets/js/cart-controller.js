@@ -1466,9 +1466,8 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
             {
                 // Change in the session
                 window.localStorage.setItem('cart_distance', $scope.default_distance);
+                $scope.optimization_preference_changed();
             }
-            
-            
             
             $mdDialog.cancel();
         };
