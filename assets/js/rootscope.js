@@ -135,55 +135,7 @@ $(document).ready(function()
             return total;
         };
         
-        rootScope.add_product_to_cart = function(product_id, store_product_id = -1, product_quantity = 1)
-        {
-            if(typeof store_product_id === 'undefined')
-            {
-                store_product_id = -1;
-            }
-            
-            var data = 
-            {
-                product_id : product_id,
-                longitude : rootScope.longitude,
-                latitude : rootScope.latitude,
-                store_product_id : store_product_id,
-                quantity : product_quantity
-            };
-
-            $.ajax({
-                type: 'POST',
-                url:   rootScope.site_url.concat("/cart/insert"),
-                data: data,
-                success: function(response)
-                {
-                    var response_data = JSON.parse(response);
-
-                    if(Boolean(response_data.success))
-                    {
-                        // Add Global Cart list
-                        var cart_item = 
-                        {
-                            rowid : response_data.rowid,
-                            store_product : response_data.store_product,
-                            top_five_store_products : [],
-                            quantity : product_quantity
-                        };
-
-                        rootScope.$apply(function()
-                        {
-                            if(rootScope.cart === null || typeof rootScope.cart === 'undefined')
-                            {
-                                rootScope.cart = [];
-                            }
-                            
-                            rootScope.cart.push(cart_item);
-                        });
-                    }
-                },
-                async:true
-            });
-        };
+        
 			
 	rootScope.getRowID = function(product_id)
         {

@@ -959,7 +959,7 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
         });
 
     };
-	
+
     $scope.update_price_optimization = function()
     {
         $scope.price_optimization = 0;

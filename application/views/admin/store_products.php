@@ -35,14 +35,7 @@
       </div>
     </md-toolbar>
 
-    <md-toolbar class="md-table-toolbar alternate" ng-show="selected.length">
-      <div class="md-toolbar-tools" layout-align="space-between">
-        <div>{{selected.length}} {{selected.length > 1 ? 'items' : 'item'}} selected</div>
-        <md-button class="md-icon-button" ng-click="add_to_cart($event)">
-            <md-icon>add_shopping_cart</md-icon>
-        </md-button>
-      </div>
-    </md-toolbar>
+
         <table  md-table cellspacing="0" ng-model="selected"  md-progress="promise">
             <thead md-head md-order="query.order" md-on-reorder="getProducts">
                 <tr md-row>
