@@ -6,6 +6,33 @@
 <html lang="en">
 <!--<![endif]-->
 
+<header>
+ <!-- Bootstrap Core CSS -->
+
+    <link href="<?php echo base_url("assets/css/font-awesome.css"); ?>" rel="stylesheet">
+	<link href="<?php echo base_url("assets/css/style.css"); ?>" rel="stylesheet">
+    <link href="<?php echo base_url("assets/css/about.css"); ?>" rel="stylesheet"> 
+	
+	    <!-- jQuery -->
+	<script src="<?php echo base_url("assets/js/home-scripts.js"); ?>"></script>
+	<script src="<?php echo base_url("assets/js/jquery.stellar.js"); ?>"></script>
+	<script src="<?php echo base_url("assets/js/wow.min.js"); ?>"></script>
+	
+	
+    <!-- Custom Fonts -->
+    <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,300,600,400italic,600italic,700,700italic,900' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+	
+	
+	
+<header>
+
 <body>
 
     
@@ -119,15 +146,14 @@
                 </div><!-- end container -->
             </div><!-- end row -->
         </section><!-- end section white -->
-	
-	
-	<script>
-	$('.collapse').on('show.bs.collapse', function() {
-  $(this).parent().find(".fa-plus").removeClass("fa-plus").addClass("fa-minus");
-}).on('hide.bs.collapse', function() {
-  $(this).parent().find(".fa-minus").removeClass("fa-minus").addClass("fa-plus");
-});
-	</script
 
+		<script>
+			$('.collapse').on('show.bs.collapse', function() {
+		  $(this).parent().find(".fa-plus").removeClass("fa-plus").addClass("fa-minus");
+		}).on('hide.bs.collapse', function() {
+		  $(this).parent().find(".fa-minus").removeClass("fa-minus").addClass("fa-plus");
+		});
+	</script
+	
 </body>
 </html>
