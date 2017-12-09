@@ -1265,7 +1265,6 @@ div.cart-collaterals ul.products li.product:hover .add_to_cart_button{background
 
 .contact-us
 {
-    background-image: url("../img/contact-us-background.jpg");
     background-repeat: no-repeat;
     background-size: cover;
     padding-top: 60px;

@@ -7,11 +7,6 @@
         $("#loader").delay(600).fadeOut("slow");
     });
 	
-// Parallax
-	$.stellar({
-		horizontalScrolling: false,
-		verticalOffset: 100
-	});
 	
 // Menu Hover 
 	$('.dropdown').on('show.bs.dropdown', function(e){
@@ -32,12 +27,7 @@
 	
 // Tooltip 
 	$('[data-rel="tooltip"]').tooltip();
-	
-// WOW Scroll Spy
-	var wow = new WOW({
-		mobile: false
-	});
-	wow.init();	
+		
 	
 // Fun Facts
 	function count($this){
