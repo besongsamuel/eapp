@@ -3,17 +3,11 @@
 <html lang="en">
 	
 	
-	<header>
- <!-- Bootstrap Core CSS -->
+    <header>
+    <!-- Bootstrap Core CSS -->
 
     <link href="<?php echo base_url("assets/css/font-awesome.css"); ?>" rel="stylesheet">
-	<link href="<?php echo base_url("assets/css/style.css"); ?>" rel="stylesheet">
-    <link href="<?php echo base_url("assets/css/about.css"); ?>" rel="stylesheet"> 
-	
-	    <!-- jQuery -->
-    <script src="<?php echo base_url("assets/js/jquery.js"); ?>"></script>
-
-	
+    <link href="<?php echo base_url("assets/css/contact.css"); ?>" rel="stylesheet"> 
 	
     <!-- Custom Fonts -->
     <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,300,600,400italic,600italic,700,700italic,900' rel='stylesheet' type='text/css'>
@@ -27,17 +21,17 @@
 	
 	
 	
-	<header>
+    </header>
 
 		
 	
 	<body>
 	<div class="contact_check">
 	</br></br></br>
-		<!-- page builer -->
-		<div class="map-wrapper">
-			<div id="map"></div>
-		</div><!-- end map -->
+        <!-- page builer -->
+        <div class="map-wrapper">
+        <div id="map"></div>
+        </div><!-- end map -->
 		
 
 		<div class="contact-us">
