@@ -456,6 +456,11 @@ eappApp.factory('eapp', ['$http','$rootScope', '$mdDialog', function($http, $roo
         return $http.post(eappService.getSiteUrl().concat("eapp/get_product_unit_compareunit"), null);
     };
     
+    eappService.getUserOptimizations = function()
+    {
+        return $http.post(eappService.getSiteUrl().concat("eapp/get_user_optimizations"), null);
+    };
+    
     eappService.getStoreProduct = function(spID)
     {
         var formData = new FormData();

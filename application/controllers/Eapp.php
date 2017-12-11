@@ -298,5 +298,12 @@ class Eapp extends CI_Controller
         
         echo json_encode($this->admin_model->getStoreProduct($id, false, false));
     }
+    
+    public function get_user_optimizations() 
+    {
+        $user_optimization = $this->account_model->get_user_optimizations($this->user);
+        
+        echo json_encode($user_optimization);
+    }
    
 }
