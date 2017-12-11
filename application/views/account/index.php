@@ -41,7 +41,7 @@ $(document).ready(function()
                         <h4>Économies moyen : <b style="color : red;"><span ng-show="item.value != '-'">$ CAD</span> {{item.value}}</b></h4>
                         <p>Nombre moyen de produits par panier : <b>{{item.count}}</b></p>
                       </div>
-                      <md-button class="md-secondary md-otiprix">Voir détails</md-button>
+                        <md-button class="md-secondary md-otiprix" ng-click="viewOptimization($index, $event)">Voir détails</md-button>
                       <md-divider ng-if="!$last"></md-divider>
                     </md-list-item>
                 </md-list>

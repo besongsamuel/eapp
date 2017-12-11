@@ -211,11 +211,12 @@ class Account_model extends CI_Model
         // get current week optimizations
         $optimizations = new stdClass();
         
-        $optimizations->currentWeek = $this->db->query("SELECT *, YEARWEEK(date_created) as weekCreated, YEARWEEK(NOW()) as currentWeek FROM ".USER_OPTIMIZATION_TABLE." HAVING weekCreated = currentWeek AND user_account_id = ".$user->id)->result();
-        $optimizations->currentYear = $this->db->query("SELECT *, YEAR(date_created) as yearCreated, YEAR(NOW()) as currentYear FROM ".USER_OPTIMIZATION_TABLE." HAVING yearCreated = currentYear AND user_account_id = ".$user->id)->result();
-        $optimizations->currentMonth = $this->db->query("SELECT *, YEAR(date_created) as yearCreated, YEAR(NOW()) as currentYear, MONTH(date_created) as monthCreated, MONTH(NOW()) as currentMonth FROM ".USER_OPTIMIZATION_TABLE." HAVING yearCreated = currentYear AND monthCreated = currentMonth AND user_account_id = ".$user->id)->result();
+        $optimizations->currentWeek = $this->db->query("SELECT *, YEARWEEK(date_created) as weekCreated, YEARWEEK(NOW()) as currentWeek, DAY(date_created) as day FROM ".USER_OPTIMIZATION_TABLE." HAVING weekCreated = currentWeek AND user_account_id = ".$user->id." order by day asc")->result();
+        $optimizations->currentYear = $this->db->query("SELECT *, YEAR(date_created) as yearCreated, YEAR(NOW()) as currentYear, MONTH(date_created) as month FROM ".USER_OPTIMIZATION_TABLE." HAVING yearCreated = currentYear AND user_account_id = ".$user->id." order by month asc")->result();
+        $optimizations->currentMonth = $this->db->query("SELECT *, YEAR(date_created) as yearCreated, YEAR(NOW()) as currentYear, MONTH(date_created) as monthCreated, MONTH(NOW()) as currentMonth, WEEK(date_created) as week FROM ".USER_OPTIMIZATION_TABLE." HAVING yearCreated = currentYear AND monthCreated = currentMonth AND user_account_id = ".$user->id." order by week asc")->result();
         
         $this->db->where("user_account_id", $user->id);
+        $this->db->order_by("date_created", "asc");
         $optimizations->overall = $this->db->get(USER_OPTIMIZATION_TABLE)->result();
         
         return $optimizations;
