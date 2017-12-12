@@ -1,24 +1,18 @@
-<script>
-$(document).ready(function(){
-    
-    var scope = angular.element($("#admin-container")).scope();
-    
-    scope.$apply(function()
-    {
-       scope.load_icons(); 
-    });
-})
-</script>
+<link href="<?php echo base_url("assets/css/register.css"); ?>" rel="stylesheet">
 
 
 <div id="admin-container" class="container loginbox" ng-controller="AccountController">    
 
         <div id="signupbox" class="mainbox">
             <div class="panel panel-info">
-                <div class="panel-heading">
-                    <div class="panel-title">FORMULAIRE D'INSCRIPTION</div>
-                </div>  
-                <div class="panel-body" >
+                     
+                <md-toolbar style="background-color: #1abc9c;">
+                    <div>
+                        <h2 class="md-toolbar-tools">INSCRIPTION</h2>
+                    </div>
+                </md-toolbar>
+
+                <md-content class="panel-body" >
                     <form id="signupForm" name="signupForm" class="form-horizontal" novalidate ng-submit="register()">
                                 
                         <div id="error_message" class="alert alert-danger" ng-show="message">
@@ -141,7 +135,7 @@ $(document).ready(function(){
                         </div>
                                 
                     </form>
-                </div>
+                </md-content>
             </div> 
          </div> 
     </div>
