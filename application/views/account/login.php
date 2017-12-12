@@ -1,31 +1,19 @@
-<script>
-$(document).ready(function(){
-    
-    var scope = angular.element($("#admin-container")).scope();
-    
-    scope.$apply(function()
-    {
-       scope.load_icons(); 
-       
-       if(window.sessionStorage.getItem("accountCreated"))
-       {
-           scope.accountCreated = window.sessionStorage.getItem("accountCreated");
-           window.sessionStorage.removeItem("accountCreated");
-       }
-    });
-})
-</script>
+
+
+<link href="<?php echo base_url("assets/css/login.css"); ?>" rel="stylesheet">
 
 
 <div id="admin-container" class="container loginbox" ng-controller="AccountController" ng-cloak>
    <div id="loginbox" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
       <div class="panel panel-info" >
+        
+        <md-toolbar style="background-color: #1abc9c;">
+            <div>
+                <h2 class="md-toolbar-tools">Se connecter</h2>
+            </div>
+        </md-toolbar>  
           
-         <div class="panel-heading">
-            <div class="panel-title">Se connecter</div>
-         </div>
-          
-        <div style="padding-top:30px" class="panel-body">
+        <md-content class="login-box">
             
             <div id="login-alert" class="alert alert-danger col-sm-12" ng-show="message">
                <p>{{message}}</p>
@@ -71,7 +59,7 @@ $(document).ready(function(){
                 
                 
           </form>
-       </div>
+       </md-content>
       </div>
    </div>
    </form>

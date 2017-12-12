@@ -11,11 +11,13 @@ and open the template in the editor.
     
     <div class="mainbox col-md-8 col-md-offset-2 col-sm-12" ng-show="visible">
        
-        <div class="panel panel-info" >
-          
-            <div class="panel-heading">
-               <div class="panel-title">Compte créé</div>
-            </div>
+        <div class="panel panel-info">
+            
+            <md-toolbar style="background-color: #1abc9c;">
+                <div>
+                    <h2 class="md-toolbar-tools">Compte créé</h2>
+                </div>
+            </md-toolbar>
             
             <div style="padding-top:30px" class="panel-body">
             

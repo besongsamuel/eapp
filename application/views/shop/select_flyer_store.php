@@ -41,16 +41,16 @@
                 </md-toolbar>
 		  
 		<md-content id="retailer-contents" style="padding : 10px;">
+                    
                     <div class="form-group-inline" ng-repeat="store in retailers">
-                        <div class="col-md-3 col-sm-4" style="height: 160px;">
-                            <a href><img  ng-click="select_retailer($event, store)" id="{{store.id}}" ng-src="{{store.image}}" alt="{{store.name}}" style="height: 80px; display: block; margin: 0 auto;" class="img-thumbnail img-check"></a>
-                            <input type="checkbox" name="store_{{store.id}}" value="{{store.id}}" class="hidden" autocomplete="off">
-                            <a href ng-click="select_retailer($event, store)" id="{{store.id}}">
-                            <p class="md-otiprix-text" style="text-align: center;" ng-hide="true">{{store.department_store.address}}, {{store.department_store.city}}</p>
-                            <p class="md-otiprix-text" style="text-align: center;" ng-hide="true"><span ng-show="store.department_store.state">{{store.department_store.state}},</span> <span ng-show="store.department_store.postcode">{{store.department_store.postcode}}</span></p>
-                            </a>
+                        <div class="col-md-2 col-md-4" style="padding-top:10px;">
+                            <label  class="btn item-block">
+                                <img  ng-click="select_retailer($event, store)" id="{{store.id}}" ng-src="{{store.image}}" alt="{{store.name}}" class="store-block img-check">
+                                <input type="checkbox" name="store_{{store.id}}" value="{{store.id}}" class="hidden" autocomplete="off">
+                            </label>
                         </div>
                     </div>
+                    
                 </md-content>
 	    </div>
          </div> 

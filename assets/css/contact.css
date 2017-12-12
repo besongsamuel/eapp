@@ -1172,26 +1172,31 @@ acronym {
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+.contactus-box
+{
+    padding: 20px;
+}
 
 .about-widget {
     position: relative;
 }
 .about-widget img {
     width: 100%;
+}
+
+.contact-us
+{
+    background-repeat: no-repeat;
+    background-size: cover;
+    padding-top: 60px;
+}
+
+.contact-us-form
+{
+    padding : 10px; 
+    background-color: white; 
+    margin-bottom: 20px;
+    margin-top: 20px;
 }
 
 
