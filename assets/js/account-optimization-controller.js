@@ -58,7 +58,7 @@ angular.module('eappApp').controller('AccountOptimizationController', ["$scope",
                 
                 for(var x in $scope.userOptimization.currentWeek)
                 {
-                    data.push({ value : $scope.userOptimization.currentWeek[x].price_optimization, day : $scope.userOptimization.currentWeek[x].day});
+                    data.push({ Total : $scope.userOptimization.currentWeek[x].price_optimization, Day : $scope.userOptimization.currentWeek[x].day});
                 }
                 
                 break;
@@ -68,7 +68,7 @@ angular.module('eappApp').controller('AccountOptimizationController', ["$scope",
                 
                 for(var x in $scope.userOptimization.currentMonth)
                 {
-                    data.push({ value : $scope.userOptimization.currentMonth[x].price_optimization, week : $scope.userOptimization.currentMonth[x].week});
+                    data.push({ Total : $scope.userOptimization.currentMonth[x].price_optimization, Week : $scope.userOptimization.currentMonth[x].week});
                 }
                 break;
             case 2:
@@ -77,7 +77,7 @@ angular.module('eappApp').controller('AccountOptimizationController', ["$scope",
                 
                 for(var x in $scope.userOptimization.currentYear)
                 {
-                    data.push({ value : $scope.userOptimization.currentYear[x].price_optimization, month : $scope.userOptimization.currentYear[x].month});
+                    data.push({ Total : $scope.userOptimization.currentYear[x].price_optimization, Month : $scope.userOptimization.currentYear[x].month});
                 }
                 break;
             default:
@@ -85,7 +85,7 @@ angular.module('eappApp').controller('AccountOptimizationController', ["$scope",
                 
                 for(var x in $scope.userOptimization.overall)
                 {
-                    data.push({ value : $scope.userOptimization.overall[x].price_optimization, index : x });
+                    data.push({ Total : $scope.userOptimization.overall[x].price_optimization, Day : $scope.userOptimization.overall[x].date_created });
                 }
                 break;
         }
