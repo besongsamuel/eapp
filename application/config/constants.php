@@ -95,7 +95,8 @@ defined('ASSETS_DIR_PATH')          OR define('ASSETS_DIR_PATH', $_SERVER['DOCUM
 defined('STORE_LOGO_WIDTH')         OR define('STORE_LOGO_WIDTH', 1024); // highest automatically-assigned error code
 defined('STORE_LOGO_HEIGHT')        OR define('STORE_LOGO_HEIGHT', 720); // highest automatically-assigned error code
 
-defined('POST_TYPE_STAT')        OR define('POST_TYPE_STAT', 1);
+defined('POST_TYPE_STAT')           OR define('POST_TYPE_STAT', 1);
+defined('OtIPRIX_ADDRESS')          OR define('OtIPRIX_ADDRESS', '550 Avenue Saint-Dominique, Saint-Hyacinthe, J2S 5M6');
 
 
 
