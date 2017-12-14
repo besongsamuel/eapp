@@ -57,9 +57,40 @@ angular.module('eappApp').controller('ShopController', ["$scope", "$q", "$http",
         }
     };
 
-    $scope.add_to_cart = function(product_id) 
+    $rootScope.add_product_to_cart = function(product_id, store_product_id = -1, product_quantity = 1)
     {
-        $scope.addProductToCart(product_id);
+        if(typeof store_product_id === 'undefined')
+        {
+            store_product_id = -1;
+        }
+        
+        var addToCartPromise = eapp.addToCart(
+                product_id, 
+                store_product_id, 
+                $rootScope.isUserLogged ? $rootScope.loggedUser.profile.longitude : $rootScope.longitude, 
+                $rootScope.isUserLogged ? $rootScope.loggedUser.profile.latitude : $rootScope.latitude, 
+                product_quantity);
+        
+        addToCartPromise.then(function(response)
+        {
+            if(Boolean(response.data.success))
+            {
+                var cart_item = 
+                {
+                    rowid : response.data.rowid,
+                    store_product : response.data.store_product,
+                    top_five_store_products : [],
+                    quantity : product_quantity
+                };
+
+                if($rootScope.cart === null || typeof $rootScope.cart === 'undefined')
+                {
+                    $rootScope.cart = [];
+                }
+
+                $rootScope.cart.push(cart_item);
+            }
+        });
     };
     
     $scope.remove_from_cart = function(product_id)

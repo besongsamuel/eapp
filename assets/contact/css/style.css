@@ -5547,21 +5547,7 @@ div.cart-collaterals ul.products li.product:hover .add_to_cart_button{background
 	filter: sepia(0);
 }
 
-.contact-us
-{
-    background-image: url("../img/contact-us-background.jpg");
-    background-repeat: no-repeat;
-    background-size: cover;
-    padding-top: 60px;
-}
 
-.contact-us-form
-{
-    padding : 30px; 
-    background-color: white; 
-    margin-bottom: 100px;
-    margin-top: 50px;
-}
 
 .actions-section
 {

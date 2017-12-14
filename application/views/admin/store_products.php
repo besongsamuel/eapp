@@ -35,14 +35,7 @@
       </div>
     </md-toolbar>
 
-    <md-toolbar class="md-table-toolbar alternate" ng-show="selected.length">
-      <div class="md-toolbar-tools" layout-align="space-between">
-        <div>{{selected.length}} {{selected.length > 1 ? 'items' : 'item'}} selected</div>
-        <md-button class="md-icon-button" ng-click="add_to_cart($event)">
-            <md-icon>add_shopping_cart</md-icon>
-        </md-button>
-      </div>
-    </md-toolbar>
+
         <table  md-table cellspacing="0" ng-model="selected"  md-progress="promise">
             <thead md-head md-order="query.order" md-on-reorder="getProducts">
                 <tr md-row>
@@ -71,7 +64,7 @@
                     </td>
 
                     <td md-cell width="30%">
-                        <p><b><a ng-href="<?php echo site_url("admin/create_store_product?product"); ?>={{store_product.id}}">{{products[store_product.product_id].name}}</a></b></p>
+                        <p><b><a ng-href="<?php echo site_url("admin/create_store_product?product"); ?>={{store_product.id}}">{{store_product.product.name}}</a></b></p>
                         <p>Size : {{store_product.size}}</p>
                         <p>{{store_product.format}} {{store_product.unit.name}}</p>
                     </td>

@@ -10,6 +10,7 @@ jQuery(document).ready(function($){
         autoplayHoverPause:true,
         margin:0,
         responsiveClass:true,
+        navText : ['Précédent', 'Suivant'],
         
         responsive:{
             0:{
@@ -231,6 +232,18 @@ eappApp.factory('eapp', ['$http','$rootScope', '$mdDialog', function($http, $roo
         return $http.post(eappService.getSiteUrl().concat("cart/remove"), formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}});
     };
     
+    eappService.addToCart = function(productID, storeProductID, longitude, latitude, quantity)
+    {
+        var formData = new FormData();
+        formData.append("product_id", productID);
+        formData.append("store_product_id", storeProductID);
+        formData.append("longitude", longitude);
+        formData.append("latitude", latitude);
+        formData.append("quantity", quantity);
+        
+        return $http.post(eappService.getSiteUrl().concat("cart/insert"), formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}});
+    };
+    
     eappService.clearCart = function()
     {
         return $http.post(eappService.getSiteUrl().concat("cart/destroy"), null);
@@ -253,8 +266,8 @@ eappApp.factory('eapp', ['$http','$rootScope', '$mdDialog', function($http, $roo
     {
         var formData = new FormData();
         formData.append("distance", distance);
-        formData.append("longitude", $rootScope.longitude);
-        formData.append("latitude", $rootScope.latitude);
+        formData.append("longitude", parseFloat($rootScope.longitude));
+        formData.append("latitude", parseFloat($rootScope.latitude));
         
         return $http.post(eappService.getSiteUrl().concat("eapp/get_close_retailers"), formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}});
     };
@@ -443,6 +456,11 @@ eappApp.factory('eapp', ['$http','$rootScope', '$mdDialog', function($http, $roo
         return $http.post(eappService.getSiteUrl().concat("eapp/get_product_unit_compareunit"), null);
     };
     
+    eappService.getUserOptimizations = function()
+    {
+        return $http.post(eappService.getSiteUrl().concat("eapp/get_user_optimizations"), null);
+    };
+    
     eappService.getStoreProduct = function(spID)
     {
         var formData = new FormData();
@@ -553,21 +571,6 @@ eappApp.controller('ProductsController', ['$scope','$rootScope', function($scope
      * Products currently in the cart
      */
     $scope.cart_items = [];
-    
-    $scope.add_to_cart = function(product_id)
-    {
-        
-    };
-    
-    $scope.remove_to_cart = function(product_id)
-    {
-        
-    };
-    
-    $scope.cart_total = function()
-    {
-        
-    };
   
 }]);
 

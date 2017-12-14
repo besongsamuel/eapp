@@ -73,7 +73,7 @@ class Eapp extends CI_Controller
         
         $coords = array
         (
-            'longitude' => $this->input->post("distance"),
+            'longitude' => $this->input->post("longitude"),
             'latitude' => $this->input->post("latitude")
          );
         
@@ -297,6 +297,13 @@ class Eapp extends CI_Controller
         $id = $this->input->post("id");
         
         echo json_encode($this->admin_model->getStoreProduct($id, false, false));
+    }
+    
+    public function get_user_optimizations() 
+    {
+        $user_optimization = $this->account_model->get_user_optimizations($this->user);
+        
+        echo json_encode($user_optimization);
     }
    
 }

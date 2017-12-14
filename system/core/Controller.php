@@ -125,7 +125,7 @@ class CI_Controller {
             
             if(($this->user == null) && ($this->router->fetch_method() != 'page_under_construction' && $this->router->fetch_method() != 'perform_login'))
             {
-                header('Location: '.  site_url('/account/page_under_construction'));
+                //header('Location: '.  site_url('/account/page_under_construction'));
             }
             $this->sid = $this->config->item("sid");
             
@@ -235,13 +235,17 @@ class CI_Controller {
         
         public function inUserList($product_id) 
         {
-            foreach ($this->user->grocery_list as $product) 
+            if(isset($this->user))
             {
-                if($product_id == $product->id)
+                foreach ($this->user->grocery_list as $product) 
                 {
-                    return true;
+                    if($product_id == $product->id)
+                    {
+                        return true;
+                    }
                 }
             }
+            
             return false;
         }
         
@@ -277,8 +281,25 @@ class CI_Controller {
             
             echo json_encode(true);
 	}
-        
-        private function SendMessage($number, $message)
+	
+	
+	private function SendMessage($number, $message)
+	{
+            $client = new Client($this->sid, $this->token);	
+
+            $client->messages->create(		
+                // the number you'd like to send the message to		
+                str_replace("+", "", $number),		
+                array(		
+                    // A Twilio phone number you purchased at twilio.com/console		
+                    'from' => '+14388008069',		
+                    // the body of the text message you'd like to send		
+                    'body' => $message		
+                )		
+            );	
+	}
+
+        private function send_message_opsolete($number, $message)
         {
             /* Create a TCP/IP socket. */
             $socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);

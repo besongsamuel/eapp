@@ -23,7 +23,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | a PHP script and you can easily do that on your own.
 |
 */
-$config['base_url'] = 'http://localhost/eapp';
+//$config['base_url'] = 'http://localhost/eapp';
+$config['base_url'] =  (ENVIRONMENT == 'production') ? 'http://otiprix.com' : 'http://localhost/eapp';
 
 /*
 |--------------------------------------------------------------------------
@@ -527,5 +528,5 @@ $config['rewrite_short_tags'] = FALSE;
 $config['proxy_ips'] = '';
 
 // twirlio
-$config['sid'] = 'AC3afe436140cc93641a56ed107ae5d0f7';
-$config['token'] = 'c6f3904ebf1cc5f4028c69956c6ad1f7';
+$config['sid'] = '';
+$config['token'] = '';

@@ -69,8 +69,10 @@ angular.module("eappApp").controller("AboutUsController", ["$rootScope", "$scope
 	});
 	
         // Accordion Toggle Items
-	var iconOpen = 'fa fa-plus',
+
+	      var iconOpen = 'fa fa-plus',
         iconClose = 'fa fa-minus';
+
         $(document).on('show.bs.collapse hide.bs.collapse', '.accordion', function (e) {
             var $target = $(e.target);
             $target.siblings('.accordion-heading')

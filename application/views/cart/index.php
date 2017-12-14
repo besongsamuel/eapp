@@ -86,7 +86,7 @@
                         </td>
 
                         <td md-cell width = "30%">
-                            <p><b><a href ng-click="viewProduct(item.store_product.id, $event)">{{item.store_product.name}}</a></b></p>
+                            <p><b><a href ng-click="viewProduct(item.store_product.id, $event)">{{item.store_product.product.name}}</a></b></p>
                             <p ng-show="item.different_store_products.length !== 0">{{item.store_product.retailer.name}} | <a href ng-click="changeProductStore($event, item)">Changer Marchand</a></p>
                             <p ng-show="item.store_product.size">{{item.store_product.size}}</p>
                             <p ng-show="item.store_product.brand">{{item.store_product.brand.name}}</p>
@@ -223,7 +223,7 @@
                         <md-icon><i class="material-icons">print</i></md-icon>
                     </md-button>
 
-                    <md-button class="md-fab md-otiprix" ng-click="sendListAsSMS($event)" aria-label="Envoyer à votre téléphone">
+                    <md-button class="md-fab md-otiprix" ng-click="sendListAsSMS($event)" aria-label="Envoyer à votre téléphone" ng-disabled="!isUserLogged">
                         <md-tooltip
                             md-direction="bottom">
                             Envoyer par sms
@@ -239,7 +239,7 @@
                         <md-icon><i class="material-icons">share</i></md-icon>
                     </md-button>
 
-                    <md-button class="md-fab md-otiprix" aria-label="Envoyer à votre courrier électronique" ng-click="sendListAsEmail($event)">
+                    <md-button class="md-fab md-otiprix" aria-label="Envoyer à votre courrier électronique" ng-click="sendListAsEmail($event)"  ng-disabled="!isUserLogged">
                         <md-tooltip
                             md-direction="bottom">
                             Envoyer à votre courrier électronique
