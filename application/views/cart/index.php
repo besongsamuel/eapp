@@ -75,7 +75,6 @@
                         </td>
                     </tr>
                     <tr  md-row md-select="item"  md-select-id="name" class="cart_item" ng-repeat="item in departmentStore.products">
-
                         <td md-cell>
                             <a title="Remove this item" class="remove" href ng-click="removeFromCart(item.product.id)">×</a> 
                         </td>
@@ -86,10 +85,11 @@
                         </td>
 
                         <td md-cell width = "30%">
-                            <p><b><a href ng-click="viewProduct(item.store_product.id, $event)">{{item.store_product.product.name}}</a></b></p>
+                            
+                            <p><b><a href ng-click="viewProduct(item.store_product.id, $event)">{{item.store_product.product.name | uppercase}}</a></b></p>
                             <p ng-show="item.different_store_products.length !== 0">{{item.store_product.retailer.name}} | <a href ng-click="changeProductStore($event, item)">Changer Marchand</a></p>
                             <p ng-show="item.store_product.size">{{item.store_product.size}}</p>
-                            <p ng-show="item.store_product.brand">{{item.store_product.brand.name}}</p>
+                            <p ng-show="item.store_product.brand">{{item.store_product.brand.name | uppercase}}</p>
                             <p>
                                 {{item.store_product.format}} <span ng-show="item.store_product.unit"> {{item.store_product.unit.name}}</span>
                                 <span ng-hide="item.different_format_products.length === 0">
@@ -253,6 +253,8 @@
         </div>
     </div>
 </div>
+
+
 
 
 

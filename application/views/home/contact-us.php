@@ -22,7 +22,7 @@
                     <div class="col-md-12" ng-controller="ContactUsController">
                         <div class="col-md-12 col-sm-12 contact-us-form">
                             
-                            <div class="col-md-4 col-xs-12">
+                            <div class="col-md-4 col-sm-12">
                                 <div class="services_vertical horizontal_contact">
                                     
                                     <div class="service_vertical_box">
