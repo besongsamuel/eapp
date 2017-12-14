@@ -11,10 +11,10 @@ angular.module("eappApp").controller("AboutUsController", ["$rootScope", "$scope
     $scope.Init = function()
     {
         $('.collapse').on('show.bs.collapse', function() {
-            $(this).parent().find(".fa-plus").removeClass("fa-plus").addClass("fa-minus");
+            $(this).parent().find(".fa-plus").removeClass("fa-plus").addClass("fa-plus");
         }).on('hide.bs.collapse', function() 
         {
-            $(this).parent().find(".fa-minus").removeClass("fa-minus").addClass("fa-plus");
+            $(this).parent().find(".fa-plus").removeClass("fa-plus").addClass("fa-minus");
         });
         
         // Page Preloader
@@ -69,8 +69,10 @@ angular.module("eappApp").controller("AboutUsController", ["$rootScope", "$scope
 	});
 	
         // Accordion Toggle Items
-	var iconOpen = 'fa fa-minus',
-        iconClose = 'fa fa-plus';
+
+	      var iconOpen = 'fa fa-plus',
+        iconClose = 'fa fa-minus';
+
         $(document).on('show.bs.collapse hide.bs.collapse', '.accordion', function (e) {
             var $target = $(e.target);
             $target.siblings('.accordion-heading')
