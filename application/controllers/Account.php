@@ -112,67 +112,39 @@ class Account extends CI_Controller {
     
     public function send_password_reset_email($reset_token) 
     {
-        $encoding = "utf-8";
-        $from_name = 'Otiprix';
-        $from_mail = 'infos@otiprix.com';
         $mail_subject = 'Réinitialisation de mot de passe';
-
-        // Preferences for Subject field
-        $subject_preferences = array(
-            "input-charset" => $encoding,
-            "output-charset" => $encoding,
-            "line-length" => 76,
-            "line-break-chars" => "\r\n"
-        );
-
-        // Mail header
-        $header = "Content-type: text/html; charset=".$encoding." \r\n";
-        $header .= "From: ".$from_name." <".$from_mail."> \r\n";
-        $header .= "MIME-Version: 1.0 \r\n";
-        $header .= 'Reply-To: infos@otiprix.com' . "\r\n";
-        $header .= "Content-Transfer-Encoding: 8bit \r\n";
-        $header .= "Date: ".date("r (T)")." \r\n";
-        $header .= iconv_mime_encode("Subject", $mail_subject, $subject_preferences);
         
         $reset_url = html_entity_decode(site_url('/account/reset_password?reset_token=').$reset_token);
         
-        $message = '<div style="padding: 30px; margin-left: 20px; margin-right: 20px;">';
-        $message .= '<p style="font-size: 12px; color : #1abc9c; text-align: center;">L’ÉPICERIE AU PETIT PRIX</p>';
-        $message .= '<p><b>Bonjour <span style="color: #1abc9c;">'.$this->user->profile->lastname.' '.$this->user->profile->firstname.'</span></b></p>';
-        $message .= '<p>';
-        $message .= 'Vous avez récemment demandé à réinitialiser votre mot de passe pour votre compte Otiprix. Utilisez le bouton ci-dessous pour le réinitialiser. Cette réinitialisation de mot de passe n\'est valide que pour les 24h suivantes.';
-        $message .= '</p>';
-        $message .= '<table style="width : 100%;">';
-        $message .= '    <tbody>';
-        $message .= '        <tr style="width : 100%;">';
-        $message .= '        <td width="20%"></td>';
-        $message .= '        <td width="20%"></td>';
-        $message .= '        <td width="20%">';
-        $message .= '            <a href="'.$reset_url.'">';
-        $message .= '                <input type="button" value="Réinitialisez votre mot de passe" style="width : 100%; color: #fff; background-color: #1abc9c;" />';
-        $message .= '            </a></td>';
-        $message .= '        <td width="20%"></td>';
-        $message .= '        <td width="20%"></td>';
-        $message .= '        </tr>';
-        $message .= '    </tbody>';
-        $message .= '</table>';
-        $message .= '<p>';
-        $message .= '    Si vous n\'avez pas demandé de réinitialisation de mot de passe, ignorez cet e-mail ou contactez l\'assistance si vous avez des questions.';
-        $message .= '</p>';
-        $message .= '<br>';
-        $message .= '<p>Merci,</p>';
-        $message .= '<p>Equipe Otiprix</p>';
-
-        $message .= '<div style="color : #1abc9c; text-align: center; border: 1px solid #1abc9c; padding: 30px; margin-left: 20px; margin-right: 20px;">';
-        $message .= '    <p><b>Votre numéro de client : <span style="color: #1abc9c;">'.$this->user->account_number.'</span></b></p>';
-        $message .= '    <p><b>8h30 à 20h du lundi au vendredi : <a href="">Infos@otiprix.com</a></b></p>';
-        $message .= '    <a><input type="button" value="Commencez a reduire votre facture"/></a>';
-        $message .= '</div>';
-        $message .= '<br>';
-        $message .= '<p style="font-size: 10px; float: right; margin-left: 20px; margin-right: 20px;">Copyright © 2017 OtiPrix. All Rights Reserved.</p>';
-        $message .= '</div>';
+        $message = 
+                '<table width="100%" style="padding: 2%; margin-left: 2%; margin-right: 2%;">
+                    <tbody>
+                        <tr><td width="100%" height="18;"><p style="font-size: 12px; color : #1abc9c; text-align: center;">L’ÉPICERIE AU PETIT PRIX</p></td></tr>
+                        <tr><td width="100%" height="32"></td></tr>
+                        <tr><td><p><b>Bonjour, <span style="color: #1abc9c;">Franck Djea</span></b></p></td></tr>
+                        <tr><td width="100%" height="8"></td></tr>
+                        <tr><td><p>Vous avez récemment demandé à réinitialiser votre mot de passe pour votre compte <a href="http://www.otiprix.com">OtiPrix.</a> Utilisez le bouton ci-dessous pour le réinitialiser. Cette réinitialisation de mot de passe n\'est valide que pour les 24h suivantes.</p></td></tr>
+                        <tr><td width="100%" height="8"></td></tr>
+                        <tr>
+                            <td width="100%" style="text-align: center;">
+                                <a href="'.$reset_url.'">
+                                    <input type="button" value="Réinitialisez votre mot de passe" style="height: 44px; width : 25%; color: #fff; background-color: #1abc9c; font-size: 14px;" />
+                                </a>
+                            </td>
+                        </tr>
+                        <tr><td width="100%" height="32"></td></tr>
+                        <tr><td><p>Si vous n\'avez pas demandé de réinitialisation de mot de passe, ignorez cet e-mail ou contactez l\'assistance si vous avez des questions.</p></td></tr>
+                        <tr><td width="100%" height="32"></td></tr>
+                        <tr><td><p>Merci,</p></td></tr>
+                        <tr><td><p>Equipe Otiprix</p></td></tr>
+                        <tr><td width="100%" height="32"></td></tr>
+                    </tbody>
+                </table>';
         
-        mail($this->user->email, $mail_subject, $message, $header);
+        $message .= $this->get_otiprix_mail_footer();
+        
+        mail($this->user->email, $mail_subject, $message, $this->get_otiprix_header());
+        
     }
     
     public function reset_password() 
@@ -461,29 +433,24 @@ class Account extends CI_Controller {
 
         $login_link = site_url("/account/login");
         
-        $message = "";
-        $message .= '    <div>';
-        $message .= '    <div style="padding: 30px; margin-left: 20px; margin-right: 20px;">';
-        $message .= '    <p style="font-size: 12px; color : #1abc9c; text-align: center;">L’ÉPICERIE AU PETIT PRIX</p>';
-
-        $message .= '    <h1>Bienvenue</h1>';
-        $message .= '    <p><b>et merci, <span style="color: #1abc9c;">'.$this->user->profile->firstname.'</span></b></p>';
-        $message .= '    <br>';
-        $message .= '    <br>';
-        $message .= '    <p>Merci pour la confiance accordée à OtiPrix.com. Cet email confirme la création de votre compte associé à votre adresse courriel : <span style="color: #1abc9c;">djea_franck@yahoo.fr.</span></p>';
-        $message .= '    <p>N\’attendez pas, <a href="'.$login_link.'">connectez-vous</a>, personnalisez votre compte et commencez à explorer. Vous trouverez en un seul clic les vrais rabais dans les grandes surfaces et dans tous les petits magasins proches de vous. Faites votre liste d’épicerie et réduisez votre facture d’épicerie en un temps record grâce à OtiPrix.com. N’attendez plus, commencez dès aujourd\'hui ici.</p>';
-        $message .= '    <p>Pour toute assistance ou commentaires, écrivez-nous à l’adresse ci-dessous et nous vous mettrons sur la bonne voie.</p>';
-        $message .= '    <br>';
-        $message .= '    <p>Merci de ne pas répondre à ce message : nous ne traitons pas les mails envoyés à cette adresse.</p>';
-        $message .= '    <br>';
-        $message .= '    </div>';
-
-        $message .= '    <div style="color : #1abc9c; text-align: center; border: 1px solid #1abc9c; padding: 30px; margin-left: 20px; margin-right: 20px;">';
-        $message .= '    <p><b>Votre numéro de client : <span style="color: #1abc9c;">'.$this->user->account_number.'</span></b></p>';
-        $message .= '    <p><b>8h30 à 20h du lundi au vendredi : <a href>Infos@otiprix.com</a></b></p>';
-        $message .= '    <a><input type="button" value="Commencez a reduire votre facture"/></a>';
-        $message .= '    </div>';
-        $message += $this->get_otiprix_mail_footer();
+        $message =  
+                '<table width="100%" style="padding: 2%; margin-left: 2%; margin-right: 2%;">
+                    <tbody>
+                        <tr><td width="100%" height="18;"><p style="font-size: 12px; color : #1abc9c; text-align: center;">L\’ÉPICERIE AU PETIT PRIX</p></td></tr>
+                        <tr><td width="100%" height="32"></td></tr>
+                        <tr><td><h1>Bienvenue,</h1></td></tr>
+                        <tr><td><p><b>et merci, <span style="color: #1abc9c;">'.$this->user->profile->lastname.' '.$this->user->profile->firstname.'</span></b></p></td></tr>
+                        <tr><td width="100%" height="8"></td></tr>
+                        <tr><td><p>Merci pour la confiance accordée à <a href="http://www.otiprix.com">OtiPrix.</a> Cet email confirme la création de votre compte associé à votre adresse courriel : <span style="color: #1abc9c;">'.$this->user->email.'.</span></p></td></tr>
+                        <tr><td><p>N’attendez pas, <a href="'.$login_link.'">connectez-vous</a>, personnalisez votre compte et commencez à explorer. Vous trouverez en un seul clic les vrais rabais dans les grandes surfaces et dans tous les petits magasins proches de vous. Faites votre liste d’épicerie et réduisez votre facture d’épicerie en un temps record grâce à <a href="http://www.otiprix.com">OtiPrix.</a> N’attendez plus, commencez dès aujourd\'hui ici.</p></td></tr>
+                        <tr><td><p>Pour toute assistance ou commentaires, écrivez-nous à l’adresse ci-dessous et nous vous mettrons sur la bonne voie.</p></td></tr>
+                        <tr><td width="100%" height="32"></td></tr>
+                        <tr><td><p>Merci de ne pas répondre à ce message : nous ne traitons pas les mails envoyés à cette adresse.</p></td></tr>
+                        <tr><td width="100%" height="32"></td></tr>
+                    </tbody>
+                </table>';
+        
+        $message .= $this->get_otiprix_mail_footer();
         
         mail($this->user->email, $mail_subject, $message, $this->get_otiprix_header());
     }
@@ -695,35 +662,47 @@ class Account extends CI_Controller {
         $unsubscribe_link = site_url("/account/unsubscribe");
         
         $output = '
-        
-        <table align="center" width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#f1f1f1"><tbody><tr><td width="100%" align="center">
-        <table width="650" align="center" border="0" cellspacing="0" cellpadding="0">
-        <tbody>
-            <tr><td width="100%" height="32"></td></tr>
-            <tr><td align="center"><span style="color:#75787D;font-size:12px;line-height:18px;font-family:\'Roboto\', Helvetica, Arial, sans-serif;" class="yiv7776326831fallback-text yiv7776326831appleLinksGrey">© 2017 Otiprix Technology. All Rights Reserved.<br>'.OTIPRIX_ADDRESS.'</span></td></tr>
-            <tr><td height="8" width="100%"></td></tr>
-            <tr><td align="center">
-                <span style="color:#75787D;font-size:12px;line-height:18px;">
-                    <a rel="nofollow" target="_blank" href onclick="window.open(\'<?php echo base_url("/assets/files/privacy_policy.pdf")?>\', \'_blank\', \'fullscreen=yes\'); return false;" style="color:#75787D;text-decoration:underline;font-family:\'Roboto\', Helvetica, Arial, sans-serif;" class="yiv7776326831fallback-text">Privacy Policy</a> | 
-                    <a rel="nofollow" target="_blank" href onclick="window.open(\'<?php echo base_url("/assets/files/terms_and_conditions.pdf")?>\', \'_blank\', \'fullscreen=yes\'); return false;" style="color:#75787D;text-decoration:underline;font-family:\'Roboto\', Helvetica, Arial, sans-serif;" class="yiv7776326831fallback-text">Terms and Conditions</a> |
-                    <a rel="nofollow" target="_blank" href="'.$unsubscribe_link.'" style="color:#75787D;text-decoration:underline;font-family:\'Roboto\', Helvetica, Arial, sans-serif;" class="yiv7776326831fallback-text">Unsubscribe</a> 
-                </span></td></tr>
-            <tr><td height="16" width="100%"></td></tr>
-            <tr><td align="center" width="100%">
-                    <table width="auto" align="center" border="0" cellspacing="0" cellpadding="0"><tbody><tr><td>
-                                <a rel="nofollow" target="_blank" href="https://www.facebook.com/otiprix.otiprix.1"><img src="https://loebig.files.wordpress.com/2013/10/facebook2.png" width="24" alt="Facebook" border="0"></a>&nbsp;
-                                <a rel="nofollow" target="_blank" href="https://www.youtube.com/channel/UCbwxS8s1WKYgGCRzd9vIl5A"><img width="24" src="https://loebig.files.wordpress.com/2013/10/youtube2.png" alt="Instagram" border="0"></a>&nbsp;
-                            </td>
-                            <td width="16"></td>
-                            
-                        </tr></tbody>
-                    </table>
-                </td>
-            </tr>
-            <tr><td width="100%" height="32"></td></tr></tbody></table></td></tr></tbody></table>';
+                
+            <table align="center" width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#f1f1f1">
+                <tbody>
+                    <tr>
+                        <td width="100%" align="center">
+                            <table width="650" align="center" border="0" cellspacing="0" cellpadding="0">
+                                <tbody>
+                                    <tr><td width="100%" height="32"></td></tr>
+                                    <tr><td align="center"><span style="color:#75787D;font-size:12px;line-height:18px;font-family:\'Roboto\', Helvetica, Arial, sans-serif;" class="yiv7776326831fallback-text yiv7776326831appleLinksGrey">© 2017 Otiprix Technology. All Rights Reserved.<br>'.OTIPRIX_ADDRESS.'</span></td></tr>
+                                    <tr><td align="center"><span style="color:#75787D;font-size:12px;line-height:18px;font-family:\'Roboto\', Helvetica, Arial, sans-serif;" class="yiv7776326831fallback-text yiv7776326831appleLinksGrey">8h30 à 20h du lundi au vendredi : infos@otiprix.com</span></td></tr>
+                                    <tr><td height="8" width="100%"></td></tr>
+                                    <tr><td align="center">
+                                        <span style="color:#75787D;font-size:12px;line-height:18px;">
+                                            <a rel="nofollow" target="_blank" href onclick="window.open("www.otiprix.com/assets/files/privacy_policy.pdf", "_blank", "fullscreen=yes"); return false;" style="color:#75787D;text-decoration:underline;font-family:\'Roboto\', Helvetica, Arial, sans-serif;" class="yiv7776326831fallback-text">Privacy Policy</a> | 
+                                            <a rel="nofollow" target="_blank" href onclick="window.open("www.otiprix.com/assets/files/terms_and_conditions.pdf", "_blank", "fullscreen=yes"); return false;" style="color:#75787D;text-decoration:underline;font-family:\'Roboto\', Helvetica, Arial, sans-serif;" class="yiv7776326831fallback-text">Terms and Conditions</a> |
+                                            <a rel="nofollow" target="_blank" href="'.$unsubscribe_link.'" style="color:#75787D;text-decoration:underline;font-family:\'Roboto\', Helvetica, Arial, sans-serif;" class="yiv7776326831fallback-text">Unsubscribe</a> 
+                                        </span></td></tr>
+                                    <tr><td height="16" width="100%"></td></tr>
+                                    <tr><td align="center" width="100%">
+                                        <table width="auto" align="center" border="0" cellspacing="0" cellpadding="0">
+                                            <tbody>
+                                                <tr>
+                                                    <td>
+                                                        <a rel="nofollow" target="_blank" href="https://www.facebook.com/otiprix.otiprix.1"><img src="https://loebig.files.wordpress.com/2013/10/facebook2.png" width="24" alt="Facebook" border="0"></a>&nbsp;
+                                                        <a rel="nofollow" target="_blank" href="https://www.youtube.com/channel/UCbwxS8s1WKYgGCRzd9vIl5A"><img width="24" src="https://loebig.files.wordpress.com/2013/10/youtube2.png" alt="Instagram" border="0"></a>&nbsp;
+                                                    </td>
+                                                    <td width="16"></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                    </tr>
+                                    <tr><td width="100%" height="32"></td></tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>';
         
         return $output;
     }
-    
     
 }

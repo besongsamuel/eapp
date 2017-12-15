@@ -217,7 +217,7 @@ class Account_model extends CI_Model
         
 		$optimizations->checkDay = $this->db->query("SELECT ROUND(AVG(price_optimization), 2) AS total,DATE_FORMAT(date_created, '%d-%m-%Y') AS date FROM ".USER_OPTIMIZATION_TABLE." WHERE price_optimization > 1 AND user_account_id = ".$user->id." AND YEARWEEK(date_created) = YEARWEEK(NOW()) GROUP BY DATE(date_created) ORDER BY DATE(date_created)")->result();
 		
-		$optimizations->checkWeek = $this->db->query("SELECT ROUND(AVG(price_optimization), 2) AS total, DATE_FORMAT(str_to_date(concat(yearweek(date_created), ' monday'), '%X%V %W'), '%d-%m-%Y')  AS date FROM ".USER_OPTIMIZATION_TABLE." WHERE price_optimization > 1 AND user_account_id = ".$user->id." AND MONTH(date_created) = MONTH(NOW()) GROUP BY Yearweek(date_created) ORDER BY Yearweek(date_created)")->result();
+		$optimizations->checkWeek = $this->db->query("SELECT ROUND(AVG(price_optimization), 2) AS total, str_to_date(concat(yearweek(date_created), ' monday'), '%X%V %W') AS date FROM ".USER_OPTIMIZATION_TABLE." WHERE price_optimization > 1 AND user_account_id = ".$user->id." AND MONTH(date_created) = MONTH(NOW()) GROUP BY Yearweek(date_created) ORDER BY Yearweek(date_created)")->result();
 		
 		$optimizations->checkMonth = $this->db->query("SELECT ROUND(AVG(price_optimization), 2) AS total,DATE_FORMAT(date_created, '%m-%Y') AS date FROM ".USER_OPTIMIZATION_TABLE." WHERE price_optimization > 1 AND user_account_id = ".$user->id." AND YEAR(date_created) = YEAR(NOW()) GROUP BY date ORDER BY MONTH(date_created)")->result();
         
