@@ -55,29 +55,30 @@ angular.module('eappApp').controller('AccountOptimizationController', ["$scope",
             case 0:
                 // Set week data
                 settings.header = "Économies cette semaine";
-                
-                for(var x in $scope.userOptimization.currentWeek)
+				
+				for(var x in $scope.userOptimization.checkDay)
                 {
-                    data.push({ Total : $scope.userOptimization.currentWeek[x].price_optimization, Day : $scope.userOptimization.currentWeek[x].day});
+                    data.push({ Total : $scope.userOptimization.checkDay[x].total, Day : $scope.userOptimization.checkDay[x].date});
                 }
-                
+               
                 break;
             case 1:
                 // Set month data
                 settings.header = "Économies ce mois";
                 
-                for(var x in $scope.userOptimization.currentMonth)
+                for(var x in $scope.userOptimization.checkWeek)
                 {
-                    data.push({ Total : $scope.userOptimization.currentMonth[x].price_optimization, Week : $scope.userOptimization.currentMonth[x].week});
+                    data.push({ Total : $scope.userOptimization.checkWeek[x].total, Week : $scope.userOptimization.checkWeek[x].date});
                 }
+                
                 break;
             case 2:
                 // Set Year data
                 settings.header = "Économies cette année";
                 
-                for(var x in $scope.userOptimization.currentYear)
+                for(var x in $scope.userOptimization.checkMonth)
                 {
-                    data.push({ Total : $scope.userOptimization.currentYear[x].price_optimization, Month : $scope.userOptimization.currentYear[x].month});
+                    data.push({ Total : $scope.userOptimization.checkMonth[x].total, Month : $scope.userOptimization.checkMonth[x].date});
                 }
                 break;
             default:
@@ -98,7 +99,87 @@ angular.module('eappApp').controller('AccountOptimizationController', ["$scope",
     $scope.showOptimization = function(ev, data, settings)
     {
         // Initialize data here
-        
+         switch(settings.header)
+        {
+            case "Économies cette semaine":
+				var Week = [];
+				var Total = [];
+
+				for(var i in data) {
+					Week.push("Le " + data[i].Day);
+					Total.push(data[i].Total);
+				}
+
+				var chartdata = {
+					labels: Week,
+					datasets : [
+						{
+							label: 'Economie cette semaine',
+							backgroundColor: 'rgba(200, 200, 200, 0.75)',
+							borderColor: 'rgba(200, 200, 200, 0.75)',
+							hoverBackgroundColor: 'rgba(200, 200, 200, 1)',
+							hoverBorderColor: 'rgba(200, 200, 200, 1)',
+							data: Total
+						}
+					]
+					};
+				break;
+				
+				
+			case "Économies ce mois":
+				var Month = [];
+				var Total = [];
+
+				for(var i in data) {
+					Month.push("Semaine du " + data[i].Week);
+					Total.push(data[i].Total);
+				}
+
+				var chartdata = {
+					labels: Month,
+					datasets : [
+						{
+							label: 'Economie ce mois',
+							backgroundColor: 'rgba(200, 200, 200, 0.75)',
+							borderColor: 'rgba(200, 200, 200, 0.75)',
+							hoverBackgroundColor: 'rgba(200, 200, 200, 1)',
+							hoverBorderColor: 'rgba(200, 200, 200, 1)',
+							data: Total
+						}
+					]
+					};
+				break;
+				
+			case "Économies cette année":
+				var Year = [];
+				var Total = [];
+
+				for(var i in data) {
+					Year.push("Mois: " + data[i].Month);
+					Total.push(data[i].Total);
+				}
+
+				var chartdata = {
+					labels: Year,
+					datasets : [
+						{
+							label: 'Economies cette année',
+							backgroundColor: 'rgba(200, 200, 200, 0.75)',
+							borderColor: 'rgba(200, 200, 200, 0.75)',
+							hoverBackgroundColor: 'rgba(200, 200, 200, 1)',
+							hoverBorderColor: 'rgba(200, 200, 200, 1)',
+							data: Total
+						}
+					]
+					};
+				break;
+			default:
+					//do nothing
+				break;
+				
+		}
+			
+		
         
         $scope.header = settings.header;
         $scope.data = data;
@@ -114,6 +195,31 @@ angular.module('eappApp').controller('AccountOptimizationController', ["$scope",
             preserveScope:true,
             scope : $scope,
             fullscreen: false,
+			onComplete : function()
+			{
+				// Quand le pop up s'affiche
+				var ctx = $("#mycanvas");
+
+				var barGraph = new Chart(ctx, {
+				type: 'bar',
+				data: chartdata,
+				
+				options: {
+                        title: {
+                          display: false
+                        },
+                        scales: {
+                          yAxes: [{
+                          	ticks: {
+                            	beginAtZero: true
+                            }
+                          }]
+                        }
+                      }
+				
+				
+			});	
+			},
             onRemoving : function()
             {
                 // Restore scroll

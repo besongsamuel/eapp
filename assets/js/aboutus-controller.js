@@ -96,4 +96,3 @@ angular.module("eappApp").controller("AboutUsController", ["$rootScope", "$scope
     });
     
 }]);
-
