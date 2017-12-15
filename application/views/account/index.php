@@ -15,6 +15,7 @@ $(document).ready(function()
 </script>
 
 <link rel="stylesheet" href="<?php echo base_url("assets/css/account.css")?>">
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
 
 <div class="product-big-title-area">
     <div class="container">
