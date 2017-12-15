@@ -348,9 +348,7 @@ body#boxed #wrapper {
 .about-widget img {
     width: 100%;
 }
-.bgpatttern {
-    background: url(http://localhost/eapp/assets/contact/img/pattern.png) repeat center center;
-}
+
 .nopadding {
     padding:0 !important;
 }
