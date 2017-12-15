@@ -54,13 +54,15 @@
 	<!-- Latest jQuery form server -->
     <script src="https://code.jquery.com/jquery.min.js"></script>
 	  
-	<!-- Angular Material requires Angular.js Libraries -->
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.5/angular.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.5/angular-animate.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.5/angular-aria.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.5/angular-messages.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.5/angular-sanitize.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.5/angular-route.min.js"></script>
+    <!-- Angular Material requires Angular.js Libraries -->
+    <script src="<?php echo base_url("assets/js/angular-1.6.6/angular.min.js")?>"></script>
+    <script src="<?php echo base_url("assets/js/angular-1.6.6/angular-animate.min.js")?>"></script>
+    <script src="<?php echo base_url("assets/js/angular-1.6.6/angular-aria.min.js")?>"></script>
+    <script src="<?php echo base_url("assets/js/angular-1.6.6/angular-messages.min.js")?>"></script>
+    <script src="<?php echo base_url("assets/js/angular-1.6.6/angular-sanitize.min.js")?>"></script>
+    <script src="<?php echo base_url("assets/js/angular-1.6.6/angular-route.min.js")?>"></script>
+        
+
     <script src="<?php echo base_url("assets/js/lf-ng-md-file-input.js")?>"></script>
 
     <!-- Angular Material Library -->

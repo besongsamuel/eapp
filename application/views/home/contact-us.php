@@ -22,7 +22,7 @@
                     <div class="col-md-12" ng-controller="ContactUsController">
                         <div class="col-md-12 col-sm-12 contact-us-form">
                             
-                            <div class="col-md-4 col-xs-12">
+                            <div class="col-md-4 col-sm-12">
                                 <div class="services_vertical horizontal_contact">
                                     
                                     <div class="service_vertical_box">
@@ -66,7 +66,7 @@
                                                     <strong>Erreur!</strong> {{errorMessage}}.
                                             </div>
 
-                                            <div class="col-sm-12">
+                                            <div class="col-sm-6">
                                                 <md-input-container class="md-block" flex-gt-xs>
                                                     <label>Nom</label>
                                                     <md-icon style="color: #1abc9c;"><i class="material-icons">person</i></md-icon>
@@ -77,7 +77,7 @@
                                                 </md-input-container>
                                             </div>
 
-                                            <div class="col-sm-12">
+                                            <div class="col-sm-6">
                                                 <md-input-container class="md-block" flex-gt-xs>
                                                     <label>Email</label>
                                                     <md-icon style="color: #1abc9c;"><i class="material-icons">email</i></md-icon>
@@ -104,7 +104,7 @@
                                                 <md-input-container class="md-block" flex-gt-xs>
                                                     <label>Commentaires</label>
                                                     <md-icon style="color: #1abc9c;"><i class="material-icons">comment</i></md-icon>
-                                                    <textarea name="contactComment" ng-model="contact.comment" md-maxlength="100" rows="5" md-select-on-focus required></textarea>
+                                                    <textarea name="contactComment" ng-model="contact.comment" md-maxlength="100" rows="3" md-select-on-focus required></textarea>
                                                     <div ng-messages="contactusForm.contactComment.$error">
                                                         <div ng-message="required">Veillez entrer un message.</div>
                                                     </div>

@@ -43,20 +43,20 @@
         <td  ng-show="showStoreLogo" md-cell><div class="admin-image"><a href=""><img alt="" ng-src="{{product.retailer.image}}"></a></div></td>
         <td md-cell><div class="admin-image"><a href=""><img alt="" ng-src="{{product.product.image}}"></a></div></td>
         <td md-cell>
-            <p><b><a  href ng-click="viewProduct(product.id, $event)">{{product.product.name}}</a></b></p>
+            <p><b><a  href ng-click="viewProduct(product.id, $event)">{{product.product.name | uppercase}}</a></b></p>
             <p ng-show="product.size">{{product.size}}</p>
-            <p ng-show="product.brand">{{product.brand.name}}</p>
+            <p ng-show="product.brand">{{product.brand.name | uppercase}}</p>
             <p>{{product.format}} <span ng-show="product.unit">{{product.unit.name}}</span></p>
             <p ng-show="product.state">Origine : {{product.state}}</p>
         </td>
-        <td md-cell>CAD {{product.price}}</td>
+        <td md-cell><b>CAD {{product.price}}</b></td>
         <td md-cell>
             <md-input-container>
                 <input style="width: 40px;" aria-label="Qty" type="number" ng-model="product.quantity   ">
             </md-input-container>
         </td>
         <td md-cell>
-            CAD {{(product.price * product.quantity) | number : 2}}
+            <b>CAD {{(product.price * product.quantity) | number : 2}}</b>
         </td>
         <td md-cell>
             <a href ng-click="add_product_to_cart(product.product_id, -1, product.quantity)" ng-hide="productInCart(product.product_id)">Ajouter</a> 

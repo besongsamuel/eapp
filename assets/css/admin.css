@@ -64,11 +64,7 @@
 
 .admin-image
 {
-    width: 100px;
+    width: 100px !important;
     height: auto;
-    border-style: solid;
-    border-color: #1abc9c;
-    border-width: thin;
-    padding: 5px;
-    margin: 5px;
+    margin: 8px;
 }
