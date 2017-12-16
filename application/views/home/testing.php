@@ -18,7 +18,7 @@
     </tbody>
 </table>
 
-<table width="100%" style="padding: 2%; margin-left: 2%; margin-right: 2%;">
+<table width="100%" style="padding: 5px; margin-left: 5px; margin-right: 5px;">
     <tbody>
         <tr><td width="100%" height="18;"><p style="font-size: 12px; color : #1abc9c; text-align: center;">L’ÉPICERIE AU PETIT PRIX</p></td></tr>
         <tr><td width="100%" height="32"></td></tr>
@@ -128,29 +128,47 @@
     <p style="font-size: 10px; float: right; margin-left: 20px; margin-right: 20px;">Copyright © 2017 OtiPrix. All Rights Reserved.</p>
 </div>
 
-<div style="padding: 30px; margin-left: 20px; margin-right: 20px;">
-    <p style="font-size: 12px; color : #1abc9c; text-align: center;">L’ÉPICERIE AU PETIT PRIX</p>
-    <p><b>Bonjour <span style="color: #1abc9c;">Franck Djea</span></b></p>
-    <p>
-        Vous avez récemment demandé à réinitialiser votre mot de passe pour votre compte Otiprix. Utilisez le bouton ci-dessous pour le réinitialiser. Cette réinitialisation de mot de passe n'est valide que pour les 24h suivantes.
-    </p>
-    <table style="width : 100%;">
-        <tbody>
-            <tr style="width : 100%;">
-            <td width="20%"></td>
-            <td width="20%"></td>
-            <td width="20%">
-                <a>
-                    <input type="button" value="Réinitialisez votre mot de passe" style="width : 100%; color: #fff; background-color: #1abc9c;" />
-                </a></td>
-            <td width="20%"></td>
-            <td width="20%"></td>
-            </tr>
-        </tbody>
-    </table>
-    <p>
-        Si vous n'avez pas demandé de réinitialisation de mot de passe, ignorez cet e-mail ou contactez l'assistance si vous avez des questions.
-    </p>
+<table style="padding: 30px; margin-left: 20px; margin-right: 20px;">
+    <tbody>
+        <tr><td width="100%" height="18;"><p style="font-size: 12px; color : #1abc9c; text-align: center;">L’ÉPICERIE AU PETIT PRIX</p></td></tr>
+        <tr><td width="100%" height="32"></td></tr>
+        <tr><td width="100%"><p><b>Bonjour <span style="color: #1abc9c;">Franck Djea</span></b></p></td></tr>
+        <tr>
+            <td width="100%">
+                <p>
+                    Vous avez récemment demandé à réinitialiser votre mot de passe pour votre compte Otiprix. Utilisez le bouton ci-dessous pour le réinitialiser. Cette réinitialisation de mot de passe n'est valide que pour les 24h suivantes.
+                </p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <table style="width : 100%;">
+                    <tbody>
+                        <tr style="width : 100%;">
+                            <td></td>
+                            <td width="100px;">
+                                <a>
+                                    <input type="button" value="Réinitialisez votre mot de passe" style="width : 100%; font-size: 14px; height: 44px; color: #fff; background-color: #1abc9c;" />
+                                </a>
+                            </td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p>
+                    Si vous n'avez pas demandé de réinitialisation de mot de passe, ignorez cet e-mail ou contactez l'assistance si vous avez des questions.
+                </p>
+            </td>
+        </tr>
+    </tbody>
+    
+    
+    
+    
     <br>
     <p>Merci,</p>
     <p>Equipe Otiprix</p>
@@ -162,4 +180,4 @@
     </div>
     <br>
     <p style="font-size: 10px; float: right; margin-left: 20px; margin-right: 20px;">Copyright © 2017 OtiPrix. All Rights Reserved.</p>
-</div>
+</table>
