@@ -95,7 +95,7 @@ class Account extends CI_Controller {
             // Assign reset token to the user account
             $this->account_model->create(USER_ACCOUNT_TABLE, array("id" => $account->id, "reset_token" => $reset_token));
             // send the reset email
-            $this->send_password_reset_email($reset_token);
+            $this->send_password_reset_email($reset_token, $email);
         }
         else
         {
@@ -110,25 +110,36 @@ class Account extends CI_Controller {
         return sprintf('%04X%04X%04X%04X%04X%04X%04X%04X', mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(16384, 20479), mt_rand(32768, 49151), mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(0, 65535));
     }
     
-    public function send_password_reset_email($reset_token) 
+    public function send_password_reset_email($reset_token, $email) 
     {
         $mail_subject = 'Réinitialisation de mot de passe';
         
         $reset_url = html_entity_decode(site_url('/account/reset_password?reset_token=').$reset_token);
         
-        $message = 
-                '<table width="100%" style="padding: 2%; margin-left: 2%; margin-right: 2%;">
+        $user_account = $this->account_model->get_specific(USER_ACCOUNT_TABLE, array("email" => $email));
+        
+        if($user_account)
+        {
+            $user_profile = $this->account_model->get_specific(USER_PROFILE_TABLE, array("user_account_id" => $user_account->id));
+            
+            if(!isset($user_profile))
+            {
+                return FALSE;
+            }
+            
+            $message = 
+                '<table width="100%" style="padding: 5px; margin-left: 5px; margin-right: 5px;">
                     <tbody>
                         <tr><td width="100%" height="18;"><p style="font-size: 12px; color : #1abc9c; text-align: center;">L’ÉPICERIE AU PETIT PRIX</p></td></tr>
                         <tr><td width="100%" height="32"></td></tr>
-                        <tr><td><p><b>Bonjour, <span style="color: #1abc9c;">Franck Djea</span></b></p></td></tr>
+                        <tr><td><p><b>Bonjour, <span style="color: #1abc9c;">'.$user_profile->lastname.', '.$user_profile->firstname.'</span></b></p></td></tr>
                         <tr><td width="100%" height="8"></td></tr>
                         <tr><td><p>Vous avez récemment demandé à réinitialiser votre mot de passe pour votre compte <a href="http://www.otiprix.com">OtiPrix.</a> Utilisez le bouton ci-dessous pour le réinitialiser. Cette réinitialisation de mot de passe n\'est valide que pour les 24h suivantes.</p></td></tr>
                         <tr><td width="100%" height="8"></td></tr>
                         <tr>
                             <td width="100%" style="text-align: center;">
                                 <a href="'.$reset_url.'">
-                                    <input type="button" value="Réinitialisez votre mot de passe" style="height: 44px; width : 25%; color: #fff; background-color: #1abc9c; font-size: 14px;" />
+                                    <input type="button" value="Réinitialisez votre mot de passe" style="height: 44px; width : 300px; color: #fff; background-color: #1abc9c; font-size: 14px;" />
                                 </a>
                             </td>
                         </tr>
@@ -141,10 +152,10 @@ class Account extends CI_Controller {
                     </tbody>
                 </table>';
         
-        $message .= $this->get_otiprix_mail_footer();
-        
-        mail($this->user->email, $mail_subject, $message, $this->get_otiprix_header());
-        
+            $message .= $this->get_otiprix_mail_footer();
+
+            mail($email, $mail_subject, $message, $this->get_otiprix_header());
+        }
     }
     
     public function reset_password() 
