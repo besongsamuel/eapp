@@ -115,16 +115,16 @@ angular.module('eappApp').controller('AccountOptimizationController', ["$scope",
 					datasets : [
 						{
 							label: 'Economie cette semaine',
-							backgroundColor: 'rgba(200, 200, 200, 0.75)',
-							borderColor: 'rgba(200, 200, 200, 0.75)',
-							hoverBackgroundColor: 'rgba(200, 200, 200, 1)',
-							hoverBorderColor: 'rgba(200, 200, 200, 1)',
+							backgroundColor: 'rgba(54, 162, 235, 0.5)',
+							borderColor: 'rgba(54, 162, 235, 0.5)',
+							hoverBackgroundColor: 'rgba(54, 162, 235, 0.75)',
+							hoverBorderColor: 'rgba(54, 162, 235, 0.75)',
+
 							data: Total
 						}
 					]
 					};
-				break;
-				
+				break;	
 				
 			case "Économies ce mois":
 				var Month = [];
@@ -140,10 +140,10 @@ angular.module('eappApp').controller('AccountOptimizationController', ["$scope",
 					datasets : [
 						{
 							label: 'Economie ce mois',
-							backgroundColor: 'rgba(200, 200, 200, 0.75)',
-							borderColor: 'rgba(200, 200, 200, 0.75)',
-							hoverBackgroundColor: 'rgba(200, 200, 200, 1)',
-							hoverBorderColor: 'rgba(200, 200, 200, 1)',
+							backgroundColor: 'rgba(255, 206, 86, 0.5)',
+							borderColor: 'rgba(255, 206, 86, 0.5)',
+							hoverBackgroundColor: 'rgba(255, 206, 86, 0.75)',
+							hoverBorderColor: 'rgba(255, 206, 86, 0.75)',
 							data: Total
 						}
 					]
