@@ -462,6 +462,8 @@ class Account extends CI_Controller {
         $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
         // More headers
         $headers .= 'From: <infos@otiprix.com>' . "\r\n";
+        
+        return $headers;
     }
     
     private function send_company_registration_message() 
