@@ -56,7 +56,7 @@ angular.module('eappApp').controller('AccountOptimizationController', ["$scope",
                 // Set week data
                 settings.header = "Économies cette semaine";
 				
-				for(var x in $scope.userOptimization.checkDay)
+                for(var x in $scope.userOptimization.checkDay)
                 {
                     data.push({ Total : $scope.userOptimization.checkDay[x].total, Day : $scope.userOptimization.checkDay[x].date});
                 }
@@ -298,7 +298,7 @@ angular.module('eappApp').controller('AccountOptimizationController', ["$scope",
                 count : items_count($scope.loggedUser.optimizations.overall)
             };
             
-            $scope.optimizations.push(data);
+            //$scope.optimizations.push(data);
             
         }
     };

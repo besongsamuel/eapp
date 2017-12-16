@@ -202,7 +202,7 @@ z-index: 9;
     
     font-size: 20px;
     font-weight: 200;
-    padding: 20px 10px;
+    padding: 40px 10px 20px 20px;
     text-align: center;
 }
 .single-promo i {
@@ -1229,7 +1229,7 @@ div.cart-collaterals ul.products li.product:hover .add_to_cart_button{background
 
 .md-gray-text
 {
-    color : #333;
+    color : #111;
     font-size: 16px;
 }
 
@@ -1282,3 +1282,9 @@ div.cart-collaterals ul.products li.product:hover .add_to_cart_button{background
 {
     margin : 10px;
 }
+
+
+.bgpatttern {
+    background: url(../contact/img/pattern.png) repeat center center !important;
+}
+

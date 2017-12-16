@@ -4,7 +4,9 @@
 
     <script src="<?php echo base_url("assets/js/home-controller.js")?>"></script>
     
-    <div class="promo-area" ng-controller="HomeController">
+    <md-divider></md-divider>
+    <md-divider></md-divider>
+    <div class="promo-area bgpatttern" ng-controller="HomeController">
         <div class="container">
             <div class="row">
                 <div class="col-md-4 col-sm-8">
