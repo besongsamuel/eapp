@@ -29,7 +29,7 @@
         <tr>
             <td width="100%" style="text-align: center;">
                 <a>
-                    <input type="button" value="Réinitialisez votre mot de passe" style="height: 44px; width : 25%; color: #fff; background-color: #1abc9c; font-size: 14px;" />
+                    <input type="button" value="Réinitialisez votre mot de passe" style="height: 44px; width : 300px; color: #fff; background-color: #1abc9c; font-size: 14px;" />
                 </a>
             </td>
         </tr>
