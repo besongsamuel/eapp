@@ -89,7 +89,7 @@ class Account extends CI_Controller {
         if($account)
         {
             $result["success"] = true;
-            $result["message"] = "Email envoyee avec success.";
+            $result["message"] = "Email envoyé avec success.";
             // Create a password reset token
             $reset_token = $this->GUID();
             // Assign reset token to the user account
@@ -99,7 +99,7 @@ class Account extends CI_Controller {
         }
         else
         {
-            $result["message"] = "L'email que vous avez entre n'est pas associe avec un compte dans notre base de donnees.";
+            $result["message"] = "L'email que vous avez entré n'est pas associé avec un compte dans notre base de données.";
         }
         
         echo json_encode($result);
