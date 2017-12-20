@@ -20,7 +20,7 @@ and open the template in the editor.
         <div class="panel panel-info" >
           
             <div class="panel-heading">
-               <div class="panel-title">Mot de passe oublie</div>
+               <div class="panel-title">Mot de passe oublié</div>
             </div>
           
             <div style="padding-top:30px" class="panel-body">

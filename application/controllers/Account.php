@@ -89,7 +89,7 @@ class Account extends CI_Controller {
         if($account)
         {
             $result["success"] = true;
-            $result["message"] = "Email envoyee avec success.";
+            $result["message"] = "Email envoyé avec success.";
             // Create a password reset token
             $reset_token = $this->GUID();
             // Assign reset token to the user account
@@ -99,7 +99,7 @@ class Account extends CI_Controller {
         }
         else
         {
-            $result["message"] = "L'email que vous avez entre n'est pas associe avec un compte dans notre base de donnees.";
+            $result["message"] = "L'email que vous avez entré n'est pas associé avec un compte dans notre base de données.";
         }
         
         echo json_encode($result);
@@ -674,6 +674,8 @@ class Account extends CI_Controller {
     {
         $unsubscribe_link = site_url("/account/unsubscribe");
         
+        $otiprix_address = OtIPRIX_ADDRESS;
+        
         $output = '
                 
             <table align="center" width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#f1f1f1">
@@ -683,7 +685,7 @@ class Account extends CI_Controller {
                             <table width="650" align="center" border="0" cellspacing="0" cellpadding="0">
                                 <tbody>
                                     <tr><td width="100%" height="32"></td></tr>
-                                    <tr><td align="center"><span style="color:#75787D;font-size:12px;line-height:18px;font-family:\'Roboto\', Helvetica, Arial, sans-serif;" class="yiv7776326831fallback-text yiv7776326831appleLinksGrey">© 2017 Otiprix Technology. All Rights Reserved.<br>'.OTIPRIX_ADDRESS.'</span></td></tr>
+                                    <tr><td align="center"><span style="color:#75787D;font-size:12px;line-height:18px;font-family:\'Roboto\', Helvetica, Arial, sans-serif;" class="yiv7776326831fallback-text yiv7776326831appleLinksGrey">© 2017 Otiprix Technology. All Rights Reserved.<br>'.$otiprix_address.'</span></td></tr>
                                     <tr><td align="center"><span style="color:#75787D;font-size:12px;line-height:18px;font-family:\'Roboto\', Helvetica, Arial, sans-serif;" class="yiv7776326831fallback-text yiv7776326831appleLinksGrey">8h30 à 20h du lundi au vendredi : infos@otiprix.com</span></td></tr>
                                     <tr><td height="8" width="100%"></td></tr>
                                     <tr><td align="center">
