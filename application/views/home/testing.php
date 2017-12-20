@@ -66,6 +66,8 @@
                                         <td>
                                             <a rel="nofollow" target="_blank" href="https://www.facebook.com/otiprix.otiprix.1"><img src="https://loebig.files.wordpress.com/2013/10/facebook2.png" width="24" alt="Facebook" border="0"></a>&nbsp;
                                             <a rel="nofollow" target="_blank" href="https://www.youtube.com/channel/UCbwxS8s1WKYgGCRzd9vIl5A"><img width="24" src="https://loebig.files.wordpress.com/2013/10/youtube2.png" alt="Instagram" border="0"></a>&nbsp;
+                                            <a rel="nofollow" target="_blank" href="https://twitter.com/otiprix"><img width="24" src="https://loebig.files.wordpress.com/2013/10/twitter2.png" alt="Twitter" border="0"></a>&nbsp;
+                                            <a rel="nofollow" target="_blank" href="https://plus.google.com/u/0/117638375580963001925"><img width="24" src="https://loebig.files.wordpress.com/2013/10/google2.png" alt="Google+" border="0"></a>&nbsp;
                                         </td>
                                         <td width="16"></td>
 

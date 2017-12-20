@@ -292,10 +292,10 @@
                         </p>
                         <div class="footer-social">
                             <a href="https://www.facebook.com/otiprix.otiprix.1" target="_blank"><i class="fa fa-facebook"></i></a>
-                            <a ng-hide="true" href="#" target="_blank"><i class="fa fa-twitter"></i></a>
+                            <a href="https://twitter.com/otiprix" target="_blank"><i class="fa fa-twitter"></i></a>
                             <a href="https://www.youtube.com/channel/UCbwxS8s1WKYgGCRzd9vIl5A" target="_blank"><i class="fa fa-youtube"></i></a>
-                            <a ng-hide="true" href="#" target="_blank"><i class="fa fa-linkedin"></i></a>
-                            <a ng-hide="true" href="#" target="_blank"><i class="fa fa-pinterest"></i></a>
+                            <a href="https://www.instagram.com/otiprix/" target="_blank"><i class="fa fa-instagram"></i></a>
+                            <a href="https://plus.google.com/u/0/117638375580963001925" target="_blank"><i class="fa fa-google-plus"></i></a>
                         </div>
                     </div>
                 </div>
