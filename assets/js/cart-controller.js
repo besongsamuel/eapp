@@ -965,6 +965,13 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
         $scope.price_optimization = 0;
         
         $scope.min_price_optimization = 0;
+        
+        /**
+         * An optimization value greater than this number implies
+         * that the product might have an error. 
+         * @type Number
+         */
+        var errorMargin = 20;
 
         for(var key in $scope.cart)
         {
@@ -980,12 +987,15 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
                     (parseFloat(cart_item.store_product.worst_product.compare_unit_price) - parseFloat(cart_item.store_product.compare_unit_price)) 
                     * parseFloat(cart_item.quantity) * parseFloat($scope.getFormat(cart_item.store_product)) * parseFloat(cart_item.store_product.equivalent);
             
-            if(parseInt(value) > 100)
+            // A value greater than 20 might be an error. 
+            if(parseInt(value) > errorMargin)
             {
                 console.log(cart_item);
             }
-            
-            $scope.price_optimization += value;
+            else
+            {
+                $scope.price_optimization += value;
+            }
         }
         
         for(var key in $scope.cart)

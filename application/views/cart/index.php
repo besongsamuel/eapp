@@ -79,7 +79,6 @@
                             <a title="Remove this item" class="remove" href ng-click="removeFromCart(item.product.id)">×</a> 
                         </td>
 
-
                         <td md-cell width = "20%">
                             <a href><img alt="poster_1_up" class="admin-image" ng-src="{{item.store_product.product.image}}"></a>
                         </td>
