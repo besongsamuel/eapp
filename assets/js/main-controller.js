@@ -468,6 +468,14 @@ eappApp.factory('eapp', ['$http','$rootScope', '$mdDialog', function($http, $roo
         
         return $http.post(eappService.getSiteUrl().concat("/eapp/get_store_product"), formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}});
     };
+    
+    eappService.subscribe = function(email)
+    {
+        var formData = new FormData();
+        formData.append("email", email);
+        
+        return $http.post(eappService.getSiteUrl().concat("/eapp/subscribe"), formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}});
+    };
 
     return eappService;
 }]);

@@ -305,5 +305,52 @@ class Eapp extends CI_Controller
         
         echo json_encode($user_optimization);
     }
+    
+    public function subscribe() 
+    {
+        $this->load->helper('email');
+        
+        $result = array();
+        
+        $email = $this->input->post("email");
+        
+        // Check if the email exists in our database
+        $subscription = $this->account_model->get_specific(NEWSLETTER_SUBSCRIPTIONS, array("email" => $email));
+        
+        if(isset($subscription) && $subscription->type == 1)
+        {
+            $result["subscribed"] = false;
+            $result["message"] = "Vous êtes déjà abonné à Otiprix.";
+            $result["title"] = "Déjà abonné";
+        }
+        else
+        {
+            
+            if (valid_email($email))
+            {
+                $data = array("email" => $email, "type" => 1);
+            
+                if(isset($subscription))
+                {
+                    $data["id"] = $subscription->id;
+                }
+
+                $this->account_model->create(NEWSLETTER_SUBSCRIPTIONS, $data);
+
+                $result["message"] = "Vous avez été abonné avec succès à Otiprix.";
+                $result["title"] = "Succès";
+                $result["subscribed"] = true;
+            }
+            else
+            {
+                $result["subscribed"] = false;
+                $result["title"] = "Email invalide";
+                $result["message"] = "L'e-mail entré n'est pas valide..";
+            }
+            
+        }
+        
+        echo json_encode($result);
+    }
    
 }

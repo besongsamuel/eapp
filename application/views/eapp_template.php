@@ -328,9 +328,9 @@
 		    	<p>Inscrivez-vous à notre Infolettre et soyez les premiers informés sur :</p>
 		     	<p> - l’évolution des prix des denrées alimentaires;</p>
 		    	<p> - toutes les opportunités  pour réduire le coût de votre épicerie.</p>
-                        <div class="newsletter-form" ng-hide="true">
-                            <form action="#">
-                                <input type="email" placeholder="Entrez votre email">
+                        <div class="newsletter-form" ng-submit="subscribe($event)" >
+                            <form novalidate>
+                                <input type="email" placeholder="Entrez votre email" ng-model="subscribe_email">
                                 <div class="col-sm-12">
                                     <md-button type="submit" class="md-raised md-otiprix pull-right" >S’INSCRIRE</md-button>
                                 </div>

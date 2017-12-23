@@ -124,6 +124,9 @@ defined('CONTACTS_TABLE')               OR define('CONTACTS_TABLE', 'eapp_contac
 defined('SECURITY_QUESTIONS')           OR define('SECURITY_QUESTIONS', 'eapp_security_question');
 defined('UNIT_CONVERSION')              OR define('UNIT_CONVERSION', 'otiprix_unit_compareunit');
 defined('PRODUCT_UNIT_CONVERSION')      OR define('PRODUCT_UNIT_CONVERSION', 'otiprix_product_unit_compareunit');
+defined('NEWSLETTER_SUBSCRIPTIONS')     OR define('NEWSLETTER_SUBSCRIPTIONS', 'otiprix_newsletter_subscriptions');
+
+
 
 
 
