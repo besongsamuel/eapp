@@ -105,11 +105,6 @@ class Account extends CI_Controller {
         echo json_encode($result);
     }
     
-    public function GUID()
-    {
-        return sprintf('%04X%04X%04X%04X%04X%04X%04X%04X', mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(16384, 20479), mt_rand(32768, 49151), mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(0, 65535));
-    }
-    
     public function send_password_reset_email($reset_token, $email) 
     {
         $mail_subject = 'Réinitialisation de mot de passe';
@@ -152,7 +147,7 @@ class Account extends CI_Controller {
                     </tbody>
                 </table>';
         
-            $message .= $this->get_otiprix_mail_footer();
+            $message .= $this->get_otiprix_mail_footer($email);
 
             mail($email, $mail_subject, $message, $this->get_otiprix_header());
         }
@@ -182,6 +177,12 @@ class Account extends CI_Controller {
     public function invalid() 
     {
         $this->data['body'] = $this->load->view('errors/message', $this->data, TRUE);
+        $this->parser->parse('eapp_template', $this->data);    
+    }
+    
+    public function unsubscribe() 
+    {
+        $this->data['body'] = $this->load->view('account/unsubscribe', $this->data, TRUE);
         $this->parser->parse('eapp_template', $this->data);    
     }
     
@@ -461,7 +462,7 @@ class Account extends CI_Controller {
                     </tbody>
                 </table>';
         
-        $message .= $this->get_otiprix_mail_footer();
+        $message .= $this->get_otiprix_mail_footer($this->user->email);
         
         mail($this->user->email, $mail_subject, $message, $this->get_otiprix_header());
     }
@@ -504,7 +505,7 @@ class Account extends CI_Controller {
         $message += '<p><b>8h30 à 20h du lundi au vendredi : <a href>Infos@otiprix.com</a></b></p>';
         $message += '<a><input type="button" value="Commencez a reduire votre facture"/></a>';
         $message .= '</div>';
-        $message += $this->get_otiprix_mail_footer();
+        $message += $this->get_otiprix_mail_footer($this->user->email);
         
         mail($this->user->email, $mail_subject, $message, $this->get_otiprix_header());
     }
@@ -670,9 +671,17 @@ class Account extends CI_Controller {
         return TRUE;
     }
     
-    private function get_otiprix_mail_footer()
+    private function get_otiprix_mail_footer($email)
     {
-        $unsubscribe_link = site_url("/account/unsubscribe");
+        // Check if the user is subscribed to our service
+        $subscription = $this->account_model->get_specific(NEWSLETTER_SUBSCRIPTIONS, array("email" => $email));
+        
+        $unsubscribe_link = site_url("/account/unsubscribe?token=");
+        
+        if(isset($subscription))
+        {
+            $unsubscribe_link .= $subscription->unsubscribe_token;
+        }
         
         $otiprix_address = OtIPRIX_ADDRESS;
         
@@ -691,9 +700,15 @@ class Account extends CI_Controller {
                                     <tr><td align="center">
                                         <span style="color:#75787D;font-size:12px;line-height:18px;">
                                             <a rel="nofollow" target="_blank" href onclick="window.open("www.otiprix.com/assets/files/privacy_policy.pdf", "_blank", "fullscreen=yes"); return false;" style="color:#75787D;text-decoration:underline;font-family:\'Roboto\', Helvetica, Arial, sans-serif;" class="yiv7776326831fallback-text">Privacy Policy</a> | 
-                                            <a rel="nofollow" target="_blank" href onclick="window.open("www.otiprix.com/assets/files/terms_and_conditions.pdf", "_blank", "fullscreen=yes"); return false;" style="color:#75787D;text-decoration:underline;font-family:\'Roboto\', Helvetica, Arial, sans-serif;" class="yiv7776326831fallback-text">Terms and Conditions</a> |
-                                            <a rel="nofollow" target="_blank" href="'.$unsubscribe_link.'" style="color:#75787D;text-decoration:underline;font-family:\'Roboto\', Helvetica, Arial, sans-serif;" class="yiv7776326831fallback-text">Unsubscribe</a> 
-                                        </span></td></tr>
+                                            <a rel="nofollow" target="_blank" href onclick="window.open("www.otiprix.com/assets/files/terms_and_conditions.pdf", "_blank", "fullscreen=yes"); return false;" style="color:#75787D;text-decoration:underline;font-family:\'Roboto\', Helvetica, Arial, sans-serif;" class="yiv7776326831fallback-text">Terms and Conditions</a> |';
+        
+        if(isset($subscription) && $subscription->type == 1)
+        {
+            $output =   '<a rel="nofollow" target="_blank" href="'.$unsubscribe_link.'" style="color:#75787D;text-decoration:underline;font-family:\'Roboto\', Helvetica, Arial, sans-serif;" class="yiv7776326831fallback-text">Unsubscribe</a>'; 
+        }
+        
+                
+        $output .=  '</span></td></tr>
                                     <tr><td height="16" width="100%"></td></tr>
                                     <tr><td align="center" width="100%">
                                         <table width="auto" align="center" border="0" cellspacing="0" cellpadding="0">

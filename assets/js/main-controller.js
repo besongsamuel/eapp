@@ -102,6 +102,22 @@ eappApp.factory('eapp', ['$http','$rootScope', '$mdDialog', function($http, $roo
         }, 2000);
     };
     
+    eappService.getUrlParameter = function(sParam) 
+    {
+        var sPageURL = decodeURIComponent(window.location.search.substring(1)),
+            sURLVariables = sPageURL.split('&'),
+            sParameterName,
+            i;
+
+        for (i = 0; i < sURLVariables.length; i++) {
+            sParameterName = sURLVariables[i].split('=');
+
+            if (sParameterName[0] === sParam) {
+                return sParameterName[1] === undefined ? true : sParameterName[1];
+            }
+        }
+    };
+    
     eappService.getProduct = function(productId)
     {
         return $http.post(eappService.getSiteUrl().concat("cart/get_product/").concat(productId.toString()), null);
@@ -475,6 +491,22 @@ eappApp.factory('eapp', ['$http','$rootScope', '$mdDialog', function($http, $roo
         formData.append("email", email);
         
         return $http.post(eappService.getSiteUrl().concat("/eapp/subscribe"), formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}});
+    };
+    
+    eappService.unsubscribe = function(token)
+    {
+        var formData = new FormData();
+        formData.append("token", token);
+        
+        return $http.post(eappService.getSiteUrl().concat("/eapp/unsubscribe"), formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}});
+    };
+    
+    eappService.getUnsubscribeEmailFromToken = function(token)
+    {
+        var formData = new FormData();
+        formData.append("token", token);
+        
+        return $http.post(eappService.getSiteUrl().concat("/eapp/get_email_from_unsubscribe_token"), formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}});
     };
 
     return eappService;
