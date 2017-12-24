@@ -114,7 +114,7 @@ angular.module('eappApp').controller('AccountOptimizationController', ["$scope",
 					labels: Week,
 					datasets : [
 						{
-							label: 'Economie cette semaine',
+							label: 'Économies cette semaine en dollars $',
 							backgroundColor: 'rgba(54, 162, 235, 0.5)',
 							borderColor: 'rgba(54, 162, 235, 0.5)',
 							hoverBackgroundColor: 'rgba(54, 162, 235, 0.75)',
@@ -139,7 +139,7 @@ angular.module('eappApp').controller('AccountOptimizationController', ["$scope",
 					labels: Month,
 					datasets : [
 						{
-							label: 'Economie ce mois',
+							label: 'Économies ce mois en dollars $',
 							backgroundColor: 'rgba(255, 206, 86, 0.5)',
 							borderColor: 'rgba(255, 206, 86, 0.5)',
 							hoverBackgroundColor: 'rgba(255, 206, 86, 0.75)',
@@ -163,7 +163,7 @@ angular.module('eappApp').controller('AccountOptimizationController', ["$scope",
 					labels: Year,
 					datasets : [
 						{
-							label: 'Economies cette année',
+							label: 'Économies cette année en dollars $',
 							backgroundColor: 'rgba(200, 200, 200, 0.75)',
 							borderColor: 'rgba(200, 200, 200, 0.75)',
 							hoverBackgroundColor: 'rgba(200, 200, 200, 1)',
