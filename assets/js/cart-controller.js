@@ -928,7 +928,22 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
                 $rootScope.cart[i].store_product = currentStoreProduct;
                 var relatedProducts = $scope.getRelatedProducts($rootScope.cart[i].store_product);
                 $rootScope.cart[i].different_store_products = relatedProducts[0];
-                $rootScope.cart[i].different_format_products = relatedProducts[1];  
+                $rootScope.cart[i].different_format_products = relatedProducts[1]; 
+                $rootScope.cart[i].store_product_id = currentStoreProduct.id;
+                
+                // Update cart item
+                var update_data =
+                {
+                    id      : item.product.id,
+                    rowid   : item.rowid,
+                    qty     : currentStoreProduct.quantity,
+                    price   : currentStoreProduct.price,
+                    name    : 'name_'.concat(item.product.id),
+                    options : {store_product_id : currentStoreProduct.id, quantity : currentStoreProduct.quantity}
+                };
+                
+                eapp.updateCart(update_data);
+                
                 $rootScope.sortCart();
                 groupByStore();
                 $rootScope.totalPriceAvailableProducts = $scope.getCartTotalPrice(true);

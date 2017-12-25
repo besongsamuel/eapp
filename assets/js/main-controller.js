@@ -248,6 +248,14 @@ eappApp.factory('eapp', ['$http','$rootScope', '$mdDialog', function($http, $roo
         return $http.post(eappService.getSiteUrl().concat("cart/remove"), formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}});
     };
     
+    eappService.updateCart = function(item)
+    {
+        var formData = new FormData();
+        formData.append("item", JSON.stringify(item));
+        
+        return $http.post(eappService.getSiteUrl().concat("cart/update"), formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}});
+    };
+    
     eappService.addToCart = function(productID, storeProductID, longitude, latitude, quantity)
     {
         var formData = new FormData();

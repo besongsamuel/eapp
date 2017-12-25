@@ -156,7 +156,7 @@ class Cart extends CI_Controller {
     
     public function update()
     {
-        $item = json_decode($this->input->post("item"));
+        $item = json_decode($this->input->post("item"), true);
         
         $return = $this->cart->update($item);
         
