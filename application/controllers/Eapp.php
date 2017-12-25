@@ -328,7 +328,7 @@ class Eapp extends CI_Controller
             
             if (valid_email($email))
             {
-                $data = array("email" => $email, "type" => 1);
+                $data = array("email" => $email, "type" => 1, "unsubscribe_token" => $this->GUID());
             
                 if(isset($subscription))
                 {
@@ -348,6 +348,47 @@ class Eapp extends CI_Controller
                 $result["message"] = "L'e-mail entré n'est pas valide..";
             }
             
+        }
+        
+        echo json_encode($result);
+    }
+    
+    public function unsubscribe()
+    {
+        $result = array("success" => true);
+        
+        $token = $this->input->post("token");
+        
+        $subscription = $this->admin_model->get_specific(NEWSLETTER_SUBSCRIPTIONS, array("unsubscribe_token" => $token));
+        
+        if(isset($subscription) && $subscription->type == 1)
+        {            
+            // Unsubscribe the user
+            $this->admin_model->create(NEWSLETTER_SUBSCRIPTIONS, array("id" => $subscription->id, "type" => 0));
+        }
+        else
+        {
+            $result["success"] = false;
+        }
+        
+        echo json_encode($result);
+    }
+    
+    public function get_email_from_unsubscribe_token()
+    {
+        $result = array("success" => true, "email" => "");
+        
+        $token = $this->input->post("token");
+        
+        $subscription = $this->admin_model->get_specific(NEWSLETTER_SUBSCRIPTIONS, array("unsubscribe_token" => $token));
+        
+        if(isset($subscription) && $subscription->type == 1)
+        {            
+            $result["email"] = $subscription->email;
+        }
+        else
+        {
+            $result["success"] = false;
         }
         
         echo json_encode($result);
