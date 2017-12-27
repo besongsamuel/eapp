@@ -245,7 +245,7 @@
                             md-direction="bottom">
                             Envoyer par sms
                         </md-tooltip>
-                      <md-icon><i class="material-icons">send</i></md-icon>
+                      <md-icon><i class="material-icons">smartphone</i></md-icon>
                     </md-button>
 
                     <md-button class="md-fab md-otiprix" aria-label="Partager" ng-hide="true">
