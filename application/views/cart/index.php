@@ -24,14 +24,32 @@
         <div class="eapp-container md-whiteframe-3dp">
             <fieldset>
                 <md-subheader class="md-primary">Configurez votre optimization du panier</md-subheader>
-                <md-radio-group class="col-md-6 col-sm-12" ng-model="viewing_cart_optimization.value" ng-change="optimization_preference_changed()">
-                    <md-radio-button ng-value="true_value">Vue du panier</md-radio-button>
-                    <md-radio-button ng-value="false_value">Vue par magasin</md-radio-button>
-                </md-radio-group>
-                <div  class="col-md-6 col-sm-12">
-                    <md-radio-group ng-model="searchInMyList.value" ng-change="optimization_preference_changed()">
-                        <md-radio-button ng-value="true_value" ng-disabled="!isUserLogged">Rechercher dans votre liste de magasins</md-radio-button>
-                        <md-radio-button ng-value="false_value">Rechercher dans tout les magasins</md-radio-button>
+                
+                <div  class="col-md-12 col-sm-12">
+                    <md-radio-group ng-model="viewing_cart_optimization.value" ng-change="optimization_preference_changed()" class="col-sm-12">
+                        <div class="row">
+                            <md-radio-button ng-value="true_value" class="col-sm-6">Vue du panier</md-radio-button>
+                            <md-radio-button ng-value="false_value" class="col-sm-6">Vue par magasin</md-radio-button>
+                        </div>
+                    </md-radio-group>
+                </div>
+                
+                
+                <div  class="col-md-12 col-sm-12">
+                    <md-radio-group ng-model="searchInMyList.value" ng-change="optimization_preference_changed()" class="col-sm-12">
+                        <div class="row">
+                            <md-radio-button ng-value="true_value" class="col-sm-6">Rechercher dans votre liste de magasins</md-radio-button>
+                            <md-radio-button ng-value="false_value" class="col-sm-6">Rechercher dans tout les magasins</md-radio-button>
+                        </div>
+                    </md-radio-group>
+                </div>
+                
+                <div  class="col-md-12 col-sm-12">
+                    <md-radio-group ng-model="viewOptimizedList" ng-change="listChanged()" class="col-sm-12" ng-init="false">
+                        <div class="row">
+                            <md-radio-button ng-value="true_value" class="col-sm-6">Voir la liste optimisée</md-radio-button>
+                            <md-radio-button ng-value="false_value" class="col-sm-6">Voir la liste originale</md-radio-button>
+                        </div>
                     </md-radio-group>
                 </div>
                                 

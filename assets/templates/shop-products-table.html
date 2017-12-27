@@ -59,7 +59,7 @@
             <b>CAD {{(product.price * product.quantity) | number : 2}}</b>
         </td>
         <td md-cell>
-            <a href ng-click="add_product_to_cart(product.product_id, -1, product.quantity)" ng-hide="productInCart(product.product_id)">Ajouter</a> 
+            <a href ng-click="add_product_to_cart(product.product_id, showStoreLogo ? product.id : -1, product.quantity)" ng-hide="productInCart(product.product_id)">Ajouter</a> 
             <a href ng-click="remove_product_from_cart(product.product_id)" ng-show="productInCart(product.product_id)">Retirer</a> 
         </td>
       </tr>

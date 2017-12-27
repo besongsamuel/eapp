@@ -32,6 +32,8 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
 
     $scope.searchInMyList = { value: false};
     
+    $scope.viewOptimizedList = false;
+    
     $rootScope.totalPriceAvailableProducts = 0;
     $rootScope.totalPriceUnavailableProducts = 0;
     
@@ -49,6 +51,13 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
         $scope.show_min_price_optimization = $scope.min_price_optimization > 0 && $scope.price_optimization > 0 && ($scope.price_optimization - $scope.min_price_optimization) > 0.1;
     });
        
+    $scope.listChanged = function()
+    {
+        window.sessionStorage.setItem("viewOptimizedList", $scope.viewOptimizedList.toString());
+        
+        $scope.optimization_preference_changed();
+    };   
+       
     /**
      * This method initializes the cart
      * @returns {undefined}
@@ -56,6 +65,12 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
     $scope.Init = function()
     {
         $scope.viewing_cart_optimization.value = true;
+        
+        if(window.sessionStorage.getItem('viewOptimizedList'))
+        {
+            $scope.viewOptimizedList = window.sessionStorage.getItem('viewOptimizedList').toString() == "true";
+        }
+        
         $scope.update_cart_list();
         
         if(!$scope.initialized)
@@ -188,6 +203,8 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
         // user's latitude
         formData.append("latitude", $scope.latitude);
         formData.append("searchAll", !$scope.searchInMyList.value);
+        formData.append("viewOptimizedList", $scope.viewOptimizedList);
+        
         // Send request to server to get optimized list 	
         $scope.promise = 
             $http.post( $scope.site_url.concat("/cart/update_cart_list"), 
