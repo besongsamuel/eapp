@@ -936,10 +936,10 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
                 {
                     id      : item.product.id,
                     rowid   : item.rowid,
-                    qty     : currentStoreProduct.quantity,
+                    qty     : item.quantity,
                     price   : currentStoreProduct.price,
                     name    : 'name_'.concat(item.product.id),
-                    options : {store_product_id : currentStoreProduct.id, quantity : currentStoreProduct.quantity}
+                    options : {store_product_id : currentStoreProduct.id, quantity : item.quantity}
                 };
                 
                 eapp.updateCart(update_data);
