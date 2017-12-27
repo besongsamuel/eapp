@@ -229,6 +229,8 @@ class Cart extends CI_Controller {
         // get the cart products
         $products = json_decode($this->input->post("products"));
         $search_all = $this->input->post("searchAll") == "true" ? true : false;
+        $view_optimized_list = $this->input->post("viewOptimizedList") == "true" ? true : false;
+        
         $coords = array("longitude" => $this->input->post("longitude"), "latitude" => $this->input->post("latitude"));
         // get the store_product id if applicable
 
@@ -238,7 +240,7 @@ class Cart extends CI_Controller {
         {
             $in_user_list = isset($this->user) ? $this->inUserList($product->id) : false;
             // get the best store product based on price
-            $store_product = $this->cart_model->get_best_store_product($product->id, $distance, $distance, $this->user, $search_all, $coords, $product->store_product_id);
+            $store_product = $this->cart_model->get_best_store_product($product->id, $distance, $distance, $this->user, $search_all, $coords, $view_optimized_list ? -1 : $product->store_product_id);
             $cart_item = new stdClass();
             $cart_item->store_product = $store_product;
             $cart_item->store_product->product->in_user_grocery_list = $in_user_list;
