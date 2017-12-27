@@ -1003,7 +1003,7 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
          * that the product might have an error. 
          * @type Number
          */
-        var errorMargin = 20;
+        var errorMargin = 10;
 
         for(var key in $scope.cart)
         {
