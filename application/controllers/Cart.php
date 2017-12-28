@@ -188,7 +188,7 @@ class Cart extends CI_Controller {
         set_error_handler(function(){ });
                     
         $subject = "Merci d'utiliser OtiPrix";
-        $headers = "From: no-reply@otiprix.com \r\n";
+        $headers = "From: OTIPRIX no-reply<no-reply@otiprix.com> \r\n";
         $headers .= "Reply-To: no-reply@otiprix.com \r\n";
         $headers .= "MIME-Version: 1.0\r\n";
 		$headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
