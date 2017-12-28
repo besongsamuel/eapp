@@ -1,0 +1,48 @@
+
+
+p.cart-warning
+{
+    text-align: center;
+    color: red;
+}
+
+.full-td
+{
+    display:block;width:99.9%;clear:both;
+}
+
+.cart-item-container
+{
+    margin : auto; padding: 10px;
+    vertical-align: middle;
+}
+
+.image-container
+{
+   
+    margin-top: 2px;
+    margin-bottom: 2px;
+}
+
+.image-container img
+{
+    border : 1px #cccccc solid;
+    display: block;
+    margin: auto;
+    width: 130px;
+    
+}
+
+.center-content
+{
+    display: block;
+    margin: auto;
+}
+
+.category-name
+{
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    color: #666;
+}

@@ -46,6 +46,8 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
             
     $scope.min_price_optimization = 0;
     
+    $scope.productCategories = [];
+    
     $scope.$watch('min_price_optimization', function()
     {
         $scope.show_min_price_optimization = $scope.min_price_optimization > 0 && $scope.price_optimization > 0 && ($scope.price_optimization - $scope.min_price_optimization) > 0.1;
@@ -359,6 +361,8 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
             return 0;
             
         });
+        
+        $scope.groupCartByCategory();
         
         $scope.getDepartmentStoreInfo();
                 
@@ -959,12 +963,22 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
                     options : {store_product_id : currentStoreProduct.id, quantity : item.quantity}
                 };
                 
-                eapp.updateCart(update_data);
+                var updateCartPromise = eapp.updateCart(update_data);
                 
-                $rootScope.sortCart();
-                groupByStore();
-                $rootScope.totalPriceAvailableProducts = $scope.getCartTotalPrice(true);
-                $rootScope.totalPriceUnavailableProducts = $scope.getCartTotalPrice(false);
+                updateCartPromise.then(function()
+                {
+                    // Finished updating the cart item
+                    $rootScope.totalPriceAvailableProducts = $scope.getCartTotalPrice(true);
+                    $rootScope.totalPriceUnavailableProducts = $scope.getCartTotalPrice(false);
+                    $rootScope.sortCart();
+                    groupByStore();
+                
+                    $scope.update_price_optimization();
+                    // If the user changed a product, he is no longer viewing an optimized store. 
+                    $scope.viewOptimizedList = false;
+                });
+                
+                
                 
                 break;
             }
@@ -1321,93 +1335,177 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
 
     };
     
+    
+    
+    /**
+     * This method will group the cart based on categories
+     * @returns {undefined}
+     */
+    $scope.groupCartByCategory = function()
+    {
+        $scope.productCategories = [];
+        
+        if(!$scope.viewing_cart_optimization.value)
+        {
+            for(var x in $scope.cart)
+            {
+                var store_product = $scope.cart[x].store_product;
+
+                if(!angular.isNullOrUndefined(store_product) && $scope.cart[x].quantity > 0)
+                {
+                    // get product category id
+                    var category = store_product.product.category;
+
+                    if(angular.isNullOrUndefined(category))
+                    {
+                        category = 
+                        {
+                            id : 0,
+                            name : 'Aucune catégorie'
+                        };
+
+                        store_product.product.category = category;
+                    }
+
+                    // Check if category exists
+                    var index = $scope.productCategories.map(function(e) { return e.id; }).indexOf(category.id);
+
+                    if(index !== -1)
+                    {
+
+                        if(angular.isNullOrUndefined($scope.productCategories[index].products))
+                        {
+                            $scope.productCategories[index].products = [];
+                        }
+
+                        $scope.productCategories[index].products.push(store_product);
+
+                    }
+                    else
+                    {
+                        // create category
+                        category.products = [];
+                        category.products.push(store_product);
+                        $scope.productCategories.push(category);
+                    }
+                }
+            }
+        }
+        else
+        {
+            for(var i in $scope.departmenStores)
+            {
+                $scope.departmenStores[i].categories = [];
+                
+                for(var x in $scope.departmenStores[i].products)
+                {
+                    var store_product = $scope.departmenStores[i].products[x].store_product;
+                    var cartItem = $scope.departmenStores[i].products[x];
+
+                    if(!angular.isNullOrUndefined(store_product) && $scope.departmenStores[i].products[x].quantity > 0)
+                    {
+                        // get product category id
+                        var category = store_product.product.category;
+
+                        if(angular.isNullOrUndefined(category))
+                        {
+                            category = 
+                            {
+                                id : 0,
+                                name : 'Aucune catégorie'
+                            };
+
+                            store_product.product.category = category;
+                        }
+
+                        // Check if category exists
+                        var index = $scope.departmenStores[i].categories.map(function(e) { return e.id; }).indexOf(category.id);
+
+                        if(index !== -1)
+                        {
+
+                            if(angular.isNullOrUndefined($scope.departmenStores[i].categories[index].products))
+                            {
+                                $scope.departmenStores[i].categories[index].products = [];
+                            }
+
+                            $scope.departmenStores[i].categories[index].products.push(cartItem);
+
+                        }
+                        else
+                        {
+                            // create category
+                            category.products = [];
+                            category.products.push(cartItem);
+                            $scope.departmenStores[i].categories.push(category);
+                        }
+                    }
+                }
+            }
+        }
+        
+    };
+    
     $scope.getCartHtmlContent = function()
     {
 
         var content = "";
 
         $rootScope.sortCart();
-
+        
+        content += '<style> table, td { border: 1px solid #ddd;} tr:nth-child(even){ background-color : #f2f2f2;}  </style>';
+        
         content += '<html><head><title style="font-style: italic; color : #444; ">OtiPrix - All RIghts Reserved</title>';
         content += '</head><body >';
-        content += "<h3 style='text-align : center; color : #444;'>OtiPrix - Liste d'épicerie optimisé</h3>";
+        content += "<h3 style='text-align : center; color : #444; color : #1abc9c;'>OtiPrix - Liste d'épicerie optimisé</h3>";
 
         var currentDepartmentStoreID = -1;
-
-        for(var x in $rootScope.cart)
+        
+       
+        
+        for(var i in $scope.departmenStores)
         {
-            var storeProduct = $rootScope.cart[x].store_product;
-
-            if(parseFloat(storeProduct.price) === 0)
+            var departmentStore = $scope.departmenStores[i];
+            
+            content += '<h4>' + departmentStore.name + ': ' + departmentStore.address + ', ' + departmentStore.state + ', ' + departmentStore.city + ', ' + departmentStore.postcode + '</h4>';
+            
+            for(var j in departmentStore.categories)
             {
-                continue;
-            }
-
-            if(currentDepartmentStoreID !== parseInt(storeProduct.department_store.id))
-            {
-                if(currentDepartmentStoreID !== -1)
+                var category = departmentStore.categories[j];
+                
+                content += '<b><p style="text-align: center; color : #666;"> - ' + category.name + ' - </p</b>';
+                
+                content += '<table style="width : 100%; border-collapse : collapse;">';
+                
+                for(var k in category.products)
                 {
-                    content += "<br></div></ul>";
+                    var storeProduct = category.products[k].store_product;
+                    
+                    content += '<tr width="100%">';
+                    
+                    // Image here
+                    content += '<td width="100px;"><img src="' + storeProduct.product.image + '" width="100px" style="padding : 4px;" /></td>';
+                    
+                    
+                    // Details Here
+                    content += '<td>';
+                    
+                    var unit = angular.isNullOrUndefined(storeProduct.unit) ? '-' : storeProduct.unit.name;
+                    
+                    content += '<p style="padding : 10px; color : #1abc9c;"><b>' + storeProduct.product.name + ', ' + storeProduct.format + ' ' + unit + ' </b></p>';
+                    
+                    content += '<p style="padding : 10px;">Quantité: ' + category.products[k].quantity + ' , Prix: ' + storeProduct.price + ', Total: ' + parseFloat(storeProduct.price) * parseFloat(category.products[k].quantity) + ' </p>';
+                    
+                    content += '</td></tr>';
+                    
                 }
-
-                if(typeof storeProduct.department_store !== "undefined" && parseInt(storeProduct.department_store.distance) !== 0)
-                {
-                    var text = storeProduct.retailer.name + " - " + storeProduct.department_store.address + ", " + storeProduct.department_store.state + ", " + storeProduct.department_store.city + "," + storeProduct.department_store.postcode;
-                    content += "<h4 style='color: #1abc9c; border-bottom-style: solid; border-width : 1px; border-color: gray; padding-bottom : 10px;'>" + text + "</h4>";
-                }
-                else
-                {
-                    content += "<h4 style='color: red; border-bottom-style: solid; border-width : 1px; border-color: gray; padding-bottom : 10px;'> " + storeProduct.retailer.name + " - Le magasin n'est pas proche de chez vous.</h4>";
-                }
-
-                currentDepartmentStoreID = parseInt(storeProduct.department_store.id);
-
-                // Open new table
-                content += "<div>";
-                content += "<ul style='list-style-type: none;'>";
+                
+                content += '</table>';
             }
-
-            var description = "<p style='color : #444; font-style: italic;'>   - ";
-            if(storeProduct.size)
-            {
-                description += " Taile : " + storeProduct.size;
-            }
-            if(storeProduct.brand)
-            {
-                description += " Marque : " + storeProduct.brand.name;
-            }
-            if(storeProduct.format)
-            {
-                description += " Format : " + storeProduct.format;
-            }
-            if(storeProduct.state)
-            {
-                description += " Origine : " + storeProduct.state;
-            }
-
-            var unit = "";
-
-            if(storeProduct.unit)
-            {
-                unit += " / " + storeProduct.unit.name;
-            }
-
-            var price = Math.round(parseFloat(storeProduct.price) * 100) / 100;
-
-            description += " Prix : <b> $ CAD " + price + unit + "</b></p>";
-
-            var product_text = "<p><b>" + storeProduct.product.name +  "</b></p>" + description;
-
-            content += "<li class='list-group-item'>" + product_text + "</li>";
         }
-
-        if(currentDepartmentStoreID !== -1)
-        {
-            // Close last opened tag
-            content += "</div>";
-            content += "</ul>";
-        }
-
+        
+        
+        
         var total_price = Math.round(parseFloat($rootScope.get_cart_total_price()) * 100) / 100;
 
         content += "<br>";
@@ -1564,8 +1662,6 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
             $scope.storeProduct = null;
         });
     };
-    
-    
     
     $rootScope.$watch('cartReady', function(newValue, oldValue)
     {
