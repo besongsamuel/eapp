@@ -94,9 +94,14 @@
                             <!-- Image -->
                             <div class="col-sm-12 col-md-2 cart-item-container image-container">
                                 <a href><img alt="poster_1_up" ng-src="{{item.store_product.product.image}}"></a>
+                                <div style="margin-top : 15px;" ng-show="isUserLogged">
+                                    <md-checkbox class="center-content" ng-model="item.store_product.product.in_user_grocery_list" aria-label="Add to my list" ng-init="item.store_product.product.in_user_grocery_list" ng-checked="item.store_product.product.in_user_grocery_list" ng-change="favoriteChanged(item.store_product.product)">
+                                            Ajouter dans ma liste
+                                    </md-checkbox>
+                                </div>
                             </div>
                             <!-- Details -->
-                            <div class="col-sm-12 col-md-4">
+                            <div class="col-sm-12 col-md-6">
                                 
                                 <div class="row cart-item-container">
                                 
@@ -150,12 +155,6 @@
                                     Totale : <span style="font-size : 24px;"><b>C ${{item.store_product.price * item.quantity | number : 2}} </b></span>
                                 </div>
                                 
-                            </div>
-                            
-                            <div class="col-sm-12 col-md-2  cart-item-container" ng-show="isUserLogged">
-                                <md-checkbox class="center-content" ng-model="item.store_product.product.in_user_grocery_list" aria-label="Add to my list" ng-init="item.store_product.product.in_user_grocery_list" ng-checked="item.store_product.product.in_user_grocery_list" ng-change="favoriteChanged(item.store_product.product)">
-                                        Ajouter dans ma liste
-                                </md-checkbox>
                             </div>
                             
                         </div>
