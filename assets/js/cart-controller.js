@@ -1131,6 +1131,7 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
                 $rootScope.cart = [];
                 $scope.stores = [];
                 $scope.departmenStores = [];
+				$rootScope.totalPriceAvailableProducts = 0;
                 
             });
 
