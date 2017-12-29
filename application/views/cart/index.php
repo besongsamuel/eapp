@@ -84,80 +84,12 @@
                         <p class="category-name"><b> - {{category.name | uppercase}} - </b></p>
                     </div>
                     
+                    
                     <div ng-repeat="item in category.products">
                         
                         <md-divider ng-if="$first"></md-divider>
                         
-                        <div class="row">
-                            
-                            <div class="col-sm-12 col-md-1"><a title="Remove this item" class="remove" style="vertical-align: middle;" href ng-click="removeFromCart(item.product.id)">×</a> </div>
-                            <!-- Image -->
-                            <div class="col-sm-12 col-md-2 cart-item-container image-container">
-                                <a href><img alt="poster_1_up" ng-src="{{item.store_product.product.image}}"></a>
-                                <div style="margin-top : 15px;" ng-show="isUserLogged">
-                                    <md-checkbox class="center-content" ng-model="item.store_product.product.in_user_grocery_list" aria-label="Add to my list" ng-init="item.store_product.product.in_user_grocery_list" ng-checked="item.store_product.product.in_user_grocery_list" ng-change="favoriteChanged(item.store_product.product)">
-                                            Ajouter dans ma liste
-                                    </md-checkbox>
-                                </div>
-                            </div>
-                            <!-- Details -->
-                            <div class="col-sm-12 col-md-6">
-                                
-                                <div class="row cart-item-container">
-                                
-                                    <p>
-                                        <b>
-                                            <a href ng-click="viewProduct(item.store_product.id, $event)">
-                                            <span ng-show="item.store_product.brand">{{item.store_product.brand.name | uppercase}}&nbsp;</span>
-                                            {{item.store_product.product.name | uppercase}}
-                                            <span ng-show="item.store_product.state">, {{item.store_product.state}}</span>
-                                            &nbsp;({{item.store_product.format}}<span ng-show="item.store_product.unit">&nbsp;{{item.store_product.unit.name}}</span>)
-                                            </a>
-                                        </b>
-                                    </p>
-                                    <p ng-show="item.different_store_products.length !== 0">{{item.store_product.retailer.name}} | <a href ng-click="changeProductStore($event, item)">Changer Marchand</a></p>
-                                    <p ng-show="item.store_product.size">{{item.store_product.size}}</p>
-                                    
-                                    <p>
-                                        
-                                        <span ng-hide="item.different_format_products.length === 0">
-                                           | <a href ng-click="changeProductFormat($event, item)">Changer Format</a>
-                                        </span>
-                                    </p>
-
-                                    
-                                    <p  ng-show="item.store_product.price > 0">
-                                        <b>
-                                            <span class="amount" style="font-size : 20px;">
-                                                C ${{item.store_product.price | number: 2}}
-                                            </span> 
-                                            <span class="badge md-otiprix" ng-show="getCartItemRebate(item) > 0">
-                                                Optimisé</span> 
-                                        </b>
-                                    </p>
-                                    
-                                </div>
-                                
-                            </div>
-                            
-                            <div class="col-sm-12 col-md-3">
-                                
-                                <div class="row cart-item-container">
-                                    
-                                    <md-input-container>
-                                        <label>Quantité</label>
-                                        <input aria-label="Qty" type="number" ng-model="item.quantity" ng-change="update_price_optimization()">
-                                    </md-input-container>
-                                     
-                                </div>
-                                
-                                <div class="row cart-item-container">
-                                    Totale : <span style="font-size : 24px;"><b>C ${{item.store_product.price * item.quantity | number : 2}} </b></span>
-                                </div>
-                                
-                            </div>
-                            
-                        </div>
+                        <cart-list-item iscartview='viewing_cart_optimization.value' item='item' on-delete='removeFromCart(id)' on-update='productChanged(sp)'></cart-list-item>
                         
                         <md-divider></md-divider>
                         
@@ -171,16 +103,16 @@
     </div>
 
     <div class="container" ng-cloak ng-hide="viewing_cart_optimization.value">
-        
         <div  ng-show="results_available">
             <md-tabs md-dynamic-height md-border-bottom>
+                
                 
                 <md-tab label="{{store.name}} ({{store.store_products.length}} / {{cart.length}})" ng-repeat="store in stores.slice(0, 5)" md-on-select="storeTabSelected(store)">
                   <div class="md-padding">
                         <md-subheader class="md-primary"><a href  ng-click="InitMap($event, store.department_store)">{{store.department_store.fullName}}, {{store.department_store.distanceText}} en voiture (environs {{store.department_store.timeText}})</a></md-subheader>
                         <md-subheader>Produits disponibles <span class="badge">{{store.store_products.length}}</md-subheader>
 
-                        <md-list-item ng-repeat="item in store.store_products" class="noright">
+                        <md-list-item ng-repeat="item in store.store_products" class="noright" ng-hide="true">
                             <img alt="{{ item.store_product.name }}" ng-src="{{ item.store_product.product.image }}" class="md-avatar" />
                             <div class="md-list-item-text" layout="column">
                                 <a  href="<?php echo site_url("cart/product/"); ?>{{item.store_product.product.id}}">{{ item.store_product.product.name }}</a>
@@ -192,21 +124,35 @@
                                 <p><b>$ CAD {{item.store_product.price}}</b></p>
                             </md-input-container>
                         </md-list-item>
+                        
+                        <div class="container" id="my_cart">
+                            <div ng-repeat="category in productCategories">
+
+                                <div class="row">
+                                    <p class="category-name"><b> - {{category.name | uppercase}} - </b></p>
+                                </div>
+
+                                <div ng-repeat="item in category.products">
+                                    
+                                    
+                                    <md-divider ng-if="$first"></md-divider>
+                                    
+                                        <cart-list-item iscartview='viewing_cart_optimization.value' item='item' on-delete='removeFromCart(id)' on-update='productChanged(sp)'></cart-list-item>
+
+                                    <md-divider></md-divider>
+
+                                </div>
+
+
+                            </div>
+                        </div>
+                        
                       
                         <md-subheader class="md-warn"><a class="md-warn" href  data-toggle="collapse" data-target="#products_{{store.id}}">Voir produits indisponibles</a> <span class="badge">{{store.missing_products.length}}</md-subheader>
                         <div id="products_{{store.id}}" class="collapse">
-                            <md-list-item ng-repeat="item in store.missing_products" class="noright">
-                              <img alt="{{ item.store_product.name }}" ng-src="{{ item.store_product.product.image }}" class="md-avatar" />
-                              <div class="md-list-item-text" layout="column">
-                                <a  href="<?php echo site_url("cart/product/"); ?>{{item.store_product.product.id}}">{{ item.store_product.product.name }}</a>
-                                <p ng-show="item.store_product.format">{{item.store_product.format}}<span ng-show="item.store_product.unit"> {{item.store_product.unit.name}}</span></p>
-                                <p ng-show="item.store_product.brand">{{item.store_product.brand.name}}</p>
-                              </div>
-                              <img  alt="{{ product.name }}" ng-src="{{item.store_product.retailer.image }}" class="md-secondary md-avatar" />
-                              <md-input-container class="md-secondary">
-                                  <p><b>$ CAD {{item.store_product.price}} <span ng-show="item.store_product.unit"> / {{item.store_product.unit.name}}</span></b></p>
-                              </md-input-container>
-                          </md-list-item>
+                            <div ng-repeat="missingItem in store.missing_products" class="noright">
+                                <cart-list-item iscartview='viewing_cart_optimization.value' item='missingItem' on-delete='removeFromCart(id)' on-update='productChanged(sp)'></cart-list-item>
+                            </div>
                         </div>
                       
                   </div>

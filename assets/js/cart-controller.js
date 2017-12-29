@@ -4,8 +4,293 @@
  * and open the template in the editor.
  */
 
+angular.module('eappApp').component('cartListItem', {
+    
+  templateUrl: 'cartListItem.html',
+  controller : CartListItemController,
+  bindings: 
+    {
+        item: '<',
+        iscartview : '<',
+        onDelete: '&',
+        onUpdate: '&'
+    }
+});
+
+function CartListItemController($scope, $rootScope, eapp, $mdDialog)
+{
+    var ctrl = this;
+    
+    ctrl.$onInit = function()
+    {
+        ctrl.isUserLogged = $rootScope.isUserLogged;
+        
+        ctrl.errorMargin = 10;
+    };
+    
+    ctrl.delete = function()
+    {
+        ctrl.onDelete({id: ctrl.item.store_product.product.id});
+    };
+    
+    ctrl.update = function()
+    {
+        ctrl.onUpdate({item: ctrl.item});
+    };
+    
+    ctrl.favoriteChanged = function(product)
+    {
+        if(product.in_user_grocery_list)
+        {
+            eapp.addProductToList(product);
+        }
+        else
+        {
+            eapp.removeProductFromList();
+        }
+    };
+    
+    ctrl.viewProduct = function(product_id, ev)
+    {
+        eapp.viewProduct($scope, product_id, ev);
+    };
+    
+    ctrl.getCartItemRebate = function(cart_item)
+    {
+        if(typeof cart_item.store_product.worst_product === "undefined" || cart_item.store_product.worst_product === null)
+        {
+            return 0;
+        }
+        
+        var rebate =  (parseFloat(cart_item.store_product.worst_product.unit_price) - parseFloat(cart_item.store_product.unit_price));
+        
+        if(rebate > ctrl.errorMargin)
+        {
+            rebate = 0;
+        }
+        
+        return rebate;
+    };
+    
+    ctrl.getRelatedProducts = function(store_product)
+    {
+        var results = [];
+        // split related products to store related and format related
+        var different_format_products = [];
+        var different_store_products = [];
+
+        for(var i in store_product.related_products)
+        {
+            if(parseInt(store_product.retailer.id) !== parseInt(store_product.related_products[i].retailer.id))
+            {
+                different_store_products.push(store_product.related_products[i]);
+            }
+            
+            if(store_product.format.toString().trim() !== store_product.related_products[i].format.toString().trim()
+                    && parseInt(store_product.retailer.id) === parseInt(store_product.related_products[i].retailer.id))
+            {
+                different_format_products.push(store_product.related_products[i]);
+            }
+        }
+        
+        // Sort them in ascending order
+        different_store_products.sort(function(a, b)
+        {
+            if(parseFloat(a.compare_unit_price) < parseFloat(b.compare_unit_price))
+            {
+                return -1;
+            }
+            
+            if(parseFloat(a.compare_unit_price) > parseFloat(b.compare_unit_price))
+            {
+                return 1;
+            }
+            
+            return 0;
+            
+        });
+        
+        // Sort them in ascending order
+        different_format_products.sort(function(a, b)
+        {
+            if(parseFloat(a.compare_unit_price) < parseFloat(b.compare_unit_price))
+            {
+                return -1;
+            }
+            
+            if(parseFloat(a.compare_unit_price) > parseFloat(b.compare_unit_price))
+            {
+                return 1;
+            }
+            
+            return 0;
+            
+        });
+
+        results.push(different_store_products);
+        results.push(different_format_products);
+
+        return results;
+
+    };
+    
+    /**
+     * Callback when the user wants to change the store
+     * of a given store product. 
+     * @param {type} ev
+     * @param {type} currentStoreProduct
+     * @returns {undefined}
+     */    
+    ctrl.changeProductStore = function(ev, cartItem)
+    {
+        // The currentlu selected store product. 
+        $scope.selectedStoreProduct = cartItem.store_product;
+        $scope.different_store_products = cartItem.different_store_products;
+        $scope.related_products = cartItem.store_product.related_products;
+        $scope.scrollTop = $(document).scrollTop();
+        
+        // Show dialog for user to change the store of the product. 
+        $mdDialog.show({
+            controller: ChangeStoreController,
+            templateUrl:  $rootScope.base_url + 'assets/templates/change-store-product.html',
+            parent: angular.element(document.body),
+            targetEvent: ev,
+            clickOutsideToClose:true,
+            disableParentScroll : true,
+            preserveScope:true,
+            scope : $scope,
+            fullscreen: false,
+            onRemoving : function()
+            {
+                // Restore scroll
+                $(document).scrollTop($scope.scrollTop);
+            }
+          })
+          .then(function(answer) 
+            {
+                
+          }, function() {
+                
+          });
+    };
+    
+    function ChangeStoreController($scope, $mdDialog) 
+    {
+        $scope.hide = function() 
+        {
+            $mdDialog.hide();
+        };
+
+        $scope.cancel = function() 
+        {
+            $mdDialog.cancel();
+        };
+        
+        $scope.change = function(sp)
+        {
+            // Get reference to in_user_grocery_list
+            var in_user_grocery_list = $scope.selectedStoreProduct.product.in_user_grocery_list;
+            // Assign references to the newly selected product
+            $scope.selectedStoreProduct = sp;
+            // Assign to the selected product the related products. 
+            $scope.selectedStoreProduct.related_products = $scope.related_products;
+            // Recompute format and store products
+            var relatedProducts = ctrl.getRelatedProducts($scope.selectedStoreProduct);
+            $scope.selectedStoreProduct.different_store_products = relatedProducts[0];
+            $scope.selectedStoreProduct.different_format_products = relatedProducts[1];
+            $scope.selectedStoreProduct.product.in_user_grocery_list = in_user_grocery_list;
+        };
+
+        $scope.selectStoreProduct = function() 
+        {
+            var currentStoreProduct = $scope.selectedStoreProduct;
+            ctrl.onUpdate({sp: currentStoreProduct});
+            $mdDialog.hide();
+        };
+    };
+    
+    /**
+     * This is the callback when the user desires to
+     * change the products format
+     * @param {type} ev
+     * @param {type} currentStoreProduct
+     * @returns {undefined}
+     */
+    $scope.changeProductFormat = function(ev, cartItem)
+    {
+        $scope.selectedStoreProduct = cartItem.store_product;
+	$scope.different_format_products = cartItem.different_format_products;
+        $scope.related_products = cartItem.store_product.related_products;
+        $scope.scrollTop = $(document).scrollTop();
+        
+        $mdDialog.show({
+            controller: ChangeFormatController,
+            templateUrl:  $rootScope.base_url + 'assets/templates/change-format-product.html',
+            parent: angular.element(document.body),
+            targetEvent: ev,
+            clickOutsideToClose:true,
+            disableParentScroll : true,
+            preserveScope:true,
+            scope : $scope,
+            fullscreen: false,
+            onRemoving : function()
+            {
+                // Restore scroll
+                $(document).scrollTop($scope.scrollTop);
+            }
+          })
+          .then(function(answer) {
+                
+          }, function() {
+                
+          });
+    };
+    
+    function ChangeFormatController($scope, $mdDialog) 
+    {
+        $scope.hide = function() 
+        {
+            $mdDialog.hide();
+        };
+
+        $scope.cancel = function() 
+        {
+            $mdDialog.cancel();
+        };
+        
+        /**
+         * This is called when a user selects a different product
+         * @param {type} sp
+         * @returns {undefined}
+         */
+        $scope.change = function(sp)
+        {
+            // Get the value indicating if the product is in the user's grocery list
+            var in_user_grocery_list = $scope.selectedStoreProduct.product.in_user_grocery_list;
+            // Set this store product as the selected product
+            $scope.selectedStoreProduct = sp;
+            // Assign the related products 
+            $scope.selectedStoreProduct.related_products = $scope.related_products;
+            var relatedProducts = ctrl.getRelatedProducts($scope.selectedStoreProduct);
+            $scope.selectedStoreProduct.different_store_products = relatedProducts[0];
+            $scope.selectedStoreProduct.different_format_products = relatedProducts[1];
+            
+            $scope.selectedStoreProduct.product.in_user_grocery_list = in_user_grocery_list;
+        };
+
+        $scope.selectStoreProduct = function() 
+        {
+            var currentStoreProduct = $scope.selectedStoreProduct;
+            ctrl.onUpdate({sp: currentStoreProduct});
+            $mdDialog.hide();
+        };
+    };
+}
+
 angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "$http", "$mdDialog","eapp", function($scope, $rootScope, $http, $mdDialog, eapp) 
 {
+    
+    $scope.errorMargin = 10;
     
     /**
      * List of selected cart items. 
@@ -82,6 +367,39 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
         
     };
     
+    
+    /**
+     * Ovverides the same function in the root scope
+     * @returns {Number}
+     */
+    $scope.get_cart_total_price = function()
+    {
+        var total = 0;
+
+        if($scope.viewing_cart_optimization.value)
+        {
+            for(var key in $scope.cart)
+            {
+                total += parseFloat($scope.cart[key].quantity * $scope.cart[key].store_product.price);
+            }
+        }
+        else
+        {
+            for(var y in $scope.selectedStore.store_products)
+            {
+                total += parseFloat($scope.selectedStore.store_products[y].store_product.price * $scope.selectedStore.store_products[y].quantity);
+            }
+            
+            for(var y in $scope.selectedStore.missing_products)
+            {
+                total += parseFloat($scope.selectedStore.missing_products[y].store_product.price * $scope.selectedStore.missing_products[y].quantity);
+            }
+        }
+        
+
+        return total;
+    };
+    
     $scope.getFormat = function(storeProduct)
     {
         var formatVal = 1;
@@ -139,17 +457,7 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
     
     
     
-    $scope.favoriteChanged = function(product)
-    {
-        if(product.in_user_grocery_list)
-        {
-            eapp.addProductToList(product);
-        }
-        else
-        {
-            eapp.removeProductFromList();
-        }
-    };
+    
     
     $scope.getDistance = function()
     {
@@ -392,7 +700,7 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
             {
                 var store_product = item;
                 
-                // check if the store for this related product has already been added to the array
+                // check if the store for this store product has already been added to the array
                 var index = stores.map(function(e) { return e.id; }).indexOf(store_product.retailer.id); 
                 
                 if(index >= 0)
@@ -417,12 +725,15 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
             // each related product represents a store
             for(var x in item.related_products)
             {
+                // Pass by value
+                var newItem = Object.assign({}, cart_item);
+                
                 // get a product store product
                 var store_product = item.related_products[x];
                 
                 store_product.related_products = item.related_products;
                 
-                cart_item.store_product = store_product;
+                newItem.store_product = store_product;
                 // check if the store for this related product has already been added to the array
                 var index = stores.map(function(e) { return e.id; }).indexOf(store_product.retailer.id); 
                 
@@ -431,7 +742,7 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
                     var product_index = stores[index].store_products.map(function(e){ return e.product.id; }).indexOf(store_product.product.id);
                     if(product_index === -1)
                     {
-                        stores[index].store_products.push(cart_item);
+                        stores[index].store_products.push(newItem);
                     }
                 }
                 else
@@ -441,7 +752,7 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
    
                     stores.push(retailer);
                     stores[stores.length - 1].store_products = [];
-                    stores[stores.length - 1].store_products.push(cart_item);
+                    stores[stores.length - 1].store_products.push(newItem);
                 }
             }
         }
@@ -449,11 +760,11 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
         // Get the list of missing products for each store
         for(var i in $rootScope.cart)
         {
-            // Get a given store product
-            var item = $rootScope.cart[i];
-            
             for(var x in stores)
             {
+                // Get a given store product
+                var item = Object.assign({}, $rootScope.cart[i]);
+                
                 // check if that store product exists in the given store
                 index = stores[x].store_products.map(function(e) { return e.product.id; }).indexOf(item.store_product.product.id); 
                 
@@ -496,8 +807,11 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
     
     $scope.storeTabSelected = function(store)
     {
+        
         // Get the selected store
         $scope.selectedStore = store;
+        
+        $scope.groupCartByCategory();
         
         // For each store product in the cart item, 
         // we select the least popular(most expensive)
@@ -522,7 +836,7 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
             // selected store products
             for(var x in store.store_products)
             {
-                if(parseInt($rootScope.cart[i].store_product.product.id) === parseInt(store.store_products[x].product.id))
+                if(parseInt($rootScope.cart[i].store_product.id) === parseInt(store.store_products[x].id))
                 {
                     $rootScope.cart[i].store_product = store.store_products[x].store_product;
                 }
@@ -704,7 +1018,8 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
             {
                 for(var x in response.rows)
                 {
-                    if(typeof response.rows[x].elements[0].status !== 'undefined' && response.rows[x].elements[0].status === "ZERO_RESULTS")
+                    if(typeof response.rows[x].elements[0].status !== 'undefined' 
+                            && (response.rows[x].elements[0].status === "ZERO_RESULTS" || response.rows[0].elements[x].status === "ZERO_RESULTS"))
                     {
                         continue;
                     }
@@ -725,156 +1040,7 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
 	  
     };
 	
-    /**
-     * Callback when the user wants to change the store
-     * of a given store product. 
-     * @param {type} ev
-     * @param {type} currentStoreProduct
-     * @returns {undefined}
-     */    
-    $scope.changeProductStore = function(ev, cartItem)
-    {
-        // The currentlu selected store product. 
-        $scope.selectedStoreProduct = cartItem.store_product;
-        $scope.different_store_products = cartItem.different_store_products;
-        $scope.related_products = cartItem.store_product.related_products;
-        $scope.scrollTop = $(document).scrollTop();
-        // Show dialog for user to change the store of the product. 
-        $mdDialog.show({
-            controller: ChangeStoreController,
-            templateUrl:  $scope.base_url + 'assets/templates/change-store-product.html',
-            parent: angular.element(document.body),
-            targetEvent: ev,
-            clickOutsideToClose:true,
-            disableParentScroll : true,
-            preserveScope:true,
-            scope : $scope,
-            fullscreen: false,
-            onRemoving : function()
-            {
-                // Restore scroll
-                $(document).scrollTop($scope.scrollTop);
-            }
-          })
-          .then(function(answer) 
-            {
-                
-          }, function() {
-                
-          });
-    };
     
-    function ChangeStoreController($scope, $mdDialog) 
-    {
-        $scope.hide = function() 
-        {
-            $mdDialog.hide();
-        };
-
-        $scope.cancel = function() 
-        {
-            $mdDialog.cancel();
-        };
-        
-        $scope.change = function(sp)
-        {
-            // Get reference to in_user_grocery_list
-            var in_user_grocery_list = $scope.selectedStoreProduct.product.in_user_grocery_list;
-            // Assign references to the newly selected product
-            $scope.selectedStoreProduct = sp;
-            // Assign to the selected product the related products. 
-            $scope.selectedStoreProduct.related_products = $scope.related_products;
-            // Recompute format and store products
-            var relatedProducts = $scope.getRelatedProducts($scope.selectedStoreProduct);
-            $scope.selectedStoreProduct.different_store_products = relatedProducts[0];
-            $scope.selectedStoreProduct.different_format_products = relatedProducts[1];
-            $scope.selectedStoreProduct.product.in_user_grocery_list = in_user_grocery_list;
-        };
-
-        $scope.selectStoreProduct = function() 
-        {
-            var currentStoreProduct = $scope.selectedStoreProduct;
-            $scope.productChanged(currentStoreProduct);
-            $mdDialog.hide();
-        };
-    };
-    
-    /**
-     * This is the callback when the user desires to
-     * change the products format
-     * @param {type} ev
-     * @param {type} currentStoreProduct
-     * @returns {undefined}
-     */
-    $scope.changeProductFormat = function(ev, cartItem)
-    {
-        $scope.selectedStoreProduct = cartItem.store_product;
-	$scope.different_format_products = cartItem.different_format_products;
-        $scope.related_products = cartItem.store_product.related_products;
-        $scope.scrollTop = $(document).scrollTop();
-        
-        $mdDialog.show({
-            controller: ChangeFormatController,
-            templateUrl:  $scope.base_url + 'assets/templates/change-format-product.html',
-            parent: angular.element(document.body),
-            targetEvent: ev,
-            clickOutsideToClose:true,
-            disableParentScroll : true,
-            preserveScope:true,
-            scope : $scope,
-            fullscreen: false,
-            onRemoving : function()
-            {
-                // Restore scroll
-                $(document).scrollTop($scope.scrollTop);
-            }
-          })
-          .then(function(answer) {
-                
-          }, function() {
-                
-          });
-    };
-    
-    function ChangeFormatController($scope, $mdDialog) 
-    {
-        $scope.hide = function() 
-        {
-            $mdDialog.hide();
-        };
-
-        $scope.cancel = function() 
-        {
-            $mdDialog.cancel();
-        };
-        
-        /**
-         * This is called when a user selects a different product
-         * @param {type} sp
-         * @returns {undefined}
-         */
-        $scope.change = function(sp)
-        {
-            // Get the value indicating if the product is in the user's grocery list
-            var in_user_grocery_list = $scope.selectedStoreProduct.product.in_user_grocery_list;
-            // Set this store product as the selected product
-            $scope.selectedStoreProduct = sp;
-            // Assign the related products 
-            $scope.selectedStoreProduct.related_products = $scope.related_products;
-            var relatedProducts = $scope.getRelatedProducts($scope.selectedStoreProduct);
-            $scope.selectedStoreProduct.different_store_products = relatedProducts[0];
-            $scope.selectedStoreProduct.different_format_products = relatedProducts[1];
-            
-            $scope.selectedStoreProduct.product.in_user_grocery_list = in_user_grocery_list;
-        };
-
-        $scope.selectStoreProduct = function() 
-        {
-            var currentStoreProduct = $scope.selectedStoreProduct;
-            $scope.productChanged(currentStoreProduct);
-            $mdDialog.hide();
-        };
-    };
     
     $scope.InitMap = function(ev, departmentStore)
     {
@@ -1006,6 +1172,8 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
 
     };
 
+    
+
     $scope.update_price_optimization = function()
     {
         $scope.price_optimization = 0;
@@ -1017,7 +1185,7 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
          * that the product might have an error. 
          * @type Number
          */
-        var errorMargin = 10;
+        
 
         for(var key in $scope.cart)
         {
@@ -1034,7 +1202,7 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
                     * parseFloat(cart_item.quantity) * parseFloat($scope.getFormat(cart_item.store_product)) * parseFloat(cart_item.store_product.equivalent);
             
             // A value greater than 20 might be an error. 
-            if(parseInt(value) > errorMargin)
+            if(parseInt(value) > $scope.errorMargin)
             {
                 console.log(cart_item);
             }
@@ -1078,15 +1246,7 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
         }
     };
     
-    $scope.getCartItemRebate = function(cart_item)
-    {
-        if(typeof cart_item.store_product.worst_product === "undefined" || cart_item.store_product.worst_product === null)
-        {
-            return 0;
-        }
-        
-        return (parseFloat(cart_item.store_product.worst_product.unit_price) - parseFloat(cart_item.store_product.unit_price));
-    };
+    
    
     $scope.get_price_label = function(store_product, product)
     {
@@ -1131,7 +1291,7 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
                 $rootScope.cart = [];
                 $scope.stores = [];
                 $scope.departmenStores = [];
-				$rootScope.totalPriceAvailableProducts = 0;
+		$rootScope.totalPriceAvailableProducts = 0;
                 
             });
 
@@ -1348,11 +1508,11 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
         
         if(!$scope.viewing_cart_optimization.value)
         {
-            for(var x in $scope.cart)
+            for(var x in $scope.selectedStore.store_products)
             {
-                var store_product = $scope.cart[x].store_product;
+                var store_product = $scope.selectedStore.store_products[x].store_product;
 
-                if(!angular.isNullOrUndefined(store_product) && $scope.cart[x].quantity > 0)
+                if(!angular.isNullOrUndefined(store_product) && $scope.selectedStore.store_products[x].quantity > 0)
                 {
                     // get product category id
                     var category = store_product.product.category;
@@ -1379,14 +1539,14 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
                             $scope.productCategories[index].products = [];
                         }
 
-                        $scope.productCategories[index].products.push(store_product);
+                        $scope.productCategories[index].products.push($scope.selectedStore.store_products[x]);
 
                     }
                     else
                     {
                         // create category
                         category.products = [];
-                        category.products.push(store_product);
+                        category.products.push($scope.selectedStore.store_products[x]);
                         $scope.productCategories.push(category);
                     }
                 }
