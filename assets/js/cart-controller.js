@@ -216,7 +216,7 @@ function CartListItemController($scope, $rootScope, eapp, $mdDialog)
      * @param {type} currentStoreProduct
      * @returns {undefined}
      */
-    $scope.changeProductFormat = function(ev, cartItem)
+    ctrl.changeProductFormat = function(ev, cartItem)
     {
         $scope.selectedStoreProduct = cartItem.store_product;
 	$scope.different_format_products = cartItem.different_format_products;
