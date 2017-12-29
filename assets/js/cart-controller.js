@@ -13,7 +13,9 @@ angular.module('eappApp').component('cartListItem', {
         item: '<',
         iscartview : '<',
         onDelete: '&',
-        onUpdate: '&'
+        onUpdate: '&',
+        onUpdateQuantity: '&',
+        viewRetailerImage: '@'
     }
 });
 
@@ -26,11 +28,18 @@ function CartListItemController($scope, $rootScope, eapp, $mdDialog)
         ctrl.isUserLogged = $rootScope.isUserLogged;
         
         ctrl.errorMargin = 10;
+        
+        ctrl.viewImage = angular.isNullOrUndefined(ctrl.viewRetailerImage) ? false : ctrl.viewRetailerImage == "true";
     };
     
     ctrl.delete = function()
     {
         ctrl.onDelete({id: ctrl.item.store_product.product.id});
+    };
+    
+    ctrl.updateQuantity = function(newQuantity, productID)
+    {
+        ctrl.onUpdateQuantity({ quantity : newQuantity, id : productID });
     };
     
     ctrl.update = function()
@@ -290,6 +299,8 @@ function CartListItemController($scope, $rootScope, eapp, $mdDialog)
 angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "$http", "$mdDialog","eapp", function($scope, $rootScope, $http, $mdDialog, eapp) 
 {
     
+    $scope.root = $rootScope;
+    
     $scope.errorMargin = 10;
     
     /**
@@ -308,13 +319,6 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
       page: 1
     };
     
-    /**
-    * When this is true, the user is viewing optimizations
-    * based on the cart. When false, he is viewing optimization 
-    * based on the closest stores. 
-    */
-    $scope.viewing_cart_optimization = { value: true};
-
     $scope.searchInMyList = { value: false};
     
     $scope.viewOptimizedList = false;
@@ -351,7 +355,7 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
      */
     $scope.Init = function()
     {
-        $scope.viewing_cart_optimization.value = true;
+        $rootScope.cartView = true;
         
         if(window.sessionStorage.getItem('viewOptimizedList'))
         {
@@ -365,39 +369,6 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
             $scope.initialized = true;
         }
         
-    };
-    
-    
-    /**
-     * Ovverides the same function in the root scope
-     * @returns {Number}
-     */
-    $scope.get_cart_total_price = function()
-    {
-        var total = 0;
-
-        if($scope.viewing_cart_optimization.value)
-        {
-            for(var key in $scope.cart)
-            {
-                total += parseFloat($scope.cart[key].quantity * $scope.cart[key].store_product.price);
-            }
-        }
-        else
-        {
-            for(var y in $scope.selectedStore.store_products)
-            {
-                total += parseFloat($scope.selectedStore.store_products[y].store_product.price * $scope.selectedStore.store_products[y].quantity);
-            }
-            
-            for(var y in $scope.selectedStore.missing_products)
-            {
-                total += parseFloat($scope.selectedStore.missing_products[y].store_product.price * $scope.selectedStore.missing_products[y].quantity);
-            }
-        }
-        
-
-        return total;
     };
     
     $scope.getFormat = function(storeProduct)
@@ -432,7 +403,7 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
      */
     $scope.optimization_preference_changed = function()
     {
-        if($scope.viewing_cart_optimization.value)
+        if($rootScope.cartView)
         {
             $scope.update_cart_list();
         }
@@ -809,7 +780,7 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
     {
         
         // Get the selected store
-        $scope.selectedStore = store;
+        $rootScope.selectedStore = store;
         
         $scope.groupCartByCategory();
         
@@ -931,7 +902,7 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
     {
         var total = 0;
 
-        if($scope.viewing_cart_optimization.value)
+        if($rootScope.cartView)
         {
             for(var key in $scope.departmenStores)
             {
@@ -961,18 +932,18 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
         {
             if(availableProducts)
             {
-                for(var x in $scope.selectedStore.store_products)
+                for(var x in $rootScope.selectedStore.store_products)
                 {
-                    var item = $scope.selectedStore.store_products[x];
+                    var item = $rootScope.selectedStore.store_products[x];
                     total += parseFloat(item.quantity * item.store_product.price);
                 }
             }
             else
             {
 
-                for(var x in $scope.selectedStore.missing_products)
+                for(var x in $rootScope.selectedStore.missing_products)
                 {
-                    var item = $scope.selectedStore.missing_products[x];
+                    var item = $rootScope.selectedStore.missing_products[x];
                     total += parseFloat(item.quantity * item.store_product.price);
                 }
 
@@ -1173,6 +1144,38 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
     };
 
     
+    $scope.updateCartQuantity = function(newQuantity, productID)
+    {
+        for(var x in $rootScope.cart)
+        {
+            var item = $rootScope.cart[x];
+            
+            if(parseInt($rootScope.cart[x].store_product.product.id) === parseInt(productID))
+            {
+                if(parseInt(newQuantity) !== parseInt($rootScope.cart[x].quantity))
+                {
+                    $rootScope.cart[x].quantity = parseInt(newQuantity);
+                }
+                
+                // Update cart item
+                var update_data =
+                {
+                    id      : $rootScope.cart[x].product.id,
+                    rowid   : $rootScope.cart[x].rowid,
+                    qty     : $rootScope.cart[x].quantity,
+                    price   : parseInt($rootScope.cart[x].store_product.price),
+                    name    : 'name_'.concat($rootScope.cart[x].product.id),
+                    options : {store_product_id : $rootScope.cart[x].store_product_id, quantity : $rootScope.cart[x].quantity}
+                };
+                
+                eapp.updateCart(update_data);
+            }
+        }
+        
+        $rootScope.totalPriceAvailableProducts = $scope.getCartTotalPrice(true);
+        $rootScope.totalPriceUnavailableProducts = $scope.getCartTotalPrice(false);
+        $scope.update_price_optimization();
+    };
 
     $scope.update_price_optimization = function()
     {
@@ -1497,13 +1500,13 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
     {
         $scope.productCategories = [];
         
-        if(!$scope.viewing_cart_optimization.value)
+        if(!$rootScope.cartView)
         {
-            for(var x in $scope.selectedStore.store_products)
+            for(var x in $rootScope.selectedStore.store_products)
             {
-                var store_product = $scope.selectedStore.store_products[x].store_product;
+                var store_product = $rootScope.selectedStore.store_products[x].store_product;
 
-                if(!angular.isNullOrUndefined(store_product) && $scope.selectedStore.store_products[x].quantity > 0)
+                if(!angular.isNullOrUndefined(store_product) && $rootScope.selectedStore.store_products[x].quantity > 0)
                 {
                     // get product category id
                     var category = store_product.product.category;
@@ -1530,14 +1533,14 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
                             $scope.productCategories[index].products = [];
                         }
 
-                        $scope.productCategories[index].products.push($scope.selectedStore.store_products[x]);
+                        $scope.productCategories[index].products.push($rootScope.selectedStore.store_products[x]);
 
                     }
                     else
                     {
                         // create category
                         category.products = [];
-                        category.products.push($scope.selectedStore.store_products[x]);
+                        category.products.push($rootScope.selectedStore.store_products[x]);
                         $scope.productCategories.push(category);
                     }
                 }

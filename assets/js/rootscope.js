@@ -43,6 +43,17 @@ $(document).ready(function()
 
         rootScope.travel_distance = 0;
         
+        /**
+         * If true, the user is in cart view
+         * If false, the user is in store view
+         */
+        rootScope.cartView = true;
+        
+        /**
+         * The store selected in the cart
+         */
+        rootScope.selectedStore = null;
+        
         rootScope.clearSessionItems = function()
         {
             window.sessionStorage.removeItem("store_id");
@@ -58,7 +69,7 @@ $(document).ready(function()
             {
                 //$rootScope.store_products[index].store_products
                 total += 
-                        !rootScope.viewing_cart_optimization.value ? 
+                        !rootScope.cartView ? 
                         rootScope.cart[key].store_products[store_index].price * rootScope.cart[key].quantity : 
                         rootScope.cart[key].store_product.price * rootScope.cart[key].quantity;
             }
@@ -66,74 +77,94 @@ $(document).ready(function()
             return total;
         };
         
-        rootScope.get_cart_total_price = function()
-        {
-            var total = 0;
+        /**
+     * Ovverides the same function in the root scope
+     * @returns {Number}
+     */
+    rootScope.get_cart_total_price = function()
+    {
+        var total = 0;
 
+        if(rootScope.cartView)
+        {
             for(var key in rootScope.cart)
             {
                 total += parseFloat(rootScope.cart[key].quantity * rootScope.cart[key].store_product.price);
             }
-
-            return total;
-        };
-        
-        rootScope.get_cart_total_available_products = function()
+        }
+        else
         {
-            var total = 0;
+            for(var y in rootScope.selectedStore.store_products)
+            {
+                total += parseFloat(rootScope.selectedStore.store_products[y].store_product.price * rootScope.selectedStore.store_products[y].quantity);
+            }
             
-            if(rootScope.viewing_cart_optimization.value)
+            for(var y in rootScope.selectedStore.missing_products)
             {
-                for(var key in rootScope.cart)
-                {
-                    var sp = rootScope.cart[key].store_product;
-                    if(parseFloat(sp.department_store.distance) === 0)
-                    {
-                        continue;
-                    }
-                    total += parseFloat(rootScope.cart[key].quantity * sp.price);
-                }
+                total += parseFloat(rootScope.selectedStore.missing_products[y].store_product.price * rootScope.selectedStore.missing_products[y].quantity);
             }
-            else
-            {
-                for(var i in rootScope.selectedStore.store_products)
-                {
-                    total += parseFloat(rootScope.selectedStore.store_products[i].quantity * rootScope.selectedStore.store_products[i].store_product.price);
-                }
-            }
+        }
+        
 
-            return total;
-        };
+        return total;
+    };
+        
+    rootScope.get_cart_total_available_products = function()
+    {
+        var total = 0;
 
-        /*
-        * Get total number of items in the cart
-        */
-        rootScope.get_cart_item_total = function()
+        if(rootScope.cartView)
         {
-            var total = 0;
-
             for(var key in rootScope.cart)
             {
-                //if(parseFloat(rootScope.cart[key].store_product.price) !== 0)
+                var sp = rootScope.cart[key].store_product;
+                if(parseFloat(sp.department_store.distance) === 0)
                 {
-                    total++;
+                    continue;
                 }
+                total += parseFloat(rootScope.cart[key].quantity * sp.price);
             }
-
-            return total;
-        };
-        
-        rootScope.get_optimized_cart_details = function()
+        }
+        else
         {
-            var total = 0;
-
-            for(var key in rootScope.optimized_cart)
+            for(var i in rootScope.selectedStore.store_products)
             {
-                total += parseFloat(rootScope.optimized_cart[key].quantity * rootScope.optimized_cart[key].store_product.price);
+                total += parseFloat(rootScope.selectedStore.store_products[i].quantity * rootScope.selectedStore.store_products[i].store_product.price);
             }
+        }
 
-            return total;
-        };
+        return total;
+    };
+
+    /*
+    * Get total number of items in the cart
+    */
+    rootScope.get_cart_item_total = function()
+    {
+        var total = 0;
+
+        for(var key in rootScope.cart)
+        {
+            //if(parseFloat(rootScope.cart[key].store_product.price) !== 0)
+            {
+                total++;
+            }
+        }
+
+        return total;
+    };
+
+    rootScope.get_optimized_cart_details = function()
+    {
+        var total = 0;
+
+        for(var key in rootScope.optimized_cart)
+        {
+            total += parseFloat(rootScope.optimized_cart[key].quantity * rootScope.optimized_cart[key].store_product.price);
+        }
+
+        return total;
+    };
         
         
 			

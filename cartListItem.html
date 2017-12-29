@@ -5,7 +5,7 @@
     <div class="col-sm-12 col-md-1"><a title="Remove this item" class="remove" style="vertical-align: middle;" href ng-click="$ctrl.delete()">×</a> </div>
     
     <!-- Retailer Image -->
-    <div class="col-sm-12 col-md-2 cart-item-container image-container" ng-hide="$ctrl.iscartview">
+    <div class="col-sm-12 col-md-2 cart-item-container image-container" ng-show="$ctrl.viewImage">
         <a href><img alt="poster_1_up" ng-src="{{$ctrl.item.store_product.retailer.image}}"></a>
     </div>
     
@@ -20,7 +20,7 @@
     </div>
     
     <!-- Details -->
-    <div ng-class="$ctrl.iscartview ? 'col-sm-12 col-md-6' : 'col-sm-12 col-md-4'">
+    <div ng-class="$ctrl.viewImage ? 'col-sm-12 col-md-4' : 'col-sm-12 col-md-6'">
 
         <div class="row cart-item-container">
 
@@ -66,7 +66,7 @@
 
             <md-input-container>
                 <label>Quantité</label>
-                <input aria-label="Qty" type="number" ng-model="$ctrl.item.quantity" ng-change="update_price_optimization()">
+                <input aria-label="Qty" type="number" ng-model="$ctrl.item.quantity" ng-change="$ctrl.updateQuantity($ctrl.item.quantity, $ctrl.item.store_product.product.id)">
             </md-input-container>
 
         </div>

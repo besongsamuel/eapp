@@ -28,7 +28,7 @@
                 <md-subheader class="md-primary">Configurez votre optimization du panier</md-subheader>
                 
                 <div  class="col-md-12 col-sm-12">
-                    <md-radio-group ng-model="viewing_cart_optimization.value" ng-change="optimization_preference_changed()" class="col-sm-12">
+                    <md-radio-group ng-model="root.cartView" ng-change="optimization_preference_changed()" class="col-sm-12">
                         <div class="row">
                             <md-radio-button ng-value="true_value" class="col-sm-6">Vue du panier</md-radio-button>
                             <md-radio-button ng-value="false_value" class="col-sm-6">Vue par magasin</md-radio-button>
@@ -62,7 +62,7 @@
     
     <p ng-hide="results_available" class="md-otiprix-text" style="text-align: center; margin-bottom: 50px; margin-top: 20px;"><b>Il n'y a aucun résultat</b></p>
 
-    <div id="cart-optimization-container" ng-show="viewing_cart_optimization.value">
+    <div id="cart-optimization-container" ng-show="cartView">
         
         <div class="container" ng-repeat="departmentStore in departmenStores">
             
@@ -89,7 +89,7 @@
                         
                         <md-divider ng-if="$first"></md-divider>
                         
-                        <cart-list-item iscartview='viewing_cart_optimization.value' item='item' on-delete='removeFromCart(id)' on-update='productChanged(sp)'></cart-list-item>
+                        <cart-list-item iscartview='cartView' item='item' on-delete='removeFromCart(id)' on-update='productChanged(sp)' on-update-quantity='updateCartQuantity(quantity, id)'></cart-list-item>
                         
                         <md-divider></md-divider>
                         
@@ -102,28 +102,15 @@
         
     </div>
 
-    <div class="container" ng-cloak ng-hide="viewing_cart_optimization.value">
+    <div class="container" ng-cloak ng-hide="cartView">
         <div  ng-show="results_available">
             <md-tabs md-dynamic-height md-border-bottom>
                 
                 
                 <md-tab label="{{store.name}} ({{store.store_products.length}} / {{cart.length}})" ng-repeat="store in stores.slice(0, 5)" md-on-select="storeTabSelected(store)">
                   <div class="md-padding">
-                        <md-subheader class="md-primary"><a href  ng-click="InitMap($event, store.department_store)">{{store.department_store.fullName}}, {{store.department_store.distanceText}} en voiture (environs {{store.department_store.timeText}})</a></md-subheader>
+                      <md-subheader class="md-primary"><a class="image-container" href><img alt="poster_1_up" ng-src="{{store.image}}"></a><a href  ng-click="InitMap($event, store.department_store)"><p style="text-align: center; margin-top: 10px;">{{store.department_store.fullName}}, {{store.department_store.distanceText}} en voiture (environs {{store.department_store.timeText}})</p></a></md-subheader>
                         <md-subheader>Produits disponibles <span class="badge">{{store.store_products.length}}</md-subheader>
-
-                        <md-list-item ng-repeat="item in store.store_products" class="noright" ng-hide="true">
-                            <img alt="{{ item.store_product.name }}" ng-src="{{ item.store_product.product.image }}" class="md-avatar" />
-                            <div class="md-list-item-text" layout="column">
-                                <a  href="<?php echo site_url("cart/product/"); ?>{{item.store_product.product.id}}">{{ item.store_product.product.name }}</a>
-                                <p ng-show="item.store_product.format">{{item.store_product.format}}<span ng-show="item.store_product.unit"> {{item.store_product.unit.name}}</span></p>
-                                <p ng-show="item.store_product.brand">{{item.store_product.brand.name}}</p>
-                            </div>
-                            
-                            <md-input-container class="md-secondary">
-                                <p><b>$ CAD {{item.store_product.price}}</b></p>
-                            </md-input-container>
-                        </md-list-item>
                         
                         <div class="container" id="my_cart">
                             <div ng-repeat="category in productCategories">
@@ -137,7 +124,7 @@
                                     
                                     <md-divider ng-if="$first"></md-divider>
                                     
-                                        <cart-list-item iscartview='viewing_cart_optimization.value' item='item' on-delete='removeFromCart(id)' on-update='productChanged(sp)'></cart-list-item>
+                                        <cart-list-item iscartview='cartView' item='item' on-delete='removeFromCart(id)' on-update='productChanged(sp)' on-update-quantity='updateCartQuantity(quantity, id)'></cart-list-item>
 
                                     <md-divider></md-divider>
 
@@ -151,7 +138,7 @@
                         <md-subheader class="md-warn"><a class="md-warn" href  data-toggle="collapse" data-target="#products_{{store.id}}">Voir produits indisponibles</a> <span class="badge">{{store.missing_products.length}}</md-subheader>
                         <div id="products_{{store.id}}" class="collapse">
                             <div ng-repeat="missingItem in store.missing_products" class="noright">
-                                <cart-list-item iscartview='viewing_cart_optimization.value' item='missingItem' on-delete='removeFromCart(id)' on-update='productChanged(sp)'></cart-list-item>
+                                <cart-list-item iscartview='cartView' view-retailer-image='true' item='missingItem' on-delete='removeFromCart(id)' on-update='productChanged(sp)' on-update-quantity='updateCartQuantity(quantity, id)'></cart-list-item>
                             </div>
                         </div>
                       
