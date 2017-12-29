@@ -288,10 +288,10 @@ class CI_Controller {
 
         $client->messages->create(		
             // the number you'd like to send the message to		
-            str_replace("+", "", $number),		
+            $number,		
             array(		
                 // A Twilio phone number you purchased at twilio.com/console		
-                'from' => '+14388008069',		
+                'from' => '+15799990395',		
                 // the body of the text message you'd like to send		
                 'body' => $message		
             )		

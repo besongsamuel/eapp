@@ -1391,11 +1391,6 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
     {
         if(!$rootScope.isUserLogged)
         {
-            return;
-        }
-
-        if(!$rootScope.isUserLogged)
-        {
             $scope.showAlert($event, "Se connecter", "Vous devez vous connecter au site pour utiliser cette fonctionnalité..");
             return;
         }
@@ -1436,7 +1431,7 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
             return;
         }
 
-        if(!$rootScope.loggedUser.phone_verified)
+        if(parseInt($rootScope.loggedUser.phone_verified) === 0)
         {
             $scope.showAlert($event, "Votre numéro de téléphone n'est pas vérifié", "Votre numéro de téléphone n'est pas vérifié. Veuillez consulter l'onglet de sécurité de votre compte pour vérifier votre numéro de téléphone.");
             return;
@@ -1468,18 +1463,16 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
 
     $rootScope.printCart = function($event) 
     {
-        if(!$rootScope.isUserLogged)
-        {
-            return;
-        }
-
         if($rootScope.cart.length === 0)
         {
             $scope.showAlert($event, "Panier vide", "Votre panier est actuellement vide. Ajoutez des éléments au panier avant d'utiliser cette fonctionnalité.");
             return;
         }
         
-        $scope.saveUserOptimisation(0);
+        if($rootScope.isUserLogged)
+        {
+            $scope.saveUserOptimisation(0);
+        }
 
         var mywindow = window.open('', 'PRINT');
 
@@ -1495,8 +1488,6 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
         return true;
 
     };
-    
-    
     
     /**
      * This method will group the cart based on categories
