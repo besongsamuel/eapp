@@ -17,6 +17,14 @@ p.cart-warning
     vertical-align: middle;
 }
 
+@media all and (min-width: 0px) and (max-width : 990px)
+{
+    .cart-item-container p
+    {
+        text-align: center;
+    }
+}
+
 .image-container
 {
    
