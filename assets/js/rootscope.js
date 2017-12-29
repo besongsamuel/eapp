@@ -94,6 +94,13 @@ $(document).ready(function()
         }
         else
         {
+            if(angular.isNullOrUndefined(rootScope.selectedStore) 
+                    || angular.isNullOrUndefined(rootScope.selectedStore.store_products)
+                    || angular.isNullOrUndefined(rootScope.selectedStore.missing_products))
+            {
+                return 0;
+            }
+            
             for(var y in rootScope.selectedStore.store_products)
             {
                 total += parseFloat(rootScope.selectedStore.store_products[y].store_product.price * rootScope.selectedStore.store_products[y].quantity);

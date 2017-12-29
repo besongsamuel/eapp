@@ -403,32 +403,11 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
      */
     $scope.optimization_preference_changed = function()
     {
-        if($rootScope.cartView)
-        {
-            $scope.update_cart_list();
-        }
-        else
-        {
-            // Get the stores that will be displayed
-            $scope.stores = $scope.getListByStore();
-            
-            // Select the first store
-            if($scope.stores.length > 0)
-            {
-                $scope.storeTabSelected($scope.stores[0]);
-            }
-            
-            // Get the driving distances of each of the stores
-            $scope.getStoreDrivingDistances();
-        }
+        $scope.update_cart_list();
     };
         
     $scope.true_value = true;
     $scope.false_value = false;
-    
-    
-    
-    
     
     $scope.getDistance = function()
     {
@@ -510,15 +489,32 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
                 }
                 
                 $scope.results_available = !angular.isNullOrUndefined($scope.cart) && $scope.cart.length > 0;
+                
+                
+                if($rootScope.cartView)
+                {
+                    $rootScope.sortCart();
+                
+                    // orders the stores and assigns the distance and times to each of the
+                    // department stores
+                    groupByStore();
 
-                
-                $rootScope.sortCart();
-                
-                // orders the stores and assigns the distance and times to each of the
-                // department stores
-                groupByStore();
-                
-                $scope.update_price_optimization();
+                    $scope.update_price_optimization();
+                }
+                else
+                {
+                    // Get the stores that will be displayed
+                    $scope.stores = $scope.getListByStore();
+
+                    // Select the first store
+                    if($scope.stores.length > 0)
+                    {
+                        $scope.storeTabSelected($scope.stores[0]);
+                    }
+
+                    // Get the driving distances of each of the stores
+                    $scope.getStoreDrivingDistances();
+                }
                 
             });
     };
@@ -661,7 +657,7 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
         
         for(var i in $rootScope.cart)
         {
-            var cart_item = $rootScope.cart[i];
+            var cart_item = Object.assign({}, $rootScope.cart[i]);
             
             // Get the store product of the cart item
             var item = $rootScope.cart[i].store_product;
@@ -684,7 +680,7 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
                 }
                 else
                 {
-                    var retailer = store_product.retailer;
+                    var retailer = Object.assign({}, store_product.retailer);
                     retailer.department_store = store_product.department_store;
    
                     stores.push(retailer);
@@ -718,7 +714,7 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
                 }
                 else
                 {
-                    var retailer = store_product.retailer;
+                    var retailer = Object.assign({}, store_product.retailer);;
                     retailer.department_store = store_product.department_store;
    
                     stores.push(retailer);
@@ -781,8 +777,9 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
         
         // Get the selected store
         $rootScope.selectedStore = store;
-        
+                
         $scope.groupCartByCategory();
+        
         
         // For each store product in the cart item, 
         // we select the least popular(most expensive)
@@ -805,20 +802,20 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
             
             // Set the cart item store products to the 
             // selected store products
-            for(var x in store.store_products)
+            for(var x in $rootScope.selectedStore.store_products)
             {
-                if(parseInt($rootScope.cart[i].store_product.id) === parseInt(store.store_products[x].id))
+                if(parseInt($rootScope.cart[i].store_product.product.id) === parseInt($rootScope.selectedStore.store_products[x].store_product.product.id))
                 {
-                    $rootScope.cart[i].store_product = store.store_products[x].store_product;
+                    $rootScope.selectedStore.store_products[x].quantity = $rootScope.cart[i].quantity;
                 }
             }
             
             // reset the product price
-            for(var x in store.missing_products)
+            for(var x in $rootScope.selectedStore.missing_products)
             {
-                if(parseInt($rootScope.cart[i].store_product.product.id) === parseInt(store.missing_products[x].product.id))
+                if(parseInt($rootScope.cart[i].store_product.product.id) === parseInt($rootScope.selectedStore.missing_products[x].store_product.product.id))
                 {
-                    $rootScope.cart[i].store_product = store.missing_products[x].store_product;
+                    $rootScope.selectedStore.missing_products[x].quantity = $rootScope.cart[i].quantity;
                 }
             }
         }
@@ -827,6 +824,8 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
         $rootScope.totalPriceUnavailableProducts = $scope.getCartTotalPrice(false);
         
         $scope.update_price_optimization();
+        
+        
     };
 	
     /**
