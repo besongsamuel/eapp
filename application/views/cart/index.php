@@ -169,7 +169,7 @@
                         
                         <tr class="cart-subtotal">
                             <th>Total du panier</th>
-                            <td><span class="amount"><b>$ CAD {{get_cart_total_price() | number : 2}}</b></span></td>
+                            <td><span class="amount"><b>$ CAD {{totalPriceUnavailableProducts + totalPriceAvailableProducts | number : 2}}</b></span></td>
                         </tr>
 			
                         <tr class="optimized-distance" ng-show="price_optimization > 0">

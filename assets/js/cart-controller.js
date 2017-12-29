@@ -1077,49 +1077,90 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
     
     $scope.productChanged = function(currentStoreProduct)
     {
-        for(var i in $rootScope.cart)
+        var item = null;
+        
+        if($rootScope.cartView)
         {
-            var item = $rootScope.cart[i];
-            
-            if(parseInt(item.product.id) === parseInt(currentStoreProduct.product.id))
+            for(var i in $rootScope.cart)
             {
-                $rootScope.cart[i].store_product = currentStoreProduct;
-                var relatedProducts = $scope.getRelatedProducts($rootScope.cart[i].store_product);
-                $rootScope.cart[i].different_store_products = relatedProducts[0];
-                $rootScope.cart[i].different_format_products = relatedProducts[1]; 
-                $rootScope.cart[i].store_product_id = currentStoreProduct.id;
-                
-                // Update cart item
-                var update_data =
+                if(parseInt($rootScope.cart[i].product.id) === parseInt(currentStoreProduct.product.id))
                 {
-                    id      : item.product.id,
-                    rowid   : item.rowid,
-                    qty     : item.quantity,
-                    price   : currentStoreProduct.price,
-                    name    : 'name_'.concat(item.product.id),
-                    options : {store_product_id : currentStoreProduct.id, quantity : item.quantity}
-                };
-                
-                var updateCartPromise = eapp.updateCart(update_data);
-                
-                updateCartPromise.then(function()
-                {
-                    // Finished updating the cart item
-                    $rootScope.totalPriceAvailableProducts = $scope.getCartTotalPrice(true);
-                    $rootScope.totalPriceUnavailableProducts = $scope.getCartTotalPrice(false);
-                    $rootScope.sortCart();
-                    groupByStore();
-                
-                    $scope.update_price_optimization();
-                    // If the user changed a product, he is no longer viewing an optimized store. 
-                    $scope.viewOptimizedList = false;
-                });
-                
-                
-                
-                break;
+                    item = $rootScope.cart[i];
+                    
+                    $rootScope.cart[i].store_product = currentStoreProduct;
+                    var relatedProducts = $scope.getRelatedProducts($rootScope.cart[i].store_product);
+                    $rootScope.cart[i].different_store_products = relatedProducts[0];
+                    $rootScope.cart[i].different_format_products = relatedProducts[1]; 
+                    $rootScope.cart[i].store_product_id = currentStoreProduct.id;
+                    break;
+                }
             }
         }
+        else
+        {
+            for(var i in $rootScope.selectedStore.missing_products)
+            {
+                if(parseInt($rootScope.selectedStore.missing_products[i].product.id) === parseInt(currentStoreProduct.product.id))
+                {
+                    item = $rootScope.selectedStore.missing_products[i];
+                    
+                    $rootScope.selectedStore.missing_products[i].store_product = currentStoreProduct;
+                    var relatedProducts = $scope.getRelatedProducts($rootScope.selectedStore.missing_products[i].store_product);
+                    $rootScope.selectedStore.missing_products[i].different_store_products = relatedProducts[0];
+                    $rootScope.selectedStore.missing_products[i].different_format_products = relatedProducts[1]; 
+                    $rootScope.selectedStore.missing_products[i].store_product_id = currentStoreProduct.id;
+                    break;
+                }
+            }
+            
+            for(var i in $rootScope.selectedStore.store_products)
+            {
+                if(parseInt($rootScope.selectedStore.store_products[i].product.id) === parseInt(currentStoreProduct.product.id))
+                {
+                    item = $rootScope.selectedStore.store_products[i];
+                    
+                    $rootScope.selectedStore.store_products[i].store_product = currentStoreProduct;
+                    var relatedProducts = $scope.getRelatedProducts($rootScope.selectedStore.store_products[i].store_product);
+                    $rootScope.selectedStore.store_products[i].different_store_products = relatedProducts[0];
+                    $rootScope.selectedStore.store_products[i].different_format_products = relatedProducts[1]; 
+                    $rootScope.selectedStore.store_products[i].store_product_id = currentStoreProduct.id;
+                    break;
+                }
+            }
+        }
+        
+        if(item === null)
+        {
+            return;
+        }
+        
+        // Update cart item
+        var update_data =
+        {
+            id      : item.product.id,
+            rowid   : item.rowid,
+            qty     : item.quantity,
+            price   : currentStoreProduct.price,
+            name    : 'name_'.concat(item.product.id),
+            options : {store_product_id : currentStoreProduct.id, quantity : item.quantity}
+        };
+
+        var updateCartPromise = eapp.updateCart(update_data);
+
+        updateCartPromise.then(function()
+        {
+            // Finished updating the cart item
+            $rootScope.totalPriceAvailableProducts = $scope.getCartTotalPrice(true);
+            $rootScope.totalPriceUnavailableProducts = $scope.getCartTotalPrice(false);
+            $rootScope.sortCart();
+            groupByStore();
+
+            $scope.update_price_optimization();
+            // If the user changed a product, he is no longer viewing an optimized store. 
+            $scope.viewOptimizedList = false;
+        });
+        
+        
     };
     
     $rootScope.$watch('cart', function(newValue, oldValue)
