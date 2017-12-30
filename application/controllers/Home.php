@@ -59,7 +59,7 @@ class Home extends CI_Controller {
     {
         $name = $this->input->post("name");
         $email = $this->input->post("email");
-        $subject = $this->input->post("subject");
+        $subject = 'From '.$email.' : '.$this->input->post("subject");
         $comment = $this->input->post("comment");
         $to_email = "infos@otiprix.com";
         
@@ -77,7 +77,7 @@ class Home extends CI_Controller {
         }
                 
         set_error_handler(function(){ });
-        echo json_encode( array("result" => mail($to_email,$subject,$comment,$this->get_otiprix_header($email))));            
+        echo json_encode( array("result" => mail($to_email,$subject,$comment,$this->get_otiprix_header())));            
         restore_error_handler();
     }
     
