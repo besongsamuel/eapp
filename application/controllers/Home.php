@@ -59,7 +59,7 @@ class Home extends CI_Controller {
     {
         $name = $this->input->post("name");
         $email = $this->input->post("email");
-        $subject = 'From '.$email.' : '.$this->input->post("subject");
+        $subject = 'From '.$name.' ('.$email.') : '.$this->input->post("subject");
         $comment = $this->input->post("comment");
         $to_email = "infos@otiprix.com";
         
