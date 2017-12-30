@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-angular.module("eappApp").controller("ContactUsController", ["$rootScope", "$scope", "eapp", function($rootScope, $scope, eapp) 
+angular.module("eappApp").controller("ContactUsController", ["$rootScope", "$scope", "eapp", "$http", function($rootScope, $scope, eapp, $http) 
 {
     $scope.officeLongitude = -72.9508469;
     $scope.officeLatitude = 45.6231815;
@@ -62,6 +62,52 @@ angular.module("eappApp").controller("ContactUsController", ["$rootScope", "$sco
           })(marker, i));
         }
         
+    };
+    
+    $scope.contact = 
+    {
+        name : "",
+        email : "",
+        subject : "",
+        comment : ""
+    };
+    
+    $scope.contactus = function()
+    {
+        if($scope.contactusForm.$valid)
+        {
+            var formData = new FormData();
+            formData.append("name", $scope.contact.name);
+            formData.append("email", $scope.contact.email);
+            formData.append("subject", $scope.contact.subject);
+            formData.append("comment", $scope.contact.comment);
+
+            $http.post( $scope.site_url.concat("/home/contactus"), formData, {
+                    transformRequest: angular.identity,
+                    headers: {'Content-Type': undefined}
+            }).then(function(response)
+            {
+                if(response.data.result)
+                {
+                    $scope.message = "Votre message a bien été envoyé.";
+                    $scope.contact = 
+                    {
+                        name : "",
+                        email : "",
+                        subject : "",
+                        comment : ""
+                    };
+                    $scope.contactusForm.$setPristine();
+                    $scope.contactusForm.$setValidity();
+                    $scope.contactusForm.$setUntouched();
+                }
+                else
+                {
+                    $scope.errorMessage = "Une erreur de serveur inattendue s'est produite. Veuillez réessayer plus tard.";
+                }
+
+            });
+        }        
     };
     
     angular.element(document).ready(function()
