@@ -467,17 +467,6 @@ class Account extends CI_Controller {
         mail($this->user->email, $mail_subject, $message, $this->get_otiprix_header());
     }
     
-    private function get_otiprix_header() 
-    {
-        // Always set content-type when sending HTML email
-        $headers = "MIME-Version: 1.0" . "\r\n";
-        $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
-        // More headers
-        $headers .= 'From: <infos@otiprix.com>' . "\r\n";
-        
-        return $headers;
-    }
-    
     private function send_company_registration_message() 
     {
         $mail_subject = 'Bienvenue';

@@ -61,6 +61,7 @@ class Home extends CI_Controller {
         $email = $this->input->post("email");
         $subject = $this->input->post("subject");
         $comment = $this->input->post("comment");
+        $to_email = "infos@otiprix.com";
         
         $data = array
         (
@@ -76,14 +77,7 @@ class Home extends CI_Controller {
         }
                 
         set_error_handler(function(){ });
-                    
-        $headers = "From: ".$email." \r\n";
-        $headers .= "Reply-To: ".$email." \r\n";
-        $headers .= "MIME-Version: 1.0\r\n";
-        $headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
-
-        echo json_encode( array("result" => mail("infos@otiprix.com",$subject,$comment,$headers)));            
-                    
+        echo json_encode( array("result" => mail($to_email,$subject,$comment,$this->get_otiprix_header($email))));            
         restore_error_handler();
     }
     

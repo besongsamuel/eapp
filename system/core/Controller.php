@@ -342,6 +342,17 @@ class CI_Controller {
     {
         return sprintf('%04X%04X%04X%04X%04X%04X%04X%04X', mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(16384, 20479), mt_rand(32768, 49151), mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(0, 65535));
     }
+    
+    protected function get_otiprix_header($to_email = "infos@otiprix.com") 
+    {
+        // Always set content-type when sending HTML email
+        $headers = "MIME-Version: 1.0" . "\r\n";
+        $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+        // More headers
+        $headers .= 'From: <'.$to_email.'>' . "\r\n";
+        
+        return $headers;
+    }
        
 
 }
