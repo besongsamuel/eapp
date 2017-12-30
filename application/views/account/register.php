@@ -85,10 +85,10 @@
                             <md-input-container class="md-block col-md-6" flex-gt-sm>
                                 <label>Mot de passe</label>
                                 <md-icon style="color: #1abc9c;"><i class="material-icons">lock</i></md-icon>
-                                <input style="border-left : none; border-right : none;border-top : none;" type="password" required name="password" ng-model="user.password" equals="{{user.confirm_password}}" ng-pattern="/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/" />
+                                <input style="border-left : none; border-right : none;border-top : none;" type="password" required name="password" ng-model="user.password" equals="{{user.confirm_password}}" ng-pattern="/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/" />
                                 <div ng-messages="signupForm.password.$error">
                                     <div ng-message="required">Un mot de passe est requis.</div>
-                                    <div ng-message="pattern">Le mot de passe n'est pas assez fort. Le mot de passe doit comporter au moins 8 caractères et doit contenir un nombre, un caractère et un caractère spécial.</div>
+                                    <div ng-message="pattern">Le mot de passe n'est pas assez fort. Le mot de passe doit comporter au moins huit caractères, au moins une lettre majuscule, une lettre minuscule et un chiffre.</div>
                                     <div ng-message="equals">Les mots de passe ne correspondent pas.</div>
                                 </div>
                             </md-input-container>
