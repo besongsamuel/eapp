@@ -28,7 +28,7 @@
                 <md-subheader class="md-primary">Configurez votre optimization du panier</md-subheader>
                 
                 <div  class="col-md-12 col-sm-12">
-                    <md-radio-group ng-model="root.cartView" ng-change="optimization_preference_changed()" class="col-sm-12">
+                    <md-radio-group ng-model="root.cartSettings.cartView" ng-change="optimization_preference_changed()" class="col-sm-12">
                         <div class="row">
                             <md-radio-button ng-value="true_value" class="col-sm-6">Vue du panier</md-radio-button>
                             <md-radio-button ng-value="false_value" class="col-sm-6">Vue par magasin</md-radio-button>
@@ -38,7 +38,7 @@
                 
                 
                 <div  class="col-md-12 col-sm-12">
-                    <md-radio-group ng-model="searchInMyList.value" ng-change="optimization_preference_changed()" class="col-sm-12">
+                    <md-radio-group ng-model="root.cartSettings.searchMyList" ng-change="optimization_preference_changed()" class="col-sm-12">
                         <div class="row">
                             <md-radio-button ng-value="true_value" class="col-sm-6">Rechercher dans votre liste de magasins</md-radio-button>
                             <md-radio-button ng-value="false_value" class="col-sm-6">Rechercher dans tout les magasins</md-radio-button>
@@ -47,7 +47,7 @@
                 </div>
                 
                 <div  class="col-md-12 col-sm-12">
-                    <md-radio-group ng-model="viewOptimizedList" ng-change="listChanged()" class="col-sm-12" ng-init="false">
+                    <md-radio-group ng-model="root.cartSettings.optimizedCart" ng-change="listChanged()" class="col-sm-12" ng-init="false">
                         <div class="row">
                             <md-radio-button ng-value="true_value" class="col-sm-6">Voir la liste optimisée</md-radio-button>
                             <md-radio-button ng-value="false_value" class="col-sm-6">Voir la liste originale</md-radio-button>
@@ -62,7 +62,7 @@
     
     <p ng-hide="results_available" class="md-otiprix-text" style="text-align: center; margin-bottom: 50px; margin-top: 20px;"><b>Il n'y a aucun résultat</b></p>
 
-    <div id="cart-optimization-container" ng-show="cartView">
+    <div id="cart-optimization-container" ng-show="cartSettings.cartView">
         
         <div class="container" ng-repeat="departmentStore in departmenStores">
             
@@ -89,7 +89,7 @@
                         
                         <md-divider ng-if="$first"></md-divider>
                         
-                        <cart-list-item iscartview='cartView' item='item' on-delete='removeFromCart(id)' on-update='productChanged(sp)' on-update-quantity='updateCartQuantity(quantity, id)'></cart-list-item>
+                        <cart-list-item iscartview='cartSettings.cartView' item='item' on-delete='removeFromCart(id)' on-update='productChanged(sp)' on-update-quantity='updateCartQuantity(quantity, id)'></cart-list-item>
                         
                         <md-divider></md-divider>
                         
@@ -102,7 +102,7 @@
         
     </div>
 
-    <div class="container" ng-cloak ng-hide="cartView">
+    <div class="container" ng-cloak ng-hide="cartSettings.cartView">
         <div  ng-show="results_available">
             <md-tabs md-dynamic-height md-border-bottom>
                 
@@ -124,7 +124,7 @@
                                     
                                     <md-divider ng-if="$first"></md-divider>
                                     
-                                        <cart-list-item iscartview='cartView' item='item' on-delete='removeFromCart(id)' on-update='productChanged(sp)' on-update-quantity='updateCartQuantity(quantity, id)'></cart-list-item>
+                                        <cart-list-item iscartview='cartSettings.cartView' item='item' on-delete='removeFromCart(id)' on-update='productChanged(sp)' on-update-quantity='updateCartQuantity(quantity, id)'></cart-list-item>
 
                                     <md-divider></md-divider>
 
@@ -138,7 +138,7 @@
                         <md-subheader class="md-warn"><a class="md-warn" href  data-toggle="collapse" data-target="#products_{{store.id}}">Voir produits indisponibles</a> <span class="badge">{{store.missing_products.length}}</md-subheader>
                         <div id="products_{{store.id}}" class="collapse">
                             <div ng-repeat="missingItem in store.missing_products" class="noright">
-                                <cart-list-item iscartview='cartView' view-retailer-image='true' item='missingItem' on-delete='removeFromCart(id)' on-update='productChanged(sp)' on-update-quantity='updateCartQuantity(quantity, id)'></cart-list-item>
+                                <cart-list-item iscartview='cartSettings.cartView' view-retailer-image='true' item='missingItem' on-delete='removeFromCart(id)' on-update='productChanged(sp)' on-update-quantity='updateCartQuantity(quantity, id)'></cart-list-item>
                             </div>
                         </div>
                       

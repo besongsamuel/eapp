@@ -43,12 +43,13 @@ $(document).ready(function()
 
         rootScope.travel_distance = 0;
         
-        /**
-         * If true, the user is in cart view
-         * If false, the user is in store view
-         */
-        rootScope.cartView = true;
+        rootScope.cartSettings = { cartView : true, optimizedCart : true, searchMyList : true };
         
+        rootScope.$watch('cartSettings', function()
+        {
+            window.sessionStorage.setItem('cartSettings', JSON.stringify(rootScope.cartSettings));
+        });
+               
         /**
          * The store selected in the cart
          */
@@ -69,7 +70,7 @@ $(document).ready(function()
             {
                 //$rootScope.store_products[index].store_products
                 total += 
-                        !rootScope.cartView ? 
+                        !rootScope.cartSettings.cartView ? 
                         rootScope.cart[key].store_products[store_index].price * rootScope.cart[key].quantity : 
                         rootScope.cart[key].store_product.price * rootScope.cart[key].quantity;
             }
@@ -85,7 +86,7 @@ $(document).ready(function()
     {
         var total = 0;
 
-        if(rootScope.cartView)
+        if(rootScope.cartSettings.cartView)
         {
             for(var key in rootScope.cart)
             {

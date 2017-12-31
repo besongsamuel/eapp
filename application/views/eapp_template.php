@@ -101,7 +101,7 @@
     
     <!-- Shop Controller Script -->
     <script src="<?php echo base_url("assets/js/shop-controller.js")?>"></script>
-	  
+    
     <!-- Blog Controller Script -->
     <script src="<?php echo base_url("assets/js/blog-controller.js")?>"></script> 
     

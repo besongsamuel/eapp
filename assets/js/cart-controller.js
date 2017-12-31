@@ -318,11 +318,7 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
       limit: 5,
       page: 1
     };
-    
-    $scope.searchInMyList = { value: false};
-    
-    $scope.viewOptimizedList = false;
-    
+        
     $rootScope.totalPriceAvailableProducts = 0;
     $rootScope.totalPriceUnavailableProducts = 0;
     
@@ -343,9 +339,7 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
     });
        
     $scope.listChanged = function()
-    {
-        window.sessionStorage.setItem("viewOptimizedList", $scope.viewOptimizedList.toString());
-        
+    {        
         $scope.optimization_preference_changed();
     };   
        
@@ -355,11 +349,15 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
      */
     $scope.Init = function()
     {
-        $rootScope.cartView = true;
+        $rootScope.cartSettings.cartView = true;
         
-        if(window.sessionStorage.getItem('viewOptimizedList'))
+        $rootScope.cartSettings.searchMyList = false;
+        
+        $rootScope.cartSettings.optimizedCart = false;
+        
+        if(window.sessionStorage.getItem('cartSettings'))
         {
-            $scope.viewOptimizedList = window.sessionStorage.getItem('viewOptimizedList').toString() == "true";
+            $rootScope.cartSettings = JSON.parse(window.sessionStorage.getItem('cartSettings').toString());
         }
         
         $scope.update_cart_list();
@@ -462,8 +460,8 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
         formData.append("longitude", $scope.longitude);
         // user's latitude
         formData.append("latitude", $scope.latitude);
-        formData.append("searchAll", !$scope.searchInMyList.value);
-        formData.append("viewOptimizedList", $scope.viewOptimizedList);
+        formData.append("searchAll", !$rootScope.cartSettings.searchMyList);
+        formData.append("viewOptimizedList", $rootScope.cartSettings.optimizedCart);
         
         // Send request to server to get optimized list 	
         $scope.promise = 
@@ -491,7 +489,7 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
                 $scope.results_available = !angular.isNullOrUndefined($scope.cart) && $scope.cart.length > 0;
                 
                 
-                if($rootScope.cartView)
+                if($rootScope.cartSettings.cartView)
                 {
                     $rootScope.sortCart();
                 
@@ -901,7 +899,7 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
     {
         var total = 0;
 
-        if($rootScope.cartView)
+        if($rootScope.cartSettings.cartView)
         {
             for(var key in $scope.departmenStores)
             {
@@ -1078,7 +1076,7 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
     {
         var item = null;
         
-        if($rootScope.cartView)
+        if($rootScope.cartSettings.cartView)
         {
             for(var i in $rootScope.cart)
             {
@@ -1156,7 +1154,7 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
 
             $scope.update_price_optimization();
             // If the user changed a product, he is no longer viewing an optimized store. 
-            $scope.viewOptimizedList = false;
+            $rootScope.cartSettings.optimizedCart = false;
         });
         
         
@@ -1540,7 +1538,7 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
     {
         $scope.productCategories = [];
         
-        if(!$rootScope.cartView)
+        if(!$rootScope.cartSettings.cartView)
         {
             for(var x in $rootScope.selectedStore.store_products)
             {

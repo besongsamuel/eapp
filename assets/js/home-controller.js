@@ -4,9 +4,8 @@
  * and open the template in the editor.
  */
 
-angular.module("eappApp").controller("HomeController", ["$rootScope", function($rootScope) 
+angular.module("eappApp").controller("HomeController", ["$rootScope", "$scope", function($rootScope, $scope) 
 {
     $rootScope.isHome = true;
-    
 }]);
 
