@@ -21,7 +21,7 @@ and open the template in the editor.
     </div>
 </div> <!-- End Page title area -->
 
-<div id="shop-container" class="white-container" ng-controller="ShopController">
+<md-content id="shop-container" class="white-container" ng-controller="ShopController">
 	
     <div class="container" style="margin-top : 10px;" ng-show="category_id">
         <ul class="breadcrumb" style="text-align: center; background: white;">
@@ -36,9 +36,21 @@ and open the template in the editor.
             <li class="active">{{store_name}}</li>
         </ul>
     </div>
-    <div layout="column" style="white-container">
+    
+    <md-content class="container">
+        <div class="row">
+            <md-content class="col-md-2">
+                <result-filter ng-if="productsReady" ready="productsReady" result-set="filterSettings" on-settings-changed="settingsChanged(item)" ></result-filter>
+            </md-content>
+            
+            <div class="col-md-10">
+                <div layout="column" style="white-container">
 
-     	<md-card id="shopController" ng-include="'<?php echo base_url(); ?>/assets/templates/shop-products-table.html'"></md-card>
+                    <md-card id="shopController" ng-include="'<?php echo base_url(); ?>/assets/templates/shop-products-table.html'"></md-card>
 
-    </div>
-</div>
+                </div>
+            </div>
+        </div>
+    </md-content>
+    
+</md-content>

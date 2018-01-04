@@ -96,12 +96,106 @@ class Shop extends CI_Controller {
 	    
 	$store_id = $this->input->post('store_id');
 	$category_id = $this->input->post('category_id');
-	
+        
+        $resultsFilter = json_decode($this->input->post('resultsFilter'));
+        
 	$get_latest_products = true;
                 
-        $products = $this->shop_model->get_store_products_limit($limit, $offset, $get_latest_products, $filter, $order, $store_id, $category_id);
+        $products = $this->shop_model->get_store_products_limit($limit, $offset, $get_latest_products, $filter, $order, $store_id, $category_id, $resultsFilter);
+        
+        $products["settings"] = $this->get_settings($filter, $category_id, $store_id);
         
         echo json_encode($products);
+    }
+    
+    private function get_settings($filter, $category_id, $store_id) 
+    {
+        $result = array();
+        
+        $store_ids = $this->get_settings_item("retailer_id", $filter, $category_id, $store_id);
+        
+        $id_stores = array();
+        
+        foreach ($store_ids as $value) 
+        {
+            array_push($id_stores, $value->retailer_id);
+        }
+        
+        $result["stores"] = $this->create_settings_object(CHAIN_TABLE, $id_stores, "STORE");
+        
+        
+        $brand_ids = $this->get_settings_item("brand_id", $filter, $category_id, $store_id);
+        
+        $id_brands = array();
+        
+        foreach ($brand_ids as $value) 
+        {
+            array_push($id_brands, $value->brand_id);
+        }
+        
+        $result["brands"] = $this->create_settings_object(PRODUCT_BRAND_TABLE, $id_brands, "BRAND");
+        
+        
+        
+        
+        $category_ids = $this->get_settings_item("product_category_id", $filter, $category_id, $store_id);
+        
+        $id_category = array();
+        
+        foreach ($category_ids as $value) 
+        {
+            array_push($id_category, $value->product_category_id);
+        }
+        
+        $result["categories"] = $this->create_settings_object(CATEGORY_TABLE, $id_category, "CATEGORY");
+        
+        $origins = $this->get_settings_item("country", $filter, $category_id, $store_id);
+        
+        $origins_array = array();
+        
+        foreach ($origins as $value) 
+        {
+            if($value->country == "")
+            {
+                $value->country = "Autre";
+            }
+            
+            if($value->country == "undefined")
+            {
+                $value->country = "Pas connu";
+            }
+            
+            $origin_object = new stdClass();
+            $origin_object->type = "ORIGIN";
+            $origin_object->name = $value->country;
+            $origin_object->selected = false;
+            $origin_object->id = sizeof($origins_array) + 1;
+            array_push($origins_array, $origin_object);
+        }
+        
+        $result["origins"] = $origins_array;
+        
+        return $result;
+        
+    }
+    
+    private function create_settings_object($table_name, $values_array, $type) 
+    {
+        
+        $result = $this->shop_model->get_all_where_in($table_name, "id", $values_array);
+        
+        foreach ($result as $key => $value) 
+        {
+            $result[$key]->selected = false;
+            $result[$key]->type = $type;
+        }
+        
+        return $result;
+    }
+    
+    private function get_settings_item($property, $filter, $category_id, $store_id) 
+    {
+        return $this->shop_model->get_distinct_latest_store_product_property($property, $filter, $store_id, $category_id, null);
     }
     
     

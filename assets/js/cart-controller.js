@@ -6,9 +6,9 @@
 
 angular.module('eappApp').component('cartListItem', {
     
-  templateUrl: 'cartListItem.html',
-  controller : CartListItemController,
-  bindings: 
+    templateUrl: 'cartListItem.html',
+    controller : CartListItemController,
+    bindings: 
     {
         item: '<',
         iscartview : '<',

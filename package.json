@@ -1,0 +1,8 @@
+{
+  "requires": true,
+  "lockfileVersion": 1,
+  "dependencies": {
+    "angular-jk-carousel": "^0.5.0",
+    "angular-ui-carousel": "^0.1.10"
+  }
+}

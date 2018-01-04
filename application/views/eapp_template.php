@@ -229,7 +229,6 @@
                             </li>
                             
                             <li ng-class="{active : isHome}"><a href="<?php echo site_url("home"); ?>" class="">Accueil</a></li>
-                            
                             <li class=" dropdown" ng-class="{active : isMainMenu}">
                                 <a href="#" class="dropdown-toggle " data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Réduisez vos dépenses<span class="caret"></span></a>
                                 <ul class="dropdown-menu">
@@ -280,7 +279,7 @@
     <div id="main-body">	
     	{body}
     </div>
-
+    
     <div id="eapp-footer" class="footer-top-area" ng-controller="FooterController" ng-cloak>
         <div class="container">
             <div class="row">

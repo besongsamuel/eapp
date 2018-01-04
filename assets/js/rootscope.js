@@ -57,6 +57,7 @@ $(document).ready(function()
         
         rootScope.clearSessionItems = function()
         {
+            window.sessionStorage.removeItem("filterSettings");
             window.sessionStorage.removeItem("store_id");
             window.sessionStorage.removeItem("category_id");
         };

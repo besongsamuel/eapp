@@ -69,6 +69,74 @@ angular.getSearchParam = function(name, url)
 // Define the `eapp Application` module
 var eappApp = angular.module('eappApp', ['ngMaterial', 'md.data.table', 'lfNgMdFileInput', 'ngMessages', 'ngSanitize', 'mdCountrySelect', 'ngNotificationsBar', 'ngRoute', 'ngAnimate', 'angularCountryState']);
 
+eappApp.component("resultFilter", 
+{
+    templateUrl : "resultFilter.html",
+    controller : ResultFilterController,
+    bindings : 
+    {
+        resultSet : '<',
+        onSettingsChanged : '&',
+        ready : '='
+    }
+});
+
+function ResultFilterController($scope)
+{
+    var ctrl = this;
+    
+    ctrl.$onInit = function()
+    {
+        ctrl.settings = ctrl.resultSet;
+    };
+    
+    ctrl.change = function(item)
+    {
+        ctrl.onSettingsChanged({ item : item});
+    };
+};
+
+eappApp.component("settingsItem", 
+{
+    templateUrl : "settingsItem.html",
+    controller : SettingsItemController,
+    bindings : 
+    {
+        settingsObject : '<',
+        name : '@',
+        onChange : '&',
+        ready : '='
+    }
+});
+
+function SettingsItemController()
+{
+    ctrl = this;
+    
+    ctrl.$onInit = function()
+    {
+        ctrl.data = ctrl.settingsObject;
+    };
+    
+    ctrl.change = function(item)
+    {
+        ctrl.onChange({item : item});
+    };
+}
+
+// configure our routes
+eappApp.config(function($routeProvider) 
+{
+    $routeProvider
+
+    // route for the home page
+    .when('/cart', {
+        templateUrl : 'pages/cart.html',
+        controller  : 'CartController'
+    });
+
+});
+
 // Create eapp service to get and update our data
 eappApp.factory('eapp', ['$http','$rootScope', '$mdDialog', function($http, $rootScope, $mdDialog)
 {
@@ -173,13 +241,20 @@ eappApp.factory('eapp', ['$http','$rootScope', '$mdDialog', function($http, $roo
         return $http.post(eappService.getSiteUrl().concat("cart/get_latest_products"), null);
     };
     
-    eappService.getCategoryProducts = function(id, query)
+    eappService.getCategoryProducts = function(id, query, resultsFilter)
     {
         var formData = new FormData();
         formData.append("page", query.page);
         formData.append("limit", query.limit);
         formData.append("filter", query.filter);
         formData.append("order", query.order);
+        
+        if(!angular.isNullOrUndefined(resultsFilter))
+        {
+            resultsFilter.categories = null;
+        }
+        
+        formData.append("resultsFilter", JSON.stringify(resultsFilter));
         
         if(!angular.isNullOrUndefined(id))
         {
@@ -190,13 +265,18 @@ eappApp.factory('eapp', ['$http','$rootScope', '$mdDialog', function($http, $roo
 
     };
     
-    eappService.getFlyerProducts = function(id, query)
+    eappService.getFlyerProducts = function(id, query, resultsFilter)
     {
         var formData = new FormData();
         formData.append("page", query.page);
         formData.append("limit", query.limit);
         formData.append("filter", query.filter);
         formData.append("order", query.order);
+        if(!angular.isNullOrUndefined(resultsFilter))
+        {
+            resultsFilter.stores = null;
+        }
+        formData.append("resultsFilter", JSON.stringify(resultsFilter));
         
         if(!angular.isNullOrUndefined(id))
         {
@@ -207,13 +287,14 @@ eappApp.factory('eapp', ['$http','$rootScope', '$mdDialog', function($http, $roo
 
     };
     
-    eappService.getStoreProducts = function(query)
+    eappService.getStoreProducts = function(query, resultsFilter)
     {
         var formData = new FormData();
         formData.append("page", query.page);
         formData.append("limit", query.limit);
         formData.append("filter", query.filter);
         formData.append("order", query.order);
+        formData.append("resultsFilter", JSON.stringify(resultsFilter));
         
         return $http.post(eappService.getSiteUrl().concat("/shop/get_store_products"), formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}});
 
@@ -355,6 +436,11 @@ eappApp.factory('eapp', ['$http','$rootScope', '$mdDialog', function($http, $roo
     eappService.getSecurityQuestions = function()
     {
         return $http.post(eappService.getSiteUrl().concat("eapp/get_security_questions"), null);
+    };
+    
+    eappService.getLatestProducts = function()
+    {
+        return $http.post(eappService.getSiteUrl().concat("eapp/get_latest_products"), null);
     };
     
     eappService.sendPasswordReset = function(email)

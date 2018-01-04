@@ -393,5 +393,10 @@ class Eapp extends CI_Controller
         
         echo json_encode($result);
     }
+    
+    public function get_latest_products() 
+    {
+        echo json_encode($this->home_model->get_store_products_limit(25, 0)["products"]);
+    }
    
 }

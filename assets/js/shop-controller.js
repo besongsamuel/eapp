@@ -11,6 +11,8 @@ angular.module('eappApp').controller('ShopController', ["$scope", "$q", "$http",
     $rootScope.searchText = "";
     
     $scope.ready = false;
+   
+    $scope.productsReady = false;
     
     $scope.showStoreLogo = false;
 
@@ -110,24 +112,36 @@ angular.module('eappApp').controller('ShopController', ["$scope", "$q", "$http",
 
     $scope.getProducts = function () 
     {
+        $scope.productsReady = false;
+        
         if(!$scope.ready)
         {
             return;
+        }
+        
+        if(window.sessionStorage.getItem("filterSettings"))
+        {
+            
+            $scope.filterSettings = JSON.parse(window.sessionStorage.getItem("filterSettings").toString());;
+            // Get store filter
+            $scope.createResultsFilter();
+            
+            $scope.productsReady = true;
         }
         
         var q = $q.defer();
 
         if(!angular.isNullOrUndefined($scope.store_id))
         {
-            $scope.promise = eapp.getFlyerProducts($scope.store_id, $scope.query);
+            $scope.promise = eapp.getFlyerProducts($scope.store_id, $scope.query, $scope.resultFilter);
         }
         else if(!angular.isNullOrUndefined($scope.category_id))
         {
-            $scope.promise = eapp.getCategoryProducts($scope.category_id, $scope.query);
+            $scope.promise = eapp.getCategoryProducts($scope.category_id, $scope.query, $scope.resultFilter);
         }
         else
         {
-            $scope.promise = eapp.getStoreProducts($scope.query);
+            $scope.promise = eapp.getStoreProducts($scope.query, $scope.resultFilter);
         }
       
         $scope.promise.then(function(response)
@@ -138,23 +152,45 @@ angular.module('eappApp').controller('ShopController', ["$scope", "$q", "$http",
 
             $scope.count = response.data.count;
             $scope.products = array;
+            
+            var storeFilterSettings = $.map(response.data.settings.stores, function(value, index) {
+                return [value];
+            });
+            var brandsFilterSettings = $.map(response.data.settings.brands, function(value, index) {
+                return [value];
+            });
+            var categoriesFilterSettings = $.map(response.data.settings.categories, function(value, index) {
+                return [value];
+            });
+            var originsFilterSettings = $.map(response.data.settings.origins, function(value, index) {
+                return [value];
+            });
+            
+            
+            
+            if(!window.sessionStorage.getItem("filterSettings"))
+            {
+                $scope.filterSettings = 
+                {
+                    stores : storeFilterSettings,
+                    brands : brandsFilterSettings,
+                    categories : categoriesFilterSettings,
+                    origins : originsFilterSettings
+                };
+                
+                window.sessionStorage.setItem("filterSettings", JSON.stringify($scope.filterSettings));
+            }
+            
+            $scope.hasResults = array.length > 0;
+            
             q.resolve( array );
+            
+            $scope.productsReady = true;
 
         });
 	
         return q.promise;
   };
-  
-    $scope.removeFilter = function () 
-    {
-        $scope.filter.show = false;
-        $scope.query.filter = '';
-
-        if($scope.filter.form.$dirty) 
-        {
-          $scope.filter.form.$setPristine();
-        }
-    };
   
     $scope.$watch('query.filter', function (newValue, oldValue) 
     {
@@ -197,5 +233,158 @@ angular.module('eappApp').controller('ShopController', ["$scope", "$q", "$http",
     {
         eapp.viewProduct($scope, product_id, ev);
     };
+    
+    $scope.settingsChanged = function(item)
+    {
+        $scope.updateItemChanged(item);
+        
+        window.sessionStorage.setItem("filterSettings", JSON.stringify($scope.filterSettings));
+        
+        // Get store filter
+        $scope.createResultsFilter();
+        
+        $scope.getProducts();
+        
+    };
+    
+    $scope.updateItemChanged = function(item)
+    {
+        switch(item.type)
+        {
+            case "ORIGIN":
+                var index = $scope.filterSettings.origins.map(function(e){ return e.name; }).indexOf(item.name);
+                if(index > -1)
+                {
+                    $scope.filterSettings.origins[index] = item;
+                }
+                break;
+            case "STORE":
+                var index = $scope.filterSettings.stores.map(function(e){ return e.id; }).indexOf(item.id);
+                if(index > -1)
+                {
+                    $scope.filterSettings.stores[index] = item;
+                }
+                break;
+            case "CATEGORY":
+                var index = $scope.filterSettings.categories.map(function(e){ return e.id; }).indexOf(item.id);
+                if(index > -1)
+                {
+                    $scope.filterSettings.categories[index] = item;
+                }
+                break;
+            case "BRAND":
+                var index = $scope.filterSettings.brands.map(function(e){ return e.id; }).indexOf(item.id);
+                if(index > -1)
+                {
+                    $scope.filterSettings.brands[index] = item;
+                }
+                break;
+        }
+    };
+    
+    $scope.createResultsFilter = function()
+    {
+        $scope.resultFilter = { };
+        
+        var storeFilter = "";
+        for(var x in $scope.filterSettings.stores)
+        {
+            var store = $scope.filterSettings.stores[x];
+            
+            if(store.selected)
+            {
+                if(storeFilter === "")
+                {
+                    storeFilter = storeFilter.concat(store.id.toString());
+                }
+                else
+                {
+                    storeFilter = storeFilter.concat(",", store.id.toString());
+                }
+            }
+        }
+        
+        $scope.resultFilter.stores = storeFilter;
+        
+        // Get Category filter
+        var categoryFilter = "";
+        
+        for(var x in $scope.filterSettings.categories)
+        {
+            var category = $scope.filterSettings.categories[x];
+            
+            if(category.selected)
+            {
+                if(categoryFilter === "")
+                {
+                    categoryFilter = categoryFilter.concat(category.id.toString());
+                }
+                else
+                {
+                    categoryFilter = categoryFilter.concat(",", category.id.toString());
+                }
+            }
+        }
+        
+        $scope.resultFilter.categories = categoryFilter;
+        
+        // Get Brands filter
+        var brandFilter = "";
+        
+        for(var x in $scope.filterSettings.brands)
+        {
+            var brand = $scope.filterSettings.brands[x];
+            
+            if(brand.selected)
+            {
+                if(brandFilter === "")
+                {
+                    brandFilter = brandFilter.concat(brand.id.toString());
+                }
+                else
+                {
+                    brandFilter = brandFilter.concat(",", brand.id.toString());
+                }
+            }
+        }
+        
+        $scope.resultFilter.brands = brandFilter;
+        
+        // Get Brands filter
+        var originsFilter = "";
+        
+        for(var x in $scope.filterSettings.origins)
+        {
+            var origin = $scope.filterSettings.origins[x];
+            
+            if(origin.selected)
+            {
+                var nameval = origin.name.toString();
+                
+                if(nameval == "Autre")
+                {
+                    nameval = "";
+                }
+                
+                if(nameval == "Pas connu")
+                {
+                    nameval = "undefined";
+                }
+                
+                if(originsFilter === "")
+                {
+                    originsFilter = originsFilter.concat(nameval);
+                }
+                else
+                {
+                    originsFilter = originsFilter.concat(",", nameval);
+                }
+            }
+        }
+        
+        $scope.resultFilter.origins = originsFilter;
+    };
+    
+    
   
 }]);

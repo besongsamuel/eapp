@@ -2,24 +2,13 @@
 
 
 <md-table-container class="container">
-    <md-toolbar class="md-table-toolbar md-default" ng-hide="selected.length || filter.show">
-        <div class="md-toolbar-tools">
-        <div flex></div>
-        <md-button class="md-icon-button" ng-click="filter.show = true">
-            <md-icon>filter_list</md-icon>
-        </md-button>
-      </div>
-    </md-toolbar>
 
-    <md-toolbar class="md-table-toolbar md-default" ng-show="filter.show && !selected.length">
+    <md-toolbar class="md-table-toolbar md-default">
         <div class="md-toolbar-tools">
         <md-icon>search</md-icon>
         <form flex name="filter.form">
-          <input type="text" ng-model="query.filter" ng-model-options="filter.options" placeholder="search">
+          <input type="text" ng-model="query.filter" ng-model-options="filter.options" placeholder="Recherche">
         </form>
-        <md-button class="md-icon-button" ng-click="removeFilter()">
-          <md-icon>close</md-icon>
-        </md-button>
       </div>
     </md-toolbar>
     
@@ -66,6 +55,6 @@
     </tbody>
   </table>
 </md-table-container>
-<div class="container">
-    <md-table-pagination md-limit="query.limit" md-limit-options="[50, 100, 200]" md-page="query.page" md-total="{{count}}" md-on-paginate="getProducts" md-page-select></md-table-pagination>
-</div>
+
+<md-table-pagination md-limit="query.limit" md-limit-options="[50, 100, 200]" md-page="query.page" md-total="{{count}}" md-on-paginate="getProducts" md-page-select></md-table-pagination>
+

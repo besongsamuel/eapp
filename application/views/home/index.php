@@ -2,8 +2,6 @@
 
 <div id="home-container">
 
-    <script src="<?php echo base_url("assets/js/home-controller.js")?>"></script>
-    
     <md-divider></md-divider>
     <md-divider></md-divider>
     <div class="promo-area bgpatttern" ng-controller="HomeController">
@@ -42,8 +40,9 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
-                    <div class="latest-product" ng-controller="CartController">
+                    <div class="latest-product" ng-controller="HomeController">
                         <h2 class="section-title md-otiprix-text">Produits en vedette</h2>
+                        
                         <div class="product-carousel row">
                             <?php foreach($latestProducts as $product): ?>
                                 <div class="single-product col-md-12 col-sm-12">
@@ -73,15 +72,4 @@
     
 </div>
     
-<script>
-    $(document).ready(function()
-    {
-
-        var rootScope = angular.element($("html")).scope();
-
-        rootScope.$apply(function()
-        {
-            rootScope.menu = "home";
-        });
-    });
-</script>
+<script src="<?php echo base_url("assets/js/home-controller.js")?>"></script>
