@@ -38,7 +38,7 @@ and open the template in the editor.
     </div>
     
     <md-content class="container">
-        <div class="row">
+        <div class="row" style="overflow-x: auto;">
             <div class="col-md-2">
                 <result-filter ng-if="productsReady" ready="productsReady" result-set="filterSettings" on-settings-changed="settingsChanged(item)" ></result-filter>
             </div>

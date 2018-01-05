@@ -40,7 +40,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
-                    <div class="latest-product" ng-controller="HomeController">
+                    <div class="latest-product" ng-controller="CartController">
                         <h2 class="section-title md-otiprix-text">Produits en vedette</h2>
                         
                         <div class="product-carousel row">
