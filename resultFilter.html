@@ -1,7 +1,9 @@
 <div style="margin-top: 30px;">
     <h4 style="margin-bottom : 30px; color :darkgrey;">Filtré par</h4>
-    <settings-item settings-object="$ctrl.settings.stores" ready="$ctrl.ready" name="Magasins" on-change="$ctrl.change(item)" ></settings-item>
-    <settings-item settings-object="$ctrl.settings.categories" ready="$ctrl.ready" name="Categories" on-change="$ctrl.change(item)"></settings-item>
-    <settings-item settings-object="$ctrl.settings.origins" ready="$ctrl.ready" name="Origins" on-change="$ctrl.change(item)"></settings-item>
-    <settings-item settings-object="$ctrl.settings.brands" ready="$ctrl.ready" name="Marques" on-change="$ctrl.change(item)"></settings-item>
+    <a ng-click="$ctrl.reset()" ng-show="itemIsSelected()" href><p style="color:firebrick"><b>Réinitialiser filtre</b></p></a>
+    <md-divider style="margin-bottom:30px;"></md-divider>
+    <settings-item settings-object="settings.stores" ready="$ctrl.ready" name="Magasins" on-change="$ctrl.change(item)" ></settings-item>
+    <settings-item settings-object="settings.categories" ready="$ctrl.ready" name="Categories" on-change="$ctrl.change(item)"></settings-item>
+    <settings-item settings-object="settings.origins" ready="$ctrl.ready" name="Origins" on-change="$ctrl.change(item)"></settings-item>
+    <settings-item settings-object="settings.brands" ready="$ctrl.ready" name="Marques" on-change="$ctrl.change(item)"></settings-item>
 </div>

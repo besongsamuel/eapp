@@ -77,6 +77,7 @@ eappApp.component("resultFilter",
     {
         resultSet : '<',
         onSettingsChanged : '&',
+        onReset : '&',
         ready : '='
     }
 });
@@ -88,11 +89,38 @@ function ResultFilterController($scope)
     ctrl.$onInit = function()
     {
         ctrl.settings = ctrl.resultSet;
+        $scope.settings = ctrl.resultSet;
+    };
+    
+    ctrl.$onChanges = function(newSetting)
+    {
+        $scope.settings = newSetting.resultSet.currentValue;
     };
     
     ctrl.change = function(item)
     {
         ctrl.onSettingsChanged({ item : item});
+    };
+    
+    ctrl.reset = function(item)
+    {
+        ctrl.onReset();
+    };
+    
+    $scope.itemIsSelected = function()
+    {
+        for(var x in $scope.settings)
+        {
+            for(var y in $scope.settings[x])
+            {
+                if($scope.settings[x][y].selected)
+                {
+                    return true;
+                }
+            }
+        }
+        
+        return false;
     };
 };
 
@@ -109,18 +137,41 @@ eappApp.component("settingsItem",
     }
 });
 
-function SettingsItemController()
+function SettingsItemController($scope)
 {
     ctrl = this;
     
     ctrl.$onInit = function()
     {
         ctrl.data = ctrl.settingsObject;
+        
+        $scope.data = ctrl.settingsObject;
+        
+        $scope.moreLessLabel = "Plus";
+    };
+    
+    ctrl.$onChanges = function(newData)
+    {
+        $scope.data = newData.settingsObject.currentValue;
+        ctrl.data = newData.settingsObject.currentValue;
     };
     
     ctrl.change = function(item)
     {
         ctrl.onChange({item : item});
+    };
+    
+    $scope.showHideDetails = function(event)
+    {
+        
+        if($scope.moreLessLabel == "Plus")
+        {
+            $scope.moreLessLabel = "Moins";
+        }
+        else
+        {
+            $scope.moreLessLabel = "Plus";
+        }
     };
 }
 

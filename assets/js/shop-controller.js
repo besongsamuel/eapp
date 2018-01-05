@@ -118,7 +118,7 @@ angular.module('eappApp').controller('ShopController', ["$scope", "$q", "$http",
         {
             return;
         }
-        
+                
         if(window.sessionStorage.getItem("filterSettings"))
         {
             
@@ -168,7 +168,7 @@ angular.module('eappApp').controller('ShopController', ["$scope", "$q", "$http",
             
             
             
-            if(!window.sessionStorage.getItem("filterSettings"))
+            //if(!window.sessionStorage.getItem("filterSettings"))
             {
                 $scope.filterSettings = 
                 {
@@ -280,6 +280,18 @@ angular.module('eappApp').controller('ShopController', ["$scope", "$q", "$http",
                 }
                 break;
         }
+    };
+    
+    $scope.resetSettings = function()
+    {
+        window.sessionStorage.removeItem("filterSettings");
+        
+        $scope.filterSettings = null;
+        
+        // Get store filter
+        $scope.resultFilter = null;
+        
+        $scope.getProducts();
     };
     
     $scope.createResultsFilter = function()

@@ -40,7 +40,7 @@ and open the template in the editor.
     <md-content class="container">
         <div class="row">
             <md-content class="col-md-2">
-                <result-filter ng-if="productsReady" ready="productsReady" result-set="filterSettings" on-settings-changed="settingsChanged(item)" ></result-filter>
+                <result-filter ng-if="productsReady" ready="productsReady" on-reset="resetSettings()" result-set="filterSettings" on-settings-changed="settingsChanged(item)" ></result-filter>
             </md-content>
             
             <div class="col-md-10">
