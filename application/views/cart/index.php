@@ -40,8 +40,8 @@
                 <div  class="col-md-12 col-sm-12">
                     <md-radio-group ng-model="root.cartSettings.searchMyList" ng-change="optimization_preference_changed()" class="col-sm-12">
                         <div class="row">
-                            <md-radio-button ng-value="true_value" class="col-sm-6">Rechercher dans votre liste de magasins</md-radio-button>
                             <md-radio-button ng-value="false_value" class="col-sm-6">Rechercher dans tout les magasins</md-radio-button>
+                            <md-radio-button ng-value="true_value" class="col-sm-6">Rechercher dans votre liste de magasins</md-radio-button>
                         </div>
                     </md-radio-group>
                 </div>

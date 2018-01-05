@@ -1,7 +1,16 @@
-<div style="margin-top: 30px;">
-    <h4 style="margin-bottom : 30px; color :darkgrey;">Filtré par</h4>
-    <a ng-click="$ctrl.reset()" ng-show="itemIsSelected()" href><p style="color:firebrick"><b>Réinitialiser filtre</b></p></a>
-    <md-divider style="margin-bottom:30px;"></md-divider>
+<div style="margin-top: 30px; margin-bottom: 40px;">
+
+    <h4 style="margin-bottom : 30px; color :rgb(29, 29, 29);">Filtré par</h4>
+
+    <div class="selected-filters" style="margin-bottom: 12px; font-size : 13px;">
+        <div ng-repeat="group in selectedItems">
+            <p><b>{{group.name | titlecase}}</b></p>
+            <md-divider></md-divider>
+            <p style="color :rgb(134, 0, 0)" ng-repeat="item in group.items">&nbsp;&nbsp;&nbsp;&nbsp;<span><a href ng-click="removeFromFilter(item)">×</a></span>&nbsp;&nbsp;{{item.name | titlecase}}</p>
+        </div>
+        
+    </div>
+
     <settings-item settings-object="settings.stores" ready="$ctrl.ready" name="Magasins" on-change="$ctrl.change(item)" ></settings-item>
     <settings-item settings-object="settings.categories" ready="$ctrl.ready" name="Categories" on-change="$ctrl.change(item)"></settings-item>
     <settings-item settings-object="settings.origins" ready="$ctrl.ready" name="Origins" on-change="$ctrl.change(item)"></settings-item>

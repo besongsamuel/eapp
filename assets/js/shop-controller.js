@@ -282,18 +282,6 @@ angular.module('eappApp').controller('ShopController', ["$scope", "$q", "$http",
         }
     };
     
-    $scope.resetSettings = function()
-    {
-        window.sessionStorage.removeItem("filterSettings");
-        
-        $scope.filterSettings = null;
-        
-        // Get store filter
-        $scope.resultFilter = null;
-        
-        $scope.getProducts();
-    };
-    
     $scope.createResultsFilter = function()
     {
         $scope.resultFilter = { };
@@ -397,6 +385,11 @@ angular.module('eappApp').controller('ShopController', ["$scope", "$q", "$http",
         $scope.resultFilter.origins = originsFilter;
     };
     
+    
+    $scope.$watch("query.page", function(newValue, oldValue)
+    {
+        window.scrollTo(0, 0);
+    });
     
   
 }]);

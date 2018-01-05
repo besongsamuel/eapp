@@ -119,9 +119,14 @@ class Shop extends CI_Controller {
             $resultsFilter->origins = "";
         }
         
+        if(!isset($resultsFilter->brands))
+        {
+            $resultsFilter->brands = "";
+        }
+        
         $result = array();
         
-        $store_ids = $this->get_settings_item("retailer_id", $filter, $category_id, $store_id, $resultsFilter);
+        $store_ids = $this->get_settings_item("retailer_id", $filter, $category_id, $store_id);
         
         $id_stores = array();
         
@@ -133,7 +138,7 @@ class Shop extends CI_Controller {
         $result["stores"] = $this->create_settings_object(CHAIN_TABLE, $id_stores, "STORE", explode(",", $resultsFilter->stores) );
         
         
-        $brand_ids = $this->get_settings_item("brand_id", $filter, $category_id, $store_id, $resultsFilter);
+        $brand_ids = $this->get_settings_item("brand_id", $filter, $category_id, $store_id);
         
         $id_brands = array();
         
@@ -144,7 +149,7 @@ class Shop extends CI_Controller {
         
         $result["brands"] = $this->create_settings_object(PRODUCT_BRAND_TABLE, $id_brands, "BRAND", explode(",", $resultsFilter->brands));
         
-        $category_ids = $this->get_settings_item("product_category_id", $filter, $category_id, $store_id, $resultsFilter);
+        $category_ids = $this->get_settings_item("product_category_id", $filter, $category_id, $store_id);
         
         $id_category = array();
         
@@ -155,7 +160,7 @@ class Shop extends CI_Controller {
         
         $result["categories"] = $this->create_settings_object(CATEGORY_TABLE, $id_category, "CATEGORY", explode(",", $resultsFilter->categories));
         
-        $origins = $this->get_settings_item("country", $filter, $category_id, $store_id, $resultsFilter);
+        $origins = $this->get_settings_item("country", $filter, $category_id, $store_id);
         
         $origins_array = array();
         
@@ -229,9 +234,9 @@ class Shop extends CI_Controller {
         return $result;
     }
     
-    private function get_settings_item($property, $filter, $category_id, $store_id, $resultFilter) 
+    private function get_settings_item($property, $filter, $category_id, $store_id) 
     {
-        return $this->shop_model->get_distinct_latest_store_product_property($property, $filter, $store_id, $category_id, $resultFilter);
+        return $this->shop_model->get_distinct_latest_store_product_property($property, $filter, $store_id, $category_id, null);
     }
     
     

@@ -69,6 +69,28 @@ angular.getSearchParam = function(name, url)
 // Define the `eapp Application` module
 var eappApp = angular.module('eappApp', ['ngMaterial', 'md.data.table', 'lfNgMdFileInput', 'ngMessages', 'ngSanitize', 'mdCountrySelect', 'ngNotificationsBar', 'ngRoute', 'ngAnimate', 'angularCountryState']);
 
+eappApp.filter('titlecase', function() {
+    return function (input) {
+        var smallWords = /^(a|an|and|as|at|but|by|en|for|if|in|nor|of|on|or|per|the|to|vs?\.?|via)$/i;
+
+        input = input.toLowerCase();
+        return input.replace(/[A-Za-z0-9\u00C0-\u00FF]+[^\s-]*/g, function(match, index, title) {
+            if (index > 0 && index + match.length !== title.length &&
+                match.search(smallWords) > -1 && title.charAt(index - 2) !== ":" &&
+                (title.charAt(index + match.length) !== '-' || title.charAt(index - 1) === '-') &&
+                title.charAt(index - 1).search(/[^\s-]/) < 0) {
+                return match.toLowerCase();
+            }
+
+            if (match.substr(1).search(/[A-Z]|\../) > -1) {
+                return match;
+            }
+
+            return match.charAt(0).toUpperCase() + match.substr(1);
+        });
+    }
+});
+
 eappApp.component("resultFilter", 
 {
     templateUrl : "resultFilter.html",
@@ -77,7 +99,6 @@ eappApp.component("resultFilter",
     {
         resultSet : '<',
         onSettingsChanged : '&',
-        onReset : '&',
         ready : '='
     }
 });
@@ -92,6 +113,49 @@ function ResultFilterController($scope)
         $scope.settings = ctrl.resultSet;
     };
     
+    $scope.$watch("settings", function()
+    {
+        // Get selected items
+        $scope.selectedItems = {};
+        
+        for(var x in $scope.settings)
+        {
+            for(var y in $scope.settings[x])
+            {
+                var type = $scope.settings[x][y].type;
+                        
+                switch(type)
+                {
+                    case "ORIGIN":
+                        type = 'Origin';
+                        break;
+                    case "STORE":
+                        type = 'Magasin';
+                        break;
+                    case "CATEGORY":
+                        type = 'Catégorie';
+                        break;
+                    case "BRAND":
+                        type = 'Marque';
+                        break;
+                }
+                
+                if($scope.settings[x][y].selected)
+                {
+                    if(angular.isNullOrUndefined($scope.selectedItems[$scope.settings[x][y].type]))
+                    {
+                        
+                        
+                        $scope.selectedItems[$scope.settings[x][y].type] = { name : type, items : [] };
+                    }
+                    
+                    $scope.selectedItems[$scope.settings[x][y].type].items.push($scope.settings[x][y]);
+                }
+            }
+        }
+        
+    });
+    
     ctrl.$onChanges = function(newSetting)
     {
         $scope.settings = newSetting.resultSet.currentValue;
@@ -102,25 +166,10 @@ function ResultFilterController($scope)
         ctrl.onSettingsChanged({ item : item});
     };
     
-    ctrl.reset = function(item)
+    $scope.removeFromFilter = function(item)
     {
-        ctrl.onReset();
-    };
-    
-    $scope.itemIsSelected = function()
-    {
-        for(var x in $scope.settings)
-        {
-            for(var y in $scope.settings[x])
-            {
-                if($scope.settings[x][y].selected)
-                {
-                    return true;
-                }
-            }
-        }
-        
-        return false;
+        item.selected = false;
+        ctrl.onSettingsChanged({ item : item});
     };
 };
 
@@ -141,19 +190,34 @@ function SettingsItemController($scope)
 {
     ctrl = this;
     
+    ctrl.getData = function(allData)
+    {
+        var data = [];
+        
+        for(var x in allData)
+        {
+            //if(!allData[x].selected)
+            {
+                data.push(allData[x]);
+            }
+        }
+        
+        return data;
+    };
+    
     ctrl.$onInit = function()
     {
-        ctrl.data = ctrl.settingsObject;
+        ctrl.data = ctrl.getData(ctrl.settingsObject);
         
-        $scope.data = ctrl.settingsObject;
+        $scope.data = ctrl.getData(ctrl.settingsObject);
         
         $scope.moreLessLabel = "Plus";
     };
     
     ctrl.$onChanges = function(newData)
     {
-        $scope.data = newData.settingsObject.currentValue;
-        ctrl.data = newData.settingsObject.currentValue;
+        $scope.data = ctrl.getData(newData.settingsObject.currentValue);
+        ctrl.data = ctrl.getData(newData.settingsObject.currentValue);
     };
     
     ctrl.change = function(item)
