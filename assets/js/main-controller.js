@@ -315,7 +315,7 @@ eappApp.factory('eapp', ['$http','$rootScope', '$mdDialog', function($http, $roo
             siteName = siteName.concat("/eapp/");
         }
         
-        return "http://" + siteName + "/index.php/";
+        return location.protocol.concat("//", siteName, "/index.php/");
     };
     
     eappService.getBaseUrl = function()
@@ -327,7 +327,7 @@ eappApp.factory('eapp', ['$http','$rootScope', '$mdDialog', function($http, $roo
             siteName = siteName.concat("/eapp/");
         }
         
-        return "http://" + siteName + "/";
+        return location.protocol.concat("//", siteName, "/");
     };
     
     
