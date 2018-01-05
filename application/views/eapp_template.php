@@ -15,20 +15,20 @@
     <link rel="stylesheet" href="<?php echo base_url("assets/css/lf-ng-md-file-input.css")?>">
       
     <!-- Google Fonts -->
-    <link href='http://fonts.googleapis.com/css?family=Titillium+Web:400,200,300,700,600' rel='stylesheet' type='text/css'>
-    <link href='http://fonts.googleapis.com/css?family=Roboto+Condensed:400,700,300' rel='stylesheet' type='text/css'>
-    <link href='http://fonts.googleapis.com/css?family=Raleway:400,100' rel='stylesheet' type='text/css'>
+    <link href='<?php echo CONNECTION_TYPE; ?>://fonts.googleapis.com/css?family=Titillium+Web:400,200,300,700,600' rel='stylesheet' type='text/css'>
+    <link href='<?php echo CONNECTION_TYPE; ?>://fonts.googleapis.com/css?family=Roboto+Condensed:400,700,300' rel='stylesheet' type='text/css'>
+    <link href='<?php echo CONNECTION_TYPE; ?>://fonts.googleapis.com/css?family=Raleway:400,100' rel='stylesheet' type='text/css'>
     
     <!-- Bootstrap -->
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="<?php echo CONNECTION_TYPE; ?>://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
     <!-- Optional theme -->
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <link rel="stylesheet" href="<?php echo CONNECTION_TYPE; ?>://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
     <link rel="stylesheet" href="<?php echo base_url("assets/css/bootstrap-slider.css")?>">
     
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="<?php echo CONNECTION_TYPE; ?>://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+    <link href="<?php echo CONNECTION_TYPE; ?>://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="<?php echo base_url("assets/css/owl.carousel.css")?>">
     <link rel="stylesheet" href="<?php echo base_url("assets/css/style.css")?>">
@@ -43,7 +43,7 @@
     <!-- ngNotificationsBar CSS -->
     <link rel="stylesheet" href="<?php echo base_url("assets/css/ngNotificationsBar.min.css")?>">
     <!-- Bootstrap Select CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/css/bootstrap-select.min.css">
+    <link rel="stylesheet" href="<?php echo CONNECTION_TYPE; ?>://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/css/bootstrap-select.min.css">
     <!-- MD Table CSS -->
     <link rel="stylesheet" href="<?php echo base_url("assets/css/md-data-table.css")?>">
     
@@ -66,10 +66,10 @@
     <script src="<?php echo base_url("assets/js/lf-ng-md-file-input.js")?>"></script>
 
     <!-- Angular Material Library -->
-    <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.4/angular-material.min.js"></script>  
+    <script src="<?php echo CONNECTION_TYPE; ?>://ajax.googleapis.com/ajax/libs/angular_material/1.1.4/angular-material.min.js"></script>  
 	          
     <!-- Bootstrap JS form CDN -->
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src="<?php echo CONNECTION_TYPE; ?>://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     <script src="<?php echo base_url("assets/js/bootstrap-slider.min.js")?>"></script>
     
     <!-- jQuery sticky menu -->
@@ -117,7 +117,7 @@
     <script src="<?php echo base_url("assets/js/html2canvas.js")?>"></script>
     
     <!-- Bootstrap Select Script -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/js/bootstrap-select.min.js"></script>
+    <script src="<?php echo CONNECTION_TYPE; ?>://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/js/bootstrap-select.min.js"></script>
     
     <!-- International Phone Number Angular Module -->
     <script src="<?php echo base_url("assets/js/utils.js")?>"></script>

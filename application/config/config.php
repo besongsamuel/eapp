@@ -24,7 +24,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |
 */
 //$config['base_url'] = 'http://localhost/eapp';
-$config['base_url'] =  (ENVIRONMENT == 'production') ? 'http://otiprix.com' : 'http://localhost/eapp';
+
+$http = (isset($_SERVER['HTTPS']) ? 'https' : 'http');
+
+$config['base_url'] =  (ENVIRONMENT == 'production') ? $http.'://otiprix.com' : $http.'://localhost/eapp';
 
 /*
 |--------------------------------------------------------------------------
