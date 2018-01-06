@@ -11,11 +11,14 @@ angular.module('eappApp').controller('ShopController', ["$scope", "$q", "$http",
     $rootScope.searchText = "";
     
     $scope.ready = false;
+    
+    /**
+     * This variable is true when a store is selected. 
+     */
+    $scope.isStoreSelected = false;
    
     $scope.productsReady = false;
     
-    $scope.showStoreLogo = false;
-
     angular.element(document).ready(function()
     {
         $scope.Init();
@@ -43,7 +46,7 @@ angular.module('eappApp').controller('ShopController', ["$scope", "$q", "$http",
             {
                 $scope.store_id = parseInt(window.sessionStorage.getItem("store_id"));
                 $scope.store_name = window.sessionStorage.getItem("store_name");
-                $scope.showStoreLogo = true;
+                $scope.isStoreSelected = true;
             }
 
             // We selected a specific category
@@ -51,7 +54,6 @@ angular.module('eappApp').controller('ShopController', ["$scope", "$q", "$http",
             {
                 $scope.category_id = parseInt(window.sessionStorage.getItem("category_id"));
                 $scope.category_name = window.sessionStorage.getItem("category_name");
-                $scope.showStoreLogo = true;
             }
             
             $rootScope.isSearch = true;
@@ -113,6 +115,7 @@ angular.module('eappApp').controller('ShopController', ["$scope", "$q", "$http",
     $scope.getProducts = function () 
     {
         $scope.productsReady = false;
+        $scope.isStoreSelected = false;
         
         if(!$scope.ready)
         {
@@ -123,14 +126,17 @@ angular.module('eappApp').controller('ShopController', ["$scope", "$q", "$http",
         {
             
             $scope.filterSettings = JSON.parse(window.sessionStorage.getItem("filterSettings").toString());;
-            // Get store filter
+            
+            // Get the filter from the current settings and checks if a store is selected
             $scope.createResultsFilter();
             
             $scope.productsReady = true;
         }
         
         var q = $q.defer();
-
+        
+        $scope.isStoreSelected = $scope.IsStoreSelected();
+        
         if(!angular.isNullOrUndefined($scope.store_id))
         {
             $scope.promise = eapp.getFlyerProducts($scope.store_id, $scope.query, $scope.resultFilter);
@@ -166,20 +172,16 @@ angular.module('eappApp').controller('ShopController', ["$scope", "$q", "$http",
                 return [value];
             });
             
-            
-            
-            //if(!window.sessionStorage.getItem("filterSettings"))
+            $scope.filterSettings = 
             {
-                $scope.filterSettings = 
-                {
-                    stores : storeFilterSettings,
-                    brands : brandsFilterSettings,
-                    categories : categoriesFilterSettings,
-                    origins : originsFilterSettings
-                };
-                
-                window.sessionStorage.setItem("filterSettings", JSON.stringify($scope.filterSettings));
-            }
+                stores : storeFilterSettings,
+                brands : brandsFilterSettings,
+                categories : categoriesFilterSettings,
+                origins : originsFilterSettings
+            };
+
+            window.sessionStorage.setItem("filterSettings", JSON.stringify($scope.filterSettings));
+            
             
             $scope.hasResults = array.length > 0;
             
@@ -191,6 +193,29 @@ angular.module('eappApp').controller('ShopController', ["$scope", "$q", "$http",
 	
         return q.promise;
   };
+  
+    $scope.IsStoreSelected = function()
+    {
+        if(!angular.isNullOrUndefined($scope.store_id))
+        {
+            return true;
+        }
+        
+        if(!angular.isNullOrUndefined($scope.filterSettings))
+        {
+            for(var x in $scope.filterSettings.stores)
+            {
+                var store = $scope.filterSettings.stores[x];
+
+                if(store.selected)
+                {
+                    return true;
+                }
+            }
+        }
+        
+        return false;
+    };
   
     $scope.$watch('query.filter', function (newValue, oldValue) 
     {
@@ -263,6 +288,7 @@ angular.module('eappApp').controller('ShopController', ["$scope", "$q", "$http",
                 if(index > -1)
                 {
                     $scope.filterSettings.stores[index] = item;
+                    $scope.isStoreSelected = true;
                 }
                 break;
             case "CATEGORY":
@@ -284,6 +310,11 @@ angular.module('eappApp').controller('ShopController', ["$scope", "$q", "$http",
     
     $scope.createResultsFilter = function()
     {
+        if(angular.isNullOrUndefined($scope.filterSettings))
+        {
+            return;
+        }
+        
         $scope.resultFilter = { };
         
         var storeFilter = "";
@@ -384,7 +415,6 @@ angular.module('eappApp').controller('ShopController', ["$scope", "$q", "$http",
         
         $scope.resultFilter.origins = originsFilter;
     };
-    
     
     $scope.$watch("query.page", function(newValue, oldValue)
     {

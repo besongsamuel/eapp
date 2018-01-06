@@ -29,8 +29,8 @@
     </thead>
     <tbody md-body>
       <tr md-row md-select="product" md-select-id="product.id" ng-repeat="product in products">
-        <td  ng-show="showStoreLogo" md-cell><div class="admin-image"><a href=""><img alt="" ng-src="{{product.retailer.image}}"></a></div></td>
-        <td md-cell><div class="admin-image"><a href=""><img alt="" ng-src="{{product.product.image}}"></a></div></td>
+        <td  ng-show="isStoreSelected" md-cell><div class="admin-image"><a href=""><img alt="" ng-src="{{product.retailer.image}}"></a></div></td>
+        <td md-cell><div class="admin-image"><a href=""><img alt=""  ng-src="{{product.product.image}}"></a></div></td>
         <td md-cell>
             <p><b><a  href ng-click="viewProduct(product.id, $event)">{{product.product.name | uppercase}}</a></b></p>
             <p ng-show="product.size">{{product.size}}</p>
@@ -48,7 +48,7 @@
             <b>CAD {{(product.price * product.quantity) | number : 2}}</b>
         </td>
         <td md-cell>
-            <a href ng-click="add_product_to_cart(product.product_id, showStoreLogo ? product.id : -1, product.quantity)" ng-hide="productInCart(product.product_id)">Ajouter</a> 
+            <a href ng-click="add_product_to_cart(product.product_id, isStoreSelected ? product.id : -1, product.quantity)" ng-hide="productInCart(product.product_id)">Ajouter</a> 
             <a href ng-click="remove_product_from_cart(product.product_id)" ng-show="productInCart(product.product_id)">Retirer</a> 
         </td>
       </tr>
