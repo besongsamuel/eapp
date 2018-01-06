@@ -6,13 +6,10 @@
         <div ng-repeat="group in selectedItems">
             <p><b>{{group.name | titlecase}}</b></p>
             <md-divider></md-divider>
-            <p style="color :rgb(134, 0, 0)" ng-repeat="item in group.items">&nbsp;&nbsp;&nbsp;&nbsp;<span><a href ng-click="removeFromFilter(item)">×</a></span>&nbsp;&nbsp;{{item.name | titlecase}}</p>
+            <p style="color :rgb(134, 0, 0)" ng-repeat="item in group.items">&nbsp;&nbsp;&nbsp;&nbsp;<span><a href ng-click="removeFromFilter(item)">×</a></span>&nbsp;&nbsp;{{getDisplayName(item.name) | titlecase}}</p>
         </div>
         
     </div>
 
-    <settings-item settings-object="settings.stores" ready="$ctrl.ready" name="Magasins" on-change="$ctrl.change(item)" ></settings-item>
-    <settings-item settings-object="settings.categories" ready="$ctrl.ready" name="Categories" on-change="$ctrl.change(item)"></settings-item>
-    <settings-item settings-object="settings.origins" ready="$ctrl.ready" name="Origins" on-change="$ctrl.change(item)"></settings-item>
-    <settings-item settings-object="settings.brands" ready="$ctrl.ready" name="Marques" on-change="$ctrl.change(item)"></settings-item>
+    <settings-item ng-repeat="setting in settings" settings-object="setting.values" ready="$ctrl.ready" name="{{setting.setting.caption}}" on-change="$ctrl.change(item)" ></settings-item>
 </div>

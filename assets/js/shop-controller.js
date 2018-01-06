@@ -124,13 +124,21 @@ angular.module('eappApp').controller('ShopController', ["$scope", "$q", "$http",
                 
         if(window.sessionStorage.getItem("filterSettings"))
         {
+            var settings = window.sessionStorage.getItem("filterSettings");
             
-            $scope.filterSettings = JSON.parse(window.sessionStorage.getItem("filterSettings").toString());;
+            if(!angular.isNullOrUndefined(settings))
+            {
+                $scope.filterSettings = JSON.parse(settings.toString());
             
-            // Get the filter from the current settings and checks if a store is selected
-            $scope.createResultsFilter();
+                // Get the filter from the current settings and checks if a store is selected
+                $scope.createResultsFilter();
             
-            $scope.productsReady = true;
+                $scope.productsReady = true;
+            }
+            else
+            {
+                window.sessionStorage.removeItem("filterSettings")
+            }
         }
         
         var q = $q.defer();
@@ -159,29 +167,9 @@ angular.module('eappApp').controller('ShopController', ["$scope", "$q", "$http",
             $scope.count = response.data.count;
             $scope.products = array;
             
-            var storeFilterSettings = $.map(response.data.settings.stores, function(value, index) {
-                return [value];
-            });
-            var brandsFilterSettings = $.map(response.data.settings.brands, function(value, index) {
-                return [value];
-            });
-            var categoriesFilterSettings = $.map(response.data.settings.categories, function(value, index) {
-                return [value];
-            });
-            var originsFilterSettings = $.map(response.data.settings.origins, function(value, index) {
-                return [value];
-            });
-            
-            $scope.filterSettings = 
-            {
-                stores : storeFilterSettings,
-                brands : brandsFilterSettings,
-                categories : categoriesFilterSettings,
-                origins : originsFilterSettings
-            };
+            $scope.filterSettings = response.data.settings;
 
             window.sessionStorage.setItem("filterSettings", JSON.stringify($scope.filterSettings));
-            
             
             $scope.hasResults = array.length > 0;
             
@@ -203,9 +191,9 @@ angular.module('eappApp').controller('ShopController', ["$scope", "$q", "$http",
         
         if(!angular.isNullOrUndefined($scope.filterSettings))
         {
-            for(var x in $scope.filterSettings.stores)
+            for(var x in $scope.filterSettings.stores.values)
             {
-                var store = $scope.filterSettings.stores[x];
+                var store = $scope.filterSettings.stores.values[x];
 
                 if(store.selected)
                 {
@@ -274,37 +262,11 @@ angular.module('eappApp').controller('ShopController', ["$scope", "$q", "$http",
     
     $scope.updateItemChanged = function(item)
     {
-        switch(item.type)
+        var index = $scope.filterSettings[item.type].values.map(function(e){ return e.name; }).indexOf(item.name);
+        
+        if(index > -1)
         {
-            case "ORIGIN":
-                var index = $scope.filterSettings.origins.map(function(e){ return e.name; }).indexOf(item.name);
-                if(index > -1)
-                {
-                    $scope.filterSettings.origins[index] = item;
-                }
-                break;
-            case "STORE":
-                var index = $scope.filterSettings.stores.map(function(e){ return e.id; }).indexOf(item.id);
-                if(index > -1)
-                {
-                    $scope.filterSettings.stores[index] = item;
-                    $scope.isStoreSelected = true;
-                }
-                break;
-            case "CATEGORY":
-                var index = $scope.filterSettings.categories.map(function(e){ return e.id; }).indexOf(item.id);
-                if(index > -1)
-                {
-                    $scope.filterSettings.categories[index] = item;
-                }
-                break;
-            case "BRAND":
-                var index = $scope.filterSettings.brands.map(function(e){ return e.id; }).indexOf(item.id);
-                if(index > -1)
-                {
-                    $scope.filterSettings.brands[index] = item;
-                }
-                break;
+            $scope.filterSettings[item.type].values[index] = item;
         }
     };
     
@@ -315,105 +277,47 @@ angular.module('eappApp').controller('ShopController', ["$scope", "$q", "$http",
             return;
         }
         
-        $scope.resultFilter = { };
+        $scope.resultFilter = {};
         
-        var storeFilter = "";
-        for(var x in $scope.filterSettings.stores)
+        for(var x in $scope.filterSettings)
         {
-            var store = $scope.filterSettings.stores[x];
-            
-            if(store.selected)
+            var values = $scope.filterSettings[x].values;
+            var setting = $scope.filterSettings[x].setting;
+            var filter = "";
+            for(var y in values)
             {
-                if(storeFilter === "")
+                if(values[y].selected)
                 {
-                    storeFilter = storeFilter.concat(store.id.toString());
-                }
-                else
-                {
-                    storeFilter = storeFilter.concat(",", store.id.toString());
+                    var value = values[y].id.toString();
+                    
+                    if(value === "Autre")
+                    {
+                        value = "";
+                    }
+                    
+                    if(filter === "")
+                    {
+                        if(value === "")
+                        {
+                            filter = filter.concat(",", value);
+                        }
+                        else
+                        {
+                            filter = filter.concat("", value);
+                        }
+                    }
+                    else
+                    {
+                        filter = filter.concat(",", value);
+                    }
+                    
+                    
                 }
             }
-        }
-        
-        $scope.resultFilter.stores = storeFilter;
-        
-        // Get Category filter
-        var categoryFilter = "";
-        
-        for(var x in $scope.filterSettings.categories)
-        {
-            var category = $scope.filterSettings.categories[x];
             
-            if(category.selected)
-            {
-                if(categoryFilter === "")
-                {
-                    categoryFilter = categoryFilter.concat(category.id.toString());
-                }
-                else
-                {
-                    categoryFilter = categoryFilter.concat(",", category.id.toString());
-                }
-            }
+            $scope.resultFilter[setting.name] = filter;
         }
         
-        $scope.resultFilter.categories = categoryFilter;
-        
-        // Get Brands filter
-        var brandFilter = "";
-        
-        for(var x in $scope.filterSettings.brands)
-        {
-            var brand = $scope.filterSettings.brands[x];
-            
-            if(brand.selected)
-            {
-                if(brandFilter === "")
-                {
-                    brandFilter = brandFilter.concat(brand.id.toString());
-                }
-                else
-                {
-                    brandFilter = brandFilter.concat(",", brand.id.toString());
-                }
-            }
-        }
-        
-        $scope.resultFilter.brands = brandFilter;
-        
-        // Get Brands filter
-        var originsFilter = "";
-        
-        for(var x in $scope.filterSettings.origins)
-        {
-            var origin = $scope.filterSettings.origins[x];
-            
-            if(origin.selected)
-            {
-                var nameval = origin.name.toString();
-                
-                if(nameval == "Autre")
-                {
-                    nameval = "";
-                }
-                
-                if(nameval == "Pas connu")
-                {
-                    nameval = "undefined";
-                }
-                
-                if(originsFilter === "")
-                {
-                    originsFilter = originsFilter.concat(nameval);
-                }
-                else
-                {
-                    originsFilter = originsFilter.concat(",", nameval);
-                }
-            }
-        }
-        
-        $scope.resultFilter.origins = originsFilter;
     };
     
     $scope.$watch("query.page", function(newValue, oldValue)

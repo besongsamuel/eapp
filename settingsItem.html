@@ -6,7 +6,7 @@
         <div ng-repeat="item in data track by $index">
             <div ng-show="$index < 4" >
                 <md-checkbox style="margin-left : 10px;" ng-disabled="!$ctrl.ready" class="md-primary" ng-model="item.selected" aria-label="item.name" ng-change="$ctrl.change(item)">
-                    <span style="font-size: 12px;">{{item.name}}</span>
+                    <span style="font-size: 12px;">{{getDisplayName(item.name)}}</span>
                 </md-checkbox>
             </div>
         </div>
@@ -18,7 +18,7 @@
             <div ng-repeat="item in data track by $index">
                 <div ng-show="$index > 3" >
                     <md-checkbox style="margin-left : 10px;"  ng-disabled="!$ctrl.ready" class="md-primary" ng-model="item.selected" aria-label="item.name" ng-change="$ctrl.change(item)" >
-                        <span style="font-size: 12px;">{{item.name}}</span>
+                        <span style="font-size: 12px;">{{getDisplayName(item.name)}}</span>
                     </md-checkbox>
                 </div>
             </div>

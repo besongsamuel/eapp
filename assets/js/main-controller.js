@@ -52,7 +52,7 @@ function convert_to_string_date(date)
 
 angular.isNullOrUndefined = function(value)
 {
-    return angular.isUndefined(value) || value === null;
+    return angular.isUndefined(value) || value === null || value == "undefined";
 };
 
 angular.getSearchParam = function(name, url)
@@ -120,41 +120,42 @@ function ResultFilterController($scope)
         
         for(var x in $scope.settings)
         {
-            for(var y in $scope.settings[x])
+            for(var y in $scope.settings[x].values)
             {
-                var type = $scope.settings[x][y].type;
-                        
-                switch(type)
-                {
-                    case "ORIGIN":
-                        type = 'Origin';
-                        break;
-                    case "STORE":
-                        type = 'Magasin';
-                        break;
-                    case "CATEGORY":
-                        type = 'Catégorie';
-                        break;
-                    case "BRAND":
-                        type = 'Marque';
-                        break;
-                }
+                var type = $scope.settings[x].values[y].type;
                 
-                if($scope.settings[x][y].selected)
+                if($scope.settings[x].values[y].selected)
                 {
-                    if(angular.isNullOrUndefined($scope.selectedItems[$scope.settings[x][y].type]))
+                    if(angular.isNullOrUndefined($scope.selectedItems[$scope.settings[x].values[y].type]))
                     {
-                        
-                        
-                        $scope.selectedItems[$scope.settings[x][y].type] = { name : type, items : [] };
+                        $scope.selectedItems[$scope.settings[x].values[y].type] = { name : $scope.settings[x].setting.caption, items : [] };
                     }
                     
-                    $scope.selectedItems[$scope.settings[x][y].type].items.push($scope.settings[x][y]);
+                    $scope.selectedItems[$scope.settings[x].values[y].type].items.push($scope.settings[x].values[y]);
                 }
             }
         }
         
     });
+    
+    $scope.getDisplayName = function(name)
+    {
+        if(name == "0" || name == "1")
+        {
+            if(name == "0")
+            {
+                return "Non";
+            }
+            else
+            {
+                return "Oui";
+            }
+        }
+        else
+        {
+            return name;
+        }
+    };
     
     ctrl.$onChanges = function(newSetting)
     {
@@ -212,6 +213,25 @@ function SettingsItemController($scope)
         $scope.data = ctrl.getData(ctrl.settingsObject);
         
         $scope.moreLessLabel = "Plus";
+    };
+    
+    $scope.getDisplayName = function(name)
+    {
+        if(name == "0" || name == "1")
+        {
+            if(name == "0")
+            {
+                return "Non";
+            }
+            else
+            {
+                return "Oui";
+            }
+        }
+        else
+        {
+            return name;
+        }
     };
     
     ctrl.$onChanges = function(newData)

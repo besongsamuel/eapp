@@ -96,6 +96,7 @@ class CI_Model {
     public $latest_products_condition;
     public $store_product_product_join;
     public $store_product_subcategory_join;
+    private $filter_settings;
 
 
     /**
@@ -106,6 +107,7 @@ class CI_Model {
     public function __construct()
     {
         log_message('info', 'Model Class Initialized');
+        $this->filter_settings = $this->get_all("otiprix_filter_settings");
         $this->latest_products_condition = 'period_from <= CURDATE() AND period_to >= CURDATE()';
         $this->store_product_product_join = sprintf("%s.product_id = %s.id", STORE_PRODUCT_TABLE, PRODUCT_TABLE);
         $this->store_product_subcategory_join = sprintf("%s.subcategory_id = %s.id", PRODUCT_TABLE, SUB_CATEGORY_TABLE);
@@ -348,30 +350,42 @@ class CI_Model {
         return $result;
     }
     
-    public function get_all_where_in($table_name, $column_name, $values) 
+    public function get_all_where_in($table_name, $column_name, $values, $assoc = false) 
     {
-        $result = array();
         
         $this->db->where_in($column_name, $values);
         
         $query =  $this->db->get($table_name);
         
-        foreach ($query->result() as $value) 
+        $result_set = $assoc ? $query->result_array() : $query->result();
+        
+        if($assoc)
         {
-            $result[$value->id] = $value;
+            foreach ($result_set as $key => $value) 
+            {
+                 // Handle special case for country/state
+                if($key == "state" && empty($result_set[$key]))
+                {
+                    if(isset($result_set["country"]))
+                    {
+                        $result_set["state"] = $result_set["country"];
+                    }
+
+                }
+
+            }
         }
         
-        return $result;
+        
+        
+       
+        
+        return $result_set;
     }
 	
     public function get_products()
     {
         $products = $this->get_all(PRODUCT_TABLE);
-
-        foreach($products as $product)
-        {
-
-        }
 
         return $products;
     }
@@ -692,26 +706,18 @@ class CI_Model {
     {
         if($settingsFilter != null)
         {
-            if($settingsFilter->stores && sizeof($settingsFilter->stores) > 0)
+            
+            foreach ($this->filter_settings as $setting) 
             {
-                $this->db->where_in("retailer_id", explode(",", $settingsFilter->stores));
-            }
-            if($settingsFilter->brands && sizeof($settingsFilter->brands) > 0)
-            {
-                $this->db->where_in("brand_id", explode(",", $settingsFilter->brands));
-            }
-            if($settingsFilter->categories && sizeof($settingsFilter->categories) > 0)
-            {
-                $this->db->where_in("product_category_id", explode(",", $settingsFilter->categories));
-            }
-            if($settingsFilter->origins && sizeof($settingsFilter->origins) > 0)
-            {
-                $this->db->where_in("country", explode(",", $settingsFilter->origins));
+                if(isset($settingsFilter[$setting->name]) && !empty($settingsFilter[$setting->name]))
+                {
+                    $this->db->where_in($setting->column_name, explode(",", $settingsFilter[$setting->name]));
+                }
             }
         }
     }
     
-    public function get_distinct_latest_store_product_property($property_name, $filter, $store_id, $category_id, $settingsFilter = null) 
+    public function get_distinct_latest_store_product_property($property_name, $filter, $store_id, $category_id, $settingsFilter = null, $assoc = false) 
     {
         $this->db->join(PRODUCT_TABLE, $this->store_product_product_join);
         $this->db->join(SUB_CATEGORY_TABLE, $this->store_product_subcategory_join, "left outer");
@@ -724,7 +730,7 @@ class CI_Model {
         
         $this->add_settings_filter($settingsFilter);
         
-        $product_ids = $this->get_distinct(STORE_PRODUCT_TABLE, $property_name, $this->latest_products_condition);
+        $product_ids = $this->get_distinct(STORE_PRODUCT_TABLE, $property_name, $this->latest_products_condition, $assoc);
        
         return $product_ids;
     }
@@ -835,7 +841,7 @@ class CI_Model {
         return $this->db->get(STORE_PRODUCT_TABLE)->row();
     }
 
-    public function get_distinct($table_name, $columns, $where)
+    public function get_distinct($table_name, $columns, $where, $assoc = false)
     {
     	$this->db->distinct();
 
@@ -848,7 +854,15 @@ class CI_Model {
         
         $query = $this->db->get_compiled_select($table_name);
                 
-        return $this->db->query($query)->result();
+        if($assoc)
+        {
+            return $this->db->query($query)->result_array();
+        }
+        else
+        {
+            return $this->db->query($query)->result();
+        }
+        
     }
     
     public function get_where($table_name, $columns, $where, $as_array = false)
