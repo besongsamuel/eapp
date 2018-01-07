@@ -87,7 +87,8 @@ angular.module('eappApp').controller('ShopController', ["$scope", "$q", "$http",
                     rowid : response.data.rowid,
                     store_product : response.data.store_product,
                     top_five_store_products : [],
-                    quantity : product_quantity
+                    quantity : product_quantity,
+                    store_product_id : store_product_id
                 };
 
                 if($rootScope.cart === null || typeof $rootScope.cart === 'undefined')

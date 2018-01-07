@@ -5,7 +5,7 @@
     <md-divider></md-divider>
     <md-divider></md-divider>
     
-    <h2 class="section-title md-otiprix-text">Économisez sur votre liste d'épicerie</h2>
+    <h3 class="section-title md-otiprix-text">Économisez sur votre liste d'épicerie</h3>
     <h4 style="text-align: center; color : #666;">Comment ça marche?</h4>
     
     <div class="container" style="text-align: center;" ng-controller="HomeController">

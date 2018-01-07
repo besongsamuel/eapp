@@ -599,7 +599,7 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
                 //continue;
             }
 
-            if(currentDepartmentStoreID !== parseInt(storeProduct.department_store.id))
+            if(currentDepartmentStoreID !== parseInt(storeProduct.retailer.id))
             {
                 $scope.departmenStores.push(storeProduct.department_store);
                 
@@ -613,7 +613,7 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
                 
                 $scope.departmenStores[$scope.departmenStores.length - 1].products = [];
 
-                currentDepartmentStoreID = parseInt(storeProduct.department_store.id);
+                currentDepartmentStoreID = parseInt(storeProduct.retailer.id);
             }
             
             $scope.departmenStores[$scope.departmenStores.length - 1].products.push($rootScope.cart[x]);
