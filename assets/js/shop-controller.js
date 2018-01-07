@@ -3,7 +3,7 @@ angular.module('eappApp').controller('ShopController', ["$scope", "$q", "$http",
     $rootScope.query = 
     {
         filter: '',
-        limit: '50',
+        limit: '20',
         order: 'name',
         page: 1
     };
@@ -21,15 +21,18 @@ angular.module('eappApp').controller('ShopController', ["$scope", "$q", "$http",
     
     angular.element(document).ready(function()
     {
+        $scope.ready = true;
+        
         $scope.Init();
         
-        $scope.ready = true;
     });
     var bookmark;
     
     $scope.Init = function()
     {
         $scope.assets_dir = $scope.base_url.concat("/eapp/assets/");
+        
+        //$rootScope.hideSearchArea = true;
         
         if(window.sessionStorage.getItem("searchText"))
         {

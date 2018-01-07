@@ -110,12 +110,12 @@ class Shop extends CI_Controller {
                 $store_id, 
                 $category_id, $resultsFilter);
         
-        $products["settings"] = $this->get_settings($filter, $category_id, $store_id, $resultsFilter);
+        $products["settings"] = $this->get_settings($category_id, $store_id, $resultsFilter);
         
         echo json_encode($products);
     }
     
-    private function get_settings($filter, $category_id, $store_id, $resultsFilter) 
+    private function get_settings($category_id, $store_id, $resultsFilter) 
     {
         
         // Get the settings object
@@ -125,7 +125,7 @@ class Shop extends CI_Controller {
         
         foreach ($settings as $setting) 
         {
-            $settings_ids = $this->get_settings_item($setting->column_name, $filter, $category_id, $store_id);
+            $settings_ids = $this->get_settings_item($setting->column_name, $category_id, $store_id);
             
             // create an array with the ids
             $index_array = array();
@@ -238,9 +238,9 @@ class Shop extends CI_Controller {
         return $result;
     }
     
-    private function get_settings_item($property, $filter, $category_id, $store_id) 
+    private function get_settings_item($property, $category_id, $store_id) 
     {
-        return $this->shop_model->get_distinct_latest_store_product_property($property, $filter, $store_id, $category_id, null, true);
+        return $this->shop_model->get_distinct_latest_store_product_property($property, null, $store_id, $category_id, null, true);
     }
     
     
