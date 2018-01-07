@@ -12,20 +12,22 @@
             
         <div class="row">
             <div class="col-sm-12">
-                <md-icon style="color: #666;"><i class="material-icons">perm_identity</i></md-icon>
-                &nbsp;<span>Rechercher un article d'épicerie</span>&nbsp;&nbsp;&nbsp;
-                <md-icon style="color: #1abc9c;"><i class="material-icons">lock_open</i></md-icon>
-                <b>OtiPrix trouve l'article avec le meilleur prix pour vous</b></span>
+                <md-icon style="color: #666;"><i class="material-icons">perm_identity</i></md-icon>&nbsp;<span>Rechercher un article d'épicerie</span>&nbsp;&nbsp;&nbsp;
+                <md-icon style="color: #1abc9c;"><i class="material-icons">lock_open</i></md-icon><span><b>OtiPrix trouve l'article avec le meilleur prix pour vous</b></span>
             </div>
         </div>
         <div class="row">
-            <div class="col-sm-12"><md-icon style="color: #666;"><i class="material-icons">perm_identity</i></md-icon>&nbsp;<span>Créer une liste d'épicerie</span>&nbsp;&nbsp;&nbsp;
-            <md-icon style="color: #1abc9c;"><i class="material-icons">lock_open</i></md-icon><b>Otiprix crée une liste d'épicerie parmi les articles aux meilleurs prix</b></span></div>
+            <div class="col-sm-12">
+                <md-icon style="color: #666;"><i class="material-icons">perm_identity</i></md-icon>&nbsp;<span>Créer une liste d'épicerie</span>&nbsp;&nbsp;&nbsp;
+                <md-icon style="color: #1abc9c;"><i class="material-icons">lock_open</i></md-icon><span><b>Otiprix crée une liste d'épicerie parmi les articles aux meilleurs prix</b></span>
+            </div>
         </div>
+        
         <br>
         
         <div style="margin-top: 5px; margin-bottom: 30px;">
             <md-button class="md-raised md-primary" style="padding : 10px; font-size: 14px;" ng-click="gotoShop()">
+                <md-icon><i class="material-icons">money_off</i></md-icon>
                 <b>Commencez à économiser aujourd'hui</b>
             </md-button>
         </div>
