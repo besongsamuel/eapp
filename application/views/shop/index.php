@@ -39,13 +39,6 @@ and open the template in the editor.
     
     <md-content class="container">
         
-        <div class="col-sm-12" style="margin : 5px;">
-            <div class="pull-right">
-                <md-icon><a  ng-class="gridView ? 'md-primary' : 'md-otiprix' "href ng-click="gridView = false;"><i class="material-icons">list</i></a></md-icon>
-                <md-icon><a  ng-class="gridView ? 'md-otiprix' : 'md-primary' " href  ng-click="gridView = true;"><i class="material-icons">grid_on</i></a></md-icon>
-            </div>
-        </div>
-        
         <div class="row">
             <div class="col-md-2">
                 <result-filter ng-if="productsReady" ready="productsReady" result-set="filterSettings" on-settings-changed="settingsChanged(item)" ></result-filter>
