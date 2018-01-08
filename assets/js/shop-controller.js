@@ -24,9 +24,7 @@ angular.module('eappApp').controller('ShopController', ["$scope", "$q", "$http",
     angular.element(document).ready(function()
     {
         $scope.ready = true;
-        
-        $scope.gridView = false;
-        
+
         $scope.Init();
         
     });
@@ -65,6 +63,24 @@ angular.module('eappApp').controller('ShopController', ["$scope", "$q", "$http",
             
             $rootScope.isSearch = true;
             $scope.getProducts();
+        }
+        
+        if(window.sessionStorage.getItem("gridView"))
+        {
+            var gv = window.sessionStorage.getItem("gridView").toString();
+            
+            if(!angular.isNullOrUndefined(gv))
+            {
+                $scope.gridView = JSON.parse(gv);
+            }
+            else
+            {
+                $scope.gridView = false;
+            }
+        }
+        else
+        {
+            $scope.gridView = false;
         }
     };
 
@@ -334,6 +350,15 @@ angular.module('eappApp').controller('ShopController', ["$scope", "$q", "$http",
     $scope.$watch("query.page", function(newValue, oldValue)
     {
         window.scrollTo(0, 0);
+    });
+    
+    $scope.$watch("gridView", function(newValue, oldValue)
+    {
+        if(!angular.isNullOrUndefined($scope.gridView))
+        {
+            window.sessionStorage.setItem("gridView", JSON.stringify($scope.gridView));
+        }
+         
     });
     
   
