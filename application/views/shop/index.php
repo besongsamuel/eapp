@@ -38,7 +38,15 @@ and open the template in the editor.
     </div>
     
     <md-content class="container">
-        <div class="row" style="overflow-x: auto;">
+        
+        <div class="col-sm-12" style="margin : 5px;">
+            <div class="pull-right">
+                <md-icon style="color: #1abc9c;"><a href ng-click="gridView = false;"><i class="material-icons">list</i></a></md-icon>
+                <md-icon style="color: #1abc9c;"><a href  ng-click="gridView = true;"><i class="material-icons">grid_on</i></a></md-icon>
+            </div>
+        </div>
+        
+        <div class="row">
             <div class="col-md-2">
                 <result-filter ng-if="productsReady" ready="productsReady" result-set="filterSettings" on-settings-changed="settingsChanged(item)" ></result-filter>
             </div>

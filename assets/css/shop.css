@@ -64,3 +64,84 @@ md-toolbar.md-table-toolbar form > input {
 md-toolbar.md-table-toolbar form > input:focus {
   outline: none;
 }
+
+/* GRID VIEW BEGIN */
+
+@import url('https://fonts.googleapis.com/css?family=Quicksand:300,400,500,700&subset=latin-ext,vietnamese'); 
+@import url('https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css');  
+@import url('https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css');
+body{font-family: "Roboto Condensed",sans-serif;} 
+   h4{
+    	font-weight: 600;
+	}
+	.price{
+		font-size: 25px;
+    	margin: 0 auto;
+    	color: #333;
+		float:right;
+	}
+	.thumbnail{
+		opacity:0.90;
+		-webkit-transition: all 0.5s; 
+		transition: all 0.5s;
+	}
+	.thumbnail:hover{
+		opacity:1.00;
+		box-shadow: 0px 0px 10px #1abc9c;
+	}
+	.line{
+		margin-bottom: 5px;
+	}
+	@media screen and (max-width: 770px) {
+		.right{
+			float:left;
+			width: 100%;
+		}
+	}
+	span.thumbnail {
+        border: 1px solid #1abc9c !important;
+    border-radius: 0px !important;
+    -webkit-box-shadow: 0px 0px 14px 0px rgba(0,0,0,0.16);
+    -moz-box-shadow: 0px 0px 14px 0px rgba(0,0,0,0.16);
+    box-shadow: 0px 0px 14px 0px rgba(0,0,0,0.16);
+	padding: 10px;
+}
+
+	.product-image
+	{
+		width: 160px !important;
+		height: 160px !important;
+                margin-bottom: 10px;
+	}
+        
+        .retailer-image
+	{
+		width: 60px !important;
+		height: 42px !important;
+	}
+        
+        .product-title
+        {
+            font-size: 14px;
+        }
+
+.container h4{margin-top:50px; margin-bottom:10px;}
+button {    margin-top: 2px;
+}
+.right {
+    float: right;
+    border-bottom: 2px solid #1abc9c;
+}
+.btn-info {
+    color: #fff;
+    background-color: #1abc9c;
+    border-color: #1abc9c;
+	font-size:13px;
+	font-weight:600;
+}
+.btn-info:hover{
+     background: #1abc9c;
+}
+
+
+/* GRID VIEW END */

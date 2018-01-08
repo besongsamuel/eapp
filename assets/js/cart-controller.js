@@ -358,6 +358,11 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
         if(window.sessionStorage.getItem('cartSettings'))
         {
             $rootScope.cartSettings = JSON.parse(window.sessionStorage.getItem('cartSettings').toString());
+            
+            if(!$scope.isUserLogged)
+            {
+                $rootScope.cartSettings.searchMyList = false;
+            }
         }
         
         $scope.update_cart_list();
@@ -452,7 +457,7 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
         // Clear the cart. 
         // It shall be repopulated with optimized products
         $rootScope.cart = [];
-		
+        	
         var formData = new FormData();
         formData.append("products", JSON.stringify(store_products));
         formData.append("distance", $scope.getDistance());

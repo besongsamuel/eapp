@@ -66,7 +66,7 @@
 
             <md-input-container style='display: block; margin-right: 50px;'>
                 <label>Quantité</label>
-                <input aria-label="Qty" type="number" ng-model="$ctrl.item.quantity" ng-change="$ctrl.updateQuantity($ctrl.item.quantity, $ctrl.item.store_product.product.id)">
+                <input aria-label="Qty" min="1" type="number" ng-model="$ctrl.item.quantity" ng-change="$ctrl.updateQuantity($ctrl.item.quantity, $ctrl.item.store_product.product.id)">
             </md-input-container>
 
         </div>

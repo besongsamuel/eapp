@@ -12,6 +12,8 @@ angular.module('eappApp').controller('ShopController', ["$scope", "$q", "$http",
     
     $scope.ready = false;
     
+    $scope.isLoading = false;
+    
     /**
      * This variable is true when a store is selected. 
      */
@@ -22,6 +24,8 @@ angular.module('eappApp').controller('ShopController', ["$scope", "$q", "$http",
     angular.element(document).ready(function()
     {
         $scope.ready = true;
+        
+        $scope.gridView = false;
         
         $scope.Init();
         
@@ -120,6 +124,7 @@ angular.module('eappApp').controller('ShopController', ["$scope", "$q", "$http",
     {
         $scope.productsReady = false;
         $scope.isStoreSelected = false;
+        $scope.isLoading = true;
         
         if(!$scope.ready)
         {
@@ -167,7 +172,7 @@ angular.module('eappApp').controller('ShopController', ["$scope", "$q", "$http",
             var array = $.map(response.data.products, function(value, index) {
                 return [value];
             });
-
+            
             $scope.count = response.data.count;
             $scope.products = array;
             
@@ -180,6 +185,8 @@ angular.module('eappApp').controller('ShopController', ["$scope", "$q", "$http",
             q.resolve( array );
             
             $scope.productsReady = true;
+            
+            $scope.isLoading = false;
 
         });
 	
