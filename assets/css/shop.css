@@ -114,18 +114,34 @@ body{font-family: "Roboto Condensed",sans-serif;}
                 margin-bottom: 10px;
 	}
         
-        .retailer-image
-	{
-		width: 60px !important;
-		height: 42px !important;
-	}
+        .image-block
+        {
+            padding : 5px;
+            display: block;
+        }
+        
+        .image-block img
+        {
+            height: 100px;
+            width: 100px;
+            padding : 5px;
+            margin : auto;
+        }
+        
+        .retailer-block img
+        {
+            width: 100px;
+            padding : 5px;
+            margin : auto;
+        }
+        
         
         .product-title
         {
             font-size: 14px;
         }
 
-.container h4{margin-top:50px; margin-bottom:10px;}
+.container h4{margin-top:5px; margin-bottom:5px;}
 button {    margin-top: 2px;
 }
 .right {
