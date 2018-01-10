@@ -18,6 +18,8 @@ angular.module('eappApp').controller('ShopController', ["$scope", "$q", "$http",
      * This variable is true when a store is selected. 
      */
     $scope.isStoreSelected = false;
+    
+    $scope.viewAllProducts = false;
    
     $scope.productsReady = false;
     
