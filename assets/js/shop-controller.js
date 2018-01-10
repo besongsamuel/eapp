@@ -19,7 +19,7 @@ angular.module('eappApp').controller('ShopController', ["$scope", "$q", "$http",
      */
     $scope.isStoreSelected = false;
     
-    $scope.viewAllProducts = false;
+    $scope.viewConfig = { viewAll : false };
    
     $scope.productsReady = false;
     
@@ -167,6 +167,11 @@ angular.module('eappApp').controller('ShopController', ["$scope", "$q", "$http",
                 window.sessionStorage.removeItem("filterSettings");
             }
         }
+	    
+	if(window.sessionStorage.getItem("viewConfig"))
+        {
+            $scope.viewConfig = JSON.parse(window.sessionStorage.getItem("viewConfig").toString());
+        }
         
         var q = $q.defer();
         
@@ -174,15 +179,15 @@ angular.module('eappApp').controller('ShopController', ["$scope", "$q", "$http",
         
         if(!angular.isNullOrUndefined($scope.store_id))
         {
-            $scope.promise = eapp.getFlyerProducts($scope.store_id, $scope.query, $scope.resultFilter, $scope.viewAllProducts);
+            $scope.promise = eapp.getFlyerProducts($scope.store_id, $scope.query, $scope.resultFilter, $scope.viewConfig);
         }
         else if(!angular.isNullOrUndefined($scope.category_id))
         {
-            $scope.promise = eapp.getCategoryProducts($scope.category_id, $scope.query, $scope.resultFilter, $scope.viewAllProducts);
+            $scope.promise = eapp.getCategoryProducts($scope.category_id, $scope.query, $scope.resultFilter, $scope.viewConfig);
         }
         else
         {
-            $scope.promise = eapp.getStoreProducts($scope.query, $scope.resultFilter, $scope.viewAllProducts);
+            $scope.promise = eapp.getStoreProducts($scope.query, $scope.resultFilter, $scope.viewConfig);
         }
       
         $scope.promise.then(function(response)
@@ -254,9 +259,13 @@ angular.module('eappApp').controller('ShopController', ["$scope", "$q", "$http",
         $scope.getProducts();
     });
     
-    $scope.refresh = function(viewAll)
+    $scope.refresh = function(viewConfig)
     {
-        $scope.viewAllProducts = viewAll;
+        $scope.viewConfig = viewConfig;
+	
+	// Save the new configuration for the current session    
+	window.sessionStorage.setItem("viewConfig", JSON.stringify($scope.viewConfig));
+	    
         $scope.getProducts();
     };
   	
