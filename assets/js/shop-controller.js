@@ -175,6 +175,11 @@ angular.module('eappApp').controller('ShopController', ["$scope", "$q", "$http",
             if(!angular.isNullOrUndefined(config))
             {
                 $scope.viewConfig = JSON.parse(config.toString());
+                
+                if($scope.viewConfig.viewAll)
+                {
+                    $scope.isStoreSelected = true;
+                }
             }
             else
             {
@@ -245,6 +250,11 @@ angular.module('eappApp').controller('ShopController', ["$scope", "$q", "$http",
             }
         }
         
+        if($scope.viewConfig.viewAll)
+        {
+            return true;
+        }
+        
         return false;
     };
   
@@ -271,6 +281,15 @@ angular.module('eappApp').controller('ShopController', ["$scope", "$q", "$http",
     $scope.refresh = function(viewConfig)
     {
         $scope.viewConfig = viewConfig;
+        
+        if($scope.viewConfig.viewAll)
+        {
+            $scope.isStoreSelected = true;
+        }
+        else
+        {
+            $scope.isStoreSelected = $scope.IsStoreSelected();
+        }
 	
 	// Save the new configuration for the current session    
 	window.sessionStorage.setItem("viewConfig", JSON.stringify($scope.viewConfig));
