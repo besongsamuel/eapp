@@ -39,14 +39,16 @@ and open the template in the editor.
     
     <md-content class="container">
         
+        
         <div class="row">
             <div class="col-md-2">
                 <result-filter ng-if="productsReady" on-refresh="refresh(viewConfig)" ready="productsReady" result-set="filterSettings" on-settings-changed="settingsChanged(item)" ></result-filter>
             </div>
             
             <div class="col-md-10">
+                
                 <div layout="column" style="white-container">
-
+                     
                     <md-card id="shopController" ng-include="'<?php echo base_url(); ?>/assets/templates/shop-products-table.html'"></md-card>
 
                 </div>
