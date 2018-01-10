@@ -388,14 +388,14 @@ eappApp.factory('eapp', ['$http','$rootScope', '$mdDialog', function($http, $roo
         return $http.post(eappService.getSiteUrl().concat("cart/get_latest_products"), null);
     };
     
-    eappService.getCategoryProducts = function(id, query, resultsFilter, viewAll)
+    eappService.getCategoryProducts = function(id, query, resultsFilter, viewConfig)
     {
         var formData = new FormData();
         formData.append("page", query.page);
         formData.append("limit", query.limit);
         formData.append("filter", query.filter);
         formData.append("order", query.order);
-        formData.append("viewAll", JSON.stringify(viewAll));
+        formData.append("viewConfig", JSON.stringify(viewConfig));
         
         if(!angular.isNullOrUndefined(resultsFilter))
         {
@@ -413,14 +413,14 @@ eappApp.factory('eapp', ['$http','$rootScope', '$mdDialog', function($http, $roo
 
     };
     
-    eappService.getFlyerProducts = function(id, query, resultsFilter, viewAll)
+    eappService.getFlyerProducts = function(id, query, resultsFilter, viewConfig)
     {
         var formData = new FormData();
         formData.append("page", query.page);
         formData.append("limit", query.limit);
         formData.append("filter", query.filter);
         formData.append("order", query.order);
-        formData.append("viewAll", JSON.stringify(viewAll));
+        formData.append("viewConfig", JSON.stringify(viewConfig));
         if(!angular.isNullOrUndefined(resultsFilter))
         {
             resultsFilter.stores = null;
@@ -436,14 +436,14 @@ eappApp.factory('eapp', ['$http','$rootScope', '$mdDialog', function($http, $roo
 
     };
     
-    eappService.getStoreProducts = function(query, resultsFilter, viewAll)
+    eappService.getStoreProducts = function(query, resultsFilter, viewConfig)
     {
         var formData = new FormData();
         formData.append("page", query.page);
         formData.append("limit", query.limit);
         formData.append("filter", query.filter);
         formData.append("order", query.order);
-        formData.append("viewAll", JSON.stringify(viewAll));
+        formData.append("viewConfig", JSON.stringify(viewConfig));
         formData.append("resultsFilter", JSON.stringify(resultsFilter));
         
         return $http.post(eappService.getSiteUrl().concat("/shop/get_store_products"), formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}});
