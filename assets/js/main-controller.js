@@ -100,7 +100,7 @@ eappApp.component("resultFilter",
         resultSet : '<',
         onSettingsChanged : '&',
         ready : '=',
-        viewAll : '='
+        onRefresh : '&'
     }
 });
 
@@ -116,7 +116,7 @@ function ResultFilterController($scope)
     {
         ctrl.settings = ctrl.resultSet;
         $scope.settings = ctrl.resultSet;
-        $scope.viewAll = ctrl.viewAll;
+        $scope.viewAll = false;
     };
     
     $scope.$watch("settings", function()
@@ -141,7 +141,6 @@ function ResultFilterController($scope)
                 }
             }
         }
-        
     });
     
     $scope.getDisplayName = function(name)
@@ -171,6 +170,11 @@ function ResultFilterController($scope)
     ctrl.change = function(item)
     {
         ctrl.onSettingsChanged({ item : item});
+    };
+    
+    ctrl.refresh = function()
+    {
+        ctrl.onRefresh({ viewAll : $scope.viewAll });
     };
     
     $scope.removeFromFilter = function(item)
@@ -382,13 +386,14 @@ eappApp.factory('eapp', ['$http','$rootScope', '$mdDialog', function($http, $roo
         return $http.post(eappService.getSiteUrl().concat("cart/get_latest_products"), null);
     };
     
-    eappService.getCategoryProducts = function(id, query, resultsFilter)
+    eappService.getCategoryProducts = function(id, query, resultsFilter, viewAll)
     {
         var formData = new FormData();
         formData.append("page", query.page);
         formData.append("limit", query.limit);
         formData.append("filter", query.filter);
         formData.append("order", query.order);
+        formData.append("viewAll", JSON.stringify(viewAll));
         
         if(!angular.isNullOrUndefined(resultsFilter))
         {
@@ -406,13 +411,14 @@ eappApp.factory('eapp', ['$http','$rootScope', '$mdDialog', function($http, $roo
 
     };
     
-    eappService.getFlyerProducts = function(id, query, resultsFilter)
+    eappService.getFlyerProducts = function(id, query, resultsFilter, viewAll)
     {
         var formData = new FormData();
         formData.append("page", query.page);
         formData.append("limit", query.limit);
         formData.append("filter", query.filter);
         formData.append("order", query.order);
+        formData.append("viewAll", JSON.stringify(viewAll));
         if(!angular.isNullOrUndefined(resultsFilter))
         {
             resultsFilter.stores = null;
@@ -428,13 +434,14 @@ eappApp.factory('eapp', ['$http','$rootScope', '$mdDialog', function($http, $roo
 
     };
     
-    eappService.getStoreProducts = function(query, resultsFilter)
+    eappService.getStoreProducts = function(query, resultsFilter, viewAll)
     {
         var formData = new FormData();
         formData.append("page", query.page);
         formData.append("limit", query.limit);
         formData.append("filter", query.filter);
         formData.append("order", query.order);
+        formData.append("viewAll", JSON.stringify(viewAll));
         formData.append("resultsFilter", JSON.stringify(resultsFilter));
         
         return $http.post(eappService.getSiteUrl().concat("/shop/get_store_products"), formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}});

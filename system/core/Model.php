@@ -768,10 +768,10 @@ class CI_Model {
         $result = array();
         $products = array();
         // Executed with the limit clause
-        $product_ids = $this->get_distinct_products($filter, $store_id, $category_id);
+        $product_ids = $this->get_distinct_products($filter, $store_id, $category_id, $settingsFilter);
 
         // This is executed without the limit clause
-        $non_limited_product_ids = $this->get_distinct_products($filter, $store_id, $category_id);
+        $non_limited_product_ids = $this->get_distinct_products($filter, $store_id, $category_id, $settingsFilter);
         $result["count"] = sizeof($non_limited_product_ids);
         
         // Get all products
@@ -793,29 +793,19 @@ class CI_Model {
         return $result;
     }
 	
-    private function get_distinct_products($filter, $store_id, $category_id)
+    private function get_distinct_products($filter, $store_id, $category_id, $settingsFilter)
     {
         $this->db->join(PRODUCT_TABLE, $this->store_product_product_join);
         $this->db->join(SUB_CATEGORY_TABLE, $this->store_product_subcategory_join, "left outer");	
         
-        if($filter != null)
-        {
-            $this->db->group_start();
-            $this->db->like(PRODUCT_TABLE.".name", $filter);
-            $this->db->or_like("tags", $filter);
-            $this->db->or_like("store_name", $filter);
-            $this->db->group_end();
-        }
-        if($store_id != null)
-        {
-            $this->db->where(array("retailer_id" => $store_id));
-        }
-        if($category_id != null)
-        {
-            
-            $this->db->where(array(SUB_CATEGORY_TABLE.".product_category_id" => $category_id));
-        }
-
+        $this->add_name_filter($filter);
+        
+        $this->add_specific_store_filter($store_id);
+        
+        $this->add_specific_category_filter($category_id);
+        
+        $this->add_settings_filter($settingsFilter);
+        
         return $this->get_distinct(STORE_PRODUCT_TABLE, STORE_PRODUCT_TABLE.".id", null);
     }
 	
@@ -879,12 +869,10 @@ class CI_Model {
         if($as_array)
         {
             return $this->db->query($select_sql)->result_array();
-            return $this->db->get($table_name)->result_array();
         }
         else
         {
             return $this->db->query($select_sql)->result();
-            return $this->db->get($table_name)->result();
         }
     }
 	

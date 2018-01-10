@@ -164,7 +164,7 @@ angular.module('eappApp').controller('ShopController', ["$scope", "$q", "$http",
             }
             else
             {
-                window.sessionStorage.removeItem("filterSettings")
+                window.sessionStorage.removeItem("filterSettings");
             }
         }
         
@@ -174,15 +174,15 @@ angular.module('eappApp').controller('ShopController', ["$scope", "$q", "$http",
         
         if(!angular.isNullOrUndefined($scope.store_id))
         {
-            $scope.promise = eapp.getFlyerProducts($scope.store_id, $scope.query, $scope.resultFilter);
+            $scope.promise = eapp.getFlyerProducts($scope.store_id, $scope.query, $scope.resultFilter, $scope.viewAllProducts);
         }
         else if(!angular.isNullOrUndefined($scope.category_id))
         {
-            $scope.promise = eapp.getCategoryProducts($scope.category_id, $scope.query, $scope.resultFilter);
+            $scope.promise = eapp.getCategoryProducts($scope.category_id, $scope.query, $scope.resultFilter, $scope.viewAllProducts);
         }
         else
         {
-            $scope.promise = eapp.getStoreProducts($scope.query, $scope.resultFilter);
+            $scope.promise = eapp.getStoreProducts($scope.query, $scope.resultFilter, $scope.viewAllProducts);
         }
       
         $scope.promise.then(function(response)
@@ -253,6 +253,12 @@ angular.module('eappApp').controller('ShopController', ["$scope", "$q", "$http",
 
         $scope.getProducts();
     });
+    
+    $scope.refresh = function(viewAll)
+    {
+        $scope.viewAllProducts = viewAll;
+        $scope.getProducts();
+    };
   	
     $scope.searchProducts = function(searchText)
     {
