@@ -99,9 +99,9 @@ class Shop extends CI_Controller {
         
         $resultsFilter = json_decode($this->input->post('resultsFilter'), true);
         
-        $viewAll =json_decode($this->input->post('viewAll'), true);
+        $viewConfig =json_decode($this->input->post('viewConfig'), true);
                 
-	$get_latest_products = !$viewAll;
+	$get_latest_products = !$viewConfig.viewAll;
                         
         $products = $this->shop_model->get_store_products_limit(
                 $limit, 
