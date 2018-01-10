@@ -212,7 +212,7 @@ angular.module('eappApp').controller('ShopController', ["$scope", "$q", "$http",
             
             $scope.count = response.data.count;
             
-            $scope.maxPageItem = Math.min(parseInt(($scope.query.page * $scope.query.limit) + 1), parseInt($scope.count));
+            $scope.maxPageItem = Math.min(parseInt(($scope.query.page * $scope.query.limit)), parseInt($scope.count));
             
             $scope.products = array;
             

@@ -100,7 +100,8 @@ eappApp.component("resultFilter",
         resultSet : '<',
         onSettingsChanged : '&',
         ready : '=',
-        onRefresh : '&'
+        onRefresh : '&',
+        viewConfig : '='
     }
 });
 
@@ -118,7 +119,7 @@ function ResultFilterController($scope)
     {
         ctrl.settings = ctrl.resultSet;
         $scope.settings = ctrl.resultSet;
-        $scope.viewConfig.viewAll = false;
+        $scope.viewConfig = ctrl.viewConfig;
     };
     
     $scope.$watch("settings", function()
