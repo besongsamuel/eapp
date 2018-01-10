@@ -41,7 +41,7 @@ and open the template in the editor.
         
         <div class="row">
             <div class="col-md-2">
-                <result-filter ng-if="productsReady" on-refresh="refresh(viewAll)" ready="productsReady" result-set="filterSettings" on-settings-changed="settingsChanged(item)" ></result-filter>
+                <result-filter ng-if="productsReady" on-refresh="refresh(viewConfig)" ready="productsReady" result-set="filterSettings" on-settings-changed="settingsChanged(item)" ></result-filter>
             </div>
             
             <div class="col-md-10">

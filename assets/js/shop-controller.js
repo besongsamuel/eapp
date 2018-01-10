@@ -170,7 +170,16 @@ angular.module('eappApp').controller('ShopController', ["$scope", "$q", "$http",
 	    
 	if(window.sessionStorage.getItem("viewConfig"))
         {
-            $scope.viewConfig = JSON.parse(window.sessionStorage.getItem("viewConfig").toString());
+            var config = window.sessionStorage.getItem("viewConfig");
+            
+            if(!angular.isNullOrUndefined(config))
+            {
+                $scope.viewConfig = JSON.parse(config.toString());
+            }
+            else
+            {
+                window.sessionStorage.removeItem("viewConfig");
+            }
         }
         
         var q = $q.defer();
