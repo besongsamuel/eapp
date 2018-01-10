@@ -111,12 +111,14 @@ function ResultFilterController($scope)
     $scope.trueVal = true;
     
     $scope.falseVal = false;
+	
+	$scope.viewConfig = {};
     
     ctrl.$onInit = function()
     {
         ctrl.settings = ctrl.resultSet;
         $scope.settings = ctrl.resultSet;
-        $scope.viewAll = false;
+        $scope.viewConfig.viewAll = false;
     };
     
     $scope.$watch("settings", function()
@@ -174,7 +176,7 @@ function ResultFilterController($scope)
     
     ctrl.refresh = function()
     {
-        ctrl.onRefresh({ viewAll : $scope.viewAll });
+        ctrl.onRefresh({ viewConfig : $scope.viewConfig });
     };
     
     $scope.removeFromFilter = function(item)
