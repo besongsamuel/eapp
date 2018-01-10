@@ -1,8 +1,8 @@
 <div style="margin-top: 30px; margin-bottom: 40px;">
 
-    <h4  ng-hide="true" style="margin-bottom : 30px; color :rgb(29, 29, 29);">Configuration</h4>
-    <div style="margin-bottom: 30px; font-size : 13px;" ng-hide="true">
-        <md-radio-group ng-model="viewAll">
+    <h4 style="margin-bottom : 30px; color :rgb(29, 29, 29);">Configuration</h4>
+    <div style="margin-bottom: 30px; font-size : 13px;">
+        <md-radio-group ng-model="viewConfig.viewAll" ng-change="$ctrl.refresh();">
             <md-radio-button ng-value="trueVal" class="md-primary">Voir tout les produits</md-radio-button>
             <md-radio-button ng-value="falseVal" class="md-primary">Voir produits optimisé</md-radio-button>
         </md-radio-group>
