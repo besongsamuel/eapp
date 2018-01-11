@@ -103,9 +103,11 @@ class Shop extends CI_Controller {
            
         $get_latest_products = true;
         
+        $viewAll = true;
+        
         if(isset($viewConfig) && isset($viewConfig->viewAll))
         {
-            $get_latest_products = !$viewConfig->viewAll;
+            $viewAll = $viewConfig->viewAll;
         }
                         
         $products = $this->shop_model->get_store_products_limit(
@@ -115,7 +117,7 @@ class Shop extends CI_Controller {
                 $filter, 
                 $order, 
                 $store_id, 
-                $category_id, $resultsFilter);
+                $category_id, $resultsFilter, $viewAll);
         
         $products["settings"] = $this->get_settings($category_id, $store_id, $resultsFilter);
         

@@ -589,7 +589,7 @@ class CI_Model {
         
     }
     
-    public function get_store_products_limit($limit, $offset, $latest_products = true, $filter = null, $order = null, $store_id = null, $category_id = null, $settingsFilter = null)
+    public function get_store_products_limit($limit, $offset, $latest_products = true, $filter = null, $order = null, $store_id = null, $category_id = null, $settingsFilter = null, $viewAll = true)
     {
         $result = array();
         
@@ -634,7 +634,7 @@ class CI_Model {
         // Get the store product object
         if($latest_products)
         {
-            $result = $this->get_latest_products($filter, $store_id, $category_id, $settingsFilter);
+            $result = $this->get_latest_products($filter, $store_id, $category_id, $settingsFilter, $viewAll);
         }
         else
         {
@@ -644,29 +644,39 @@ class CI_Model {
         return $result;
     }
     
-    private function get_latest_products($filter = null, $store_id = null, $category_id = null, $settingsFilter = null)
+    private function get_latest_products($filter = null, $store_id = null, $category_id = null, $settingsFilter = null, $viewAll = false)
     {
         $result = array();
         $products = array();
         
         // Get products that satisfy conditions
-        $product_ids = $this->get_distinct_latest_products($filter, $store_id, $category_id, $settingsFilter);
+        $product_ids = $this->get_distinct_latest_products($filter, $store_id, $category_id, $settingsFilter, $viewAll);
 		
-        $non_limited_product_ids = $this->get_distinct_latest_products($filter, $store_id, $category_id, $settingsFilter);
+        $non_limited_product_ids = $this->get_distinct_latest_products($filter, $store_id, $category_id, $settingsFilter, $viewAll);
         $result["count"] = sizeof($non_limited_product_ids);
         
         // Get cheapest store product for each product
         // close to the user    
         foreach($product_ids as $product_id)
         {
-            $res = $this->get_best_latest_store_product($product_id->product_id, $filter, $store_id, $category_id, $settingsFilter);
-
-            if($res)
+            if($viewAll)
             {
-                $store_product = $this->getStoreProduct($res->id, false, true);
+                $store_product = $this->getStoreProduct($product_id->id, false, true);
                 $store_product->quantity = 1;
                 $products[$store_product->id] = $store_product;
                 $this->db->reset_query();
+            }
+            else
+            {
+                $res = $this->get_best_latest_store_product($product_id->product_id, $filter, $store_id, $category_id, $settingsFilter);
+                
+                if($res)
+                {
+                    $store_product = $this->getStoreProduct($res->id, false, true);
+                    $store_product->quantity = 1;
+                    $products[$store_product->id] = $store_product;
+                    $this->db->reset_query();
+                }
             }
         }
         
@@ -763,9 +773,16 @@ class CI_Model {
         return $product_ids;
     }
     
-    public function get_distinct_latest_products($filter, $store_id, $category_id, $settingsFilter = null)
+    public function get_distinct_latest_products($filter, $store_id, $category_id, $settingsFilter = null, $viewAll = true)
     {
-        return $this->get_distinct_latest_store_product_property("product_id", $filter, $store_id, $category_id, $settingsFilter);
+        $property_id = "product_id";
+        
+        if($viewAll)
+        {
+            $property_id = STORE_PRODUCT_TABLE.".id";
+        }
+        
+        return $this->get_distinct_latest_store_product_property($property_id, $filter, $store_id, $category_id, $settingsFilter, false, $viewAll);
     }
 	
     private function get_best_latest_store_product($product_id, $filter, $store_id, $category_id, $settingsFilter = null)
