@@ -678,11 +678,39 @@ class CI_Model {
     {
         if($filter != null)
         {
-            $this->db->group_start();
-            $this->db->like(PRODUCT_TABLE.".name", $filter);
-            $this->db->or_like("tags", $filter);
-            $this->db->or_like("store_name", $filter);
-            $this->db->group_end();
+            $filter_array = explode(' ', $filter);
+            
+            $first = false;
+            
+            foreach ($filter_array as $new_filter) 
+            {
+                if(empty($new_filter))
+                    continue;
+                
+                if(!$first)
+                {
+                    $this->db->group_start();
+                    $this->db->like(PRODUCT_TABLE.".name", $new_filter);
+                }
+                else
+                {
+                    $this->db->or_like(PRODUCT_TABLE.".name", $new_filter);
+                }
+                
+                $this->db->or_like("tags", $new_filter);
+                $this->db->or_like("store_name", $new_filter);
+                
+                $first = true;
+            }
+            if($first)
+            {
+                $this->db->group_end();
+            }
+            
+            
+            
+            
+            
         }
     }
     

@@ -19,7 +19,7 @@ angular.module('eappApp').controller('ShopController', ["$scope", "$q", "$http",
      */
     $scope.isStoreSelected = false;
     
-    $scope.viewConfig = { viewAll : false };
+    $scope.viewConfig = { viewAll : true };
    
     $scope.productsReady = false;
     
