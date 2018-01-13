@@ -37,8 +37,7 @@ and open the template in the editor.
         </ul>
     </div>
     
-    <md-content class="container">
-        
+    <md-content class="layout-padding">
         
         <div class="row">
             <div class="col-md-2">

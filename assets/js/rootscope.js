@@ -62,6 +62,12 @@ $(document).ready(function()
             window.sessionStorage.removeItem("category_id");
         };
         
+        rootScope.gotoShop = function()
+        {
+            rootScope.clearSessionItems(); 
+            window.location =  rootScope.site_url.concat("/shop");
+        };
+        
         rootScope.get_store_total = function(store_index)
         {   
             

@@ -12,12 +12,6 @@ angular.module("eappApp").controller("MenuController", ["$rootScope", "$http", "
     // This variable prevents us from getting the cart contents twice.
     $rootScope.cartReady = false;
 	
-    $rootScope.gotoShop = function()
-    {
-        $rootScope.clearSessionItems(); 
-        window.location =  $rootScope.site_url.concat("/shop");
-    };
-    
     $rootScope.remove_product_from_cart = function(product_id)
     {
         var removePromise = eapp.removeFromCart($rootScope.getRowID(product_id));

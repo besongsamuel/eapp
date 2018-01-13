@@ -19,10 +19,5 @@ angular.module("eappApp").controller("HomeController", ["$rootScope", "$scope", 
         $scope.latestProducts = array;
     });
     
-    $scope.gotoShop = function()
-    {
-      window.location.href = $scope.site_url.concat("/shop");  
-    };
-    
 }]);
 
