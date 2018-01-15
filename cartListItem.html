@@ -49,7 +49,7 @@
             <p  ng-show="$ctrl.item.store_product.price > 0">
                 <b>
                     <span class="amount" style="font-size : 15px;">
-                        C ${{$ctrl.item.store_product.price | number: 2}}
+                        {{$ctrl.item.store_product.price | number: 2}} C $
                     </span> 
                     <span class="badge md-otiprix" ng-show="$ctrl.getCartItemRebate($ctrl.item) > 0">
                         Optimisé</span> 
@@ -73,7 +73,7 @@
 
         <div class="row cart-item-container">
             
-            <p style="text-align: right; margin-right: 50px;">Totale : <span style="font-size : 18px;"><b>C ${{$ctrl.item.store_product.price * $ctrl.item.quantity | number : 2}} </b></span></p>
+            <p style="text-align: right; margin-right: 50px;">Totale : <span style="font-size : 18px;"><b>{{$ctrl.item.store_product.price * $ctrl.item.quantity | number : 2}} C $</b></span></p>
         </div>
 
     </div>
