@@ -656,6 +656,8 @@ class CI_Model {
     
     private function order_product_results($products_array, $filter)
     {
+        $perfect_match = array();
+        
         $matches = array();
         
         $close_matches = array();
@@ -677,7 +679,15 @@ class CI_Model {
                 
                 if(strpos($store_name, $new_filter) === 0)
                 {
-                    array_push($matches, $store_product);
+                    if(strlen($store_name) == strlen($new_filter))
+                    {
+                        array_push($perfect_match, $store_product);
+                    }
+                    else
+                    {
+                        array_push($matches, $store_product);
+                    }
+                    
                     continue;
                 }
                 else if(strpos($store_name, $new_filter) > 0)
@@ -694,7 +704,15 @@ class CI_Model {
                 
                 if(strpos($product_name, $new_filter) === 0)
                 {
-                    array_push($matches, $store_product);
+                    if(strlen($product_name) == strlen($new_filter))
+                    {
+                        array_push($perfect_match, $store_product);
+                    }
+                    else
+                    {
+                        array_push($matches, $store_product);
+                    }
+                    
                     continue;
                 }
                 else if(strpos($product_name, $new_filter) > 0)
@@ -717,7 +735,16 @@ class CI_Model {
                     if(strpos($tag_name, $new_filter) === 0)
                     {
                         $value_match = true;
-                        array_push($matches, $store_product);
+                        
+                        if(strlen($tag_name) == strlen($new_filter))
+                        {
+                            array_push($perfect_match, $store_product);
+                        }
+                        else
+                        {
+                            array_push($matches, $store_product);
+                        }
+                        
                         break;
                     }
                     else if(strpos($tag_name, $new_filter) > 0)
@@ -738,7 +765,7 @@ class CI_Model {
             array_push($related, $store_product);
         }
         
-        return array_merge($matches, $close_matches, $related);
+        return array_merge($perfect_match, $matches, $close_matches, $related);
     }
     
     private function apply_order_by($order)

@@ -50,7 +50,7 @@ angular.module("eappApp").controller("ContactUsController", ["$rootScope", "$sco
             marker = new google.maps.Marker({
             position: new google.maps.LatLng(locations[i][1], locations[i][2]),
             map: map ,
-            icon: '../eapp/assets/img/marker.png'
+            icon: $scope.base_url.concat('/assets/img/marker.png')
             });
 
 
