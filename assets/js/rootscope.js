@@ -43,11 +43,28 @@ $(document).ready(function()
 
         rootScope.travel_distance = 0;
         
-        rootScope.cartSettings = { cartView : true, optimizedCart : true, searchMyList : true };
-        
-        rootScope.$watch('cartSettings', function()
+        rootScope.$watch('cartSettings.cartView', function(newVal, oldVal)
         {
-            window.sessionStorage.setItem('cartSettings', JSON.stringify(rootScope.cartSettings));
+            if(!angular.isNullOrUndefined(rootScope.cartSettings))
+            {
+                window.sessionStorage.setItem('cartSettings', JSON.stringify(rootScope.cartSettings));
+            }
+        });
+        
+        rootScope.$watch('cartSettings.searchMyList', function(newVal, oldVal)
+        {
+            if(!angular.isNullOrUndefined(rootScope.cartSettings))
+            {
+                window.sessionStorage.setItem('cartSettings', JSON.stringify(rootScope.cartSettings));
+            }
+        });
+        
+        rootScope.$watch('cartSettings.optimizedCart', function(newVal, oldVal)
+        {
+            if(!angular.isNullOrUndefined(rootScope.cartSettings))
+            {
+                window.sessionStorage.setItem('cartSettings', JSON.stringify(rootScope.cartSettings));
+            }
         });
                
         /**
@@ -93,7 +110,7 @@ $(document).ready(function()
     {
         var total = 0;
 
-        if(rootScope.cartSettings.cartView)
+        if(!angular.isNullOrUndefined(rootScope.cartSettings) && rootScope.cartSettings.cartView)
         {
             for(var key in rootScope.cart)
             {

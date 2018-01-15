@@ -52,14 +52,14 @@
               <p>{{product.format}} <span ng-show="product.unit">{{product.unit.name}}</span></p>
               <p ng-show="product.state">Origine : {{product.state}}</p>
           </td>
-          <td md-cell><b>C ${{product.price}}</b></td>
+          <td md-cell><b>{{product.price}} C $</b></td>
           <td md-cell>
               <md-input-container>
                   <input min="1" style="width: 40px;" aria-label="Qty" type="number" ng-model="product.quantity   ">
               </md-input-container>
           </td>
           <td md-cell>
-              <b>C ${{(product.price * product.quantity) | number : 2}}</b>
+              <b>{{(product.price * product.quantity) | number : 2}} C $</b>
           </td>
           <td md-cell>
               <md-button class="md-otiprix md-raised pull-right" ng-hide="productInCart(product.product.id)"  ng-click="add_product_to_cart(product.product_id, isStoreSelected ? product.id : -1, product.quantity)">
@@ -94,17 +94,14 @@
             </div>
 
             <div class="format">{{product.format}} <span ng-show="product.unit">{{product.unit.name}}</span></div>
-            <p style="font-size: 18px; margin-top: 10px;"><b>C ${{product.price}}</b></p>
+            <p style="font-size: 18px; margin-top: 10px;"><b>{{product.price}} C $</b></p>
             
             <div>
                 <md-input-container class="col-sm-12" style="margin : 5px 0;">
                     <input min="1" style="width: 44px;" aria-label="Qty" type="number" ng-model="product.quantity">
-                    <span class="price pull-right">C ${{(product.price * product.quantity) | number : 2}}</span>
+                    <span class="price pull-right">{{(product.price * product.quantity) | number : 2}} C $</span>
                 </md-input-container>
             </div>
-            
-
-            
             
             <div class="row">
                 

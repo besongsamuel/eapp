@@ -597,39 +597,7 @@ class CI_Model {
         $this->db->limit($limit, $offset);
         
         // Perform sorting here if required
-        if($order)
-        {
-            if(strpos($order, "-") !== false) // sort in descending order
-            {
-                $order = str_replace("-", "", $order);
-                
-                if($order == 'date_modified')
-                {
-                    $order = STORE_PRODUCT_TABLE.".".$order;
-                }
-                
-                if($order == 'name')
-                {
-                    $order = PRODUCT_TABLE.".".$order;
-                }
-                
-                $this->db->order_by($order, "DESC");
-            }
-            else
-            {
-                if($order == 'date_modified')
-                {
-                    $order = STORE_PRODUCT_TABLE.".".$order;
-                }
-                
-                if($order == 'name')
-                {
-                    $order = PRODUCT_TABLE.".".$order;
-                }
-                
-                $this->db->order_by($order, "ASC");
-            }
-        }
+        $this->apply_order_by($order);
 		
         // Get the store product object
         if($latest_products)
@@ -680,8 +648,134 @@ class CI_Model {
             }
         }
         
+        $products = $this->order_product_results($products, $filter);
+        
         $result["products"] = $products;
         return $result;
+    }
+    
+    private function order_product_results($products_array, $filter)
+    {
+        $matches = array();
+        
+        $close_matches = array();
+        
+        $related = array();
+        
+        if(empty($filter))
+        {
+            return $products_array;
+        }
+        
+        $new_filter = trim(mb_strtolower($filter, 'UTF-8'));
+        
+        foreach ($products_array as $store_product) 
+        {
+            if(!empty($store_product->store_name))
+            {
+                $store_name = trim(mb_strtolower($store_product->store_name, 'UTF-8'));
+                
+                if(strpos($store_name, $new_filter) === 0)
+                {
+                    array_push($matches, $store_product);
+                    continue;
+                }
+                else if(strpos($store_name, $new_filter) > 0)
+                {
+                    array_push($close_matches, $store_product);
+                    continue;
+                }
+                
+            }
+            
+            if(!empty($store_product->product->name))
+            {
+                $product_name = trim(mb_strtolower($store_product->product->name, 'UTF-8'));
+                
+                if(strpos($product_name, $new_filter) === 0)
+                {
+                    array_push($matches, $store_product);
+                    continue;
+                }
+                else if(strpos($product_name, $new_filter) > 0)
+                {
+                    array_push($close_matches, $store_product);
+                    continue;
+                }
+            }
+            
+            $value_match = false;
+
+            $other_names = explode(",", $store_product->product->tags);
+
+            foreach ($other_names as $other_name) 
+            {
+                if(!empty($other_name))
+                {
+                    $tag_name = trim(mb_strtolower($other_name, 'UTF-8'));
+                    
+                    if(strpos($tag_name, $new_filter) === 0)
+                    {
+                        $value_match = true;
+                        array_push($matches, $store_product);
+                        break;
+                    }
+                    else if(strpos($tag_name, $new_filter) > 0)
+                    {
+                        $value_match = true;
+                        array_push($close_matches, $store_product);
+                        break;
+                    }
+                    
+                }
+            }
+
+            if($value_match)
+            {
+                continue;
+            }
+            
+            array_push($related, $store_product);
+        }
+        
+        return array_merge($matches, $close_matches, $related);
+    }
+    
+    private function apply_order_by($order)
+    {
+        if($order)
+        {
+            if(strpos($order, "-") !== false) // sort in descending order
+            {
+                $order = str_replace("-", "", $order);
+                
+                if($order == 'date_modified')
+                {
+                    $order = STORE_PRODUCT_TABLE.".".$order;
+                }
+                
+                if($order == 'name')
+                {
+                    $order = PRODUCT_TABLE.".".$order;
+                }
+                
+                $this->db->order_by($order, "DESC");
+            }
+            else
+            {
+                if($order == 'date_modified')
+                {
+                    $order = STORE_PRODUCT_TABLE.".".$order;
+                }
+                
+                if($order == 'name')
+                {
+                    $order = PRODUCT_TABLE.".".$order;
+                }
+                
+                $this->db->order_by($order, "ASC");
+            }
+        }
     }
 	
     private function add_name_filter($filter) 
@@ -716,11 +810,6 @@ class CI_Model {
             {
                 $this->db->group_end();
             }
-            
-            
-            
-            
-            
         }
     }
     

@@ -14,7 +14,7 @@ and open the template in the editor.
         <div class="row">
             <div class="col-md-12">
                 <div class="product-bit-title text-center">
-                    <h2>Produits</h2>
+                    <h2>Produits en circulaire</h2>
                 </div>
             </div>
         </div>

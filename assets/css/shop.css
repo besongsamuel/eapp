@@ -109,8 +109,8 @@ body{font-family: "Roboto Condensed",sans-serif;}
 
     .product-image
     {
-        width: 100px !important;
-        height: 100px !important;
+        width: 140px !important;
+        height: 170px !important;
         margin : auto;
         display: block;
     }

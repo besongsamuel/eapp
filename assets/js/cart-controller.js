@@ -348,13 +348,7 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
      * @returns {undefined}
      */
     $scope.Init = function()
-    {
-        $rootScope.cartSettings.cartView = true;
-        
-        $rootScope.cartSettings.searchMyList = false;
-        
-        $rootScope.cartSettings.optimizedCart = false;
-        
+    {        
         if(window.sessionStorage.getItem('cartSettings'))
         {
             $rootScope.cartSettings = JSON.parse(window.sessionStorage.getItem('cartSettings').toString());
@@ -363,6 +357,10 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
             {
                 $rootScope.cartSettings.searchMyList = false;
             }
+        }
+        else
+        {
+            $rootScope.cartSettings = { cartView : true, optimizedCart : false, searchMyList : false };
         }
         
         $scope.update_cart_list();
@@ -373,7 +371,7 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
         }
         
     };
-    
+        
     $scope.getFormat = function(storeProduct)
     {
         var formatVal = 1;
