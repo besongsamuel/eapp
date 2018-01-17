@@ -234,6 +234,23 @@ $(document).ready(function()
                 rootScope.cart.splice(index, 1);
             }
         };
+        
+        rootScope.getCartDistance = function()
+        {
+            if(rootScope.isUserLogged)
+            {
+                return parseInt(rootScope.loggedUser.profile.cart_distance);
+            }
+            else if(window.localStorage.getItem('cart_distance'))
+            {
+                return parseInt(window.localStorage.getItem('cart_distance'));
+            }
+            else
+            {
+                // return a default distance
+                return 4;
+            }
+        };
 		
         rootScope.productInCart = function(product_id)
         {

@@ -84,6 +84,9 @@ angular.module('eappApp').controller('ShopController', ["$scope", "$q", "$http",
         {
             $scope.gridView = false;
         }
+        
+        $scope.distance = $rootScope.getCartDistance();
+        
     };
 
     $rootScope.add_product_to_cart = function(product_id, store_product_id = -1, product_quantity = 1)
@@ -393,6 +396,32 @@ angular.module('eappApp').controller('ShopController', ["$scope", "$q", "$http",
             $scope.resultFilter[setting.name] = filter;
         }
         
+    };
+    
+    $scope.changeDistance = function(newDistance)
+    {
+        if($scope.isUserLogged)
+        {
+            var changePromise = eapp.changeDistance('cart_distance', newDistance);
+
+            changePromise.then(function(response)
+            {
+                if(response.data)
+                {
+                    // Update Logged User
+                    $scope.loggedUser = response.data;
+                    $scope.getProducts();
+                }
+            });
+        }
+        else
+        {
+            // Change in the session
+            window.localStorage.setItem('cart_distance', newDistance);
+            $scope.getProducts();
+        }
+
+        $mdDialog.cancel();
     };
     
     $scope.$watch("query.page", function(newValue, oldValue)

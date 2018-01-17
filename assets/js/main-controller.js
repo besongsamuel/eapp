@@ -98,10 +98,12 @@ eappApp.component("resultFilter",
     bindings : 
     {
         resultSet : '<',
+        distance : '<',
         onSettingsChanged : '&',
         ready : '=',
         onRefresh : '&',
-        viewConfig : '='
+        viewConfig : '=',
+        onDistanceChanged : '&'
     }
 });
 
@@ -113,12 +115,13 @@ function ResultFilterController($scope)
     
     $scope.falseVal = false;
 	
-	$scope.viewConfig = {};
+    $scope.viewConfig = {};
     
     ctrl.$onInit = function()
     {
         ctrl.settings = ctrl.resultSet;
         $scope.settings = ctrl.resultSet;
+        $scope.distance = ctrl.distance;
         $scope.viewConfig = ctrl.viewConfig;
     };
     
@@ -165,9 +168,22 @@ function ResultFilterController($scope)
         }
     };
     
-    ctrl.$onChanges = function(newSetting)
+    ctrl.$onChanges = function(changesObj)
     {
-        $scope.settings = newSetting.resultSet.currentValue;
+        if(!angular.isNullOrUndefined(changesObj.resultSet))
+        {
+            $scope.settings = changesObj.resultSet.currentValue;
+        }
+        
+        if(!angular.isNullOrUndefined(changesObj.distance))
+        {
+            $scope.distance = changesObj.distance.currentValue;
+        }
+    };
+    
+    ctrl.distanceChanged = function()
+    {
+        ctrl.onDistanceChanged({distance : $scope.distance});
     };
     
     ctrl.change = function(item)
@@ -396,6 +412,10 @@ eappApp.factory('eapp', ['$http','$rootScope', '$mdDialog', function($http, $roo
         formData.append("limit", query.limit);
         formData.append("filter", query.filter);
         formData.append("order", query.order);
+        // User's longitude
+        formData.append("longitude", $rootScope.longitude);
+        // user's latitude
+        formData.append("latitude", $rootScope.latitude);
         formData.append("viewConfig", JSON.stringify(viewConfig));
         
         if(!angular.isNullOrUndefined(resultsFilter))
@@ -409,6 +429,7 @@ eappApp.factory('eapp', ['$http','$rootScope', '$mdDialog', function($http, $roo
         {
             formData.append("category_id", id);
         }
+        formData.append("distance", $rootScope.getCartDistance());
         
         return $http.post(eappService.getSiteUrl().concat("/shop/get_store_products"), formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}});
 
@@ -422,6 +443,10 @@ eappApp.factory('eapp', ['$http','$rootScope', '$mdDialog', function($http, $roo
         formData.append("filter", query.filter);
         formData.append("order", query.order);
         formData.append("viewConfig", JSON.stringify(viewConfig));
+        // User's longitude
+        formData.append("longitude", $rootScope.longitude);
+        // user's latitude
+        formData.append("latitude", $rootScope.latitude);
         if(!angular.isNullOrUndefined(resultsFilter))
         {
             resultsFilter.stores = null;
@@ -432,6 +457,7 @@ eappApp.factory('eapp', ['$http','$rootScope', '$mdDialog', function($http, $roo
         {
             formData.append("store_id", id);
         }
+        formData.append("distance", $rootScope.getCartDistance());
         
         return $http.post(eappService.getSiteUrl().concat("/shop/get_store_products"), formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}});
 
@@ -446,6 +472,11 @@ eappApp.factory('eapp', ['$http','$rootScope', '$mdDialog', function($http, $roo
         formData.append("order", query.order);
         formData.append("viewConfig", JSON.stringify(viewConfig));
         formData.append("resultsFilter", JSON.stringify(resultsFilter));
+        // User's longitude
+        formData.append("longitude", $rootScope.longitude);
+        // user's latitude
+        formData.append("latitude", $rootScope.latitude);
+        formData.append("distance", $rootScope.getCartDistance());
         
         return $http.post(eappService.getSiteUrl().concat("/shop/get_store_products"), formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}});
 

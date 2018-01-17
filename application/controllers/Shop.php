@@ -96,6 +96,9 @@ class Shop extends CI_Controller {
 	    
 	$store_id = $this->input->post('store_id');
 	$category_id = $this->input->post('category_id');
+        $distance = (int)$this->input->post('distance');
+        
+        
         
         $resultsFilter = json_decode($this->input->post('resultsFilter'), true);
         
@@ -109,6 +112,8 @@ class Shop extends CI_Controller {
         {
             $viewAll = $viewConfig->viewAll;
         }
+        
+        $my_location = $this->get_my_location();
                         
         $products = $this->shop_model->get_store_products_limit(
                 $limit, 
@@ -117,14 +122,40 @@ class Shop extends CI_Controller {
                 $filter, 
                 $order, 
                 $store_id, 
-                $category_id, $resultsFilter, $viewAll);
+                $category_id, 
+                $resultsFilter, 
+                $viewAll,
+                $my_location,
+                $distance);
         
-        $products["settings"] = $this->get_settings($category_id, $store_id, $resultsFilter);
+        $products["settings"] = $this->get_settings($category_id, $store_id, $resultsFilter, $my_location, $distance);
         
         echo json_encode($products);
     }
     
-    private function get_settings($category_id, $store_id, $resultsFilter) 
+    private function get_my_location() 
+    {
+        $coords = array("longitude" => $this->input->post("longitude"), "latitude" => $this->input->post("latitude"));
+        
+        $longitude = null;
+        $latitude = null;
+
+        if($this->user != null)
+        {
+            $longitude = $this->user->profile->longitude;
+            $latitude = $this->user->profile->latitude;
+        }
+
+        if($this->user == null && $coords != null && $coords["latitude"] != 0 && $coords["longitude"] != 0)
+        {
+            $longitude = $coords["longitude"];
+            $latitude = $coords["latitude"];
+        }
+        
+        return array("longitude" => $longitude, "latitude" => $latitude);
+    }
+    
+    private function get_settings($category_id, $store_id, $resultsFilter, $my_location, $distance) 
     {
         
         // Get the settings object
@@ -134,7 +165,8 @@ class Shop extends CI_Controller {
         
         foreach ($settings as $setting) 
         {
-            $settings_ids = $this->get_settings_item($setting->column_name, $category_id, $store_id);
+          
+            $settings_ids = $this->get_settings_item($setting->column_table.'.'.$setting->column_name, $category_id, $store_id, $my_location, $distance);
             
             // create an array with the ids
             $index_array = array();
@@ -162,7 +194,8 @@ class Shop extends CI_Controller {
             // Get the objects
             $result = $this->shop_model->get_all_where_in($settings_object->table_name, "id", $index_array, true);
 
-            foreach ($result as $key => $value) 
+            foreach ($result as
+                    $key => $value) 
             {
                 $result[$key]["selected"] = false;
 
@@ -247,9 +280,9 @@ class Shop extends CI_Controller {
         return $result;
     }
     
-    private function get_settings_item($property, $category_id, $store_id) 
+    private function get_settings_item($property, $category_id, $store_id, $my_location = null, $distance = 100) 
     {
-        return $this->shop_model->get_distinct_latest_store_product_property($property, null, $store_id, $category_id, null, true);
+        return $this->shop_model->get_distinct_latest_store_product_property($property, null, $store_id, $category_id, null, true, $my_location, $distance);
     }
     
     

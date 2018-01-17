@@ -353,6 +353,11 @@ class CI_Model {
     public function get_all_where_in($table_name, $column_name, $values, $assoc = false) 
     {
         
+        if(empty($values))
+        {
+            return array();
+        }
+        
         $this->db->where_in($column_name, $values);
         
         $query =  $this->db->get($table_name);
@@ -589,7 +594,18 @@ class CI_Model {
         
     }
     
-    public function get_store_products_limit($limit, $offset, $latest_products = true, $filter = null, $order = null, $store_id = null, $category_id = null, $settingsFilter = null, $viewAll = true)
+    public function get_store_products_limit(
+            $limit, 
+            $offset, 
+            $latest_products = true, 
+            $filter = null, 
+            $order = null, 
+            $store_id = null, 
+            $category_id = null, 
+            $settingsFilter = null, 
+            $viewAll = true, 
+            $my_location = null, 
+            $distance = 100)
     {
         $result = array();
         
@@ -602,7 +618,7 @@ class CI_Model {
         // Get the store product object
         if($latest_products)
         {
-            $result = $this->get_latest_products($filter, $store_id, $category_id, $settingsFilter, $viewAll);
+            $result = $this->get_latest_products($filter, $store_id, $category_id, $settingsFilter, $viewAll, $my_location, $distance);
         }
         else
         {
@@ -612,15 +628,22 @@ class CI_Model {
         return $result;
     }
     
-    private function get_latest_products($filter = null, $store_id = null, $category_id = null, $settingsFilter = null, $viewAll = false)
+    private function get_latest_products(
+            $filter = null, 
+            $store_id = null, 
+            $category_id = null, 
+            $settingsFilter = null, 
+            $viewAll = false, 
+            $my_location = null, 
+            $distance = 100)
     {
         $result = array();
         $products = array();
         
         // Get products that satisfy conditions
-        $product_ids = $this->get_distinct_latest_products($filter, $store_id, $category_id, $settingsFilter, $viewAll);
+        $product_ids = $this->get_distinct_latest_products($filter, $store_id, $category_id, $settingsFilter, $viewAll, $my_location, $distance);
 		
-        $non_limited_product_ids = $this->get_distinct_latest_products($filter, $store_id, $category_id, $settingsFilter, $viewAll);
+        $non_limited_product_ids = $this->get_distinct_latest_products($filter, $store_id, $category_id, $settingsFilter, $viewAll, $my_location, $distance);
         $result["count"] = sizeof($non_limited_product_ids);
         
         // Get cheapest store product for each product
@@ -639,7 +662,7 @@ class CI_Model {
                 $res = $this->get_best_latest_store_product($product_id->product_id, $filter, $store_id, $category_id, $settingsFilter);
                 
                 if($res)
-                {
+                {                    
                     $store_product = $this->getStoreProduct($res->id, false, true);
                     $store_product->quantity = 1;
                     $products[$store_product->id] = $store_product;
@@ -864,17 +887,21 @@ class CI_Model {
             foreach ($this->filter_settings as $setting) 
             {
                 if(isset($settingsFilter[$setting->name]) && !empty($settingsFilter[$setting->name]))
-                {
-                    $this->db->where_in($setting->column_name, explode(",", $settingsFilter[$setting->name]));
+                {                    
+                    $this->db->where_in($setting->column_table.'.'.$setting->column_name, explode(",", $settingsFilter[$setting->name]));
                 }
             }
         }
     }
     
-    public function get_distinct_latest_store_product_property($property_name, $filter, $store_id, $category_id, $settingsFilter = null, $assoc = false) 
+    public function get_distinct_latest_store_product_property($property_name, $filter, $store_id, $category_id, $settingsFilter = null, $assoc = false, $my_location = null, $distance = 100) 
     {
         $this->db->join(PRODUCT_TABLE, $this->store_product_product_join);
         $this->db->join(SUB_CATEGORY_TABLE, $this->store_product_subcategory_join, "left outer");
+        $this->db->join(CHAIN_TABLE, CHAIN_TABLE.'.id = '.STORE_PRODUCT_TABLE.'.retailer_id');
+        $this->db->join(CHAIN_STORE_TABLE, CHAIN_TABLE.'.id = '.CHAIN_STORE_TABLE.'.chain_id');
+        
+        $this->add_distance_condition($my_location, $distance);
         
         $this->add_name_filter($filter);
         
@@ -889,7 +916,16 @@ class CI_Model {
         return $product_ids;
     }
     
-    public function get_distinct_latest_products($filter, $store_id, $category_id, $settingsFilter = null, $viewAll = true)
+    private function add_distance_condition($my_location, $distance) 
+    {
+        if($my_location != null && $my_location["latitude"] != null && $my_location["longitude"] != null)
+        {
+            $range = "SQRT(POW(69.1 * (latitude - ".$my_location["latitude"]."), 2) + POW(69.1 * (".$my_location["longitude"]." - longitude) * COS(latitude / 57.3), 2))";
+            $this->db->where($range." <=".$distance);
+        }
+    }
+    
+    public function get_distinct_latest_products($filter, $store_id, $category_id, $settingsFilter = null, $viewAll = true, $my_location = null, $distance = 100)
     {
         $property_id = "product_id";
         
@@ -898,7 +934,7 @@ class CI_Model {
             $property_id = STORE_PRODUCT_TABLE.".id";
         }
         
-        return $this->get_distinct_latest_store_product_property($property_id, $filter, $store_id, $category_id, $settingsFilter, false, $viewAll);
+        return $this->get_distinct_latest_store_product_property($property_id, $filter, $store_id, $category_id, $settingsFilter, false, $my_location, $distance);
     }
 	
     private function get_best_latest_store_product($product_id, $filter, $store_id, $category_id, $settingsFilter = null)

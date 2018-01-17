@@ -1,6 +1,30 @@
 <div style="margin-top: 30px; margin-bottom: 40px;">
 
+
+    
+
     <h4 style="margin-bottom : 30px; color :rgb(29, 29, 29);">Configuration</h4>
+
+    <div flex="100" layout layout-align="center center">
+        <span class="md-body-1">Résultats dans un rayon de {{distance}} km</span>
+    </div>
+    <md-slider-container layout>
+        
+        <md-slider flex md-discrete class="md-warn md-hue-1" ng-model="distance" step="1" min="1" max="100" aria-label="Distance">
+        </md-slider>
+        <md-input-container>
+            <input flex type="number" ng-model="distance" aria-label="Distance">
+        </md-input-container>
+    </md-slider-container>
+
+    <div class="row" style="margin-bottom : 20px;">
+        <div class="col-sm-12">
+            <md-button ng-click="$ctrl.distanceChanged()" class="md-warn md-hue-1 md-raised" style="min-width : auto; min-height : auto; margin : 0px; width : 100%;">Valider</md-button>
+        </div>
+    </div>
+    
+
+
     <div style="margin-bottom: 30px; font-size : 13px;">
         <md-radio-group ng-model="viewConfig.viewAll" ng-change="$ctrl.refresh();">
             <md-radio-button ng-value="trueVal" class="md-primary">Voir tout les produits</md-radio-button>
