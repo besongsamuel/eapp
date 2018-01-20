@@ -27,105 +27,114 @@
     </md-toolbar>
     
     <table md-table ng-model="selected" md-progress="promise" ng-if="!gridView">
-      <thead md-head md-order="query.order" md-on-reorder="getProducts">
-        <tr md-row>
-          <th ng-show="showStoreLogo" md-column><span>Magasin</span></th>
-          <th md-column></th>
-          <th md-column md-order-by="name">
-              <span>Description</span>
-          </th>
+        <thead md-head md-order="query.order" md-on-reorder="getProducts">
+            <tr md-row>
+                <th md-column></th>
+                <th md-column md-order-by="name">
+                    <span>Description</span>
+                </th>
 
-          <th md-column md-numeric>Price (CAD)</th>
-          <th md-column md-numeric>Quantity</th>
-          <th md-column md-numeric>Total Price (CAD)</th>
-          <th md-column>Actions</th>
-        </tr>
-      </thead>
-      <tbody md-body>
-        <tr md-row md-select="product" md-select-id="product.id" ng-repeat="product in products">
-          <td  ng-show="isStoreSelected" md-cell><div class="admin-image"><a href=""><img alt="" ng-src="{{product.retailer.image}}"></a></div></td>
-          <td md-cell><div class="image-container"><a href ng-click="viewProduct(product.id, $event)"><img alt=""  ng-src="{{product.product.image}}"></a></div></td>
-          <td md-cell>
-              <p><b><a  href ng-click="viewProduct(product.id, $event)">{{product.product.name | uppercase}}</a></b></p>
-              <p ng-show="product.size">{{product.size}}</p>
-              <p ng-show="product.brand">{{product.brand.name | uppercase}}</p>
-              <p>{{product.format}} <span ng-show="product.unit">{{product.unit.name}}</span></p>
-              <p ng-show="product.state">Origine : {{product.state}}</p>
-          </td>
-          <td md-cell><b>{{product.price}} C $</b></td>
-          <td md-cell>
-              <md-input-container>
-                  <input min="1" style="width: 40px;" aria-label="Qty" type="number" ng-model="product.quantity   ">
-              </md-input-container>
-          </td>
-          <td md-cell>
-              <b>{{(product.price * product.quantity) | number : 2}} C $</b>
-          </td>
-          <td md-cell>
-              <md-button class="md-otiprix md-raised pull-right" ng-hide="productInCart(product.product.id)"  ng-click="add_product_to_cart(product.product_id, isStoreSelected ? product.id : -1, product.quantity)">
-                          <md-icon><i class="material-icons">add_shopping_cart</i></md-icon>
-                          Ajouter
-                      </md-button>
+                <th md-column md-numeric>Price (CAD)</th>
+                <th md-column md-numeric>Quantity</th>
+                <th md-column md-numeric>Total Price (CAD)</th>
+                <th md-column>Actions</th>
+            </tr>
+        </thead>
+        <tbody md-body>
+          <tr md-row md-select="product" md-select-id="product.id" ng-repeat="product in products">
+            <td md-cell>
+                <div style="width: 160px;">
+                    <img class="retailer-img" alt="" ng-src="{{product.retailer.image}}">
+                    
+                    <div class="image-container">
+                        <a href ng-click="viewProduct(product.id, $event)">
+                            <img alt=""  ng-src="{{product.product.image}}">
+                        </a>
+                    </div>
+                </div>
+            </td>
+            <td md-cell>
+                <p><b><a  href ng-click="viewProduct(product.id, $event)">{{product.product.name | uppercase}}</a></b></p>
+                <p ng-show="product.size">{{product.size}}</p>
+                <p ng-show="product.brand">{{product.brand.name | uppercase}}</p>
+                <p>{{product.format}} <span ng-show="product.unit">{{product.unit.name}}</span></p>
+                <p ng-show="product.state">Origine : {{product.state}}</p>
+            </td>
+            <td md-cell><b>{{product.price}} C $</b></td>
+            <td md-cell>
+                <md-input-container>
+                    <input min="1" style="width: 40px;" aria-label="Qty" type="number" ng-model="product.quantity   ">
+                </md-input-container>
+            </td>
+            <td md-cell>
+                <b>{{(product.price * product.quantity) | number : 2}} C $</b>
+            </td>
+            <td md-cell>
+                <md-button class="md-otiprix md-raised pull-right" ng-hide="productInCart(product.product.id)"  ng-click="add_product_to_cart(product.product_id, isStoreSelected ? product.id : -1, product.quantity)">
+                            <md-icon><i class="material-icons">add_shopping_cart</i></md-icon>
+                            Ajouter
+                        </md-button>
 
-                      <md-button class="md-warn md-raised pull-right" ng-show="productInCart(product.product.id)" ng-click="remove_product_from_cart(product.product_id)">
-                          <md-icon><i class="material-icons">remove_shopping_cart</i></md-icon>
-                          Retirer
-                      </md-button>
-          </td>
-        </tr>
-      </tbody>
+                        <md-button class="md-warn md-raised pull-right" ng-show="productInCart(product.product.id)" ng-click="remove_product_from_cart(product.product_id)">
+                            <md-icon><i class="material-icons">remove_shopping_cart</i></md-icon>
+                            Retirer
+                        </md-button>
+            </td>
+          </tr>
+        </tbody>
     </table>
     
     <div class="row md-padding" ng-if="gridView">
-    <md-progress-linear md-mode="indeterminate" ng-disabled="!isLoading"></md-progress-linear>
-    <div class="col-md-3 col-sm-6 md-padding" ng-repeat="product in products">
+        <md-progress-linear md-mode="indeterminate" ng-disabled="!isLoading"></md-progress-linear>
+        <div class="col-md-3 col-sm-6 md-padding" ng-repeat="product in products">
 
-        <div class="thumbnail">
-            
-            <div class="row image-block">
-                
-                <img class="retailer-img" ng-src="{{product.retailer.image}}" alt="..." />
-                <div class="image-container">
-                    <a href ng-click="viewProduct(product.id, $event)"><img style="width : 120px; height : 120px; " ng-src="{{product.product.image}}" alt="..." /></a>
+            <div class="thumbnail">
+
+                <div class="row image-block">
+
+                    <img class="retailer-img" ng-src="{{product.retailer.image}}" alt="..." />
+
+                    <div class="image-container">
+                        <a href ng-click="viewProduct(product.id, $event)"><img style="width : 120px; height : 120px; " ng-src="{{product.product.image}}" alt="..." /></a>
+                    </div>
+
                 </div>
-                
-            </div>
-            
-            <div style="width: 100%; height: 60px; text-align: left;">
-                <h4 class="product-title"><a  href ng-click="viewProduct(product.id, $event)">{{product.product.name | uppercase}}</a></h4>  
-            </div>
 
-            <div class="format">{{product.format}} <span ng-show="product.unit">{{product.unit.name}}</span></div>
-            <p style="font-size: 18px; margin-top: 10px;"><b>{{product.price}} C $</b></p>
-            
-            <div>
-                <md-input-container class="col-sm-12" style="margin : 5px 0;">
-                    <input min="1" style="width: 44px;" aria-label="Qty" type="number" ng-model="product.quantity">
-                    <span class="price pull-right">{{(product.price * product.quantity) | number : 2}} C $</span>
-                </md-input-container>
-            </div>
-            
-            <div class="row">
-                
-                
-                <div class="col-sm-12">
-                    
-                    <md-divider></md-divider>
-                    
-                    <md-button class="md-otiprix md-raised pull-right" ng-hide="productInCart(product.product.id)"  ng-click="add_product_to_cart(product.product_id, isStoreSelected ? product.id : -1, product.quantity)">
-                        <md-icon><i class="material-icons">add_shopping_cart</i></md-icon>
-                        Ajouter
-                    </md-button>
+                <div style="width: 100%; height: 60px; text-align: left;">
+                    <h4 class="product-title"><a  href ng-click="viewProduct(product.id, $event)">{{product.product.name | uppercase}}</a></h4>  
+                </div>
 
-                    <md-button class="md-warn md-raised pull-right" ng-show="productInCart(product.product.id)" ng-click="remove_product_from_cart(product.product_id)">
-                        <md-icon><i class="material-icons">remove_shopping_cart</i></md-icon>
-                        Retirer
-                    </md-button>
+                <div class="format">{{product.format}} <span ng-show="product.unit">{{product.unit.name}}</span></div>
+                <p style="font-size: 18px; margin-top: 10px;"><b>{{product.price}} C $</b></p>
+
+                <div>
+                    <md-input-container class="col-sm-12" style="margin : 5px 0;">
+                        <input min="1" style="width: 44px;" aria-label="Qty" type="number" ng-model="product.quantity">
+                        <span class="price pull-right">{{(product.price * product.quantity) | number : 2}} C $</span>
+                    </md-input-container>
+                </div>
+
+                <div class="row">
+
+
+                    <div class="col-sm-12">
+
+                        <md-divider></md-divider>
+
+                        <md-button class="md-otiprix md-raised pull-right" ng-hide="productInCart(product.product.id)"  ng-click="add_product_to_cart(product.product_id, isStoreSelected ? product.id : -1, product.quantity)">
+                            <md-icon><i class="material-icons">add_shopping_cart</i></md-icon>
+                            Ajouter
+                        </md-button>
+
+                        <md-button class="md-warn md-raised pull-right" ng-show="productInCart(product.product.id)" ng-click="remove_product_from_cart(product.product_id)">
+                            <md-icon><i class="material-icons">remove_shopping_cart</i></md-icon>
+                            Retirer
+                        </md-button>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
     
     
 </md-table-container>
