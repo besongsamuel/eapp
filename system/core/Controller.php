@@ -353,6 +353,97 @@ class CI_Controller {
         
         return $headers;
     }
+    
+    protected function get_my_location() 
+    {
+        $coords = array("longitude" => $this->input->post("longitude"), "latitude" => $this->input->post("latitude"));
+        
+        $longitude = null;
+        $latitude = null;
+
+        if($this->user != null)
+        {
+            $longitude = $this->user->profile->longitude;
+            $latitude = $this->user->profile->latitude;
+        }
+
+        if($this->user == null && $coords != null && $coords["latitude"] != 0 && $coords["longitude"] != 0)
+        {
+            $longitude = $coords["longitude"];
+            $latitude = $coords["latitude"];
+        }
+        
+        return array("longitude" => $longitude, "latitude" => $latitude);
+    }
+    
+    protected function create_settings_object($settings_object, $index_array, $currentSettings) 
+    {
+        if(isset($settings_object->table_name) && !empty($settings_object->table_name))
+        {
+            // Get the objects
+            $result = $this->shop_model->get_all_where_in($settings_object->table_name, "id", $index_array, true);
+
+            foreach ($result as
+                    $key => $value) 
+            {
+                $result[$key]["selected"] = false;
+
+                if(isset($currentSettings) && isset($currentSettings[$settings_object->name]))
+                {
+                    foreach (explode(",", $currentSettings[$settings_object->name]) as $settingValue) 
+                    {
+                        if($value["id"] == $settingValue)
+                        {
+                            $result[$key]["selected"] = true;
+                            break;
+                        }
+                    }
+                }
+
+                $result[$key]["type"] = $settings_object->name;
+            }
+        }
+        else
+        {
+
+            $result = array();
+            
+            foreach ($index_array as $value) 
+            {
+                $settings_value = array();
+
+                $settings_value["selected"] = false;
+
+                if(isset($currentSettings) && !empty($currentSettings[$settings_object->name]))
+                {
+                    foreach (explode(",", $currentSettings[$settings_object->name]) as $settingValue)  
+                    {
+                        if($settingValue == $value)
+                        {
+                            $settings_value["selected"] = true;
+                            break;
+                        }
+                    }
+                }
+
+                if($value == "")
+                {
+                    $settings_value["name"] = "Autre";
+                }
+                else
+                {
+                    $settings_value["name"] = $value;
+                }
+
+                $settings_value["type"] = $settings_object->name;
+                $settings_value["id"] = $value;
+
+                array_push($result, $settings_value);
+            }
+        }
+        
+        return $result;
+    }
        
 
 }

@@ -348,7 +348,9 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
      * @returns {undefined}
      */
     $scope.Init = function()
-    {        
+    {       
+        $scope.default_distance = $scope.getDistance();
+        
         if(window.sessionStorage.getItem('cartSettings'))
         {
             $rootScope.cartSettings = JSON.parse(window.sessionStorage.getItem('cartSettings').toString());
@@ -362,6 +364,8 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
         {
             $rootScope.cartSettings = { cartView : true, optimizedCart : false, searchMyList : false };
         }
+        
+        window.sessionStorage.removeItem("cartFilterSettings");
         
         $scope.update_cart_list();
         
@@ -435,35 +439,36 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
     $scope.update_cart_list = function()
     {
         // Clear items
-        $scope.optimized_cart = [];
-        // Create array with selected store_product id's
-        var store_products = [];
-        // Get optimized list here
-        for(var index in $rootScope.cart)
+        $scope.optimized_cart = [];        
+        
+        $scope.ready = false;
+        
+        if(window.sessionStorage.getItem("cartFilterSettings"))
         {
-            var cartItem = $rootScope.cart[index];
-            var data = 
+            var settings = window.sessionStorage.getItem("cartFilterSettings");
+            
+            if(!angular.isNullOrUndefined(settings))
             {
-                id : cartItem.product.id,
-                rowid : cartItem.rowid,
-                quantity : cartItem.quantity,
-                store_product_id : cartItem.store_product_id
-            };
-            store_products.push(data);
+                $scope.cartFilterSettings = JSON.parse(settings.toString());
+                
+                $scope.createResultsFilter();
+            
+                $scope.ready = true;
+            }
+            else
+            {
+                window.sessionStorage.removeItem("cartFilterSettings");                
+            }
         }
-	
-        // Clear the cart. 
-        // It shall be repopulated with optimized products
-        $rootScope.cart = [];
         	
         var formData = new FormData();
-        formData.append("products", JSON.stringify(store_products));
         formData.append("distance", $scope.getDistance());
         // User's longitude
         formData.append("longitude", $scope.longitude);
         // user's latitude
         formData.append("latitude", $scope.latitude);
         formData.append("searchAll", !$rootScope.cartSettings.searchMyList);
+        formData.append("resultsFilter", JSON.stringify($scope.resultFilter));
         formData.append("viewOptimizedList", $rootScope.cartSettings.optimizedCart);
         
         // Send request to server to get optimized list 	
@@ -472,10 +477,16 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
             formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}}).then(
             function(response)
             {
+                $scope.cartFilterSettings = response.data.cartFilterSettings;
+                
+                window.sessionStorage.setItem("cartFilterSettings", JSON.stringify($scope.cartFilterSettings));
+                
+                $rootScope.cart = [];
+                
                 // Create ordered array list
-                for(var x in response.data)
+                for(var x in response.data.items)
                 {
-                    var cartItem = response.data[x];
+                    var cartItem = response.data.items[x];
 
                     if(angular.isNullOrUndefined(cartItem.store_product.related_products))
                     {
@@ -517,9 +528,61 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
                     $scope.getStoreDrivingDistances();
                 }
                 
+                $scope.ready = true;
+                
             });
     };
-	
+    
+    $scope.createResultsFilter = function()
+    {
+        if(angular.isNullOrUndefined($scope.cartFilterSettings))
+        {
+            return;
+        }
+        
+        $scope.resultFilter = {};
+        
+        for(var x in $scope.cartFilterSettings)
+        {
+            var values = $scope.cartFilterSettings[x].values;
+            var setting = $scope.cartFilterSettings[x].setting;
+            var filter = "";
+            for(var y in values)
+            {
+                if(values[y].selected)
+                {
+                    var value = values[y].id.toString();
+                    
+                    if(value === "Autre")
+                    {
+                        value = "";
+                    }
+                    
+                    if(filter === "")
+                    {
+                        if(value === "")
+                        {
+                            filter = filter.concat(",", value);
+                        }
+                        else
+                        {
+                            filter = filter.concat("", value);
+                        }
+                    }
+                    else
+                    {
+                        filter = filter.concat(",", value);
+                    }
+                    
+                    
+                }
+            }
+            
+            $scope.resultFilter[setting.name] = filter;
+        }
+        
+    };
+    	
     $scope.getRelatedProducts = function(store_product)
     {
         var results = [];
@@ -596,11 +659,8 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
         for(var x in $rootScope.cart)
         {
             var storeProduct = $rootScope.cart[x].store_product;
-
-            if(parseFloat(storeProduct.price) === 0)
-            {
-                //continue;
-            }
+            
+            // Filter
 
             if(currentDepartmentStoreID !== parseInt(storeProduct.retailer.id))
             {
@@ -1770,6 +1830,32 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
           });
     };
     
+    $scope.changeCartDistance = function(newDistance)
+    {
+        if($scope.isUserLogged)
+        {
+            var changePromise = eapp.changeDistance('cart_distance', newDistance);
+
+            changePromise.then(function(response)
+            {
+                if(response.data)
+                {
+                    // Update Logged User
+                    $scope.loggedUser = response.data;
+                    $scope.optimization_preference_changed();
+                }
+            });
+        }
+        else
+        {
+            // Change in the session
+            window.localStorage.setItem('cart_distance', newDistance);
+            $scope.optimization_preference_changed();
+        }
+
+        $mdDialog.cancel();
+    };
+    
     function ChangeDistanceController($scope, $mdDialog) 
     {
         $scope.hide = function() 
@@ -1857,6 +1943,39 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
         {
             $scope.storeProduct = null;
         });
+    };
+    
+    $scope.settingsChanged = function(item)
+    {
+        $scope.updateItemChanged(item);
+        
+        window.sessionStorage.setItem("cartFilterSettings", JSON.stringify($scope.cartFilterSettings));
+        
+        // Get store filter
+        $scope.createResultsFilter();
+        
+        $scope.update_cart_list();
+        
+    };
+    
+    $scope.refresh = function(cartSettings)
+    {
+        $scope.cartSettings = cartSettings;
+        	
+	// Save the new configuration for the current session    
+	window.sessionStorage.setItem("cartSettings", JSON.stringify($scope.cartSettings));
+	    
+        $scope.update_cart_list();
+    };
+    
+    $scope.updateItemChanged = function(item)
+    {
+        var index = $scope.cartFilterSettings[item.type].values.map(function(e){ return e.name; }).indexOf(item.name);
+        
+        if(index > -1)
+        {
+            $scope.cartFilterSettings[item.type].values[index] = item;
+        }
     };
     
     $rootScope.$watch('cartReady', function(newValue, oldValue)

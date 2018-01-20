@@ -1,7 +1,5 @@
 jQuery(document).ready(function($){
     
-    
-    
     $('.product-carousel').owlCarousel({
         loop:true,
         nav:true,
@@ -101,9 +99,11 @@ eappApp.component("resultFilter",
         distance : '<',
         onSettingsChanged : '&',
         ready : '=',
+        type : '@',
         onRefresh : '&',
         viewConfig : '=',
-        onDistanceChanged : '&'
+        onDistanceChanged : '&',
+        isUserLogged : '<'
     }
 });
 
@@ -123,6 +123,20 @@ function ResultFilterController($scope)
         $scope.settings = ctrl.resultSet;
         $scope.distance = ctrl.distance;
         $scope.viewConfig = ctrl.viewConfig;
+        $scope.isUserLogged = ctrl.isUserLogged;
+        
+        if(ctrl.type === 'CART')
+        {
+            $scope.viewConfig.viewAll = !$scope.viewConfig.optimizedCart;
+            $scope.showAllResultsCaption = "Voir la liste originale";
+            $scope.showOptimizedResultsCaption = "Voir la liste optimisée";
+            $scope.isCart = true;
+        }
+        else
+        {
+            $scope.showAllResultsCaption = "Voir produits optimisé";
+            $scope.showOptimizedResultsCaption = "Voir produits optimisé";
+        }
     };
     
     $scope.$watch("settings", function()
@@ -179,6 +193,11 @@ function ResultFilterController($scope)
         {
             $scope.distance = changesObj.distance.currentValue;
         }
+        
+        if(!angular.isNullOrUndefined(changesObj.isUserLogged))
+        {
+            $scope.isUserLogged = changesObj.isUserLogged.currentValue;
+        }
     };
     
     ctrl.distanceChanged = function()
@@ -193,6 +212,8 @@ function ResultFilterController($scope)
     
     ctrl.refresh = function()
     {
+        $scope.viewConfig.optimizedCart = !$scope.viewConfig.viewAll;
+        
         ctrl.onRefresh({ viewConfig : $scope.viewConfig });
     };
     

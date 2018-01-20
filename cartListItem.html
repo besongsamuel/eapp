@@ -62,18 +62,18 @@
 
     <div class="col-sm-12 col-md-3">
 
-        <div class="row cart-item-container" style='margin : auto;'>
+        <div class="row cart-item-container" style='margin : auto; padding : 2px;'>
 
-            <md-input-container style='display: block; margin-right: 50px;'>
+            <md-input-container style='display: block; margin-right: 10px; margin : 18px 0px 2px 0px;'>
                 <label>Quantité</label>
                 <input aria-label="Qty" min="1" type="number" ng-model="$ctrl.item.quantity" ng-change="$ctrl.updateQuantity($ctrl.item.quantity, $ctrl.item.store_product.product.id)">
             </md-input-container>
 
         </div>
 
-        <div class="row cart-item-container">
+        <div class="row cart-item-container" style="padding : 2px;">
             
-            <p style="text-align: right; margin-right: 50px;">Totale : <span style="font-size : 18px;"><b>{{$ctrl.item.store_product.price * $ctrl.item.quantity | number : 2}} C $</b></span></p>
+            <p style="text-align: right; margin-right: 10px;">Totale : <span style="font-size : 18px;"><b>{{$ctrl.item.store_product.price * $ctrl.item.quantity | number : 2}} C $</b></span></p>
         </div>
 
     </div>

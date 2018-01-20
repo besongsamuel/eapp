@@ -916,6 +916,27 @@ class CI_Model {
         return $product_ids;
     }
     
+    public function get_store_product_property($property_name, $product_ids, $results_filter, $my_location = null, $distance = 100, $assoc = false) 
+    {
+        $this->db->join(PRODUCT_TABLE, $this->store_product_product_join);
+        $this->db->join(SUB_CATEGORY_TABLE, $this->store_product_subcategory_join, "left outer");
+        $this->db->join(CHAIN_TABLE, CHAIN_TABLE.'.id = '.STORE_PRODUCT_TABLE.'.retailer_id');
+        $this->db->join(CHAIN_STORE_TABLE, CHAIN_TABLE.'.id = '.CHAIN_STORE_TABLE.'.chain_id');
+        
+        $this->add_distance_condition($my_location, $distance);
+        
+        $this->add_settings_filter($results_filter);
+        
+        if(sizeof($product_ids) > 0)
+        {
+            $this->db->where_in(STORE_PRODUCT_TABLE.".product_id", $product_ids);
+        }
+        
+        $property_array = $this->get_distinct(STORE_PRODUCT_TABLE, $property_name, $this->latest_products_condition, $assoc);
+       
+        return $property_array;
+    }
+    
     private function add_distance_condition($my_location, $distance) 
     {
         if($my_location != null && $my_location["latitude"] != null && $my_location["longitude"] != null)

@@ -226,38 +226,48 @@ class Cart extends CI_Controller {
         $products_not_found_list = array();
         // get the distance
         $distance = $this->input->post("distance");
-        // get the cart products
-        $products = json_decode($this->input->post("products"));
+        // Get the cart items
+        $cart_items = json_decode($this->get_cached_cart_contents());
+        
         $search_all = $this->input->post("searchAll") == "true" ? true : false;
         $view_optimized_list = $this->input->post("viewOptimizedList") == "true" ? true : false;
         
         $coords = array("longitude" => $this->input->post("longitude"), "latitude" => $this->input->post("latitude"));
-        // get the store_product id if applicable
-
         
+        $resultsFilter = json_decode($this->input->post('resultsFilter'), true);
         
-        foreach($products as $product)
+        $settings = $this->get_settings($resultsFilter, $this->get_my_location(), $distance);
+        
+        foreach($this->get_filtered_cart_items($cart_items, $resultsFilter, $this->get_my_location(), $distance) as $cart_item)
         {
-            $in_user_list = isset($this->user) ? $this->inUserList($product->id) : false;
+            $in_user_list = isset($this->user) ? $this->inUserList($cart_item->product->id) : false;
             // get the best store product based on price
-            $store_product = $this->cart_model->get_best_store_product($product->id, $distance, $distance, $this->user, $search_all, $coords, $view_optimized_list ? -1 : $product->store_product_id);
-            $cart_item = new stdClass();
-            $cart_item->store_product = $store_product;
-            $cart_item->store_product->product->in_user_grocery_list = $in_user_list;
-            $cart_item->product = $this->cart_model->get_product($product->id);
-            $cart_item->product->in_user_grocery_list = $in_user_list;
-            $cart_item->rowid = $product->rowid;
-            $cart_item->store_product_id = $product->store_product_id;
-            $cart_item->quantity = $product->quantity;
+            $store_product = $this->cart_model->get_best_store_product(
+                    $cart_item->product->id, 
+                    $distance, 
+                    $distance, 
+                    $this->user, 
+                    $search_all, 
+                    $coords, 
+                    $view_optimized_list ? -1 : 
+                    $cart_item->store_product_id);
+            $item = new stdClass();
+            $item->store_product = $store_product;
+            $item->store_product->product->in_user_grocery_list = $in_user_list;
+            $item->product = $this->cart_model->get_product($cart_item->product->id);
+            $item->product->in_user_grocery_list = $in_user_list;
+            $item->rowid = $cart_item->rowid;
+            $item->store_product_id = $cart_item->store_product_id;
+            $item->quantity = $cart_item->quantity;
             
             // distance of 0 means it wasn't found within the distance specified
             if($store_product->price == 0)
             {
-                array_push($products_not_found_list, $cart_item);
+                array_push($products_not_found_list, $item);
             }
             else
             {
-                array_push($optimizedList, $cart_item);
+                array_push($optimizedList, $item);
             }
         }
 		
@@ -267,9 +277,14 @@ class Cart extends CI_Controller {
         
         // Merge Lists putting the found items at the top
         $final_list = array_merge($optimizedList, $products_not_found_list);
+        
+        $result = array();
+        
+        $result["items"] = $final_list;
+        $result["cartFilterSettings"] = $settings;
 		
         // returns an array where the items not found are on the bottom of the list
-        $res = json_encode($final_list);
+        $res = json_encode($result);
         
         if(!$res)
         {
@@ -302,4 +317,82 @@ class Cart extends CI_Controller {
             $this->account_model->create(USER_OPTIMIZATION_TABLE, $data);
         }
     }
+    
+    private function get_filtered_cart_items($cart_items, $resultsFilter, $my_location, $distance) 
+    {        
+        $filtered_cart_items = array();
+        
+        $product_list = array();
+        
+        foreach ($cart_items as $cart_item) 
+        {
+            
+            array_push($product_list, $cart_item->product->id);
+            
+        }
+        
+        $unique_ids =  $this->shop_model->get_store_product_property(PRODUCT_TABLE.'.id', $product_list, $resultsFilter, $my_location, $distance, false);
+        
+        foreach ($cart_items as $cart_item) 
+        {
+            
+            foreach ($unique_ids as $id) 
+            {
+                if($cart_item->product->id == $id->id)
+                {
+                    array_push($filtered_cart_items, $cart_item);
+                }
+            }
+        }
+        
+        return $filtered_cart_items;
+    }
+    
+    private function get_settings($resultsFilter, $my_location, $distance) 
+    {
+        // Get the cart list
+        $cart_items = json_decode($this->get_cached_cart_contents());
+        
+        $product_list = array();
+        
+        foreach ($cart_items as $value) 
+        {
+            array_push($product_list, $value->product->id);
+        }
+                
+        // Get the settings object
+        $settings = $this->shop_model->get_all("otiprix_filter_settings");
+        
+        $result = array();
+        
+        foreach ($settings as $setting) 
+        {
+          
+            $settings_ids = $this->get_settings_item($setting->column_table.'.'.$setting->column_name, $product_list, null, $my_location, $distance);
+            
+            // create an array with the ids
+            $index_array = array();
+            
+            foreach ($settings_ids as $unique_index) 
+            {
+                array_push($index_array, $unique_index[$setting->column_name]);
+            }
+            
+            $result[$setting->name] = new stdClass();
+            
+            $result[$setting->name]->values = $this->create_settings_object($setting, $index_array, $resultsFilter);
+            
+            $result[$setting->name]->setting = $setting;
+        }
+        
+        return $result;
+        
+    }
+       
+    private function get_settings_item($property, $product_ids, $resulstFilter, $my_location = null, $distance = 100) 
+    {
+        // Get the cart Items
+        return $this->shop_model->get_store_product_property($property, $product_ids, $resulstFilter, $my_location, $distance, true);
+    }
+    
 }

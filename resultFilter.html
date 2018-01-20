@@ -27,9 +27,31 @@
 
     <div style="margin-bottom: 30px; font-size : 13px;">
         <md-radio-group ng-model="viewConfig.viewAll" ng-change="$ctrl.refresh();">
-            <md-radio-button ng-value="trueVal" class="md-primary">Voir tout les produits</md-radio-button>
-            <md-radio-button ng-value="falseVal" class="md-primary">Voir produits optimisé</md-radio-button>
+            <md-radio-button ng-value="trueVal" class="md-primary">{{showAllResultsCaption}}</md-radio-button>
+            <md-radio-button ng-value="falseVal" class="md-primary">{{showOptimizedResultsCaption}}</md-radio-button>
         </md-radio-group>
+
+        <div ng-show="isCart">
+            <md-divider></md-divider>
+            <div style="margin-top : 10px;">
+                <md-radio-group  ng-model="viewConfig.cartView" ng-change="$ctrl.refresh();">
+                    <md-radio-button ng-value="trueVal" class="md-primary">Vue du panier</md-radio-button>
+                    <md-radio-button ng-value="falseVal" class="md-primary">Vue par magasin</md-radio-button>
+                </md-radio-group>
+            </div>
+
+            <div ng-show="isUserLogged">
+                <md-divider></md-divider>
+                <div style="margin-top : 10px;">
+                    <md-radio-group  ng-model="viewConfig.searchMyList" ng-change="$ctrl.refresh();">
+                        <md-radio-button ng-value="trueVal" class="md-primary">Rechercher dans tout les magasins</md-radio-button>
+                        <md-radio-button ng-value="falseVal" class="md-primary">Rechercher dans votre liste de magasins</md-radio-button>
+                    </md-radio-group>
+                </div>
+            </div>
+            
+        </div>
+
     </div>
 
     <h4 style="margin-bottom : 30px; color :rgb(29, 29, 29);">Filtré par</h4>

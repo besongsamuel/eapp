@@ -110,7 +110,7 @@ $(document).ready(function()
     {
         var total = 0;
 
-        if(!angular.isNullOrUndefined(rootScope.cartSettings) && rootScope.cartSettings.cartView)
+        if((!angular.isNullOrUndefined(rootScope.cartSettings) && rootScope.cartSettings.cartView) || rootScope.controller !== 'cart')
         {
             for(var key in rootScope.cart)
             {
