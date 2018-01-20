@@ -25,22 +25,6 @@ p.cart-warning
     }
 }
 
-.image-container
-{
-   
-    margin-top: 2px;
-    margin-bottom: 2px;
-}
-
-.image-container img
-{
-    border : 1px #cccccc solid;
-    display: block;
-    margin: auto;
-    width: 100px;
-    
-}
-
 .center-content
 {
     display: block;

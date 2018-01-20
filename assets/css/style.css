@@ -1288,3 +1288,22 @@ div.cart-collaterals ul.products li.product:hover .add_to_cart_button{background
     background: url(../contact/img/pattern.png) repeat center center !important;
 }
 
+.image-container
+{
+    margin-top: 2px;
+    margin-bottom: 2px;
+    
+}
+
+.image-container img
+{
+    display: block;
+    margin: auto;
+    object-fit: cover;
+    border-radius:50%;
+    width: 120px;
+    height: 120px;
+    padding: 5px;
+    border: #009933 thin solid;
+}
+

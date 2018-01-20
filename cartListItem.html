@@ -11,7 +11,7 @@
     
     <!-- Image -->
     <div class="col-sm-12 col-md-2 cart-item-container image-container">
-        <a href><img alt="poster_1_up" ng-src="{{$ctrl.item.store_product.product.image}}"></a>
+        <a href ng-click="$ctrl.viewProduct($ctrl.item.store_product.id, $event)"><img alt="poster_1_up" ng-src="{{$ctrl.item.store_product.product.image}}"></a>
         <div style="margin-top : 15px;" ng-show="$ctrl.isUserLogged">
             <md-checkbox class="center-content" ng-model="$ctrl.item.store_product.product.in_user_grocery_list" aria-label="Add to my list" ng-init="$ctrl.item.store_product.product.in_user_grocery_list" ng-checked="$ctrl.item.store_product.product.in_user_grocery_list" ng-change="$ctrl.favoriteChanged($ctrl.item.store_product.product)">
                     Ajouter dans ma liste
