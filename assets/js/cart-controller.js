@@ -413,6 +413,7 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
         
     $scope.true_value = true;
     $scope.false_value = false;
+    $scope.currentDepartmentStoreIndex = 0;
     
     $scope.getDistance = function()
     {
@@ -523,7 +524,8 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
                     {
                         $scope.storeTabSelected($scope.stores[0]);
                     }
-
+                    
+                    $scope.currentDepartmentStoreIndex = 0;
                     // Get the driving distances of each of the stores
                     $scope.getStoreDrivingDistances();
                 }
@@ -903,13 +905,27 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
         
         var longitude = $scope.isUserLogged ? $scope.loggedUser.profile.longitude : $scope.longitude;
         var latitude = $scope.isUserLogged ? $scope.loggedUser.profile.latitude : $scope.latitude;
-
+        var index = 0;
+        var count = 0;
         for(var i in $scope.departmenStores )
         {
-            var department_store = $scope.departmenStores[i];
-            origins.push(new google.maps.LatLng(parseFloat(latitude), parseFloat(longitude)));
-            destinations.push(new google.maps.LatLng(parseFloat(department_store.latitude), parseFloat(department_store.longitude)));
+            if(index >= $scope.currentDepartmentStoreIndex && count < 5)
+            {
+                var department_store = $scope.departmenStores[i];
+                origins.push(new google.maps.LatLng(parseFloat(latitude), parseFloat(longitude)));
+                destinations.push(new google.maps.LatLng(parseFloat(department_store.latitude), parseFloat(department_store.longitude)));
+                count++;
+            }
+            index++;
+            
         }
+        
+        if(count === 0)
+        {
+            return;
+        }
+        
+        $scope.currentDepartmentStoreIndex = index;
         
         var service = new google.maps.DistanceMatrixService();
         service.getDistanceMatrix(
@@ -928,6 +944,7 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
 
             $scope.$apply(function()
             {
+                
                 for(var x in response.rows)
                 {
                     if(typeof response.rows[x].elements[0].status !== 'undefined' && response.rows[x].elements[0].status === "ZERO_RESULTS")
@@ -938,15 +955,18 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
                     {
                         if(!angular.isNullOrUndefined(response.rows[0].elements[x].distance))
                         {
-                            $scope.departmenStores[x].distance = response.rows[0].elements[x].distance.value;
-                            $scope.departmenStores[x].distanceText = response.rows[0].elements[x].distance.text;
-                            $scope.departmenStores[x].timeText = response.rows[0].elements[x].duration.text;
-                            //$scope.departmenStores[x].fullName = response.destinationAddresses[x];
-                            $scope.departmenStores[x].fullName = $scope.departmenStores[x].address + ', ' + $scope.departmenStores[x].state + ', ' + $scope.departmenStores[x].city + ', ' + $scope.departmenStores[x].postcode;
+                            $scope.departmenStores[$scope.currentDepartmentStoreIndex + x].distance = response.rows[0].elements[x].distance.value;
+                            $scope.departmenStores[$scope.currentDepartmentStoreIndex + x].distanceText = response.rows[0].elements[x].distance.text;
+                            $scope.departmenStores[$scope.currentDepartmentStoreIndex + x].timeText = response.rows[0].elements[x].duration.text;
+                            $scope.departmenStores[$scope.currentDepartmentStoreIndex + x].fullName = $scope.departmenStores[$scope.currentDepartmentStoreIndex + x].address + ', ' + 
+                                    $scope.departmenStores[$scope.currentDepartmentStoreIndex + x].state + ', ' + 
+                                    $scope.departmenStores[$scope.currentDepartmentStoreIndex + x].city + ', ' + 
+                                    $scope.departmenStores[$scope.currentDepartmentStoreIndex + x].postcode;
                         }
                         
                     }
                 }
+                $scope.getDepartmentStoreInfo();
                 $rootScope.totalPriceAvailableProducts = $scope.getCartTotalPrice(true);
                 $rootScope.totalPriceUnavailableProducts = $scope.getCartTotalPrice(false);
             });
