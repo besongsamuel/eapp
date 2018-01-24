@@ -10,13 +10,13 @@
         
         <div class="row search-products">
 
-            <md-autocomplete class="col-sm-11" style="display : inline-block;"
+            <md-autocomplete class="col-sm-12 col-md-9" style="display : inline-block;"
                 md-search-text="searchProductText"
                 md-selected-item-change="product_selected(item)"
                 md-items="item in querySearch(searchProductText)"
                 md-item-text="item.name"
                 md-min-length="2"
-                md-floating-label="Recherche de produits"
+                md-floating-label="Recherche de produits à ajouter à votre liste"
             >
                 <md-item-template>
                     <span md-highlight-text="searchProductText" md-highlight-flags="^i">{{item.name}}</span>
@@ -26,10 +26,14 @@
                 </md-not-found>
             </md-autocomplete>
             
+            <div class="col-sm-12 col-md-3">
+                <md-button ng-click="addNewProductToList()" class="md-raised md-primary pull-right" style="background-color : #1abc9c;" aria-label="Ajouter">
+                    
+                    <md-icon md-svg-src="{{icons.add | trustUrl}}"></md-icon>
+                    Ajouter à votre liste
+                </md-button>
+            </div>
             
-            <md-button ng-click="addNewProductToList()" class="md-fab md-mini md-primary" style="background-color : #1abc9c;" aria-label="Ajouter">
-                <md-icon md-svg-src="{{icons.add | trustUrl}}"></md-icon>
-            </md-button>
         </div>
                 
         <div class="row my-grocery-list md-whiteframe-3dp" style="margin : 10px; min-height: 100px;" >
@@ -47,8 +51,10 @@
                         <md-input-container class="md-secondary">
                             <input style="width: 40px;" aria-label="Qty" type="number" ng-model="product.quantity">
                         </md-input-container>
-                        <md-button class="md-fab md-mini md-secondary" aria-label="Supprimer" ng-click="removeProductFromList(product.id, $event, true)">
+                        <md-button class="md-raised md-warn md-secondary" aria-label="Supprimer" ng-click="removeProductFromList(product.id, $event, true)">
+                            
                             <md-icon md-svg-src="{{icons.delete | trustUrl}}"></md-icon>
+                            Retirer
                         </md-button>
                     </md-list-item>
                 <md-divider></md-divider>
@@ -69,31 +75,31 @@
                       <p> Nombre d'items disponibles : {{ store.count }} </p>
                 </div>
             </md-list-item>
-        </div>
-        
-        <div class="container actions-section">
-		
-            <div class="col-md-offset-10">
+            
+            <div class="">
                 
-                <md-button class="md-fab md-warn"  ng-click="clearMyList($event)" aria-label="Effacer votre liste">
-                    <md-tooltip
-                        md-direction="top">
-                        Effacer votre liste
-                    </md-tooltip>
-                    <md-icon><i class="material-icons">clear_all</i></md-icon>
-                </md-button>
-                
-                <md-button class="md-fab md-otiprix" aria-label="Optimizer votre liste" ng-click="optimizeMyList()">
+                <md-button class="md-raised md-otiprix pull-right" aria-label="Optimizer votre liste" ng-click="optimizeMyList()">
+                    
                     <md-tooltip
                         md-direction="top">
                         Optimizer votre liste
                     </md-tooltip>
                     <md-icon><i class="material-icons">build</i></md-icon>
+                    Optimizer votre liste
+                </md-button>
+                
+                <md-button class="md-raised md-warn pull-right"  ng-click="clearMyList($event)" aria-label="Effacer votre liste">
+                    
+                    <md-tooltip
+                        md-direction="top">
+                        Effacer votre liste
+                    </md-tooltip>
+                    <md-icon><i class="material-icons">clear_all</i></md-icon>
+                    Effacer votre liste
                 </md-button>
                 
             </div>
-            
-            
         </div>
+        
         
 </div>

@@ -121,7 +121,7 @@ $(document).ready(function()
                             </div>
 
                             <div class="col-sm-12" style="margin-top : 30px; margin-bottom: 30px;">
-                                <md-button type="submit" class="pull-right md-otiprix md-raised">Changer</md-button>
+                                <md-button type="submit" class="pull-right md-otiprix md-raised">Valider</md-button>
                             </div>
 
                         </form>
@@ -182,7 +182,7 @@ $(document).ready(function()
 
                             <div class="col-md-12">
                                 <md-button class="md-raised md-otiprix pull-right" type="submit">
-                                    Changer
+                                    Valider
                                 </md-button>
                             </div>
 
@@ -224,7 +224,7 @@ $(document).ready(function()
 
                                 <div class="col-md-12">
                                     <md-button class="md-raised md-otiprix pull-right" type="submit">
-                                        Changer
+                                        Valider
                                     </md-button>
                                 </div>
                             </div>

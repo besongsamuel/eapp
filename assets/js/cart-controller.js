@@ -298,6 +298,7 @@ function CartListItemController($scope, $rootScope, eapp, $mdDialog)
 
 angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "$http", "$mdDialog","eapp", function($scope, $rootScope, $http, $mdDialog, eapp) 
 {
+    var ctrl = this;
     
     $scope.root = $rootScope;
     
@@ -413,7 +414,9 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
         
     $scope.true_value = true;
     $scope.false_value = false;
-    $scope.currentDepartmentStoreIndex = 0;
+    
+    ctrl.lastBatchIndex = 0;
+    ctrl.BATCH_SIZE = 8;
     
     $scope.getDistance = function()
     {
@@ -525,7 +528,7 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
                         $scope.storeTabSelected($scope.stores[0]);
                     }
                     
-                    $scope.currentDepartmentStoreIndex = 0;
+                    ctrl.lastBatchIndex = 0;
                     // Get the driving distances of each of the stores
                     $scope.getStoreDrivingDistances();
                 }
@@ -905,27 +908,49 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
         
         var longitude = $scope.isUserLogged ? $scope.loggedUser.profile.longitude : $scope.longitude;
         var latitude = $scope.isUserLogged ? $scope.loggedUser.profile.latitude : $scope.latitude;
-        var index = 0;
+        
         var count = 0;
-        for(var i in $scope.departmenStores )
+        
+        var nextBatchIndex = 0;
+        
+        for(var i in $scope.departmenStores)
         {
-            if(index >= $scope.currentDepartmentStoreIndex && count < 5)
+            if(i < ctrl.lastBatchIndex)
+            {
+                // Already got the distance and time information for this department store. 
+                // We skip it
+                continue;
+            }
+                        
+            if(count < ctrl.BATCH_SIZE)
             {
                 var department_store = $scope.departmenStores[i];
                 origins.push(new google.maps.LatLng(parseFloat(latitude), parseFloat(longitude)));
                 destinations.push(new google.maps.LatLng(parseFloat(department_store.latitude), parseFloat(department_store.longitude)));
                 count++;
             }
-            index++;
             
+            
+            if(count === ctrl.BATCH_SIZE)
+            {
+                nextBatchIndex = parseInt(i) + parseInt(1);
+                break;
+            }
+            
+            if(count !== ctrl.BATCH_SIZE)
+            {
+                nextBatchIndex = $scope.departmenStores.length;
+            }
         }
         
+        // No more batches are available
         if(count === 0)
         {
+            $rootScope.totalPriceAvailableProducts = $scope.getCartTotalPrice(true);
+            $rootScope.totalPriceUnavailableProducts = $scope.getCartTotalPrice(false);
+            ctrl.lastBatchIndex = 0;
             return;
         }
-        
-        $scope.currentDepartmentStoreIndex = index;
         
         var service = new google.maps.DistanceMatrixService();
         service.getDistanceMatrix(
@@ -955,20 +980,23 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
                     {
                         if(!angular.isNullOrUndefined(response.rows[0].elements[x].distance))
                         {
-                            $scope.departmenStores[$scope.currentDepartmentStoreIndex + x].distance = response.rows[0].elements[x].distance.value;
-                            $scope.departmenStores[$scope.currentDepartmentStoreIndex + x].distanceText = response.rows[0].elements[x].distance.text;
-                            $scope.departmenStores[$scope.currentDepartmentStoreIndex + x].timeText = response.rows[0].elements[x].duration.text;
-                            $scope.departmenStores[$scope.currentDepartmentStoreIndex + x].fullName = $scope.departmenStores[$scope.currentDepartmentStoreIndex + x].address + ', ' + 
-                                    $scope.departmenStores[$scope.currentDepartmentStoreIndex + x].state + ', ' + 
-                                    $scope.departmenStores[$scope.currentDepartmentStoreIndex + x].city + ', ' + 
-                                    $scope.departmenStores[$scope.currentDepartmentStoreIndex + x].postcode;
+                            var index = parseInt(ctrl.lastBatchIndex) + parseInt(x);
+                            
+                            $scope.departmenStores[index].distance = response.rows[0].elements[x].distance.value;
+                            $scope.departmenStores[index].distanceText = response.rows[0].elements[x].distance.text;
+                            $scope.departmenStores[index].timeText = response.rows[0].elements[x].duration.text;
+                            $scope.departmenStores[index].fullName = $scope.departmenStores[index].address + ', ' + 
+                                    $scope.departmenStores[index].state + ', ' + 
+                                    $scope.departmenStores[index].city + ', ' + 
+                                    $scope.departmenStores[index].postcode;
                         }
                         
                     }
                 }
+                
+                ctrl.lastBatchIndex = nextBatchIndex;
                 $scope.getDepartmentStoreInfo();
-                $rootScope.totalPriceAvailableProducts = $scope.getCartTotalPrice(true);
-                $rootScope.totalPriceUnavailableProducts = $scope.getCartTotalPrice(false);
+                
             });
         });
 	  
@@ -1326,7 +1354,7 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
                     * parseFloat(cart_item.quantity) * parseFloat($scope.getFormat(cart_item.store_product)) * parseFloat(cart_item.store_product.equivalent);
             
             // A value greater than 20 might be an error. 
-            if(parseInt(value) > $scope.errorMargin)
+            if(parseFloat(parseInt(value) / parseInt(cart_item.quantity)) > $scope.errorMargin)
             {
                 console.log(cart_item);
             }

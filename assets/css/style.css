@@ -788,8 +788,8 @@ td.actions div.coupon {
 }
 .cart_totals {
     float: right;
-    margin-bottom: 50px;
-    width: 40%;
+    margin-bottom: 30px;
+    width: 60%;
 }
 .cart-collaterals h2 {
     color: #1abc9c;
@@ -1107,8 +1107,8 @@ div.cart-collaterals ul.products li.product:hover .add_to_cart_button{background
 /* LOGIN CSS*/
 .store-block
 {
-    width: 100%;
-    height: 100px;
+    width: 120px;
+    height: 80px;
 }
 
 .item-block
