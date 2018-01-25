@@ -117,6 +117,13 @@ function QuantityInputController($scope)
         
     };
     
+    $scope.$watch("quantity", function()
+    {
+        ctrl.quantity = $scope.quantity;
+        
+        ctrl.onChange({quantity : ctrl.quantity});
+    });
+    
     ctrl.subtract = function(ev)
     {
         if($scope.quantity > 0)
