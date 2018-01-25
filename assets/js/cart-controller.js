@@ -37,9 +37,9 @@ function CartListItemController($scope, $rootScope, eapp, $mdDialog)
         ctrl.onDelete({id: ctrl.item.store_product.product.id});
     };
     
-    ctrl.updateQuantity = function(newQuantity, productID)
+    ctrl.updateQuantity = function(quantity)
     {
-        ctrl.onUpdateQuantity({ quantity : newQuantity, id : productID });
+        ctrl.onUpdateQuantity({ quantity : quantity, id : ctrl.item.store_product.product.id });
     };
     
     ctrl.update = function()

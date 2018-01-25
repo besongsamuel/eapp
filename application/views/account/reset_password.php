@@ -35,7 +35,7 @@ and open the template in the editor.
                     <md-input-container class="md-block col-sm-12" flex-gt-sm>
                         <label>Mot de passe</label>
                         <md-icon style="color: #1abc9c;"><i class="material-icons">lock</i></md-icon>
-                        <input style="border-left : none; border-right : none;border-top : none;" type="password" required name="password" ng-model="password" equals="{{confirm_password}}" ng-pattern="/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/" />
+                        <input style="border-left : none; border-right : none;border-top : none;" type="password" required name="password" ng-model="password" equals="{{confirm_password}}" ng-pattern="/^(?=.*?[0-9])(?=.*?[a-z])(?=.*?[A-Z]).{8,}/" />
                         <div ng-messages="resetPasswordForm.password.$error">
                             <div ng-message="required">Un mot de passe est requis.</div>
                             <div ng-message="pattern">Le mot de passe n'est pas assez fort. Le mot de passe doit comporter au moins 8 caractères et doit contenir un nombre, un caractère et un caractère spécial.</div>

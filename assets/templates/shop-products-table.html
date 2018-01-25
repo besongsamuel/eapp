@@ -35,7 +35,7 @@
                 </th>
 
                 <th md-column md-numeric>Price (CAD)</th>
-                <th md-column md-numeric>Quantity</th>
+                <th md-column>Quantity</th>
                 <th md-column md-numeric>Total Price (CAD)</th>
                 <th md-column>Actions</th>
             </tr>
@@ -62,9 +62,7 @@
             </td>
             <td md-cell><b>{{product.price}} C $</b></td>
             <td md-cell>
-                <md-input-container>
-                    <input min="1" style="width: 40px;" aria-label="Qty" type="number" ng-model="product.quantity   ">
-                </md-input-container>
+                <quantity-input quantity="product.quantity" ></quantity-input>
             </td>
             <td md-cell>
                 <b>{{(product.price * product.quantity) | number : 2}} C $</b>
@@ -108,10 +106,8 @@
                 <p style="font-size: 18px; margin-top: 10px;"><b>{{product.price}} C $</b></p>
 
                 <div>
-                    <md-input-container class="col-sm-12" style="margin : 5px 0;">
-                        <input min="1" style="width: 44px;" aria-label="Qty" type="number" ng-model="product.quantity">
-                        <span class="price pull-right">{{(product.price * product.quantity) | number : 2}} C $</span>
-                    </md-input-container>
+                    <quantity-input quantity="product.quantity" ></quantity-input>
+                    <span class="price pull-right">{{(product.price * product.quantity) | number : 2}} C $</span>
                 </div>
 
                 <div class="row">

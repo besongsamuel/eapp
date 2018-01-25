@@ -1,0 +1,18 @@
+
+<div style="width: 150px; margin: 40px auto;">
+    <div class="input-group">
+        <span class="input-group-btn">
+            <button type="button" id="btn-minus" class="btn btn-default btn-number" disabled="disabled" ng-click="$ctrl.subtract($event)">
+                <span class="glyphicon glyphicon-minus"></span>
+            </button>
+        </span>
+    
+        <input type="text" ng-min="1" class="form-control input-number" ng-model="quantity">
+    
+        <span class="input-group-btn">
+            <button type="button" class="btn btn-default btn-number" data-type="plus" ng-click="$ctrl.add($event)">
+                <span class="glyphicon glyphicon-plus"></span>
+            </button>
+        </span>
+    </div>
+</div>

@@ -18,8 +18,6 @@
           
     <md-content class="layout-padding">
         
-        <p ng-hide="results_available" class="md-otiprix-text" style="text-align: center; margin-bottom: 50px; margin-top: 20px;"><b>Il n'y a aucun résultat</b></p>
-        
         <div class="row">
             <div class="col-md-2">
                 <result-filter 
@@ -39,7 +37,10 @@
             <div class="col-md-10 white-background">
                 
                 <md-card>
+                    
                     <md-progress-linear md-mode="indeterminate" ng-show="promise.$$state.status === 0"></md-progress-linear>
+                    
+                    <p ng-hide="results_available" class="md-otiprix-text" style="text-align: center; margin-bottom: 50px; margin-top: 20px;"><b>Il n'y a aucun résultat</b></p>
                     
                     <div id="cart-optimization-container" class="layout-padding" ng-show="cartSettings.cartView">
                         <div ng-repeat="departmentStore in departmenStores">
@@ -141,7 +142,90 @@
                     
                 </md-card>
                
+                <div class="" style="margin-bottom: 10px; margin-top: 10px;">
 
+                    <div class="cart_totals layout-padding pull-right">
+
+                        <h2>Détails d'optimisation</h2>
+
+                        <table>
+                            <tbody>
+
+                                <tr class="cart-subtotal">
+                                    <th>Total des produits disponibles</th>
+                                    <td><span class="amount md-warn"><b>{{totalPriceAvailableProducts | number : 2}} $ C</b></span></td>
+                                </tr>
+
+                                <tr class="cart-subtotal">
+                                    <th>Total des produits non disponibles</th>
+                                    <td><span class="amount" style="color : gray;"><b>{{totalPriceUnavailableProducts | number : 2}} $ C</b></span></td>
+                                </tr>
+
+                                <tr class="cart-subtotal">
+                                    <th>Total du panier</th>
+                                    <td><span class="amount"><b>{{totalPriceUnavailableProducts + totalPriceAvailableProducts | number : 2}} $ C</b></span></td>
+                                </tr>
+
+                                <tr class="optimized-distance" ng-show="price_optimization > 0">
+                                    <th>Montant épargné</th>
+                                    <td><span class="amount"><b style="color : red"><b><span ng-show="show_min_price_optimization">{{min_price_optimization | number : 2}} - </span> {{price_optimization | number : 2}} $ C</b></span></td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+
+                    </div>
+
+                    <div class="row pull-right">
+
+                        <md-button class="md-warn md-raised"  ng-click="clearCart()" aria-label="Effacer votre panier">
+                            <md-tooltip
+                                md-direction="bottom">
+                                Effacer votre panier
+                            </md-tooltip>
+                            <md-icon><i class="material-icons">clear_all</i></md-icon>
+                            Effacer Liste
+                        </md-button>
+
+                        <md-button class="md-raised md-otiprix" aria-label="Impression" ng-click="printCart()">
+                            <md-tooltip
+                                md-direction="bottom">
+                                Impression
+                            </md-tooltip>
+                            <md-icon><i class="material-icons">print</i></md-icon>
+                            Imprimer
+                        </md-button>
+
+                        <md-button class="md-raised md-otiprix" ng-click="sendListAsSMS($event)" aria-label="Envoyer à votre téléphone" ng-disabled="!isUserLogged">
+                            <md-tooltip
+                                md-direction="bottom">
+                                Envoyer par sms
+                            </md-tooltip>
+                          <md-icon><i class="material-icons">smartphone</i></md-icon>
+                          Envoyer par SMS
+                        </md-button>
+
+                        <md-button class="md-raised md-otiprix" aria-label="Partager" ng-hide="true">
+                            <md-tooltip
+                                md-direction="bottom">
+                                Partager
+                            </md-tooltip>
+                            <md-icon><i class="material-icons">share</i></md-icon>
+                            Partager
+                        </md-button>
+
+                        <md-button class="md-raised md-otiprix" aria-label="Envoyer à votre courrier électronique" ng-click="sendListAsEmail($event)"  ng-disabled="!isUserLogged">
+                            <md-tooltip
+                                md-direction="bottom">
+                                Envoyer à votre courrier électronique
+                            </md-tooltip>
+                            <md-icon><i class="material-icons">email</i></md-icon>
+                            Envoyer par Email
+                        </md-button>
+
+                    </div>
+
+                </div>
                     
             </div>
         </div>
@@ -149,98 +233,9 @@
     
     
     
-    <div>
-        <div class="container" style="margin-bottom: 10px; margin-top: 10px;">
-
-            <div class="row ">
-                
-                <div class="cart_totals pull-right">
-                    
-                    <h2>Détails d'optimisation</h2>
-
-                    <table>
-                        <tbody>
-
-                            <tr class="cart-subtotal">
-                                <th>Total des produits disponibles</th>
-                                <td><span class="amount md-warn"><b>{{totalPriceAvailableProducts | number : 2}} $ C</b></span></td>
-                            </tr>
-
-                            <tr class="cart-subtotal">
-                                <th>Total des produits non disponibles</th>
-                                <td><span class="amount" style="color : gray;"><b>{{totalPriceUnavailableProducts | number : 2}} $ C</b></span></td>
-                            </tr>
-
-                            <tr class="cart-subtotal">
-                                <th>Total du panier</th>
-                                <td><span class="amount"><b>{{totalPriceUnavailableProducts + totalPriceAvailableProducts | number : 2}} $ C</b></span></td>
-                            </tr>
-
-                            <tr class="optimized-distance" ng-show="price_optimization > 0">
-                                <th>Montant épargné</th>
-                                <td><span class="amount"><b style="color : red"><b><span ng-show="show_min_price_optimization">{{min_price_optimization | number : 2}} - </span> {{price_optimization | number : 2}} $ C</b></span></td>
-                            </tr>
-
-                        </tbody>
-                    </table>
-                    
-                </div>
-                
-                
-				
-            </div>
-            
-            <div class="row pull-right">
-                
-                <md-button class="md-warn md-raised"  ng-click="clearCart()" aria-label="Effacer votre panier">
-                    <md-tooltip
-                        md-direction="bottom">
-                        Effacer votre panier
-                    </md-tooltip>
-                    <md-icon><i class="material-icons">clear_all</i></md-icon>
-                    Effacer Liste
-                </md-button>
-
-                <md-button class="md-raised md-otiprix" aria-label="Impression" ng-click="printCart()">
-                    <md-tooltip
-                        md-direction="bottom">
-                        Impression
-                    </md-tooltip>
-                    <md-icon><i class="material-icons">print</i></md-icon>
-                    Imprimer
-                </md-button>
-
-                <md-button class="md-raised md-otiprix" ng-click="sendListAsSMS($event)" aria-label="Envoyer à votre téléphone" ng-disabled="!isUserLogged">
-                    <md-tooltip
-                        md-direction="bottom">
-                        Envoyer par sms
-                    </md-tooltip>
-                  <md-icon><i class="material-icons">smartphone</i></md-icon>
-                  Envoyer par SMS
-                </md-button>
-
-                <md-button class="md-raised md-otiprix" aria-label="Partager" ng-hide="true">
-                    <md-tooltip
-                        md-direction="bottom">
-                        Partager
-                    </md-tooltip>
-                    <md-icon><i class="material-icons">share</i></md-icon>
-                    Partager
-                </md-button>
-
-                <md-button class="md-raised md-otiprix" aria-label="Envoyer à votre courrier électronique" ng-click="sendListAsEmail($event)"  ng-disabled="!isUserLogged">
-                    <md-tooltip
-                        md-direction="bottom">
-                        Envoyer à votre courrier électronique
-                    </md-tooltip>
-                    <md-icon><i class="material-icons">email</i></md-icon>
-                    Envoyer par Email
-                </md-button>
-                
-            </div>
-            
-        </div>
-    </div>
+    
+        
+    
     
     <div>
         <p class="cart-warning"><b>En cas de différence entre la circulaire du magasin et OTIPRIX, la circulaire a préséance</b></p>
