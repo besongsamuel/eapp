@@ -127,9 +127,9 @@ function QuantityInputController($scope)
         if(parseInt($scope.quantity) === 0)
         {
             $("#" + ctrl.id).attr('disabled', true);
-            
-            ctrl.quantity = $scope.quantity;
         }
+        
+        ctrl.quantity = $scope.quantity;
         
         ctrl.onChange({quantity : ctrl.quantity});
     };
