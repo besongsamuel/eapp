@@ -124,7 +124,8 @@ body{font-family: "Roboto Condensed",sans-serif;}
     {
         width: 40px;
         left : 18px;
-        position : absolute;
+        top:5px;
+        position : relative;
     }
         
         
