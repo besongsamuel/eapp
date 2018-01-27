@@ -1196,7 +1196,6 @@ div.cart-collaterals ul.products li.product:hover .add_to_cart_button{background
 .eapp-logo
 {
     width : 60px;
-    margin-top: -20px; 
     opacity: 1;
     filter: alpha(opacity=100);
 }
