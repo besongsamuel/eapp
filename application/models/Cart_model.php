@@ -169,7 +169,7 @@ class Cart_model extends CI_Model
             
             $this->db->where('period_from <= CURDATE() AND period_to >= CURDATE()', NULL, FALSE);
             
-            $this->db->order_by("unit_price, range", "ASC");
+            $this->db->order_by("unit_price", "ASC");
 			
             $query = $this->db->get_compiled_select(STORE_PRODUCT_TABLE);
             $store_product = $this->db->query($query)->first_row();

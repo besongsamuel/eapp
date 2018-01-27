@@ -468,9 +468,10 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
         var formData = new FormData();
         formData.append("distance", $scope.getDistance());
         // User's longitude
-        formData.append("longitude", $scope.longitude);
+        formData.append("longitude", $rootScope.longitude);
         // user's latitude
-        formData.append("latitude", $scope.latitude);
+        formData.append("latitude", $rootScope.latitude);
+        
         formData.append("searchAll", !$rootScope.cartSettings.searchMyList);
         formData.append("resultsFilter", JSON.stringify($scope.resultFilter));
         formData.append("viewOptimizedList", $rootScope.cartSettings.optimizedCart);
