@@ -1,16 +1,23 @@
 <!DOCTYPE html>
 
+<link href="<?php echo base_url("assets/css/home.css"); ?>" rel="stylesheet">
+
 <div id="home-container">
 
     
-    <div class="main-image-area">
+    <section class="arrow main-image-area">
         
         <div class="otiprix-intro layout-padding">
             <h2>OTIPRIX</h2>
             <h3>En quelques clics, économisez sur vos listes d'épicerie</h3>
+            
         </div>
         
-    </div>
+        <div style="width: 100%; position: absolute; bottom: 60px; z-index: 5;">
+            <a href="#section02"><span></span></a>
+        </div>
+        
+    </section>
     
     <div class="search-area" ng-controller="ShopController">
         
@@ -25,10 +32,9 @@
             </form>
         </div>
         
-        
     </div>
     
-    <div class="layout-padding howitworks"  ng-controller="HomeController">
+    <div id="section02" class="layout-padding howitworks arrow section-div"  ng-controller="HomeController">
         
         <h3 class="section-title md-otiprix-text">Économisez sur votre liste d'épicerie</h3>
         <div class="container">
@@ -54,56 +60,26 @@
             
             <div class="row">
                 <div style="margin-top: 5px; margin-bottom: 30px; text-align: center;">
-                    <md-button class="md-raised action-button" ng-click="gotoShop()">
+                    <md-button class="md-raised action-button" style="z-index : 10;" ng-click="gotoShop()">
                         <md-icon><i class="material-icons">money_off</i></md-icon>
                         <b>Commencez à économiser aujourd'hui</b>
                     </md-button>
                 </div>
             </div>
-            
-            
                 
-            </div>
         </div>
+        
+        <div style="width: 100%; position: absolute; bottom: 60px; z-index: 5;">
+            <a href="#section03"><span></span></a>
+        </div>
+        
+    </div>
+    
     </div>
         
     <md-divider></md-divider>
     
-    <div class="promo-area bgpatttern" ng-controller="HomeController" ng-hide="true" ng-cloak>
-        <div class="container">
-            <div class="row">
-                <div class="col-md-4 col-sm-8">
-                    <div class="single-promo">
-                        <a href="<?php echo site_url("account/my_grocery_list"); ?>"><img class="img-circle" width="100px;" height="100px;" src="<?php echo base_url("/assets/img/grocerylist.png"); ?>"></a>
-                        <h4 class="md-otiprix-text">Votre liste d'épicerie</h4>
-<!--                        <i class="fa fa-heart"></i>-->
-                        <p class="md-gray-text">Utilisez les circulaires pour créer votre panier d'épicerie et économisez sur les dépenses.</p>
-                    </div>
-                </div>
-                <div class="col-md-4 col-sm-8">
-                    <div class="single-promo">
-                        <a href="<?php echo site_url("shop/select_flyer_store"); ?>"><img class="img-circle" width="100px;" height="100px;" src="<?php echo base_url("/assets/img/flyers.jpg"); ?>"></a>
-<!--                        <i class="fa fa-unlock"></i>-->
-                        <h4 class="md-otiprix-text">Les circulaires</h4>
-                        <p class="md-gray-text">Sélectionnez le magasin pour afficher le contenu de la circulaire. </p>
-                    </div>
-                </div>
-                <div class="col-md-4 col-sm-8">
-                    <div class="single-promo">
-                        <a href="<?php echo site_url("shop/categories"); ?>"><img class="img-circle" width="100px;" height="100px;" src="<?php echo base_url("/assets/img/categories.png"); ?>"></a>
-                        <h4 class="md-otiprix-text">Les catégories de produits</h4>
-<!--                        <i class="fa fa-calendar"></i>-->
-                        <p class="md-gray-text">Utilisez les catégories de produits pour créer votre panier d'épicerie et économiser sur les dépenses.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <md-divider></md-divider>
-    </div> <!-- End promo area -->
-    
-    
-    
-    <div class="maincontent-area">
+    <div id="section03" class="maincontent-area">
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
