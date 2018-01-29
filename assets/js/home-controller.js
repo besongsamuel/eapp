@@ -4,19 +4,51 @@
  * and open the template in the editor.
  */
 
+
+angular.module('eappApp').component('otiprixStep', {
+    
+    templateUrl: 'otiprixStep.html',
+    controller : function($scope)
+    {
+        var ctrl = this;
+        
+        ctrl.$onInit = function()
+        {
+            $scope.displayBorder = ctrl.displayBorder;
+        };
+    },
+    bindings: 
+    {
+        index: '@',
+        image : '@',
+        caption: '@',
+        displayBorder: '<'
+    }
+});
+
 angular.module("eappApp").controller("HomeController", ["$rootScope", "$scope", "eapp", function($rootScope, $scope, eapp) 
 {
-    $rootScope.isHome = true;
     
-    var getLatestProductsPromise = eapp.getLatestProducts();
-    
-    getLatestProductsPromise.then(function(response)
+    angular.element(document).ready(function()
     {
-        var array = $.map(response.data, function(value, index) {
-            return [value];
-        });
+        $rootScope.isHome = true;
+    
+        $rootScope.hideSearchArea = true;
+
+        $scope.yes = true;
         
-        $scope.latestProducts = array;
+        $scope.no = false;
+        
+        var getLatestProductsPromise = eapp.getLatestProducts();
+
+        getLatestProductsPromise.then(function(response)
+        {
+            var array = $.map(response.data, function(value, index) {
+                return [value];
+            });
+
+            $scope.latestProducts = array;
+        });
     });
     
 }]);

@@ -1,0 +1,35 @@
+<style>
+
+    @media (min-width : 1000px)
+    {
+        .right-border
+        {
+            border-right: 1px solid lightgray;
+        }
+    }
+
+    @media (min-width : 200px) and (max-width : 800px)
+    {
+        .right-border
+        {
+            border-right: none;
+        }
+    }
+    
+</style>
+
+<div class="layout-padding" ng-class="{'right-border' : displayBorder }">
+    <div class="row">
+        <h2 style="text-align : center;">{{$ctrl.index}}</h2>
+    </div>
+
+    <div class="row">
+        <div class="image-container">
+            <img style="width : 200px; height : 200px; border-color : rgb(160, 160, 160); border-width : 3px;" alt="poster_1_up" ng-src="{{$ctrl.image}}">
+        </div>
+    </div>
+
+    <div class="row">
+        <h4 style="text-align : center; margin-top : 10px; margin-bottom : 10px;">{{$ctrl.caption}}</h4>
+    </div>
+</div>

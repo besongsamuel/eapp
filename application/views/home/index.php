@@ -2,38 +2,71 @@
 
 <div id="home-container">
 
-    <md-divider></md-divider>
-    <md-divider></md-divider>
     
-    <h3 class="section-title md-otiprix-text">Économisez sur votre liste d'épicerie</h3>
-    <h4 style="text-align: center; color : #666;">Comment ça marche?</h4>
-    
-    <div class="container" style="text-align: center;" ng-controller="HomeController">
-            
-        <div class="row">
-            <div class="col-sm-12">
-                <md-icon style="color: #666;"><i class="material-icons">perm_identity</i></md-icon>&nbsp;<span>Rechercher un article d'épicerie</span>&nbsp;&nbsp;&nbsp;
-                <md-icon style="color: #1abc9c;"><i class="material-icons">lock_open</i></md-icon><span><b>OtiPrix trouve l'article avec le meilleur prix pour vous</b></span>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-12">
-                <md-icon style="color: #666;"><i class="material-icons">perm_identity</i></md-icon>&nbsp;<span>Créer une liste d'épicerie</span>&nbsp;&nbsp;&nbsp;
-                <md-icon style="color: #1abc9c;"><i class="material-icons">lock_open</i></md-icon><span><b>Otiprix crée une liste d'épicerie parmi les articles aux meilleurs prix</b></span>
-            </div>
-        </div>
+    <div class="main-image-area">
         
-        <br>
-        
-        <div style="margin-top: 5px; margin-bottom: 30px;">
-            <md-button class="md-raised md-primary" style="padding : 10px; font-size: 14px;" ng-click="gotoShop()">
-                <md-icon><i class="material-icons">money_off</i></md-icon>
-                <b>Commencez à économiser aujourd'hui</b>
-            </md-button>
+        <div class="otiprix-intro layout-padding">
+            <h2>OTIPRIX</h2>
+            <h3>En quelques clics, économisez sur vos listes d'épicerie</h3>
         </div>
         
     </div>
     
+    <div class="search-area" ng-controller="ShopController">
+        
+        <div class="container layout-padding">
+            <form ng-submit="searchProducts(searchText)">
+                <md-input-container class="md-icon-float md-icon-right md-block">
+                    <label>Rechercher produits</label>
+                    <input style="color: white; text-align: center;" name="searchText" ng-model="searchText" aria-label="Rechercher" />
+                    <md-icon style="color : white;"><i class="material-icons">search</i></md-icon>
+
+                </md-input-container>
+            </form>
+        </div>
+        
+        
+    </div>
+    
+    <div class="layout-padding howitworks"  ng-controller="HomeController">
+        
+        <h3 class="section-title md-otiprix-text">Économisez sur votre liste d'épicerie</h3>
+        <div class="container">
+            <div class="row">
+                
+                <div class="col-md-3 col-sm-6">
+                    <otiprix-step index="1" image="<?php echo base_url("/assets/img/step-1.jpg"); ?>" caption="Recherche un article d'épicerie" display-border="yes"></otiprix-step>
+                </div>
+                
+                <div class="col-md-3 col-sm-6">
+                    <otiprix-step index="2" image="<?php echo base_url("/assets/img/step-2.jpg"); ?>" caption="Créer une liste d'épicerie" display-border="yes"></otiprix-step>
+                </div>
+                
+                <div class="col-md-3 col-sm-6">
+                    <otiprix-step index="3" image="<?php echo base_url("/assets/img/step-3.jpg"); ?>" caption="OtiPrix trouve l'article avec le meilleur prix pour vous" display-border="yes"></otiprix-step>
+                </div>
+                
+                <div class="col-md-3 col-sm-6">
+                    <otiprix-step index="4" image="<?php echo base_url("/assets/img/step-4.jpg"); ?>" caption="OtiPrix crée une liste d'épicerie parmi les articles aux meilleurs prix" display-border="no"></otiprix-step>
+                </div>
+                
+            </div>
+            
+            <div class="row">
+                <div style="margin-top: 5px; margin-bottom: 30px; text-align: center;">
+                    <md-button class="md-raised action-button" ng-click="gotoShop()">
+                        <md-icon><i class="material-icons">money_off</i></md-icon>
+                        <b>Commencez à économiser aujourd'hui</b>
+                    </md-button>
+                </div>
+            </div>
+            
+            
+                
+            </div>
+        </div>
+    </div>
+        
     <md-divider></md-divider>
     
     <div class="promo-area bgpatttern" ng-controller="HomeController" ng-hide="true" ng-cloak>
@@ -67,6 +100,8 @@
         </div>
         <md-divider></md-divider>
     </div> <!-- End promo area -->
+    
+    
     
     <div class="maincontent-area">
         <div class="container">

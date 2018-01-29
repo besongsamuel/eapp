@@ -178,7 +178,7 @@
             
   <notifications-bar class="notifications"></notifications-bar>
 
-    <div class="container search-box" id="search-box" ng-controller="ShopController" ng-hide="hideSearchArea" style="margin-top: 120px;" ng-cloak>
+    <div class="container search-box" id="search-box" ng-controller="ShopController" ng-hide="hideSearchArea" style="margin-top: 110px;" ng-cloak>
 
         <div class="row">
             <div ng-class="{'col-sm-12 col-md-12' : isUserLogged, 'col-sm-12 col-md-6' : !isUserLogged}">
@@ -200,7 +200,7 @@
 
     </div>
   
-  <div class="top-header">
+  <div class="top-header" ng-cloak>
             
         <div class="container">
 
@@ -242,7 +242,7 @@
 
     </div>
     
-    <div id="mainmenu-area" class="mainmenu-area" class="navbar-wrapper">
+  <div id="mainmenu-area" class="mainmenu-area" class="navbar-wrapper" ng-cloak>
             <div>
                 <nav class="navbar navbar-fixed-top" style="top : 50px;">
                     <div class="navbar-padding">
