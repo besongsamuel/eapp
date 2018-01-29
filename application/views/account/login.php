@@ -3,8 +3,8 @@
 <link href="<?php echo base_url("assets/css/login.css"); ?>" rel="stylesheet">
 
 
-<div id="admin-container" class="container loginbox" ng-controller="AccountController" ng-cloak>
-   <div id="loginbox" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
+<div id="admin-container" class="container mainbox" ng-controller="AccountController" ng-cloak>
+   <div id="loginbox" class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
       <div class="panel panel-info" >
         
         <md-toolbar style="background-color: #1abc9c;">

@@ -9,21 +9,19 @@ and open the template in the editor.
 
 <div id="admin-container" class="container" ng-controller="PasswordForgottenController" ng-cloak>
     
-    
-   <div id="loginbox" class="mainbox col-md-8 col-md-offset-2 col-sm-12">
+   <div id="loginbox" class="col-md-8 col-md-offset-2 col-sm-12">
        
        <div class="row" style="margin: 10px;">
            <a href="<?php echo site_url("home/goback"); ?>">Retour</a>
        </div>
         
-       
         <div class="panel panel-info" >
           
             <div class="panel-heading">
                <div class="panel-title">Mot de passe oublié</div>
             </div>
           
-            <div style="padding-top:30px" class="panel-body">
+            <div class="panel-body">
             
                 <div class="alert alert-danger col-sm-12" ng-show="passwordForgottenErrorMessage">
                    <p>{{passwordForgottenErrorMessage}}</p>

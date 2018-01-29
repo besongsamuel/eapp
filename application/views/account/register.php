@@ -1,9 +1,9 @@
 <link href="<?php echo base_url("assets/css/register.css"); ?>" rel="stylesheet">
 
 
-<div id="admin-container" class="container loginbox" ng-controller="AccountController">    
+<div id="admin-container" class="container mainbox" ng-controller="AccountController">    
 
-        <div id="signupbox" class="mainbox">
+        <div id="signupbox">
             <div class="panel panel-info">
                      
                 <md-toolbar style="background-color: #1abc9c;">

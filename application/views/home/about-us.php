@@ -22,7 +22,7 @@
     <![endif]-->
 
     <!-- page builer -->
-    <section class="section-white clearfix">
+    <section class="section-white clearfix mainbox">
         <div class="container">
             <div class="row">
                 <div class="col-md-12 col-sm-12 col-xs-12">
