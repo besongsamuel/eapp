@@ -38,3 +38,8 @@ p.cart-warning
     margin-bottom: 10px;
     color: #666;
 }
+
+.md-rounded-corners
+{
+    border-radius: 17px;
+}

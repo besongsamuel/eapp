@@ -40,7 +40,7 @@
                     
                     <md-progress-linear md-mode="indeterminate" ng-show="promise.$$state.status === 0"></md-progress-linear>
                     
-                    <p ng-hide="results_available" class="md-otiprix-text" style="text-align: center; margin-bottom: 50px; margin-top: 20px;"><b>Il n'y a aucun résultat</b></p>
+                    <p ng-hide="results_available" class="md-otiprix-text" style="text-align: center; margin-bottom: 50px; margin-top: 20px;"><b>Votre panier est vide.</b></p>
                     
                     <div id="cart-optimization-container" class="layout-padding" ng-show="cartSettings.cartView">
                         <div ng-repeat="departmentStore in departmenStores">
@@ -178,7 +178,7 @@
 
                     <div class="row pull-right">
 
-                        <md-button class="md-warn md-raised"  ng-click="clearCart()" aria-label="Effacer votre panier">
+                        <md-button class="md-warn md-raised md-rounded-corners"  ng-click="clearCart()" aria-label="Effacer votre panier">
                             <md-tooltip
                                 md-direction="bottom">
                                 Effacer votre panier
@@ -187,7 +187,7 @@
                             Effacer Liste
                         </md-button>
 
-                        <md-button class="md-raised md-otiprix" aria-label="Impression" ng-click="printCart()">
+                        <md-button class="md-raised md-otiprix md-rounded-corners" aria-label="Impression" ng-click="printCart()">
                             <md-tooltip
                                 md-direction="bottom">
                                 Impression
@@ -196,7 +196,7 @@
                             Imprimer
                         </md-button>
 
-                        <md-button class="md-raised md-otiprix" ng-click="sendListAsSMS($event)" aria-label="Envoyer à votre téléphone" ng-disabled="!isUserLogged">
+                        <md-button class="md-raised md-otiprix md-rounded-corners" ng-click="sendListAsSMS($event)" aria-label="Envoyer à votre téléphone" ng-disabled="!isUserLogged">
                             <md-tooltip
                                 md-direction="bottom">
                                 Envoyer par sms
@@ -205,7 +205,7 @@
                           Envoyer par SMS
                         </md-button>
 
-                        <md-button class="md-raised md-otiprix" aria-label="Partager" ng-hide="true">
+                        <md-button class="md-raised md-otiprix md-rounded-corners" aria-label="Partager" ng-hide="true">
                             <md-tooltip
                                 md-direction="bottom">
                                 Partager
@@ -214,7 +214,7 @@
                             Partager
                         </md-button>
 
-                        <md-button class="md-raised md-otiprix" aria-label="Envoyer à votre courrier électronique" ng-click="sendListAsEmail($event)"  ng-disabled="!isUserLogged">
+                        <md-button class="md-raised md-otiprix md-rounded-corners" aria-label="Envoyer à votre courrier électronique" ng-click="sendListAsEmail($event)"  ng-disabled="!isUserLogged">
                             <md-tooltip
                                 md-direction="bottom">
                                 Envoyer à votre courrier électronique

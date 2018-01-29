@@ -26,7 +26,11 @@
       </div>
     </md-toolbar>
     
-    <table md-table ng-model="selected" md-progress="promise" ng-if="!gridView">
+    <md-progress-linear md-mode="indeterminate" ng-disabled="!isLoading"></md-progress-linear>
+    
+    <p class="md-otiprix-text" style="text-align: center;" ng-show="products.length === 0">Aucun résultat trouvé</p>
+    
+    <table md-table ng-model="selected" ng-if="!gridView  && products.length > 0">
         <thead md-head md-order="query.order" md-on-reorder="getProducts">
             <tr md-row>
                 <th md-column></th>
@@ -69,21 +73,24 @@
             </td>
             <td md-cell>
                 <md-button class="md-otiprix md-raised pull-right" ng-hide="productInCart(product.product.id)"  ng-click="add_product_to_cart(product.product_id, isStoreSelected ? product.id : -1, product.quantity)">
-                            <md-icon><i class="material-icons">add_shopping_cart</i></md-icon>
-                            Ajouter
-                        </md-button>
+                    <md-icon>
+                        <i class="material-icons">add_shopping_cart</i>
+                    </md-icon>
+                    Ajouter
+                </md-button>
 
-                        <md-button class="md-warn md-raised pull-right" ng-show="productInCart(product.product.id)" ng-click="remove_product_from_cart(product.product_id)">
-                            <md-icon><i class="material-icons">remove_shopping_cart</i></md-icon>
-                            Retirer
-                        </md-button>
+                <md-button class="md-warn md-raised pull-right" ng-show="productInCart(product.product.id)" ng-click="remove_product_from_cart(product.product_id)">
+                    <md-icon><i class="material-icons">remove_shopping_cart</i></md-icon>
+                    Retirer
+                </md-button>
             </td>
+            
           </tr>
         </tbody>
     </table>
     
-    <div class="row md-padding" ng-if="gridView">
-        <md-progress-linear md-mode="indeterminate" ng-disabled="!isLoading"></md-progress-linear>
+    <div class="row md-padding" ng-if="gridView && products.length > 0">
+        
         <div class="col-md-3 col-sm-6 md-padding" ng-repeat="product in products">
 
             <div class="thumbnail">
@@ -134,9 +141,6 @@
     
     
 </md-table-container>
-
-
-
 
 <md-table-pagination md-limit="query.limit" md-limit-options="[20, 40, 100]" md-page="query.page" md-total="{{count}}" md-on-paginate="getProducts" md-page-select></md-table-pagination>
 

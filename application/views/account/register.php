@@ -52,7 +52,7 @@
                             </md-input-container>
                             <!-- -->
                             <md-input-container class="md-block col-md-6" flex-gt-sm>
-                                <label>City</label>
+                                <label>Ville</label>
                                 <input required name="city" ng-model="user.city" />
                                 <div ng-messages="signupForm.city.$error">
                                     <div ng-message="required">Vous devex entrer une ville</div>
