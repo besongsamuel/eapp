@@ -20,9 +20,9 @@ var directory = currentScriptPath.substring(0,currentScriptPath.lastIndexOf("/")
                 templateUrl: $sce.trustAsResourceUrl(directory + "md-country-state-select.html"),
                 scope: { country: '=country', countryState: '=countryState' , defaultCountry:'=?', countryClass:'=?', stateClass:'=?', showHints:'=', flag:'=' },
                 link: function (scope, element, attrs) {
-                    scope.countryLabel = "Country";
-                    scope.stateLabel = "State";
-                    scope.countrySelectLabel = "Select";
+                    scope.countryLabel = "Pays";
+                    scope.stateLabel = "État";
+                    scope.countrySelectLabel = "Sélectioner";
 		    scope.countryClass = "md-block col-sm-6";
 		    scope.stateClass = "md-block col-sm-6";
 
