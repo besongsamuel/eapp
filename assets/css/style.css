@@ -222,6 +222,7 @@ z-index: 9;
 {
     position: relative;
     height: 180px;
+    margin-top: 15px;
 }
 .product-hover {
     height: 100%;
