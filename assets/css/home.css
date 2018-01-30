@@ -37,6 +37,13 @@ md-input-container:not(md-input-invalid) .md-input-focused .md-input
     bottom: 50px;
 }
 
+.otiprix-intro h2, .otiprix-intro h3
+{
+    font-weight: 300;
+}
+
+
+
 /* Smartphones (portrait and landscape) ----------- */
 @media only screen and (min-device-width : 320px) and (max-device-width : 480px) 
 {

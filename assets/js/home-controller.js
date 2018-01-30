@@ -26,13 +26,14 @@ angular.module('eappApp').component('otiprixStep', {
         ctrl.$onInit = function()
         {
             $scope.displayBorder = ctrl.displayBorder;
+            $scope.caption = ctrl.caption;
         };
     },
     bindings: 
     {
         index: '@',
         image : '@',
-        caption: '@',
+        caption: '<',
         displayBorder: '<'
     }
 });
@@ -49,6 +50,10 @@ angular.module("eappApp").controller("HomeController", ["$rootScope", "$scope", 
         $scope.yes = true;
         
         $scope.no = false;
+        
+        $scope.caption_01 = "Recherchez et ajouter un ou plusieurs produits à votre liste d’épicerie en passant par les circulaires ou les différentes catégories de produits";
+        $scope.caption_02 = "En un seul clic, Otiprix recherche les meilleurs prix pour chaque produit de votre liste dans tous les magasins";
+        $scope.caption_03 = "Otiprix vous fournit votre liste avec les magasins qui offrent les meilleurs prix. Vous pouvez imprimer cette liste, l’envoyé par SMS ou par courriel.";
         
         var getLatestProductsPromise = eapp.getLatestProducts();
 

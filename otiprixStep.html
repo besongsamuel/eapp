@@ -15,21 +15,49 @@
             border-right: none;
         }
     }
+
+    .caption
+    {
+        text-align : center; 
+        margin-top : 10px; 
+        margin-bottom : 10px;
+    }
+
+    .heading
+    {
+        text-align: center;
+        height: 80px;
+    }
+
+    .heading h2
+    {
+        font-weight: 500;
+        font-size: 25px;
+    }
+
+    .promo-image
+    {
+        width : 200px !important; 
+        height : 200px !important; 
+        border-color : rgb(160, 160, 160) !important; 
+        border-width : 3px !important;
+        padding: 0px !important;
+    }
     
 </style>
 
 <div class="layout-padding" ng-class="{'right-border' : displayBorder }">
-    <div class="row">
-        <h2 style="text-align : center;">{{$ctrl.index}}</h2>
+    <div class="row heading">
+        <h2>{{$ctrl.index}}</h2>
     </div>
 
     <div class="row">
         <div class="image-container">
-            <img style="width : 150px; height : 150px; border-color : rgb(160, 160, 160); border-width : 3px;" alt="poster_1_up" ng-src="{{$ctrl.image}}">
+            <img class="promo-image" alt="poster_1_up" ng-src="{{$ctrl.image}}">
         </div>
     </div>
 
     <div class="row">
-        <h4 style="text-align : center; margin-top : 10px; margin-bottom : 10px;">{{$ctrl.caption}}</h4>
+        <p class="caption">{{caption}}</p>
     </div>
 </div>

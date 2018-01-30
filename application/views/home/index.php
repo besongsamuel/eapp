@@ -38,25 +38,6 @@
         
         <h3 class="section-title md-otiprix-text">Économisez sur votre liste d'épicerie</h3>
         <div class="container">
-            <div class="row">
-                
-                <div class="col-md-3 col-sm-6">
-                    <otiprix-step index="1" image="<?php echo base_url("/assets/img/step-1.jpg"); ?>" caption="Recherche un article d'épicerie" display-border="yes"></otiprix-step>
-                </div>
-                
-                <div class="col-md-3 col-sm-6">
-                    <otiprix-step index="2" image="<?php echo base_url("/assets/img/step-2.jpg"); ?>" caption="Créer une liste d'épicerie" display-border="yes"></otiprix-step>
-                </div>
-                
-                <div class="col-md-3 col-sm-6">
-                    <otiprix-step index="3" image="<?php echo base_url("/assets/img/step-3.jpg"); ?>" caption="OtiPrix trouve l'article avec le meilleur prix pour vous" display-border="yes"></otiprix-step>
-                </div>
-                
-                <div class="col-md-3 col-sm-6">
-                    <otiprix-step index="4" image="<?php echo base_url("/assets/img/step-4.jpg"); ?>" caption="OtiPrix crée une liste d'épicerie parmi les articles aux meilleurs prix" display-border="no"></otiprix-step>
-                </div>
-                
-            </div>
             
             <div class="row">
                 <div style="margin-top: 5px; margin-bottom: 30px; text-align: center;">
@@ -66,11 +47,25 @@
                     </md-button>
                 </div>
             </div>
+            
+            <div class="row">
                 
-        </div>
-        
-        <div style="width: 100%; position: absolute; bottom: 60px; z-index: 5;">
-            <a href="#section03"><span></span></a>
+                <div class="col-md-4 col-sm-6">
+                    <otiprix-step index="Créez votre liste d’épicerie" image="<?php echo base_url("/assets/img/step-2.jpg"); ?>" caption="caption_01" display-border="yes"></otiprix-step>
+                </div>
+                
+                <div class="col-md-4 col-sm-6">
+                    <otiprix-step index="Otiprix vous donne les meilleurs prix" image="<?php echo base_url("/assets/img/step-3.jpg"); ?>" caption="caption_02" display-border="yes"></otiprix-step>
+                </div>
+                
+                <div class="col-md-4 col-sm-6">
+                    <otiprix-step index="Faites votre épicerie en économisant" image="<?php echo base_url("/assets/img/list-calculator.jpg"); ?>" caption="caption_03" display-border="no"></otiprix-step>
+                </div>
+                
+            </div>
+            
+            
+                
         </div>
         
     </div>
@@ -79,7 +74,41 @@
         
     <md-divider></md-divider>
     
-    <div id="section03" class="maincontent-area">
+    <divz class="promo-area bgpatttern" ng-controller="HomeController" ng-hide="true" ng-cloak>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 col-sm-8">
+                    <div class="single-promo">
+                        <a href="<?php echo site_url("account/my_grocery_list"); ?>"><img class="img-circle" width="100px;" height="100px;" src="<?php echo base_url("/assets/img/grocerylist.png"); ?>"></a>
+                        <h4 class="md-otiprix-text">Votre liste d'épicerie</h4>
+<!--                        <i class="fa fa-heart"></i>-->
+                        <p class="md-gray-text">Utilisez les circulaires pour créer votre panier d'épicerie et économisez sur les dépenses.</p>
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-8">
+                    <div class="single-promo">
+                        <a href="<?php echo site_url("shop/select_flyer_store"); ?>"><img class="img-circle" width="100px;" height="100px;" src="<?php echo base_url("/assets/img/flyers.jpg"); ?>"></a>
+<!--                        <i class="fa fa-unlock"></i>-->
+                        <h4 class="md-otiprix-text">Les circulaires</h4>
+                        <p class="md-gray-text">Sélectionnez le magasin pour afficher le contenu de la circulaire. </p>
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-8">
+                    <div class="single-promo">
+                        <a href="<?php echo site_url("shop/categories"); ?>"><img class="img-circle" width="100px;" height="100px;" src="<?php echo base_url("/assets/img/categories.png"); ?>"></a>
+                        <h4 class="md-otiprix-text">Les catégories de produits</h4>
+<!--                        <i class="fa fa-calendar"></i>-->
+                        <p class="md-gray-text">Utilisez les catégories de produits pour créer votre panier d'épicerie et économiser sur les dépenses.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <md-divider></md-divider>
+    </div> <!-- End promo area -->
+    
+    
+    
+    <div class="maincontent-area">
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
