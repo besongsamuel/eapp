@@ -47,6 +47,7 @@
                     <md-subheader class="md-no-sticky">Produits similaires</md-subheader>
                     <md-list-item class="md-3-line" ng-repeat="sp in storeProduct.similar_products" ng-click="selectProduct(sp)">
                       <img ng-src="{{sp.retailer.image}}" class="md-avatar" alt="{{sp.retailer.name}}" />
+                      <img ng-src="{{sp.product.image}}" class="md-avatar" alt="{{sp.product.name}}" />
                       <div class="md-list-item-text" layout="column">
                         <p>Prix : <b> $ CAD {{sp.price}} </b></p>
                         <p>Marchand : <b><a href>{{sp.retailer.name}}</a></b></p>

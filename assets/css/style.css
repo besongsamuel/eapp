@@ -1352,6 +1352,12 @@ div.cart-collaterals ul.products li.product:hover .add_to_cart_button{background
     border: #009933 thin solid;
 }
 
+md-list-item .md-avatar, md-list-item .md-list-item-inner .md-avatar 
+{
+    width: 80px;
+    height: 80px;
+}
+
 
 
 
