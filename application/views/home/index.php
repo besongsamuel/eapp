@@ -2,10 +2,10 @@
 
 <link href="<?php echo base_url("assets/css/home.css"); ?>" rel="stylesheet">
 
-<div id="home-container">
+<div id="home-container" class="otiprix-section">
 
     
-    <section class="arrow main-image-area">
+    <section class="arrow main-image-area" ng-hide="true" ng-cloak>
         
         <div class="otiprix-intro layout-padding">
             <h2>OTIPRIX</h2>
@@ -19,7 +19,7 @@
         
     </section>
     
-    <div class="search-area" ng-controller="ShopController">
+    <div class="search-area" ng-controller="ShopController" ng-hide="true" ng-cloak>
         
         <div class="container layout-padding">
             <form ng-submit="searchProducts(searchText)">
@@ -63,8 +63,6 @@
                 </div>
                 
             </div>
-            
-            
                 
         </div>
         

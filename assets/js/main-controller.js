@@ -89,6 +89,13 @@ eappApp.filter('titlecase', function() {
     };
 });
 
+eappApp.directive("currentAddress", function()
+{
+    return {
+        template : '<div class="col-sm-12 col-md-12 layout-padding" layout-align="center center"><p style="text-align : center;" ng-hide="isUserLogged">Résultats optimisés pour {{currentAddress}} | <a ng-href="{{changeLocationUrl}}" >Changer</a></p></div>'
+    };
+});
+
 
 eappApp.component("quantityInput", 
 {
@@ -169,7 +176,7 @@ eappApp.component("resultFilter",
     }
 });
 
-function ResultFilterController($scope)
+function ResultFilterController($scope, $rootScope)
 {
     var ctrl = this;
     
@@ -186,7 +193,7 @@ function ResultFilterController($scope)
         $scope.distance = ctrl.distance;
         $scope.viewConfig = ctrl.viewConfig;
         $scope.isUserLogged = ctrl.isUserLogged;
-        
+                
         if(ctrl.type === 'CART')
         {
             $scope.viewConfig.viewAll = !$scope.viewConfig.optimizedCart;

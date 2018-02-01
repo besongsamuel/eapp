@@ -9,20 +9,22 @@ and open the template in the editor.
 <!-- Animate CSS -->
 <link rel="stylesheet" href="<?php echo base_url("assets/css/shop.css")?>">
 
-<div class="product-big-title-area">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="product-bit-title text-center">
-                    <h2>Produits en circulaire</h2>
+
+
+<md-content id="shop-container" class="white-container otiprix-section" ng-controller="ShopController">
+
+    <div class="product-big-title-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="product-bit-title text-center">
+                        <h2>Produits en circulaire</h2>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</div> <!-- End Page title area -->
-
-<md-content id="shop-container" class="white-container" ng-controller="ShopController">
-	
+    </div> <!-- End Page title area -->
+    
     <div class="container" style="margin-top : 10px;" ng-show="category_id">
         <ul class="breadcrumb" style="text-align: center; background: white;">
             <li><a href="<?php echo site_url("shop/categories")?>">Categories</a></li>
@@ -40,6 +42,9 @@ and open the template in the editor.
     <md-content class="layout-padding">
         
         <div class="row">
+            
+            <current-address></current-address>
+            
             <div class="col-md-2">
                 <result-filter ng-if="productsReady" distance="distance" on-distance-changed="changeDistance(distance)" view-config="viewConfig" on-refresh="refresh(viewConfig)" ready="productsReady" result-set="filterSettings" on-settings-changed="settingsChanged(item)" ></result-filter>
             </div>

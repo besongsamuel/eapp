@@ -17,19 +17,22 @@ $(document).ready(function()
 <link rel="stylesheet" href="<?php echo base_url("assets/css/account.css")?>">
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
 
-<div class="product-big-title-area">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="product-bit-title text-center">
-                    <h2>Mon Compte</h2>
+
+
+<md-content class="otiprix-section" id="admin-container" ng-cloak>
+    
+    <div class="product-big-title-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="product-bit-title text-center">
+                        <h2>Mon Compte</h2>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</div> <!-- End Page title area -->
-
-<div id="admin-container" ng-cloak>
+    </div> <!-- End Page title area -->
+    
     <md-tabs md-dynamic-height md-border-bottom class="container" layout-padding md-selected = "<?php echo $tabIndex; ?>">
         <div>
             
@@ -297,7 +300,7 @@ $(document).ready(function()
         </div>
     </md-tabs>
    
-</div>
+</md-content>
 
 <script src="<?php echo base_url("assets/js/userlist-controller.js")?>"></script>
 <script src="<?php echo base_url("assets/js/account-optimization-controller.js")?>"></script>

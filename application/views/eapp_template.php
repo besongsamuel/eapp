@@ -178,24 +178,20 @@
             
   <notifications-bar class="notifications"></notifications-bar>
 
-    <div class="container search-box" id="search-box" ng-controller="ShopController" ng-hide="hideSearchArea" style="margin-top: 110px;" ng-cloak>
+    <div class="container search-box" id="search-box" ng-controller="ShopController" ng-hide="true" style="margin-top: 110px;" ng-cloak>
 
         <div class="row">
-            <div ng-class="{'col-sm-12 col-md-12' : isUserLogged, 'col-sm-12 col-md-6' : !isUserLogged}">
+            <div class="col-sm-12 col-md-12">
                 <form ng-submit="searchProducts(searchText)">
                     <md-input-container class="md-icon-float md-icon-right md-block">
                         <label>Rechercher produits</label>
                         <input name="searchText" ng-model="searchText" aria-label="Rechercher" />
-                        <md-icon ng-hide="true"><i class="material-icons">search</i></md-icon>
+                        <md-icon><i class="material-icons">search</i></md-icon>
 
                     </md-input-container>
                 </form>
             </div>
-
-            <div class="col-sm-12 col-md-6 layout-padding" layout-align="center center">
-                <p ng-hide="isUserLogged">Résultats optimisés pour {{currentAddress}} | <a href="<?php echo site_url("/home/change_location"); ?>">Changer</a></p>
-            </div>
-
+            
         </div>
 
     </div>
@@ -287,8 +283,8 @@
                                         <li><a href="<?php echo site_url("home/about_us"); ?>">À propos</a></li>
                                     </ul>
                                 </li>
-                                <li><a  href="<?php echo site_url("home/contact"); ?>">Contact</a></li>
-                                <li><a  href="<?php echo site_url("home/about"); ?>">À propos</a></li>
+                                <li ng-class="{active : isContact}"><a  href="<?php echo site_url("home/contact"); ?>">Contact</a></li>
+                                <li ng-class="{active : isAboutUs}"><a  href="<?php echo site_url("home/about"); ?>">À propos</a></li>
                             </ul>
                             
                             <ul class="nav navbar-nav pull-right"  ng-controller="AccountController">

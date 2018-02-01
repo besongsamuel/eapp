@@ -33,6 +33,8 @@ $(document).ready(function()
             }
         }
         
+        rootScope.changeLocationUrl = rootScope.site_url.concat("/home/change_location");
+        
         /* CART */
         
         /**

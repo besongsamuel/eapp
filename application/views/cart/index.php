@@ -2,21 +2,25 @@
    
 <link href="<?php echo base_url("assets/css/cart.css"); ?>" rel="stylesheet">
 
-<div class="product-big-title-area">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="product-bit-title text-center">
-                    <h2>Mon Panier</h2>
+
+
+<md-content class="otiprix-section" id="cart-container" ng-controller="CartController" ng-cloak>
+          
+    <div class="product-big-title-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="product-bit-title text-center">
+                        <h2>Mon Panier</h2>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</div> <!-- End Page title area -->
-
-<md-content id="cart-container" ng-controller="CartController" ng-cloak>
-          
+    </div> <!-- End Page title area -->
+    
     <md-content class="layout-padding">
+        
+        <current-address></current-address>
         
         <div class="row">
             <div class="col-md-2">
@@ -229,6 +233,7 @@
                     
             </div>
         </div>
+        
     </md-content>
 
     <div>
