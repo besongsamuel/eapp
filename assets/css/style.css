@@ -1242,9 +1242,15 @@ div.cart-collaterals ul.products li.product:hover .add_to_cart_button{background
 
 .eapp-logo
 {
-    width : 70px;
-    opacity: 1;
-    filter: alpha(opacity=100);
+    width : 90px;
+    margin: -2px;
+    /*opacity: 1;*/
+    /*filter: alpha(opacity=100); */
+}
+
+.eapp-logo-footer
+{
+    width : 90px;
 }
 
 .breadcrumb
