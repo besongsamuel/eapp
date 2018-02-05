@@ -128,7 +128,7 @@
                     <td md-cell><b>{{product.name}}</b></td>
 
                     <td md-cell>
-                        <md-chips  ng-model="product.tags_array" md-removable="true" ng-readonly="true"></md-chips>
+                        <md-chips  ng-model="product.tags_array" md-removable="true"></md-chips>
                     </td>
 
                     <td md-cell>
@@ -164,6 +164,9 @@
                     <td md-cell>
                         <md-button class="md-raised md-primary" ng-click="edit_product(product.id)">
                             Edit
+                        </md-button>
+                        <md-button class="md-raised md-otiprix" ng-click="directEdit($event, product)">
+                            Direct Edit
                         </md-button>
                         <md-button class="md-raised md-warn" ng-click="deleteProduct($event, product.id)">
                             Delete

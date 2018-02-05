@@ -699,7 +699,7 @@ angular.module('eappApp').directive('fileUpload', function ()
     };
 });
 
-angular.module("eappApp").controller("ViewProductsController", function($scope, eapp, $mdDialog)
+angular.module("eappApp").controller("ViewProductsController", function($scope, eapp, $mdDialog, $http)
 {
     var ctrl = this;
     
@@ -830,6 +830,33 @@ angular.module("eappApp").controller("ViewProductsController", function($scope, 
                 }
             });
         });
+    };
+    
+    $scope.directEdit = function(ev, theProduct)
+    {
+        theProduct.tags = theProduct.tags_array.join();
+        
+        var product = JSON.stringify(theProduct);
+        
+        var formData = new FormData();
+        formData.append("product", product);
+
+        angular.forEach($scope.product_image, function(obj){
+            if(!obj.isRemote){
+                formData.append('image', obj.lfFile);
+            }
+        });
+
+        $http.post($scope.site_url.concat("/admin/edit_otiprix_product"), formData, {transformRequest: angular.identity,
+        headers: {'Content-Type': undefined}}).then(
+        function(result)
+        {
+            if(result.data.success)
+            {
+                eapp.showAlert(ev, "Success", "Your product was edited successfully.");
+            }		
+        });
+        
     };
     
     angular.element(document).ready(function()
