@@ -411,7 +411,7 @@ class CI_Model {
     
     public function get_products_count($filter)
     {
-        $this->add_name_filter($filter);
+        $this->add_product_name_filter($filter);
         
         $query = $this->db->query('SELECT * FROM '.PRODUCT_TABLE);
 
