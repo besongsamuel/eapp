@@ -8,7 +8,7 @@ class Admin extends CI_Controller
         $this->load->library('upload');
         $this->load->helper('text');
         
-        if($this->user->subscription === 0)
+        if($this->user != null && $this->user->subscription === 0)
         {
             header('Location: '.  site_url('/home'));
         }
@@ -114,7 +114,6 @@ class Admin extends CI_Controller
         $response = array();
         
         
-        
         if($this->upload->do_upload('image'))
         {
             $upload_data = $this->upload->data();
@@ -132,6 +131,43 @@ class Admin extends CI_Controller
         $id = $this->admin_model->create(PRODUCT_TABLE, $data);
         
         $response['newProduct'] = $this->admin_model->get(PRODUCT_TABLE, $id);
+        
+        echo json_encode($response);
+        
+    }
+    
+    public function edit_otiprix_product()
+    {
+        $this->load->helper('file');
+        
+        $product = json_decode($this->input->post("product"));
+        
+        $data = array
+        (
+            "unit_id" => $product->unit_id,
+            "subcategory_id" => $product->subcategory_id,
+            "tags" => $product->tags,
+        );
+        
+        // User is editing a product
+        if(isset($product->id))
+        {
+            $data["id"] = $product->id;
+        }
+        
+        $this->initialize_upload_library(ASSETS_DIR_PATH.'img/products/', uniqid().".png");
+        
+        $response = array();
+        
+        if($this->upload->do_upload('image'))
+        {
+            $upload_data = $this->upload->data();
+            $data['image'] = $upload_data['file_name'];
+        }
+        
+        $response['success'] = true;
+        
+        $this->admin_model->create(PRODUCT_TABLE, $data);
         
         echo json_encode($response);
         
@@ -222,6 +258,42 @@ class Admin extends CI_Controller
     {        
         $this->rememberme->recordOrigPage();
         $this->data['body'] = $this->load->view('admin/store_products', $this->data, TRUE);
+        $this->parser->parse('eapp_template', $this->data);
+    }
+    
+    public function view_products() 
+    {    
+        if($this->user->subscription != 2)
+        {
+            header('Location: '.  site_url('/home'));
+        }
+        
+        $this->rememberme->recordOrigPage();
+        $this->data['body'] = $this->load->view('admin/view_products', $this->data, TRUE);
+        $this->parser->parse('eapp_template', $this->data);
+    }
+    
+    public function edit_product() 
+    {   
+        if($this->user->subscription != 2)
+        {
+            header('Location: '.  site_url('/home'));
+        }
+        
+        $this->rememberme->recordOrigPage();
+        $this->data['body'] = $this->load->view('admin/edit_product', $this->data, TRUE);
+        $this->parser->parse('eapp_template', $this->data);
+    }
+    
+    public function create_otiprix_product() 
+    {  
+        if($this->user->subscription != 2)
+        {
+            header('Location: '.  site_url('/home'));
+        }
+        
+        $this->rememberme->recordOrigPage();
+        $this->data['body'] = $this->load->view('admin/create_otiprix_product', $this->data, TRUE);
         $this->parser->parse('eapp_template', $this->data);
     }
     

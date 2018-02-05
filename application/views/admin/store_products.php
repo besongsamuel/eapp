@@ -14,7 +14,7 @@
             </div>
 	</md-toolbar>
 	    
-	    <md-toolbar class="md-table-toolbar md-default" ng-hide="selected.length || filter.show">
+    <md-toolbar class="md-table-toolbar md-default" ng-hide="selected.length || filter.show">
         <div class="md-toolbar-tools">
         <div flex></div>
         <md-button class="md-icon-button" ng-click="filter.show = true">

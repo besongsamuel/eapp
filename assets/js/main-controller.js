@@ -445,6 +445,11 @@ eappApp.factory('eapp', ['$http','$rootScope', '$mdDialog', function($http, $roo
         return $http.post(eappService.getSiteUrl().concat("cart/get_product/").concat(productId.toString()), null);
     };
     
+    eappService.getOtiprixProduct = function(productId)
+    {
+        return $http.post(eappService.getSiteUrl().concat("eapp/get_otiprix_product/").concat(productId.toString()), null);
+    };
+    
     eappService.getSiteUrl = function()
     {
         var siteName = window.location.hostname.toString();
@@ -469,7 +474,6 @@ eappApp.factory('eapp', ['$http','$rootScope', '$mdDialog', function($http, $roo
         return location.protocol.concat("//", siteName, "/");
     };
     
-    
     eappService.siteUrl = function()
     {
         return $http.post(eappService.getSiteUrl().concat("eapp/site_url"), null);
@@ -488,6 +492,25 @@ eappApp.factory('eapp', ['$http','$rootScope', '$mdDialog', function($http, $roo
     eappService.getBrands = function()
     {
         return $http.post(eappService.getSiteUrl().concat("eapp/get_brands"), null);
+    };
+    
+    eappService.getProductsCount = function(filter)
+    {
+        return $http.post(eappService.getSiteUrl().concat("eapp/get_products_count/", filter), null);
+    };
+    
+    eappService.deleteProduct = function(product_id)
+    {
+        return $http.post(eappService.getSiteUrl().concat("eapp/delete_product/", product_id), null);
+    };
+    
+    eappService.getProducts = function(query)
+    {
+        var formData = new FormData();
+        
+        formData.append("query", JSON.stringify(query));
+        
+        return $http.post(eappService.getSiteUrl().concat("/eapp/get_products"), formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}});
     };
     
     eappService.getLatestProducts = function()
@@ -637,6 +660,11 @@ eappApp.factory('eapp', ['$http','$rootScope', '$mdDialog', function($http, $roo
     eappService.getCategories = function()
     {
         return $http.post(eappService.getSiteUrl().concat("eapp/get_categories"), null);  
+    };
+    
+    eappService.getSubCategories = function()
+    {
+        return $http.post(eappService.getSiteUrl().concat("eapp/get_subcategories"), null);  
     };
     
     eappService.getCloseRetailers = function(distance)

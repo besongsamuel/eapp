@@ -244,6 +244,14 @@ class Eapp extends CI_Controller
         
     }
     
+    public function get_subcategories() 
+    {
+        $subcategories = $this->admin_model->get_all(SUB_CATEGORY_TABLE);
+        
+        echo json_encode($subcategories);
+        
+    }
+    
     public function get_unit_compareunits() 
     {
         $data = array
@@ -292,6 +300,51 @@ class Eapp extends CI_Controller
         echo json_encode($unit_compareunit);
     }
     
+    public function get_products() 
+    {
+        $query = json_decode($this->input->post("query"));
+        
+        $data = new stdClass();
+        
+        $data->count = $this->admin_model->get_products_count($query->filter);
+        
+        $data->products = $this->admin_model->get_products($query);
+        
+        $data->subcategories = $this->admin_model->get_all(SUB_CATEGORY_TABLE);
+        
+        $data->units = $this->admin_model->get_all(UNITS_TABLE);
+        
+        echo json_encode($data);
+    }
+    
+    public function delete_product($id) 
+    {
+        $this->admin_model->delete(PRODUCT_TABLE, $id);
+    }
+    
+    public function get_otiprix_product($id) 
+    {
+        $product = $this->admin_model->get(PRODUCT_TABLE, $id);
+        
+        $path = ASSETS_DIR_PATH."img/products/".$product->image;
+            
+        if(!file_exists($path))
+        {
+            $product->image = "no_image_available.png";
+        }
+            
+        $product->image = base_url('/assets/img/products/').$product->image;
+        
+        
+        echo json_encode($product);
+    }
+    
+    public function get_products_count() 
+    {
+        echo json_encode($this->admin_model->get_products_count());
+    }
+
+
     public function get_store_product() 
     {
         $id = $this->input->post("id");

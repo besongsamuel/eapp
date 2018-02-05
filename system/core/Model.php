@@ -381,18 +381,41 @@ class CI_Model {
             }
         }
         
-        
-        
-       
-        
         return $result_set;
     }
 	
-    public function get_products()
+    public function get_products($query)
     {
+        $this->add_product_name_filter($query->filter);
+        
+        $this->db->limit($query->limit, $query->limit * ($query->page - 1));
+        
         $products = $this->get_all(PRODUCT_TABLE);
+        
+        foreach ($products as $key => $value) 
+        {
+            $store_image_path = ASSETS_DIR_PATH."img/products/".$value->image;
+            
+            if(!file_exists($store_image_path) || empty($value->image))
+            {
+                $products[$key]->image = "no_image_available.png";
+            }
+            
+            $products[$key]->tags_array = explode(",", $products[$key]->tags); 
+            
+            $products[$key]->image = base_url('/assets/img/products/').$products[$key]->image;
+        }
 
         return $products;
+    }
+    
+    public function get_products_count($filter)
+    {
+        $this->add_name_filter($filter);
+        
+        $query = $this->db->query('SELECT * FROM '.PRODUCT_TABLE);
+
+        return $query->num_rows();
     }
     
     public function get_chains()
@@ -830,7 +853,7 @@ class CI_Model {
 	
     private function add_name_filter($filter) 
     {
-        if($filter != null)
+        if($filter != null && !empty($filter))
         {
             $filter_array = explode(' ', $filter);
             
@@ -853,6 +876,40 @@ class CI_Model {
                 
                 $this->db->or_like("tags", $new_filter);
                 $this->db->or_like("store_name", $new_filter);
+                
+                $first = true;
+            }
+            if($first)
+            {
+                $this->db->group_end();
+            }
+        }
+    }
+    
+    private function add_product_name_filter($filter) 
+    {
+        if($filter != null)
+        {
+            $filter_array = explode(' ', $filter);
+            
+            $first = false;
+            
+            foreach ($filter_array as $new_filter) 
+            {
+                if(empty($new_filter))
+                    continue;
+                
+                if(!$first)
+                {
+                    $this->db->group_start();
+                    $this->db->like(PRODUCT_TABLE.".name", $new_filter);
+                }
+                else
+                {
+                    $this->db->or_like(PRODUCT_TABLE.".name", $new_filter);
+                }
+                
+                $this->db->or_like("tags", $new_filter);
                 
                 $first = true;
             }
@@ -1110,11 +1167,9 @@ class CI_Model {
             {
                  $result[$key]->image = base_url('/assets/img/stores/').$result[$key]->image;
             }
-           
         }
         
         return $result;
-       
     }
     
     public function delete($table_name, $data)

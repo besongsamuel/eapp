@@ -4,6 +4,9 @@
  * and open the template in the editor.
  */
 
+
+
+
 angular.module("eappApp").directive('apsUploadFile', apsUploadFile);
 
 function apsUploadFile() {
@@ -444,7 +447,7 @@ angular.module("eappApp").controller('AdminController', ["$scope", "Form", "$htt
                 });
             }
                 
-            };
+        };
     };
 	
     $scope.createNewProduct = function(ev)
@@ -670,6 +673,279 @@ angular.module("eappApp").controller('AdminController', ["$scope", "Form", "$htt
     $scope.Init();
     
 }]);
+
+angular.module('eappApp').directive('fileUpload', function () 
+{
+    return {
+        templateUrl:'uploadFileView.html',
+        link: function (scope, element) {
+
+            scope.fileName = 'Choose a file...';
+
+            element.bind('change', function () {
+                scope.$apply(function () {
+                    scope.fileName = document.getElementById('uploadFileInput').files[0].name;
+                });
+            });
+
+            scope.uploadFile = function(){
+                var formData = new FormData();
+
+                formData.append('file', document.getElementById('uploadFileInput').files[0]);
+
+                // Add code to submit the formData  
+            };
+        }
+    };
+});
+
+angular.module("eappApp").controller("ViewProductsController", function($scope, eapp, $mdDialog)
+{
+    var ctrl = this;
+    
+    $scope.selected = [];
+    
+    $scope.product = null;
+      
+    $scope.query = 
+    {
+        filter: '',
+        limit: 20,
+        page: 1
+    };
+    
+    $scope.filter = 
+    {
+        options: 
+        {
+            debounce: 500
+        }
+    };
+    
+    $scope.gotoCreateNewProduct = function()
+    {
+        window.location.href = $scope.site_url.concat("/admin/create_otiprix_product");
+    };
+    
+    $scope.removeFilter = function () 
+    {
+        $scope.filter.show = false;
+        $scope.query.filter = '';
+
+        if($scope.filter.form.$dirty) 
+        {
+          $scope.filter.form.$setPristine();
+        }
+    };
+  
+    $scope.$watch('query.filter', function (newValue, oldValue) 
+    {
+        if(!oldValue) 
+        {
+            bookmark = $scope.query.page;
+        }
+
+        if(newValue !== oldValue) 
+        {
+            $scope.query.page = 1;
+        }
+
+        if(!newValue) 
+        {
+            $scope.query.page = bookmark;
+        }
+
+        $scope.getProducts();
+    });
+    
+    ctrl.Init = function()
+    {
+        $scope.getProducts();
+    };
+    
+    $scope.getProducts = function()
+    {
+        var getProductsPromise = eapp.getProducts($scope.query);
+        
+        $scope.promise = getProductsPromise;
+        
+        getProductsPromise.then(function(response)
+        {
+            var array = $.map(response.data.products, function(value, index) {
+                return [value];
+            });
+            
+            $scope.products = array;
+            
+            $scope.subcategories = response.data.subcategories;
+            
+            $scope.units = response.data.units;
+            
+            $scope.count = response.data.count;
+        });
+    };
+    
+    
+    $scope.getChips = function(tags)
+    {
+        return tags.split(",");
+    };
+    
+    $scope.getUnits = function()
+    {
+        var getUnitsPromise = eapp.getUnits();
+        
+        getUnitsPromise.then(function(response)
+        {
+            $scope.units = response.data;
+        });
+    };
+    
+    $scope.edit_product = function(product_id)
+    {
+        window.location.href = $scope.site_url.concat("/admin/edit_product?product=", product_id.toString());
+    };
+    
+    
+    $scope.deleteProduct = function(ev, product_id)
+    {
+        // Appending dialog to document.body to cover sidenav in docs app
+        var confirm = $mdDialog.confirm()
+              .title('Delete product')
+              .textContent('Are you sure?')
+              .ariaLabel('Lucky day')
+              .targetEvent(ev)
+              .ok('Yes')
+              .cancel('No');
+
+        $mdDialog.show(confirm).then(function() 
+        {
+            eapp.deleteProduct(product_id).then(function()
+            {
+                var index = $scope.products.map(function(e){ return e.id; }).indexOf(product_id);
+                
+                if(index > -1)
+                {
+                    $scope.products.splice(index, 1);
+                }
+            });
+        });
+    };
+    
+    angular.element(document).ready(function()
+    {
+        ctrl.Init();
+    });
+    
+});
+
+angular.module("eappApp").controller("EditProductController", function($scope, eapp, $http)
+{
+    var ctrl = this;
+    
+    $scope.product = null;
+      
+    ctrl.Init = function()
+    {
+        var pID = angular.getSearchParam("product");
+        
+        $scope.getSubCategories();
+        $scope.getUnits();
+        
+        if(!angular.isNullOrUndefined(pID))
+        {
+            // Get the store product
+            var getProductPromise = eapp.getOtiprixProduct(pID);
+            
+            getProductPromise.then(function(response)
+            {
+                $scope.product = response.data;
+                
+                $scope.product.tagsArray = $scope.product.tags.split(",");
+                
+                var image_url = $scope.product.image;
+        
+                $scope.api.removeAll();
+
+                $scope.api.addRemoteFile(image_url, $scope.product.image,'image'); 
+            });
+        }
+        else
+        {
+            $scope.product = 
+            {
+                name : 'New Product',
+                tagsArray : [],
+                tags : '',
+                unit_id : 0,
+                subcategory_id : 0,
+                image : ''
+        
+            };
+        }
+    };
+    
+    $scope.getSubCategories = function()
+    {
+        var getSubCategoriesPromise = eapp.getSubCategories();
+        
+        getSubCategoriesPromise.then(function(response)
+        {
+            $scope.subcategories = response.data;
+        });
+    };
+    
+    $scope.getUnits = function()
+    {
+        var getUnitsPromise = eapp.getUnits();
+        
+        getUnitsPromise.then(function(response)
+        {
+            $scope.units = response.data;
+        });
+    };
+    
+    $scope.submit = function(ev)
+    {
+        $scope.product.tags = $scope.product.tagsArray.join();
+        
+        var product = JSON.stringify($scope.product);
+        
+        if($scope.editProduct.$valid)
+        {
+            var formData = new FormData();
+            formData.append("product", product);
+
+            angular.forEach($scope.product_image, function(obj){
+                if(!obj.isRemote){
+                    formData.append('image', obj.lfFile);
+                }
+            });
+
+            $http.post($scope.site_url.concat("/admin/edit_otiprix_product"), formData, {transformRequest: angular.identity,
+            headers: {'Content-Type': undefined}}).then(
+            function(result)
+            {
+                if(result.data.success)
+                {
+                    eapp.showAlert(ev, "Success", "Your product was edited successfully.")
+                }		
+            });
+        }
+        
+    };
+        
+    $scope.gotoViewProducts = function()
+    {
+        window.location.href = $scope.site_url.concat("/admin/view_products");
+    };
+    
+    angular.element(document).ready(function()
+    {
+        ctrl.Init();
+    });
+    
+});
 
 
 angular.module("eappApp").controller('ProductsTableController', ['$scope', '$q', '$http', '$rootScope', function($scope, $q, $http, $rootScope) 
