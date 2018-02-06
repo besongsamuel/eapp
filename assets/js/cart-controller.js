@@ -1760,11 +1760,11 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
         
         var siteLogo = $scope.base_url.concat("assets/img/logo.png");
         
-        content += '<style> tr:nth-child(even){ background-color : #f2f2f2;}  </style>';
+        content += '<style> tr:nth-child(even){ background-color : #f2f2f2;} @media print{ body{ -webkit-print-color-adjust: exact;} } </style>';
         
         content += '<html><head><title style="font-style: italic; color : #444; ">OtiPrix - All RIghts Reserved</title>';
         content += '</head><body >';
-        content += '<div style="text-align : center; width : 100%; padding : 10px; background-color : #1abc9c; color : #1abc9c; height : 50px;"><img style="display = block; margin : auto; width : 60px;" src="' + siteLogo + '" /></div>';
+        content += '<div style="text-align : center; width : 100%; padding : 10px; background-color : #1abc9c !important;"><img style="display = block; margin : auto; width : 60px;" src="' + siteLogo + '" /></div>';
         content += "<h4 style='text-align : center; color : #444; color : #1abc9c;'>OtiPrix - Liste d'épicerie optimisé</h4>";
 
         var currentDepartmentStoreID = -1;
