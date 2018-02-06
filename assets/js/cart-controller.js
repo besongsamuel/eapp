@@ -1796,7 +1796,7 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
                     
                     var unit = angular.isNullOrUndefined(storeProduct.unit) ? '-' : storeProduct.unit.name;
                     
-                    content += '<p style="padding : 10px;"><span><input type="checkbox" style="margin-right : 5px;"></span><span>' + category.products[k].quantity + ' x </span><b style="color : #1abc9c;">' + storeProduct.product.name + ' </b> (' + storeProduct.format + ' ' + unit + ' à ' + storeProduct.price + ' C$) <span style="float : right"><b style="font-size : 20px;">' + parseFloat(storeProduct.price) * parseFloat(category.products[k].quantity) + ' C$</b></span></p>';
+                    content += '<p style="padding : 10px;"><span><input type="checkbox" style="margin-right : 5px;"></span><span>' + category.products[k].quantity + ' x </span><b style="color : #1abc9c;">' + storeProduct.product.name + ' </b> (' + storeProduct.format + ' ' + unit + ' à ' + storeProduct.price + ' C$) <span style="float : right"><b style="font-size : 16px;">' + parseFloat(storeProduct.price) * parseFloat(category.products[k].quantity) + ' C$</b></span></p>';
                     
                     content += '</td></tr>';
                     
