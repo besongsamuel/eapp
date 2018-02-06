@@ -15,7 +15,7 @@
     </div>
 </div> <!-- End Page title area -->
     
-<div id="admin-container" class="admin-container" ng-controller="AdminController" ng-cloak>
+<div id="admin-container" class="admin-container otiprix-section" ng-controller="AdminController" ng-cloak>
 	
     <div class="container">
 	    

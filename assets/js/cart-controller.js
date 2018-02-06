@@ -1758,11 +1758,14 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
 
         $rootScope.sortCart();
         
-        content += '<style> table, td { border: 1px solid #ddd;} tr:nth-child(even){ background-color : #f2f2f2;}  </style>';
+        var siteLogo = $scope.base_url.concat("assets/img/logo.png");
+        
+        content += '<style> tr:nth-child(even){ background-color : #f2f2f2;}  </style>';
         
         content += '<html><head><title style="font-style: italic; color : #444; ">OtiPrix - All RIghts Reserved</title>';
         content += '</head><body >';
-        content += "<h3 style='text-align : center; color : #444; color : #1abc9c;'>OtiPrix - Liste d'épicerie optimisé</h3>";
+        content += '<div style="text-align : center; width : 100%; padding : 10px; background-color : #1abc9c; color : #1abc9c; height : 50px;"><img style="display = block; margin : auto; width : 60px;" src="' + siteLogo + '" /></div>';
+        content += "<h4 style='text-align : center; color : #444; color : #1abc9c;'>OtiPrix - Liste d'épicerie optimisé</h4>";
 
         var currentDepartmentStoreID = -1;
         
@@ -1788,18 +1791,12 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
                     
                     content += '<tr width="100%">';
                     
-                    // Image here
-                    content += '<td width="100px;"><img src="' + storeProduct.product.image + '" width="100px" style="padding : 4px;" /></td>';
-                    
-                    
                     // Details Here
                     content += '<td>';
                     
                     var unit = angular.isNullOrUndefined(storeProduct.unit) ? '-' : storeProduct.unit.name;
                     
-                    content += '<p style="padding : 10px; color : #1abc9c;"><b>' + storeProduct.product.name + ', ' + storeProduct.format + ' ' + unit + ' </b></p>';
-                    
-                    content += '<p style="padding : 10px;">Quantité: ' + category.products[k].quantity + ' , Prix: ' + storeProduct.price + ', Total: ' + parseFloat(storeProduct.price) * parseFloat(category.products[k].quantity) + ' </p>';
+                    content += '<p style="padding : 10px;"><span><input type="checkbox" style="margin-right : 5px;"></span><span>' + category.products[k].quantity + ' x </span><b style="color : #1abc9c;">' + storeProduct.product.name + ' </b> (' + storeProduct.format + ' ' + unit + ' à ' + storeProduct.price + ' C$) <span style="float : right"><b style="font-size : 20px;">' + parseFloat(storeProduct.price) * parseFloat(category.products[k].quantity) + ' C$</b></span></p>';
                     
                     content += '</td></tr>';
                     
