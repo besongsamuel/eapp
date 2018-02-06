@@ -144,7 +144,7 @@
                         <md-input-container>
                             <label>Sub category</label>
                             <md-select ng-model="product.subcategory_id">
-                                <md-option ng-value="subcategory.id" ng-repeat="subcategory in subcategories">{{ subcategory.name }}</md-option>
+                                <md-option ng-value="subcategory.id" ng-repeat="subcategory in subcategories track by $index">{{ subcategory.name }}</md-option>
                             </md-select>
                         </md-input-container>
 
@@ -155,7 +155,7 @@
                         <md-input-container>
                             <label>Unit</label>
                             <md-select ng-model="product.unit_id">
-                                <md-option ng-value="unit.id" ng-repeat="unit in units">{{ unit.name }}</md-option>
+                                <md-option ng-value="unit.id" ng-repeat="unit in units track by $index">{{ unit.name }}</md-option>
                             </md-select>
                         </md-input-container>
 

@@ -401,7 +401,7 @@ class CI_Model {
                 $products[$key]->image = "no_image_available.png";
             }
             
-            $products[$key]->tags_array = explode(",", $products[$key]->tags); 
+            $products[$key]->tags_array = array_unique(explode(",", $products[$key]->tags)); 
             
             $products[$key]->image = base_url('/assets/img/products/').$products[$key]->image;
         }
