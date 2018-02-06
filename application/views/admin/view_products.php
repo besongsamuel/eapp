@@ -21,63 +21,12 @@
         -moz-osx-font-smoothing: grayscale;
     }
 
-    input::-webkit-input-placeholder {
-      color: rgba(0, 0, 0, 0.26);
-      font-weight: 300;
-    }
     
-    input::-moz-placeholder {
-      color: rgba(0, 0, 0, 0.26);
-      font-weight: 300;
-    }
-    
-    input:-ms-input-placeholder {
-      color: rgba(0, 0, 0, 0.26);
-      font-weight: 300;
-    }
-    input::input-placeholder {
-      color: rgba(0, 0, 0, 0.26);
-      font-weight: 300;
-    }
-    .material-icons {
-      position: static;
-      margin: 0;
-    }
-    md-toolbar
-    {
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
-    }
-
-    md-card {
-      -webkit-flex: 0 0 auto;
-      -ms-flex: 0 0 auto;
-      flex: 0 0 auto;
-      position: relative;
-    }
-    md-toolbar.md-table-toolbar.ng-hide {
-      display: none;
-    }
-    md-toolbar.md-table-toolbar.alternate .md-toolbar-tools {
-      color: #1e88e5;
-      font-size: 16px;
-      background-color: #e3f2fd;
-    }
-    md-toolbar.md-table-toolbar form {
-      margin-left: 16px;
-    }
-    md-toolbar.md-table-toolbar form > input {
-      width: 100%;
-      margin: 0;
-      border: none;
-      color: rgba(0, 0, 0, 0.87);
-    }
-    md-toolbar.md-table-toolbar form > input:focus {
-      outline: none;
-    }
     
 </style>
 
 <script src="<?php echo base_url("assets/js/admin-controller.js")?>"></script>
+<link rel="stylesheet" href="<?php echo base_url("assets/css/admin.css")?>">
 
 <md-content class="otiprix-section layout-padding" ng-controller="ViewProductsController" ng-cloak>
     

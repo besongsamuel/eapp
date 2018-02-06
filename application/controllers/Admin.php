@@ -255,7 +255,12 @@ class Admin extends CI_Controller
     }
     
     public function store_products() 
-    {        
+    {   
+        if($this->user->subscription != 2)
+        {
+            header('Location: '.  site_url('/home'));
+        }
+        
         $this->rememberme->recordOrigPage();
         $this->data['body'] = $this->load->view('admin/store_products', $this->data, TRUE);
         $this->parser->parse('eapp_template', $this->data);

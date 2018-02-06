@@ -1,18 +1,29 @@
 <!DOCTYPE html>
 
+<style>
+    
+    .image-container img
+    {
+        border-radius: 0px;
+        width: 160px;
+        height: 130px;
+    }
+</style>
+
 <!-- Main Script -->
 <script src="<?php echo base_url("assets/js/admin-controller.js")?>"></script>
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-<link rel="stylesheet" href="<?php echo base_url("assets/css/shop.css")?>">
 
-<div id="admin-container" class="admin-container" ng-controller="ProductsTableController" ng-cloak>
+<div id="admin-container" class="otiprix-section" ng-controller="ProductsTableController" ng-cloak>
     
-    <md-table-container class="container">
-        <md-toolbar style="background-color: #1abc9c; margin-bottom : 10px;">
-            <div>
-                <h2 class="md-toolbar-tools">Products</h2>
-            </div>
-	</md-toolbar>
+    <md-toolbar style="background-color: #1abc9c; margin-bottom : 10px;">
+        <div>
+            <h2 class="md-toolbar-tools">Products</h2>
+        </div>
+    </md-toolbar>
+    
+    <md-table-container class="layout-padding">
+        
 	    
     <md-toolbar class="md-table-toolbar md-default" ng-hide="selected.length || filter.show">
         <div class="md-toolbar-tools">
@@ -56,11 +67,11 @@
                     </td>
 
                     <td md-cell>
-                        <div class="admin-image"><a href=""><img alt="" ng-src="{{store_product.retailer.image}}" ></a></div>
+                        <div class="image-container"><a href=""><img alt="" ng-src="{{store_product.retailer.image}}" ></a></div>
                     </td>
 
                     <td md-cell>
-                        <div class="admin-image"><a href=""><img alt="" ng-src="{{store_product.product.image}}" ></a></div>
+                        <div class="image-container"><a href=""><img alt="" ng-src="{{store_product.product.image}}" ></a></div>
                     </td>
 
                     <td md-cell width="30%">
