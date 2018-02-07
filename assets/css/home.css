@@ -27,6 +27,11 @@ section::after {
 #section01 a {
   padding-top: 60px;
 }
+
+#section02{
+     height: 675px;
+}
+
 #section01 a span {
   position: absolute;
   top: 0;
