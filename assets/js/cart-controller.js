@@ -1468,47 +1468,44 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
     
     $rootScope.getListAsText = function()
     {
-        var currentDepartmentStoreID = -1;
-        var smsText = "Votre liste d'épicerie fourni par OtiPrix \n";
-        for(var x in $rootScope.cart)
+        var smsText = "Votre liste d'épicerie fourni par OtiPrix \n\n";
+        
+        for(var i in $scope.departmenStores)
         {
-            var storeProduct = $rootScope.cart[x].store_product;
-
-            if(parseFloat(storeProduct.price) === 0)
+            var departmentStore = $scope.departmenStores[i];
+            
+            smsText +=  departmentStore.name + ': ' + departmentStore.address + ', ' + departmentStore.state + ', ' + departmentStore.city + ', ' + departmentStore.postcode + '\n\n';
+            
+            for(var j in departmentStore.categories)
             {
-                continue;
-            }
-
-            if(currentDepartmentStoreID !== parseInt(storeProduct.department_store.id))
-            {
-                    currentDepartmentStoreID = parseInt(storeProduct.department_store.id);
-
-                    smsText += storeProduct.retailer.name;
-                    if(typeof storeProduct.department_store !== "undefined" && parseInt(storeProduct.department_store.distance) !== 0)
-                    {
-                         smsText += " - " +  storeProduct.department_store.address + ", " + storeProduct.department_store.state + ", " + storeProduct.department_store.city + "," + storeProduct.department_store.postcode;
-                    }
-                    smsText += "\n";
-            }
-
-            smsText += storeProduct.product.name + ": " + storeProduct.price + " $ CAD";
-
-            if(storeProduct.unit != null && typeof storeProduct.unit !== "undefined")
-            {
-                smsText += "/" + storeProduct.unit.name + "\n";
-            }
-            else
-            {
-                smsText += "\n";
+                var category = departmentStore.categories[j];
+                
+                smsText += category.name + '\n';
+                                
+                for(var k in category.products)
+                {
+                    var storeProduct = category.products[k].store_product;
+                    
+                    
+                    var unit = angular.isNullOrUndefined(storeProduct.unit) ? '-' : storeProduct.unit.name;
+                    
+                    smsText += category.products[k].quantity + ' x ' + storeProduct.product.name + ' (' + storeProduct.format + ' ' + unit + ' à ' + storeProduct.price + ' C$), ' + parseFloat(storeProduct.price) * parseFloat(category.products[k].quantity) + ' C$ \n';
+                    
+                }
+                
             }
         }
+        
+        smsText += '\n\n';
+        
+        var total_price = Math.round(parseFloat($rootScope.get_cart_total_price()) * 100) / 100;
 
-                    smsText += "TOTAL : $ CAD " + $scope.get_cart_total_price();
+        smsText += "TOTAL : " + total_price.toString() + " C $";
 
-                    if(parseFloat($scope.price_optimization) > 0)
-                    {
-                            smsText += "Vous économiserez environs : $ CAD " +  $scope.price_optimization;
-                    }
+        if(parseFloat($scope.price_optimization) > 0)
+        {
+            smsText += "\nVous économiserez environs :" +  $scope.price_optimization + "  C $";
+        }
 
         return smsText;
     };
@@ -1768,8 +1765,6 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
         content += "<h4 style='text-align : center; color : #444; color : #1abc9c;'>OtiPrix - Liste d'épicerie optimisé</h4>";
 
         var currentDepartmentStoreID = -1;
-        
-       
         
         for(var i in $scope.departmenStores)
         {

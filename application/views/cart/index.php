@@ -102,7 +102,7 @@
                                     
                                     <div class="layout-padding">
 
-                                        <div class="md-primary"><a class="image-container" href><img alt="poster_1_up" ng-src="{{store.image}}"></a><a href  ng-click="InitMap($event, store.department_store)"><p style="text-align: center; margin-top: 10px;">{{store.department_store.fullName}}, {{store.department_store.distanceText}} en voiture (environs {{store.department_store.timeText}})</p></a></div>
+                                        <div class="md-primary"><a class="image-container-square" href><img alt="poster_1_up" ng-src="{{store.image}}"></a><a href  ng-click="InitMap($event, store.department_store)"><p style="text-align: center; margin-top: 10px;">{{store.department_store.fullName}}, {{store.department_store.distanceText}} en voiture (environs {{store.department_store.timeText}})</p></a></div>
 
                                           <div>Produits disponibles <span class="badge">{{store.store_products.length}}</div>
 

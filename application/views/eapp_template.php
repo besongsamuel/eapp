@@ -219,6 +219,7 @@
                         <div class="pull-right">
 
                             <span>
+                                <span><b>Voir Panier</b></span>
                                 <a href="<?php echo site_url("cart"); ?>" class="md-icon-button" aria-label="Cart">
                                     <md-icon><i class="material-icons">shopping_cart</i> </md-icon>
                                     <span class="badge" ng-show="get_cart_item_total() > 0">{{get_cart_item_total()}} | {{get_cart_total_price() | number : 2}} C $</span>

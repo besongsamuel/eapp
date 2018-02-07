@@ -273,7 +273,7 @@ z-index: 9;
 .product-hover a.view-details-link { bottom: -25%;}
 .single-product h2 {
     font-size: 18px;
-    line-height: 25px;
+    line-height: 18px;
     margin-bottom: 10px;
     margin-top: 15px;
 }
@@ -1333,7 +1333,7 @@ div.cart-collaterals ul.products li.product:hover .add_to_cart_button{background
     background: url(../contact/img/pattern.png) repeat center center !important;
 }
 
-.image-container
+.image-container, .image-container-square
 {
     margin-top: 2px;
     margin-bottom: 2px;
@@ -1348,6 +1348,15 @@ div.cart-collaterals ul.products li.product:hover .add_to_cart_button{background
     border-radius:50%;
     width: 120px;
     height: 120px;
+    padding: 5px;
+    border: #009933 thin solid;
+}
+
+.image-container-square img {
+    display: block;
+    margin: auto;
+    width: 120px;
+    height: 80px;
     padding: 5px;
     border: #009933 thin solid;
 }
