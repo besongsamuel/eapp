@@ -1474,7 +1474,7 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
         {
             var departmentStore = $scope.departmenStores[i];
             
-            smsText +=  departmentStore.name + ': ' + departmentStore.address + ', ' + departmentStore.state + ', ' + departmentStore.city + ', ' + departmentStore.postcode + '\n\n';
+            smsText +=  departmentStore.name + ': ' + departmentStore.address + ', ' + departmentStore.state + ', ' + departmentStore.city + ', ' + departmentStore.postcode + '\n\n\n';
             
             for(var j in departmentStore.categories)
             {
@@ -1489,7 +1489,7 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
                     
                     var unit = angular.isNullOrUndefined(storeProduct.unit) ? '-' : storeProduct.unit.name;
                     
-                    smsText += category.products[k].quantity + ' x ' + storeProduct.product.name + ' (' + storeProduct.format + ' ' + unit + ' à ' + storeProduct.price + ' C$), ' + parseFloat(storeProduct.price) * parseFloat(category.products[k].quantity) + ' C$ \n';
+                    smsText += category.products[k].quantity + ' x ' + storeProduct.product.name + ' (' + storeProduct.format + ' ' + unit + ' à ' + storeProduct.price + ' C $), ' + parseFloat(storeProduct.price) * parseFloat(category.products[k].quantity) + ' C $ \n\n';
                     
                 }
                 
@@ -1504,7 +1504,9 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
 
         if(parseFloat($scope.price_optimization) > 0)
         {
-            smsText += "\nVous économiserez environs :" +  $scope.price_optimization + "  C $";
+            var economy = Math.round(parseFloat($scope.price_optimization) * 100) / 100;
+            
+            smsText += "\nVous économiserez environs :" +  economy + "  C $";
         }
 
         return smsText;
@@ -1791,7 +1793,7 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
                     
                     var unit = angular.isNullOrUndefined(storeProduct.unit) ? '-' : storeProduct.unit.name;
                     
-                    content += '<p style="padding : 10px;"><span><input type="checkbox" style="margin-right : 5px;"></span><span>' + category.products[k].quantity + ' x </span><b style="color : #1abc9c;">' + storeProduct.product.name + ' </b> (' + storeProduct.format + ' ' + unit + ' à ' + storeProduct.price + ' C$) <span style="float : right"><b style="font-size : 16px;">' + parseFloat(storeProduct.price) * parseFloat(category.products[k].quantity) + ' C$</b></span></p>';
+                    content += '<p style="padding : 10px;"><span><input type="checkbox" style="margin-right : 5px;"></span><span>' + category.products[k].quantity + ' x </span><b style="color : #1abc9c;">' + storeProduct.product.name + ' </b> (' + storeProduct.format + ' ' + unit + ' à ' + storeProduct.price + ' C $) <span style="float : right"><b style="font-size : 16px;">' + parseFloat(storeProduct.price) * parseFloat(category.products[k].quantity) + ' C$</b></span></p>';
                     
                     content += '</td></tr>';
                     
@@ -1807,11 +1809,12 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
 
         content += "<br>";
         content += "<br>";
-        content += "<p style='float : right;'><b><span>Totale : <span><span style=' color : red;'>$ CAD " + total_price + "<span> + taxes. </b></p>";
+        content += "<p style='float : right;'><b><span>Totale : <span><span style=' color : red;'> " + total_price + " C $ <span> + taxes. </b></p>";
 
         if($rootScope.price_optimization > 0)
         {
-            content += "<p style='float : right; color : red;'><b>Vous économiserez environs : $ CAD  " + $rootScope.price_optimization + "</b></p>";
+            var economy = Math.round(parseFloat($scope.price_optimization) * 100) / 100;
+            content += "<p style='float : right; color : red;'><b>Vous économiserez environs : " + economy + " C $ </b></p>";
         }
         content += '</body></html>';
 
