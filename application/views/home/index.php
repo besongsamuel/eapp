@@ -34,7 +34,7 @@
         
     </div>
     
-    <div id="section02" class="layout-padding howitworks arrow section-div"  ng-controller="HomeController">
+    <div  id="section02" class="layout-padding howitworks arrow section-div"  ng-controller="HomeController">
         
         <h3 class="section-title md-otiprix-text">Économisez jusqu'a <strong>30%</strong> </br> sur votre facture d'épicerie</h3>
         <div class="container">
