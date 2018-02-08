@@ -699,6 +699,174 @@ angular.module('eappApp').directive('fileUpload', function ()
     };
 });
 
+angular.module("eappApp").controller("ViewSubCategoriesController", function($scope, eapp, $mdDialog, $http)
+{
+    var ctrl = this;
+    
+    $scope.selected = [];
+    
+    $scope.newSubCategory = {};
+	
+	$scope.newCategory = {};
+	
+	$scope.selectedSubCategory = null;
+      
+    $scope.query = 
+    {
+        filter: '',
+        limit: 50,
+        page: 1
+    };
+    
+    $scope.filter = 
+    {
+        options: 
+        {
+            debounce: 500
+        }
+    };
+     
+    $scope.removeFilter = function () 
+    {
+        $scope.filter.show = false;
+        $scope.query.filter = '';
+
+        if($scope.filter.form.$dirty) 
+        {
+          $scope.filter.form.$setPristine();
+        }
+    };
+  
+    $scope.$watch('query.filter', function (newValue, oldValue) 
+    {
+		var bookmark;
+		
+        if(!oldValue) 
+        {
+            bookmark = $scope.query.page;
+        }
+
+        if(newValue !== oldValue) 
+        {
+            $scope.query.page = 1;
+        }
+
+        if(!newValue) 
+        {
+            $scope.query.page = bookmark;
+        }
+
+        $scope.getSubCategories();
+    });
+    
+    ctrl.Init = function()
+    {
+        $scope.getSubCategories();
+    };
+    
+    $scope.getSubCategories = function()
+    {
+        var getAdminSubCategoriesPromise = eapp.getAdminSubCategories($scope.query);
+        
+        $scope.promise = getAdminSubCategoriesPromise;
+        
+        getAdminSubCategoriesPromise.then(function(response)
+        {
+            var subCategories = $.map(response.data.sub_categories, function(value, index) {
+                return [value];
+            });
+			
+			var categories = $.map(response.data.categories, function(value, index) {
+                return [value];
+            });
+            
+            $scope.subCategories = subCategories;
+            
+            $scope.categories = categories;
+            
+            $scope.count = response.data.count;
+        });
+    };
+                
+    $scope.delete = function(ev, id)
+    {
+        // Appending dialog to document.body to cover sidenav in docs app
+        var confirm = $mdDialog.confirm()
+              .title('Delete sub category')
+              .textContent('Are you sure?')
+              .ariaLabel('Lucky day')
+              .targetEvent(ev)
+              .ok('Yes')
+              .cancel('No');
+
+        $mdDialog.show(confirm).then(function() 
+        {
+            eapp.deleteSubCategory(id).then(function()
+            {
+                var index = $scope.subCategories.map(function(e){ return e.id; }).indexOf(id);
+                
+                if(index > -1)
+                {
+                    $scope.subCategories.splice(index, 1);
+                }
+            });
+        });
+    };
+    
+    $scope.edit = function(ev, subCategory)
+    {        
+        var jsonSubCategory = JSON.stringify(subCategory);
+        
+        var formData = new FormData();
+        formData.append("sub_category", jsonSubCategory);
+
+        $http.post($scope.site_url.concat("/admin/edit_sub_category"), formData, {transformRequest: angular.identity,
+        headers: {'Content-Type': undefined}}).then(
+        function(result)
+        {
+            if(result.data.success)
+            {
+                eapp.showAlert(ev, "Success", "Sub category was edited successfully.");
+            }		
+        });
+    };
+	
+	$scope.CreateSubcategory = function(ev)
+	{
+		$scope.edit(ev, $scope.newSubCategory);
+	};
+	
+	$scope.CreateCategory = function(ev)
+	{        
+        var jsonCategory = JSON.stringify($scope.newCategory);
+        
+        var formData = new FormData();
+        formData.append("category", jsonCategory);
+
+        angular.forEach($scope.categoryImage, function(obj){
+            if(!obj.isRemote){
+                formData.append('image', obj.lfFile);
+            }
+        });
+
+        $http.post($scope.site_url.concat("/admin/edit_category"), formData, {transformRequest: angular.identity,
+        headers: {'Content-Type': undefined}}).then(
+        function(result)
+        {
+            if(result.data.success)
+            {
+                eapp.showAlert(ev, "Success", "Your category was created successfully.");
+            }		
+        });
+	}
+    
+    angular.element(document).ready(function()
+    {
+        ctrl.Init();
+    });
+    
+});
+
 angular.module("eappApp").controller("ViewProductsController", function($scope, eapp, $mdDialog, $http)
 {
     var ctrl = this;
