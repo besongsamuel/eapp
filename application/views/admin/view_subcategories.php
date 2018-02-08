@@ -54,7 +54,7 @@
             
                 <md-input-container>
                     <label>Name</label>
-                    <input ng-model="category.name">
+                    <input ng-model="newCategory.name">
                 </md-input-container>
                 
                 <div class="row layout-padding">
