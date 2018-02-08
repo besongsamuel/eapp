@@ -666,6 +666,15 @@ eappApp.factory('eapp', ['$http','$rootScope', '$mdDialog', function($http, $roo
     {
         return $http.post(eappService.getSiteUrl().concat("eapp/get_subcategories"), null);  
     };
+	
+	eappService.getAdminSubCategories = function(query)
+    {
+        var formData = new FormData();
+        formData.append("query", JSON.stringify(query));
+        
+        return $http.post(eappService.getSiteUrl().concat("eapp/get_admin_subcategories"), formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}});
+    };
+	
     
     eappService.getCloseRetailers = function(distance)
     {
