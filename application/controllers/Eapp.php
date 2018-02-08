@@ -251,6 +251,22 @@ class Eapp extends CI_Controller
         echo json_encode($subcategories);
         
     }
+	
+	public function get_admin_subcategories() 
+    {
+		$result = array();
+		
+		$query = json_decode($this->input->post("query"));
+		
+		$result['count'] = sizeof($subcategories);
+		
+		$result['subcategories'] = $this->admin_model->query_subcategories($query);
+		
+		$result['categories'] = $this->admin_model->get_all(CATEGORY_TABLE);
+        
+        echo json_encode($result);
+        
+    }
     
     public function get_unit_compareunits() 
     {
