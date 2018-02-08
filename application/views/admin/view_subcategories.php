@@ -17,7 +17,7 @@
         </md-toolbar>
         
         <div class="container">
-            <form ng-submit="CreateSubcategory()" novalidate>
+            <form ng-submit="CreateSubcategory($event)" novalidate>
             
                 <md-input-container>
                     <label>Name</label>
@@ -50,7 +50,7 @@
         </md-toolbar>
         
         <div class="container">
-            <form ng-submit="CreateCategory()" novalidate>
+            <form ng-submit="CreateCategory($event)" novalidate>
             
                 <md-input-container>
                     <label>Name</label>
