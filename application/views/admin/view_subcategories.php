@@ -21,12 +21,12 @@
             
                 <md-input-container>
                     <label>Name</label>
-                    <input ng-model="newSubcategory.name">
+                    <input ng-model="newSubCategory.name">
                 </md-input-container>
                 
                 <md-input-container>
                     <label>Sub category</label>
-                    <md-select ng-model="newSubcategory.product_category_id">
+                    <md-select ng-model="newSubCategory.product_category_id">
                         <md-option ng-value="category.id" ng-repeat="category in categories track by $index">{{ category.name }}</md-option>
                     </md-select>
                 </md-input-container>
