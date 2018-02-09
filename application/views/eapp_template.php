@@ -144,6 +144,7 @@
                 rootScope.method = "<?php echo $method; ?>";
                 rootScope.longitude = 0;
                 rootScope.latitude = 0;
+                rootScope.redirectToLogin = JSON.parse("<?php echo $redirectToLogin; ?>");
                 var user = '<?php echo $user; ?>';
                 if(user === "" || user == "null")
                 {
@@ -262,6 +263,7 @@
                                         <li><a href="<?php echo addslashes(site_url("admin/create_store_product")); ?>">Create Product</a></li>
                                         <li><a href="<?php echo addslashes(site_url("admin/store_products")); ?>">View Store Products</a></li>
                                         <li><a href="<?php echo addslashes(site_url("admin/view_products")); ?>">View Otiprix Products</a></li>
+                                        <li><a href="<?php echo addslashes(site_url("admin/view_subcategories")); ?>">View Sub Categories</a></li>
                                     </ul>
                                 </li>
 

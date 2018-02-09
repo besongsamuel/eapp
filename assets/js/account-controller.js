@@ -21,6 +21,11 @@ angular.module('eappApp').controller('AccountController', ["$scope", "$http", "$
     
     $scope.Init = function()
     {
+        if(!$scope.isUserLogged && $scope.redirectToLogin)
+        {
+            window.location.href = $scope.site_url.concat("/account/login");
+        }
+        
         $scope.load_icons();
         
         var securityQuestionsPromise = eapp.getSecurityQuestions();

@@ -176,7 +176,7 @@ eappApp.component("resultFilter",
     }
 });
 
-function ResultFilterController($scope, $rootScope)
+function ResultFilterController($scope)
 {
     var ctrl = this;
     
@@ -502,6 +502,11 @@ eappApp.factory('eapp', ['$http','$rootScope', '$mdDialog', function($http, $roo
     eappService.deleteProduct = function(product_id)
     {
         return $http.post(eappService.getSiteUrl().concat("eapp/delete_product/", product_id), null);
+    };
+    
+    eappService.deleteSubCategory = function(product_id)
+    {
+        return $http.post(eappService.getSiteUrl().concat("eapp/delete_sub_category/", product_id), null);
     };
     
     eappService.getProducts = function(query)

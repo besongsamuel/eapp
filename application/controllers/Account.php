@@ -44,6 +44,10 @@ class Account extends CI_Controller {
                 $this->data['tabIndex'] = 0;
             }
         }
+        else
+        {
+            $this->data['redirectToLogin'] = json_encode(true);
+        }
         
         $this->data['body'] = $this->load->view('account/index', $this->data, TRUE);
         $this->parser->parse('eapp_template', $this->data);

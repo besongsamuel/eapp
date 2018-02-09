@@ -705,16 +705,16 @@ angular.module("eappApp").controller("ViewSubCategoriesController", function($sc
     
     $scope.selected = [];
     
-    $scope.newSubCategory = {};
+    $scope.newSubCategory = { product_category_id : 0, name : '' };
 	
-	$scope.newCategory = {};
+    $scope.newCategory = { name : '', image : ''};
 	
-	$scope.selectedSubCategory = null;
+    $scope.selectedSubCategory = null;
       
     $scope.query = 
     {
         filter: '',
-        limit: 50,
+        limit: 20,
         page: 1
     };
     
@@ -739,8 +739,6 @@ angular.module("eappApp").controller("ViewSubCategoriesController", function($sc
   
     $scope.$watch('query.filter', function (newValue, oldValue) 
     {
-		var bookmark;
-		
         if(!oldValue) 
         {
             bookmark = $scope.query.page;
@@ -776,7 +774,7 @@ angular.module("eappApp").controller("ViewSubCategoriesController", function($sc
                 return [value];
             });
 			
-			var categories = $.map(response.data.categories, function(value, index) {
+            var categories = $.map(response.data.categories, function(value, index) {
                 return [value];
             });
             
@@ -810,6 +808,10 @@ angular.module("eappApp").controller("ViewSubCategoriesController", function($sc
                     $scope.subCategories.splice(index, 1);
                 }
             });
+        },
+        function()
+        {
+            
         });
     };
     
@@ -831,15 +833,37 @@ angular.module("eappApp").controller("ViewSubCategoriesController", function($sc
         });
     };
 	
-	$scope.CreateSubcategory = function(ev)
-	{
-		$scope.edit(ev, $scope.newSubCategory);
-	};
-	
-	$scope.CreateCategory = function(ev)
-	{        
-        var jsonCategory = JSON.stringify($scope.newCategory);
+    $scope.CreateSubcategory = function(ev)
+    {
+        var subCategory = $scope.newSubCategory;
         
+        var jsonSubCategory = JSON.stringify(subCategory);
+        
+        var formData = new FormData();
+        
+        formData.append("sub_category", jsonSubCategory);
+
+        $http.post($scope.site_url.concat("/admin/edit_sub_category"), formData, {transformRequest: angular.identity,
+        headers: {'Content-Type': undefined}}).then(
+        function(result)
+        {
+            if(result.data.success)
+            {
+                var value = { id : result.data.id, product_category_id : subCategory.product_category_id, name : subCategory.name };
+                
+                $scope.subCategories.push(value);
+                
+                $scope.newSubCategory = { product_category_id : 0, name : '' };
+                
+                eapp.showAlert(ev, "Success", "Sub category was created successfully.");
+            }		
+        });
+    };
+
+    $scope.CreateCategory = function(ev)
+    {        
+        var jsonCategory = JSON.stringify($scope.newCategory);
+
         var formData = new FormData();
         formData.append("category", jsonCategory);
 
@@ -849,16 +873,19 @@ angular.module("eappApp").controller("ViewSubCategoriesController", function($sc
             }
         });
 
-        $http.post($scope.site_url.concat("/admin/edit_category"), formData, {transformRequest: angular.identity,
+        $http.post($scope.site_url.concat("/admin/create_category"), formData, {transformRequest: angular.identity,
         headers: {'Content-Type': undefined}}).then(
         function(result)
         {
             if(result.data.success)
             {
+                $scope.categories.push(result.data.category);
+                $scope.newCategory = { name : '', image : ''};
+                $scope.api.removeAll();
                 eapp.showAlert(ev, "Success", "Your category was created successfully.");
             }		
         });
-	}
+    };
     
     angular.element(document).ready(function()
     {

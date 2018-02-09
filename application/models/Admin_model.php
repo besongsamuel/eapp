@@ -140,17 +140,17 @@ class Admin_model extends CI_Model
         }
     }
 	
-	public function query_subcategories($query)
-	{
-		 $this->db->limit($query->limit, $query->limit * ($query->page - 1));
-		
-		 if($query->filter != null && !empty($query->filter))
-		 {
-		 	$this->db->like("name", $query->filter);
-		 }
-		 
-		result = $this->db->get(SUBCATEGORY_TABLE)->result_array();
-	}
+    public function query_subcategories($query)
+    {
+        $this->db->limit($query->limit, $query->limit * ($query->page - 1));
+
+        if($query->filter != null && !empty($query->filter))
+        {
+               $this->db->like("name", $query->filter);
+        }
+
+       return $this->db->get(SUB_CATEGORY_TABLE)->result_array();
+    }
 	
 	
 }

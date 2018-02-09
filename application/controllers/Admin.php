@@ -98,80 +98,9 @@ class Admin extends CI_Controller
         
     }
     
-    public function create_product()
-    {
-        $this->load->helper('file');
-        
-        $data = array
-        (
-            "name" => $this->input->post("name"),
-            "subcategory_id" => $this->input->post("subcategory_id"),
-            "unit_id" => $this->input->post("unit_id")
-        );
-        
-        $this->initialize_upload_library(ASSETS_DIR_PATH.'img/products/', uniqid().".png");
-        
-        $response = array();
-        
-        
-        if($this->upload->do_upload('image'))
-        {
-            $upload_data = $this->upload->data();
-            $data['image'] = $upload_data['file_name'];
-            $response['message'] = "Image ".$upload_data['file_name']." was uploaded successfully. ";
-        }
-        else
-        {
-            $data['image'] = "no_image_available.png";
-            $response['message'] = 'Product created sucessfully';
-        }
-        
-        $response['success'] = true;
-        
-        $id = $this->admin_model->create(PRODUCT_TABLE, $data);
-        
-        $response['newProduct'] = $this->admin_model->get(PRODUCT_TABLE, $id);
-        
-        echo json_encode($response);
-        
-    }
     
-    public function edit_otiprix_product()
-    {
-        $this->load->helper('file');
-        
-        $product = json_decode($this->input->post("product"));
-        
-        $data = array
-        (
-            "unit_id" => $product->unit_id,
-            "subcategory_id" => $product->subcategory_id,
-            "tags" => $product->tags,
-        );
-        
-        // User is editing a product
-        if(isset($product->id))
-        {
-            $data["id"] = $product->id;
-        }
-        
-        $this->initialize_upload_library(ASSETS_DIR_PATH.'img/products/', uniqid().".png");
-        
-        $response = array();
-        
-        if($this->upload->do_upload('image'))
-        {
-            $upload_data = $this->upload->data();
-            $data['image'] = $upload_data['file_name'];
-        }
-        
-        $response['success'] = true;
-        
-        $this->admin_model->create(PRODUCT_TABLE, $data);
-        
-        echo json_encode($response);
-        
-    }
+    
+    
     
     public function upload_product_image()
     {
@@ -301,6 +230,132 @@ class Admin extends CI_Controller
         $this->data['body'] = $this->load->view('admin/create_otiprix_product', $this->data, TRUE);
         $this->parser->parse('eapp_template', $this->data);
     }
+    
+    public function edit_otiprix_product()
+    {
+        $this->load->helper('file');
+        
+        $product = json_decode($this->input->post("product"));
+        
+        $data = array
+        (
+            "unit_id" => $product->unit_id,
+            "subcategory_id" => $product->subcategory_id,
+            "tags" => $product->tags,
+        );
+        
+        // User is editing a product
+        if(isset($product->id))
+        {
+            $data["id"] = $product->id;
+        }
+        
+        $this->initialize_upload_library(ASSETS_DIR_PATH.'img/products/', uniqid().".png");
+        
+        $response = array();
+        
+        if($this->upload->do_upload('image'))
+        {
+            $upload_data = $this->upload->data();
+            $data['image'] = $upload_data['file_name'];
+        }
+        
+        $response['success'] = true;
+        
+        $this->admin_model->create(PRODUCT_TABLE, $data);
+        
+        echo json_encode($response);
+        
+    }
+    
+    public function create_product()
+    {
+        $this->load->helper('file');
+        
+        $data = array
+        (
+            "name" => $this->input->post("name"),
+            "subcategory_id" => $this->input->post("subcategory_id"),
+            "unit_id" => $this->input->post("unit_id")
+        );
+        
+        $this->initialize_upload_library(ASSETS_DIR_PATH.'img/products/', uniqid().".png");
+        
+        $response = array();
+        
+        
+        if($this->upload->do_upload('image'))
+        {
+            $upload_data = $this->upload->data();
+            $data['image'] = $upload_data['file_name'];
+            $response['message'] = "Image ".$upload_data['file_name']." was uploaded successfully. ";
+        }
+        else
+        {
+            $data['image'] = "no_image_available.png";
+            $response['message'] = 'Product created sucessfully';
+        }
+        
+        $response['success'] = true;
+        
+        $id = $this->admin_model->create(PRODUCT_TABLE, $data);
+        
+        $response['newProduct'] = $this->admin_model->get(PRODUCT_TABLE, $id);
+        
+        echo json_encode($response);
+        
+    }
+    
+    
+    
+    public function view_subcategories() 
+    {    
+        if($this->user->subscription != 2)
+        {
+            header('Location: '.  site_url('/home'));
+        }
+        
+        $this->rememberme->recordOrigPage();
+        $this->data['body'] = $this->load->view('admin/view_subcategories', $this->data, TRUE);
+        $this->parser->parse('eapp_template', $this->data);
+    }
+    
+    public function edit_sub_category() 
+    {
+        $subcategory = json_decode($this->input->post('sub_category'), true);
+        
+        $id = $this->admin_model->create(SUB_CATEGORY_TABLE, $subcategory);
+        
+        echo json_encode(array('success' => true, 'id' => $id));
+        
+    }
+    
+    public function create_category() 
+    {
+        $this->load->helper('file');
+        
+        $category = json_decode($this->input->post("category"), true);
+        
+        $this->initialize_upload_library(ASSETS_DIR_PATH.'img/categories/', uniqid().".png");
+        
+        $response = array();
+        
+        if($this->upload->do_upload('image'))
+        {
+            $upload_data = $this->upload->data();
+            $category['image'] = $upload_data['file_name'];
+        }
+        
+        $response['success'] = true;
+        
+        $id = $this->admin_model->create(CATEGORY_TABLE, $category);
+        
+        $response['category'] = $this->admin_model->get(CATEGORY_TABLE, $id);
+        
+        echo json_encode($response);
+    }
+    
+    
     
     public function get_store_products()
     {

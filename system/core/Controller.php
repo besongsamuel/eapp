@@ -117,6 +117,7 @@ class CI_Controller {
                             'css' => '',
             'base_url' => base_url(),
             'site_url' => site_url(),
+            'redirectToLogin' => json_encode(false),
             'controller' => $this->router->fetch_class(),
             'method' => $this->router->fetch_method(),
             'user' => addslashes(json_encode($this->user)),

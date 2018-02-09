@@ -252,17 +252,24 @@ class Eapp extends CI_Controller
         
     }
 	
-	public function get_admin_subcategories() 
+    public function get_admin_subcategories() 
     {
-		$result = array();
-		
-		$query = json_decode($this->input->post("query"));
-		
-		$result['count'] = sizeof($subcategories);
-		
-		$result['subcategories'] = $this->admin_model->query_subcategories($query);
-		
-		$result['categories'] = $this->admin_model->get_all(CATEGORY_TABLE);
+        $result = array();
+
+        $query = json_decode($this->input->post("query"));
+
+        $allQuery = new stdClass();
+        $allQuery->page = 1;
+        $allQuery->filter = $query->filter;
+        $allQuery->limit = 1000;
+        
+        $subcategories = $this->admin_model->query_subcategories($allQuery);
+
+        $result['count'] = sizeof($subcategories);
+
+        $result['sub_categories'] = $this->admin_model->query_subcategories($query);
+
+        $result['categories'] = $this->admin_model->get_all(CATEGORY_TABLE);
         
         echo json_encode($result);
         
@@ -336,6 +343,11 @@ class Eapp extends CI_Controller
     public function delete_product($id) 
     {
         $this->admin_model->delete(PRODUCT_TABLE, $id);
+    }
+    
+    public function delete_sub_category($id) 
+    {
+        $this->admin_model->delete(SUB_CATEGORY_TABLE, $id);
     }
     
     public function get_otiprix_product($id) 

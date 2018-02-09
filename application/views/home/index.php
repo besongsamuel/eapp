@@ -72,7 +72,7 @@
         
     <md-divider></md-divider>
     
-    <divz class="promo-area bgpatttern" ng-controller="HomeController" ng-hide="true" ng-cloak>
+    <div class="promo-area bgpatttern" ng-controller="HomeController" ng-hide="true" ng-cloak>
         <div class="container">
             <div class="row">
                 <div class="col-md-4 col-sm-8">
