@@ -15,7 +15,10 @@
         <div class="container">
             
             <div class="row layout-padding">
-                <p><b>{{product.name}}</b></p>
+                <md-input-container class="col-sm-12">
+                    <label>Product Name</label>
+                    <input ng-model="product.name">
+                </md-input-container>
             </div>
             
             <div class="row layout-padding">

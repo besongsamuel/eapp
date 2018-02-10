@@ -239,6 +239,7 @@ class Admin extends CI_Controller
         
         $data = array
         (
+            "name" => $product->name,
             "unit_id" => $product->unit_id,
             "subcategory_id" => $product->subcategory_id,
             "tags" => $product->tags,

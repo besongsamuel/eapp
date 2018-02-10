@@ -74,7 +74,12 @@
             <tbody md-body>
                 <tr md-row md-select="product" md-select-id="id" ng-repeat="product in products track by $index">
 
-                    <td md-cell><b>{{product.name}}</b></td>
+                    <td md-cell width="200px">
+                        <md-input-container>
+                            <label>Name</label>
+                            <input ng-model="product.name">
+                        </md-input-container>
+                    </td>
 
                     <td md-cell>
                         <md-chips  ng-model="product.tags_array" md-removable="true"></md-chips>
@@ -115,7 +120,7 @@
                             Edit
                         </md-button>
                         <md-button class="md-raised md-otiprix" ng-click="directEdit($event, product)">
-                            Direct Edit
+                            Update
                         </md-button>
                         <md-button class="md-raised md-warn" ng-click="deleteProduct($event, product.id)">
                             Delete

@@ -7,7 +7,7 @@ To change this template file, choose Tools | Templates
 and open the template in the editor.
 -->
 
-<div id="admin-container" class="container" ng-controller="PasswordForgottenController" ng-cloak>
+<div id="admin-container" class="container otiprix-section" ng-controller="PasswordForgottenController" ng-cloak>
     
    <div id="loginbox" class="col-md-8 col-md-offset-2 col-sm-12">
        
