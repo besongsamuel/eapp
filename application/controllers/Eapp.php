@@ -335,7 +335,7 @@ class Eapp extends CI_Controller
         
         $data->subcategories = $this->admin_model->get_all(SUB_CATEGORY_TABLE);
         
-        $data->units = $this->admin_model->get_all(UNITS_TABLE);
+        $data->units = $this->admin_model->get_all(COMPAREUNITS_TABLE);
         
         echo json_encode($data);
     }

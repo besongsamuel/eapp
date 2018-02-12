@@ -1119,7 +1119,7 @@ angular.module("eappApp").controller("EditProductController", function($scope, e
     
     $scope.getUnits = function()
     {
-        var getUnitsPromise = eapp.getUnits();
+        var getUnitsPromise = eapp.getCompareUnits();
         
         getUnitsPromise.then(function(response)
         {
