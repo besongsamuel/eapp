@@ -1256,6 +1256,11 @@ div.cart-collaterals ul.products li.product:hover .add_to_cart_button{background
     filter: alpha(opacity=100);
 }
 
+.eapp-logo-footer
+{
+    width : 70px;
+}
+
 .breadcrumb
 {
     text-align: center;
