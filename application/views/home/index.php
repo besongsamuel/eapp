@@ -34,13 +34,13 @@
         
     </div>
     
-    <div id="section02" class="layout-padding howitworks arrow section-div"  ng-controller="HomeController">
+    <div  id="section02" class="layout-padding howitworks arrow section-div"  ng-controller="HomeController">
         
         <h3 class="section-title md-otiprix-text">Économisez jusqu'a <strong>30%</strong> </br> sur votre facture d'épicerie</h3>
         <div class="container">
             
             <div class="row">
-                <div style="margin-top: 5px; margin-bottom: 30px; text-align: center;">
+                <div style="margin-top: 5px; margin-bottom: 25px; text-align: center;">
                     <md-button class="md-raised md-warn" style="z-index : 10;" ng-click="gotoShop()">
                         <md-icon><i class="material-icons">money_off</i></md-icon>
                         <b>Commencez à économiser aujourd'hui</b>
