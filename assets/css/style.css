@@ -1182,6 +1182,11 @@ div.cart-collaterals ul.products li.product:hover .add_to_cart_button{background
     padding : 15px;
 }
 
+.navbar-nav>li>.dropdown-menu
+{
+    margin-top: 3px;
+}
+
 .navbar-padding
 {
     padding-left: 20px;
