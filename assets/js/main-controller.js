@@ -916,6 +916,14 @@ eappApp.factory('eapp', ['$http','$rootScope', '$mdDialog', function($http, $roo
         
         return $http.post(eappService.getSiteUrl().concat("/eapp/get_email_from_unsubscribe_token"), formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}});
     };
+    
+    eappService.getProductsWithStoreProducts = function(filter)
+    {
+        var formData = new FormData();
+        formData.append("filter", filter);
+        
+        return $http.post(eappService.getSiteUrl().concat("/eapp/get_products_with_store_products"), formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}});
+    };
 
     return eappService;
 }]);

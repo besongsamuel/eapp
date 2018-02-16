@@ -851,7 +851,7 @@ class CI_Model {
         }
     }
 	
-    private function add_name_filter($filter) 
+    protected function add_name_filter($filter) 
     {
         if($filter != null && !empty($filter))
         {
@@ -1194,6 +1194,21 @@ class CI_Model {
         $this->db->limit(5);
         $query = $this->db->get_compiled_select(CATEGORY_TABLE);
         return $this->db->query($query)->result();
+    }
+    
+    public function get_user_favorite_stores($user_id)
+    {
+        $this->db->where(array("user_account_id" => $user_id));
+        $this->db->select("retailer_id");
+        $query = $this->db->get(USER_FAVORITE_STORE_TABLE);
+        $result = array();
+        foreach ($query->result() as $value) 
+        {
+            $result[$value->retailer_id] = $value->retailer_id;
+            
+        }
+        
+        return $result;
     }
 
 }

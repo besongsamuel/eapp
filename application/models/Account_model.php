@@ -24,22 +24,6 @@ class Account_model extends CI_Model
         $this->db->delete(USER_FAVORITE_STORE_TABLE);
     }
     
-    public function get_user_favorite_stores($user_id)
-    {
-        $this->db->where(array("user_account_id" => $user_id));
-        $this->db->select("retailer_id");
-        $query = $this->db->get(USER_FAVORITE_STORE_TABLE);
-        $result = array();
-        foreach ($query->result() as $value) 
-        {
-            $result[$value->retailer_id] = $value->retailer_id;
-            
-        }
-        
-        return $result;
-    }
-
-
     public function update_user_store_table($user) 
     {
         // Get user favorite stores in city
@@ -106,33 +90,50 @@ class Account_model extends CI_Model
                 $product_list = array();
             }
             
+            $product_array = array();
+            
             foreach ($product_list as $item) 
             {
                 $product = $this->get_product($item->id);
-		$product->store_products = array();    
+                
+                array_push($product_array, $item->id);
+                
+                // Get all store products for the given product
+                $this->db->where($this->latest_products_condition, NULL, FALSE);
+		$product->store_products = $store_product = $this->get_where(STORE_PRODUCT_TABLE, "*", array("product_id" => $product->id));  
 		
-		            // This is a list of user favorite stores where this product is available
-                $product->store = array();
-
-                // For each favorite store, get the store_product and price of the product
-                foreach($favorite_stores as $favorite_store)
-                {
-                    // product should be currently available 
-                    $this->db->where('period_from <= CURDATE() AND period_to >= CURDATE()', NULL, FALSE);
-                    $store_product = $this->get_specific(STORE_PRODUCT_TABLE, array("retailer_id" => $favorite_store->id, "product_id" => $product->id));
-
-                    if($store_product != null)
-                    {
-			array_push($product->store_products, $store_product);
-                        
-                        $product->store[$favorite_store->id] = $favorite_store;
-                        $product->store[$favorite_store->id]->store_product = $store_product;
-                    }
-                }
-				
+		// This is a list of user favorite stores where this product is available
+                $product->user_stores = array();
+                
                 $product->quantity = $item->quantity;
+                
                 array_push($user_account->grocery_list, $product);
                 
+            }
+            
+            $user_account->user_stores = array();
+            
+            //For each favorite store, get the store_product and price of the product
+            foreach($favorite_stores as $favorite_store)
+            {
+                // product should be currently available 
+                $this->db->where($this->latest_products_condition, NULL, FALSE);
+                $this->db->where_in("product_id", $product_array);
+                $this->db->where(array("retailer_id" => $favorite_store->id));
+                $favorite_store_store_products = array();
+                
+                foreach ($this->db->get(STORE_PRODUCT_TABLE)->result() as $value) 
+                {
+                    if(!isset($favorite_store_store_products[$value->product_id]))
+                    {
+                        $favorite_store_store_products[$value->product_id] = array();
+                    }
+                    
+                    array_push($favorite_store_store_products[$value->product_id], $value);
+                }
+                
+                $favorite_store->store_products = $favorite_store_store_products;
+                array_push($user_account->user_stores, $favorite_store);
             }
         }
         

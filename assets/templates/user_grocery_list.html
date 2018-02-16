@@ -68,11 +68,11 @@
                     <h2 class="md-toolbar-tools">Votre liste d'épicerie dans vos magasins préférés cette semaine</h2>
                 </div>
             </md-toolbar>
-            <md-list-item class="md-2-line" ng-repeat="store in getUserListStorePrices()">
+            <md-list-item class="md-2-line" ng-repeat="store in loggedUser.user_stores">
                 <img ng-src="{{ store.image }}" class="md-avatar" alt="{{store.name}}" />
-                <div class="md-list-item-text md-offset" ng-show="store.price > 0">
-                      <h3> Prix total a {{store.name}} : <b>CAD {{ store.price | number : 2 }}</b> </h3>
-                      <p> Nombre d'items disponibles : {{ store.count }} </p>
+                <div class="md-list-item-text md-offset">
+                      <h3> Prix total à {{store.name}} : <b>{{ getStorePrice(store) | number : 2 }} C $</b> </h3>
+                      <p> Nombre d'items disponibles : <b>{{ getStoreCount(store) }} / {{getUserProductListCount()}}</b></p>
                 </div>
             </md-list-item>
             

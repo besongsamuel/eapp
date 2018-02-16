@@ -7,6 +7,8 @@ class Eapp extends CI_Controller
     public function __construct()
     {
         parent::__construct();
+        
+        $this->load->model('eapp_model');
     }
     
     public function site_url() 
@@ -478,6 +480,22 @@ class Eapp extends CI_Controller
     public function get_latest_products() 
     {
         echo json_encode($this->home_model->get_store_products_limit(25, 0)["products"]);
+    }
+    
+    public function get_user_products_with_store_products() 
+    {
+        $filter = $this->input->post("filter");
+        
+        $user_stores = array();
+        
+        if($this->user != null)
+        {
+            $this->eapp_model->get_user_favorite_stores($this->user->id);
+            
+            echo json_encode($this->eapp_model->get_products_with_store_products($filter, $user_stores));
+        }
+        
+        
     }
    
 }

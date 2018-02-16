@@ -4,8 +4,10 @@
  * and open the template in the editor.
  */
 
-angular.module("eappApp").controller("UserListController", ["$rootScope", "$scope", "$mdDialog", "$http", "$q", function($rootScope, $scope, $mdDialog, $http, $q) 
+angular.module("eappApp").controller("UserListController", ["$rootScope", "$scope", "$mdDialog", "$http", "$q", "eapp", function($rootScope, $scope, $mdDialog, $http, $q, eapp) 
 {
+    
+    var ctrl = this;
     
     $rootScope.isMainMenu = true;
     
@@ -86,7 +88,7 @@ angular.module("eappApp").controller("UserListController", ["$rootScope", "$scop
     
     $scope.AddProductToList = function(product)
     {
-        if(typeof product !== "undefined" && product !== null &&  $scope.my_list_count() < $scope.maxNumItems)
+        if(!angular.isNullOrUndefined(product) &&  $scope.my_list_count() < $scope.maxNumItems)
         {
             product.quantity = (typeof product.quantity !== "undefined" && product.quantity) ? product.quantity : 1;
             // get product category id
@@ -150,6 +152,21 @@ angular.module("eappApp").controller("UserListController", ["$rootScope", "$scop
                 $scope.AddProductToList($scope.loggedUser.grocery_list[i]);
             }
         }
+    };
+    
+    $scope.getUserProductListCount = function()
+    {
+        var count = 0;
+        
+        if($scope.loggedUser !== null && typeof $scope.loggedUser !== 'undefined')
+        {
+            for(var i in $scope.loggedUser.grocery_list)
+            {
+                count++;
+            }
+        }
+        
+        return count;
     };
     
     $scope.removeProductFromList = function(product_id, $event, showDialog)
@@ -292,13 +309,13 @@ angular.module("eappApp").controller("UserListController", ["$rootScope", "$scop
     {
         var stores = [];
 
-        if($scope.loggedUser !== null && typeof $scope.loggedUser !== "undefined" && typeof $scope.loggedUser.grocery_list !== "undefined")
+        if($scope.isUserLogged !== null && angular.isNullOrUndefined($scope.loggedUser.user_stores))
         {
-            for(var i in $scope.loggedUser.grocery_list)
+            for(var i in $scope.loggedUser.user_stores)
             {
-                var product = $scope.loggedUser.grocery_list[i];
+                var myStore = $scope.loggedUser.user_stores[i];
                 
-                for (var x in product.store)
+                for (var x in myStore.store_products)
                 {
                     var productStore = product.store[x];
                     
@@ -332,6 +349,59 @@ angular.module("eappApp").controller("UserListController", ["$rootScope", "$scop
         }    
 
         return stores;
+    };
+    
+    ctrl.getCheapestStoreProduct = function(storeProducts)
+    {
+        var cheapestPrice = 0;
+        
+        for(var i in storeProducts)
+        {
+            if(cheapestPrice === 0)
+            {
+                cheapestPrice = parseFloat(storeProducts[i].price);
+            }
+            else
+            {
+                if(parseFloat(storeProducts[i].price) < cheapestPrice)
+                {
+                    cheapestPrice = parseFloat(storeProducts[i].price);
+                }
+            }
+        }
+        
+        return cheapestPrice;
+    };
+    
+    $scope.getStorePrice = function(store)
+    {
+        var price = 0;
+        
+        if($scope.isUserLogged && !angular.isNullOrUndefined($scope.loggedUser.user_stores))
+        {
+            for(var i in store.store_products)
+            {
+                price += ctrl.getCheapestStoreProduct(store.store_products[i]);
+            }
+        }
+        
+        return price;
+        
+    };
+    
+    $scope.getStoreCount = function(store)
+    {
+        var count = 0;
+        
+        if($scope.isUserLogged && !angular.isNullOrUndefined($scope.loggedUser.user_stores))
+        {
+            for(var i in store.store_products)
+            {
+                count++;
+            }
+        }
+        
+        return count;
     };
     
     $scope.optimizeMyList = function($event)
@@ -373,8 +443,6 @@ angular.module("eappApp").controller("UserListController", ["$rootScope", "$scop
             });
 
         });
-        
-        
     };
     
     angular.element(document).ready(function()
