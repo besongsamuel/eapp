@@ -153,3 +153,6 @@ body{font-family: "Roboto Condensed",sans-serif;}
 
 
 /* GRID VIEW END */
+.input-search{
+    box-shadow: 2px 2px 3px #aaa;
+}
