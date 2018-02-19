@@ -13,6 +13,8 @@ angular.module("eappApp").controller("UserListController", ["$rootScope", "$scop
     
     $rootScope.selectedProduct = null;
     
+    $scope.selectedGroceryList = null;
+    
     /**
      * Query text for the product being searched. 
      */
@@ -27,6 +29,10 @@ angular.module("eappApp").controller("UserListController", ["$rootScope", "$scop
      * The maximum number of products the list can contain
      */
     $rootScope.maxNumItems = 50;
+    
+    $scope.selectedList = { id : -1};
+    
+    $scope.selectedGroceryList = {};
     
     /**
      * Counts the number of products in my list
@@ -72,9 +78,50 @@ angular.module("eappApp").controller("UserListController", ["$rootScope", "$scop
      * Adds the selected product to my list of products
      * @returns {undefined}
      */
-    $scope.addNewProductToList = function()
+    $scope.addNewProductToList = function(ev)
     {
-        $scope.addToMyList($scope.selectedProduct);
+        // No grocery list is selected
+        if(parseInt($scope.selectedList.id) === -1 && $scope.loggedUser.grocery_lists.length === 0)
+        {
+            // Prompt user to create a list
+            
+            var confirm = $mdDialog.prompt()
+                .title("Créer une nouvelle liste d'épicerie")
+                .textContent("Entrez le nom de la nouvelle liste d'épicerie")
+                .placeholder('Nom')
+                .ariaLabel('Nom')
+                .initialValue('Nouvelle liste')
+                .targetEvent(ev)
+                .ok('Ok')
+                .cancel('Annuler');
+
+          $mdDialog.show(confirm).then(function(result) 
+          {
+                var createNewListPromise = eapp.createNewList(result);
+                
+                createNewListPromise.then(function(response)
+                {
+                    if(response.data.success)
+                    {
+                        var newList = response.data.data;
+                        $rootScope.loggedUser.grocery_lists.push(newList);
+                        $scope.selectedList.id = newList.id;
+                        eapp.showAlert(ev, 'Succès', response.data.message);
+                        $scope.addToMyList($scope.selectedProduct);
+                    }
+                    else
+                    {
+                        eapp.showAlert(ev, 'Erreur', response.data.message);
+                    }
+                });
+                
+          });
+        }
+        else
+        {
+            $scope.addToMyList($scope.selectedProduct);
+        }
+        
     };
 
     $scope.addToMyList = function(product)
@@ -145,11 +192,13 @@ angular.module("eappApp").controller("UserListController", ["$rootScope", "$scop
     
     $scope.getUserProductList = function()
     {
-        if($scope.loggedUser !== null && typeof $scope.loggedUser !== 'undefined')
+        $scope.myCategories = [];
+        
+        if($scope.loggedUser !== null && typeof $scope.loggedUser !== 'undefined' && !angular.isNullOrUndefined($scope.selectedGroceryList))
         {
-            for(var i in $scope.loggedUser.grocery_list)
+            for(var i in $scope.selectedGroceryList.products)
             {
-                $scope.AddProductToList($scope.loggedUser.grocery_list[i]);
+                $scope.AddProductToList($scope.selectedGroceryList.products[i]);
             }
         }
     };
@@ -160,7 +209,7 @@ angular.module("eappApp").controller("UserListController", ["$rootScope", "$scop
         
         if($scope.loggedUser !== null && typeof $scope.loggedUser !== 'undefined')
         {
-            for(var i in $scope.loggedUser.grocery_list)
+            for(var i in $scope.selectedGroceryList.products)
             {
                 count++;
             }
@@ -192,6 +241,37 @@ angular.module("eappApp").controller("UserListController", ["$rootScope", "$scop
         }
     };
     
+    $scope.deleteList = function(ev)
+    {
+        var confirmDialog = $rootScope.createConfirmDIalog (ev, "Êtes-vous sûr de vouloir supprimer votre liste d'épicerie?");
+        
+        $mdDialog.show(confirmDialog).then(function() 
+        {
+            eapp.deleteGroceryList($scope.selectedList.id).then(function(response)
+            {
+                if($scope.isUserLogged)
+                {
+                    $scope.selectedList.id = -1;
+                    $scope.selectedGroceryList = null;
+                    $scope.loggedUser.grocery_lists = response.data.grocery_lists;
+                    
+                    if($scope.loggedUser.grocery_lists.length > 0)
+                    {
+                        $scope.selectedList.id = $scope.loggedUser.grocery_lists[0].id;
+                        $scope.selectedGroceryList = $scope.loggedUser.grocery_lists[0];
+                    }
+                }
+
+                $scope.getUserProductList();
+            });
+
+        }, function() 
+        {
+
+        });
+        
+    };
+    
     $scope.removeFromList = function(product_id)
     {
         for(var index in $scope.myCategories)
@@ -215,6 +295,7 @@ angular.module("eappApp").controller("UserListController", ["$rootScope", "$scop
     {
         var formData = new FormData();
         formData.append("my_list", JSON.stringify($scope.getProductList()));
+        formData.append("id", $scope.selectedList.id);
         // Send request to server to get optimized list 	
         $http.post( $scope.site_url.concat("/account/save_user_list"), 
         formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}}).then(
@@ -223,6 +304,13 @@ angular.module("eappApp").controller("UserListController", ["$rootScope", "$scop
             if(!response.data.success)
             {
                 $scope.showSimpleToast("une erreur inattendue est apparue. Veuillez réessayer plus tard.", "mainmenu-area");
+            }
+            else
+            {
+                // update grocery lists
+                $rootScope.loggedUser.grocery_lists = response.data.grocery_lists;
+                // Refresh
+                $scope.groceryListChanged();
             }
 
             $scope.registering_user = false;
@@ -304,51 +392,16 @@ angular.module("eappApp").controller("UserListController", ["$rootScope", "$scop
             
         $scope.selectedProduct = item;
     };
-    
-    $scope.getUserListStorePrices = function()
-    {
-        var stores = [];
-
-        if($scope.isUserLogged !== null && angular.isNullOrUndefined($scope.loggedUser.user_stores))
+        
+    $scope.groceryListChanged = function()
+    {        
+        var index = $scope.loggedUser.grocery_lists.map(function(e) { return parseInt(e.id); }).indexOf(parseInt($scope.selectedList.id));
+        
+        if(index > -1)
         {
-            for(var i in $scope.loggedUser.user_stores)
-            {
-                var myStore = $scope.loggedUser.user_stores[i];
-                
-                for (var x in myStore.store_products)
-                {
-                    var productStore = product.store[x];
-                    
-                    var index = stores.map(function(e) { return e.id; }).indexOf(productStore.id);
-
-                    if(index === -1) 
-                    {
-                        productStore.price = 0;
-                        productStore.count = 0;
-                        stores.push(productStore);
-                        index = stores.length - 1;
-                    }
-
-                    if(typeof productStore.store_product !== "undefined")
-                    {
-                        stores[index].price += parseFloat(productStore.store_product.price);
-                        stores[index].count++;
-                    }
-                }
-                
-            }
+            $scope.selectedGroceryList = $scope.loggedUser.grocery_lists[index];
+            $scope.getUserProductList();
         }
-	    
-        // remove all stores with no items 
-        var index = stores.map(function(e) { return e.count; }).indexOf(0);
-
-        while(index > -1)
-        {
-            stores.splice(index, 1);
-            var index = stores.map(function(e) { return e.count; }).indexOf(0);
-        }    
-
-        return stores;
     };
     
     ctrl.getCheapestStoreProduct = function(storeProducts)
@@ -445,9 +498,92 @@ angular.module("eappApp").controller("UserListController", ["$rootScope", "$scop
         });
     };
     
+    
+    $scope.renameList = function(ev)
+    {
+        var confirm = $mdDialog.prompt()
+            .title("renommer votre liste d'épicerie")
+            .textContent("Renommer votre liste d'épicerie")
+            .placeholder('Nom')
+            .ariaLabel('Nom')
+            .initialValue($scope.selectedGroceryList.name)
+            .targetEvent(ev)
+            .ok('Ok')
+            .cancel('Annuler');
+
+        $mdDialog.show(confirm).then(function(result) 
+        {
+            var formData = new FormData();
+            formData.append("my_list", JSON.stringify($scope.getProductList()));
+            formData.append("id", $scope.selectedGroceryList.id);
+            formData.append("name", result);
+            // Send request to server to get optimized list 	
+            $http.post( $scope.site_url.concat("/account/save_user_list"), 
+            formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}}).then(
+            function(response)
+            {
+                if(response.data.success)
+                {
+                    var index = $scope.loggedUser.grocery_lists.map(function(e) { return parseInt(e.id); }).indexOf(parseInt($scope.selectedList.id));
+                    
+                    if(index > -1)
+                    {
+                        $scope.loggedUser.grocery_lists[index].name = result;
+                    }
+                }
+            });
+
+        });
+        
+    };
+    
+    $scope.createList = function(ev)
+    {
+        var confirm = $mdDialog.prompt()
+            .title("Créer une nouvelle liste d'épicerie")
+            .textContent("Entrez le nom de la nouvelle liste d'épicerie")
+            .placeholder('Nom')
+            .ariaLabel('Nom')
+            .initialValue('Nouvelle liste')
+            .targetEvent(ev)
+            .ok('Ok')
+            .cancel('Annuler');
+
+          $mdDialog.show(confirm).then(function(result) 
+          {
+                var createNewListPromise = eapp.createNewList(result);
+                
+                createNewListPromise.then(function(response)
+                {
+                    if(response.data.success)
+                    {
+                        var newList = response.data.data;
+                        $rootScope.loggedUser.grocery_lists.push(newList);
+                        $scope.selectedList.id = newList.id;
+                        eapp.showAlert(ev, 'Succès', response.data.message);
+                    }
+                    else
+                    {
+                        eapp.showAlert(ev, 'Erreur', response.data.message);
+                    }
+                });
+                
+          });
+        
+    };
+    
     angular.element(document).ready(function()
     {
         $scope.load_icons(); 
+        
+        if($scope.isUserLogged)
+        {
+            if($scope.loggedUser.grocery_lists.length > 0)
+            {
+                $scope.selectedList.id = $scope.loggedUser.grocery_lists[0].id;
+                $scope.selectedGroceryList = $scope.loggedUser.grocery_lists[0];
+            }
+        }
            
         $scope.getUserProductList();
     });

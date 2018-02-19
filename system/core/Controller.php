@@ -221,7 +221,7 @@ class CI_Controller {
             // find user account of cookie_user stored in application database
             $checkLogin = $this->account_model->get_specific(USER_ACCOUNT_TABLE, $condition);
             // set session if necessary
-            if (!$this->session->userdata('userId')) 
+            if (!$this->session->userdata('userId') && $checkLogin) 
             {
                 $this->session->set_userdata('userId', $checkLogin->id);
             }

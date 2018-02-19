@@ -417,6 +417,22 @@ eappApp.factory('eapp', ['$http','$rootScope', '$mdDialog', function($http, $roo
         });
     };
     
+    eappService.createPrompt = function(ev, caption, description, placeHolder, initialValue, yesLabel = 'Oui', noLabel = 'Non')
+    {
+        var prompt = $mdDialog.prompt()
+            .title(caption)
+            .textContent(description)
+            .placeholder(placeHolder)
+            .ariaLabel(placeHolder)
+            .initialValue(initialValue)
+            .targetEvent(ev)
+            .required(true)
+            .ok(yesLabel)
+            .cancel(noLabel);
+    
+        return prompt;
+    };
+    
     eappService.scrollTo = function(divID)
     {
         $('html, body').animate({
@@ -672,14 +688,13 @@ eappApp.factory('eapp', ['$http','$rootScope', '$mdDialog', function($http, $roo
         return $http.post(eappService.getSiteUrl().concat("eapp/get_subcategories"), null);  
     };
 	
-	eappService.getAdminSubCategories = function(query)
+    eappService.getAdminSubCategories = function(query)
     {
         var formData = new FormData();
         formData.append("query", JSON.stringify(query));
         
         return $http.post(eappService.getSiteUrl().concat("eapp/get_admin_subcategories"), formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}});
     };
-	
     
     eappService.getCloseRetailers = function(distance)
     {
@@ -923,6 +938,22 @@ eappApp.factory('eapp', ['$http','$rootScope', '$mdDialog', function($http, $roo
         formData.append("filter", filter);
         
         return $http.post(eappService.getSiteUrl().concat("/eapp/get_products_with_store_products"), formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}});
+    };
+    
+    eappService.createNewList = function(name)
+    {
+        var formData = new FormData();
+        formData.append("name", name);
+        return $http.post(eappService.getSiteUrl().concat("/account/create_new_list"), formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}});
+
+    };
+    
+    eappService.deleteGroceryList = function(id)
+    {
+        var formData = new FormData();
+        formData.append("id", id);
+        
+        return $http.post(eappService.getSiteUrl().concat("/account/delete_grocery_list"), formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}});
     };
 
     return eappService;

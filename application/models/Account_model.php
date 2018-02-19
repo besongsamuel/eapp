@@ -71,69 +71,92 @@ class Account_model extends CI_Model
         
         $user_account->optimizations = $this->get_user_optimizations($user_account);
         
-        $product_list = $this->get_specific(USER_GROCERY_LIST_TABLE, array("user_account_id" => $account_id));
+        $product_lists = $this->get_where(USER_GROCERY_LIST_TABLE, '*', array("user_account_id" => $account_id));
 		        
         $favorite_stores = $this->get_favorite_stores($account_id);
         
-        if($product_list == null)
+        if($product_lists == null)
         {
-            $user_account->grocery_list = array();
+            $user_account->grocery_lists = array();
         }
         else
         {
-            $user_account->grocery_list = array();
-            
-            $product_list = json_decode($product_list->grocery_list);
-            
-            if($product_list == NULL)
-            {
-                $product_list = array();
-            }
-            
-            $product_array = array();
-            
-            foreach ($product_list as $item) 
-            {
-                $product = $this->get_product($item->id);
-                
-                array_push($product_array, $item->id);
-                
-                // Get all store products for the given product
-                $this->db->where($this->latest_products_condition, NULL, FALSE);
-		$product->store_products = $store_product = $this->get_where(STORE_PRODUCT_TABLE, "*", array("product_id" => $product->id));  
-		
-		// This is a list of user favorite stores where this product is available
-                $product->user_stores = array();
-                
-                $product->quantity = $item->quantity;
-                
-                array_push($user_account->grocery_list, $product);
-                
-            }
+            $user_account->grocery_lists = array();
             
             $user_account->user_stores = array();
-            
-            //For each favorite store, get the store_product and price of the product
-            foreach($favorite_stores as $favorite_store)
-            {
-                // product should be currently available 
-                $this->db->where($this->latest_products_condition, NULL, FALSE);
-                $this->db->where_in("product_id", $product_array);
-                $this->db->where(array("retailer_id" => $favorite_store->id));
-                $favorite_store_store_products = array();
+                        
+            foreach ($product_lists as $product_list) 
+            {                                
+                // Create a new object that represents the list
+                $list_object = new stdClass();
+                $list_object->id = $product_list->id;
+                $list_object->name = $product_list->name;
+                $list_object->products = array();
+                $list_object->stores = array();
                 
-                foreach ($this->db->get(STORE_PRODUCT_TABLE)->result() as $value) 
+                $product_list = json_decode($product_list->grocery_list);
+            
+                if($product_list == NULL)
                 {
-                    if(!isset($favorite_store_store_products[$value->product_id]))
-                    {
-                        $favorite_store_store_products[$value->product_id] = array();
-                    }
-                    
-                    array_push($favorite_store_store_products[$value->product_id], $value);
+                    $product_list = array();
+                }
+
+                $product_array = array();
+
+                foreach ($product_list as $item) 
+                {
+                    $product = $this->get_product($item->id);
+
+                    array_push($product_array, $item->id);
+
+                    // Get all store products for the given product
+                    $this->db->where($this->latest_products_condition, NULL, FALSE);
+                    $product->store_products = $store_product = $this->get_where(STORE_PRODUCT_TABLE, "*", array("product_id" => $product->id));  
+
+                    // This is a list of user favorite stores where this product is available
+                    $product->user_stores = array();
+
+                    $product->quantity = $item->quantity;
+
+                    array_push($list_object->products, $product);
+
                 }
                 
-                $favorite_store->store_products = $favorite_store_store_products;
-                array_push($user_account->user_stores, $favorite_store);
+                //For each favorite store, get the store_product and price of the product
+                foreach($favorite_stores as $favorite_store)
+                {
+                    // product should be currently available 
+                    
+                    if(sizeof($product_array) > 0)
+                    {
+                        $this->db->where_in("product_id", $product_array);
+                    }
+                    else
+                    {
+                        $favorite_store->store_products = array();
+                        array_push($list_object->stores, $favorite_store);
+                        continue;
+                    }
+                    
+                    $this->db->where($this->latest_products_condition, NULL, FALSE);
+                    $this->db->where(array("retailer_id" => $favorite_store->id));
+                    $favorite_store_store_products = array();
+
+                    foreach ($this->db->get(STORE_PRODUCT_TABLE)->result() as $value) 
+                    {
+                        if(!isset($favorite_store_store_products[$value->product_id]))
+                        {
+                            $favorite_store_store_products[$value->product_id] = array();
+                        }
+
+                        array_push($favorite_store_store_products[$value->product_id], $value);
+                    }
+
+                    $favorite_store->store_products = $favorite_store_store_products;
+                    array_push($list_object->stores, $favorite_store);
+                }
+                
+                array_push($user_account->grocery_lists, $list_object);
             }
         }
         

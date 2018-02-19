@@ -2,39 +2,69 @@
 
 <div>
         
-        <div id="row my-list-info" class="row my-list-info container" style="margin : 10px; margin: auto; padding: 20px;">
-            <div class="col-sm-4"><p style="text-align : center;"><a href>Produits <span class="badge">{{my_list_count()}}</span></a><br></p></div>
-            <div class="col-sm-4"><p style="text-align : center;"><a href>Offres des circulaires <span class="badge">{{flyer_products_count()}}</span></a><br></p></div>
-            <div ng-hide="true" class="col-sm-4"><p style="text-align : center;"><a href>Coupons <span class="badge">{{coupons_count()}}</span></a><br></p></div>
+    <div id="row my-list-info" class="row my-list-info container" style="margin : 10px; margin: auto; padding: 20px;">
+        <div class="col-sm-4"><p style="text-align : center;"><a href>Produits <span class="badge">{{my_list_count()}}</span></a><br></p></div>
+        <div class="col-sm-4"><p style="text-align : center;"><a href>Offres des circulaires <span class="badge">{{flyer_products_count()}}</span></a><br></p></div>
+        <div ng-hide="true" class="col-sm-4"><p style="text-align : center;"><a href>Coupons <span class="badge">{{coupons_count()}}</span></a><br></p></div>
+    </div>
+       
+    <div class="row" style="margin-bottom: 20px;">
+        <div class="col-sm-12">
+            <md-button class="md-raised md-warn pull-left" ng-click="deleteList($event)" ng-if="selectedList.id != -1">
+                <md-icon style="color: white;"><i class="material-icons">delete</i></md-icon>
+                Supprimer liste
+            </md-button>
+            <md-button class="md-raised md-otiprix pull-left" ng-click="createList($event)">
+                <md-icon style="color: white;"><i class="material-icons">create</i></md-icon>
+                Créer une nouvelle liste
+            </md-button>
+            <md-button class="md-raised md-otiprix pull-left" ng-click="renameList($event)" ng-if="selectedList.id != -1">
+                <md-icon style="color: white;"><i class="material-icons">edit</i></md-icon>
+                Renommer liste
+            </md-button>
         </div>
-        
-        <div class="row search-products">
+    </div>
+    
+    <div class="row">
+        <div class="center-div">
+            <md-input-container style="width: 300px;">
+              <label>Sélectionnez votre liste d'épicerie</label>
+              <md-select ng-model="selectedList.id" ng-change="groceryListChanged()">
+                    <md-option ng-repeat="list in loggedUser.grocery_lists track by $index" ng-value="{{list.id}}">
+                        {{list.name}}
+                    </md-option>
+                </md-select>
+            </md-input-container>
+        </div>
+    </div>
+    
+    <div class="row search-products">
 
-            <md-autocomplete class="col-sm-12 col-md-9" style="display : inline-block;"
-                md-search-text="searchProductText"
-                md-selected-item-change="product_selected(item)"
-                md-items="item in querySearch(searchProductText)"
-                md-item-text="item.name"
-                md-min-length="2"
-                md-floating-label="Recherche de produits à ajouter à votre liste"
-            >
-                <md-item-template>
-                    <span md-highlight-text="searchProductText" md-highlight-flags="^i">{{item.name}}</span>
-                </md-item-template>
-                <md-not-found>
-                    Aucun produit correspondant à "{{searchProductText}}" n'a été trouvé.
-                </md-not-found>
-            </md-autocomplete>
-            
-            <div class="col-sm-12 col-md-3">
-                <md-button ng-click="addNewProductToList()" class="md-raised md-primary pull-right" style="background-color : #1abc9c;" aria-label="Ajouter">
-                    
-                    <md-icon md-svg-src="{{icons.add | trustUrl}}"></md-icon>
-                    Ajouter à votre liste
-                </md-button>
-            </div>
-            
+        <md-autocomplete class="col-sm-12 col-md-9" style="display : inline-block;"
+            md-search-text="searchProductText"
+            md-selected-item-change="product_selected(item)"
+            md-items="item in querySearch(searchProductText)"
+            md-item-text="item.name"
+            md-min-length="2"
+            md-floating-label="Recherche de produits à ajouter à votre liste"
+        >
+            <md-item-template>
+                <span md-highlight-text="searchProductText" md-highlight-flags="^i">{{item.name}}</span>
+            </md-item-template>
+            <md-not-found>
+                Aucun produit correspondant à "{{searchProductText}}" n'a été trouvé.
+            </md-not-found>
+        </md-autocomplete>
+
+        <div class="col-sm-12 col-md-3">
+            <md-button ng-click="addNewProductToList($event)" class="md-raised md-otiprix pull-right" style="background-color : #1abc9c;" aria-label="Ajouter">
+
+                <md-icon md-svg-src="{{icons.add | trustUrl}}"></md-icon>
+                Ajouter à votre liste
+            </md-button>
         </div>
+
+    </div>
                 
         <div class="row my-grocery-list md-whiteframe-3dp" style="margin : 10px; min-height: 100px;" >
             <md-toolbar style="background-color: #1abc9c;">
@@ -49,7 +79,7 @@
                         <p>{{ product.name }}  <span class="badge" ng-show="product.store_products.length == 0">Le produit n'est pas disponible</span><span class="badge" ng-show="product.store_products.length > 0"> Disponible dans {{product.store_products.length}} magasins</span></p>
                         
                         <md-input-container class="md-secondary">
-                            <input style="width: 40px;" aria-label="Qty" type="number" ng-model="product.quantity">
+                            <input style="width: 40px;" aria-label="Qty" type="number" ng-change="saveMyList()" ng-model="product.quantity">
                         </md-input-container>
                         <md-button class="md-raised md-warn md-secondary" aria-label="Supprimer" ng-click="removeProductFromList(product.id, $event, true)">
                             
@@ -59,7 +89,7 @@
                     </md-list-item>
                 <md-divider></md-divider>
             </div>
-            <h4 layout layout-align="center" ng-show="myCategories.length === 0" layout-padding>Votre liste est vide. </h4>
+            <p class="md-otiprix-text" layout layout-align="center" ng-show="myCategories.length === 0" layout-padding><b>Cette liste est vide. Commencez à ajouter des produits à votre liste d'épicerie.</b></p>
         </div>
 		
         <div  class="row my-grocery-list md-whiteframe-3dp" style="margin : 10px; min-height: 100px;" >
@@ -68,7 +98,7 @@
                     <h2 class="md-toolbar-tools">Votre liste d'épicerie dans vos magasins préférés cette semaine</h2>
                 </div>
             </md-toolbar>
-            <md-list-item class="md-2-line" ng-repeat="store in loggedUser.user_stores">
+            <md-list-item class="md-2-line" ng-repeat="store in selectedGroceryList.stores">
                 <img ng-src="{{ store.image }}" class="md-avatar" alt="{{store.name}}" />
                 <div class="md-list-item-text md-offset">
                       <h3> Prix total à {{store.name}} : <b>{{ getStorePrice(store) | number : 2 }} C $</b> </h3>
@@ -78,23 +108,23 @@
             
             <div class="">
                 
-                <md-button class="md-raised md-otiprix pull-right" aria-label="Optimizer votre liste" ng-click="optimizeMyList()">
+                <md-button class="md-raised md-otiprix pull-right" aria-label="Optimizer votre liste" ng-click="optimizeMyList()" ng-if="myCategories.length > 0">
                     
                     <md-tooltip
                         md-direction="top">
                         Optimizer votre liste
                     </md-tooltip>
-                    <md-icon><i class="material-icons">build</i></md-icon>
+                    <md-icon><i style="color : white;" class="material-icons">build</i></md-icon>
                     Optimizer votre liste
                 </md-button>
                 
-                <md-button class="md-raised md-warn pull-right"  ng-click="clearMyList($event)" aria-label="Effacer votre liste">
+                <md-button class="md-raised md-warn pull-right"  ng-click="clearMyList($event)" aria-label="Effacer votre liste" ng-if="myCategories.length > 0">
                     
                     <md-tooltip
                         md-direction="top">
                         Effacer votre liste
                     </md-tooltip>
-                    <md-icon><i class="material-icons">clear_all</i></md-icon>
+                    <md-icon><i class="material-icons">delete_sweep</i></md-icon>
                     Effacer votre liste
                 </md-button>
                 

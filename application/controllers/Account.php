@@ -277,14 +277,22 @@ class Account extends CI_Controller {
             $data = array
             (
                 "user_account_id" => $this->user->id,
+                "id" => $this->input->post("id"),
                 "grocery_list" => $this->input->post("my_list")
             );
             
-            $this->account_model->delete(USER_GROCERY_LIST_TABLE, array("user_account_id" => $this->user->id));
-            
+            if($this->input->post("name") != null)
+            {
+                $data["name"] = $this->input->post("name");
+            }
+                        
             $this->account_model->create(USER_GROCERY_LIST_TABLE, $data);
             
+            // Get new user
+            $user = $this->account_model->get_user($this->user->id);
+            
             $data["success"] = true; 
+            $data["grocery_lists"] = $user->grocery_lists;
         }
         
         echo json_encode($data);
@@ -728,6 +736,82 @@ class Account extends CI_Controller {
             </table>';
         
         return $output;
+    }
+    
+    public function delete_grocery_list() 
+    {
+        if($this->user != null)
+        {
+            $data = array();
+        
+            $id = $this->input->post('id');
+
+            $this->account_model->delete(USER_GROCERY_LIST_TABLE, array('id' => $id));
+
+            // Get new user
+            $user = $this->account_model->get_user($this->user->id);
+
+            $data["success"] = true; 
+            $data["grocery_lists"] = $user->grocery_lists;
+
+
+            echo json_encode($data);
+        }
+        
+    }
+    
+    public function create_new_list() 
+    {
+        $result = array();
+        
+        if($this->user != null)
+        {
+            $name = $this->input->post('name');
+            
+            if(!empty($name))
+            {
+                $equivalent_list = $this->account_model->get_specific(USER_GROCERY_LIST_TABLE, array("name" => $name));
+                
+                if($equivalent_list)
+                {
+                    $result['message'] = "Une liste d'épicerie avec le même nom existe déjà.";
+                    $result['success'] = false;
+                }
+                else
+                {
+                    $data = array("name" => $name, "user_account_id" => $this->user->id);
+                    
+                    $index = $this->account_model->create(USER_GROCERY_LIST_TABLE, $data);
+                    
+                    $list = $this->account_model->get(USER_GROCERY_LIST_TABLE, $index);
+                    
+                    if($list)
+                    {
+                        $result['message'] = "Votre liste d'épicerie a été crée avec succès.";
+                        $result['success'] = true;
+                        $list_object = new stdClass();
+                        $list_object->id = $list->id;
+                        $list_object->name = $list->name;
+                        $list_object->products = array();
+                        $list_object->stores = array();
+                        $result['data'] = $list_object;
+                    }
+                    else
+                    {
+                        $result['message'] = "Une erreur inattendue du serveur s'est produite. Veuillez réessayer plus tard.";
+                        $result['success'] = false;
+                    }
+                }
+                
+            }
+            else
+            {
+                $result['message'] = "Le nom de la liste est vide";
+                $result['success'] = false;
+            }
+            
+            echo json_encode($result);
+        }
     }
     
 }
