@@ -70,7 +70,7 @@
             <p style="text-align: right; margin-right: 10px;">Totale : <span style="font-size : 18px;"><b>{{$ctrl.item.store_product.price * $ctrl.item.quantity | number : 2}} C $</b></span></p>
         </div>
 
-        <add-to-list style='text-align: center; margin-right: 10px;' class='pull-right' product='$ctrl.item.store_product.product' caption="Ajouter à liste" logged-user='root.loggedUser'></add-to-list>
+        <add-to-list ng-if="root.isUserLogged" style='text-align: center; margin-right: 10px;' class='pull-right' product='$ctrl.item.store_product.product' caption="Ajouter à liste" logged-user='root.loggedUser'></add-to-list>
 
     </div>
 
