@@ -1,7 +1,7 @@
 <md-dialog>
     <md-toolbar>
         <div class="md-toolbar-tools md-otiprix">
-            <h2>Veillez sélectioner une liste d'épicerie</h2>
+            <h2>Veillez sélectioner une ou plusieurs liste d'épicerie</h2>
             <md-button class="md-icon-button" ng-click="cancel()">
                 <md-icon>
                     <i style="color : white;" class="material-icons">close</i>
@@ -14,9 +14,46 @@
 
         <div class="md-dialog-content">
 
-            <hp>Ajouter produit <span class="md-otiprix-text">{{product.name}}</span> à ...</hp>
+            <p style="margin-bottom : 20px;">Ajouter produit <span class="md-otiprix-text">{{product.name}}</span> à ...</p>
 
-            <md-list-item class="md-3-line" ng-repeat="item in grocery_lists">
+            <div class="row">
+
+                    <div class="alert alert-success" ng-show="successMessage">
+                        <strong>Sucess!</strong> {{successMessage}}
+                    </div>
+                    
+                    <div class="alert alert-danger" ng-show="errorMessage">
+                        <strong>Erreur!</strong> {{errorMessage}}
+                    </div>
+                <md-button class="md-raised pull-right md-otiprix" ng-hide="creatingNew" ng-click="creatingNew = true; errorMessage = null; successMessage = null;">
+                    Créer Nouvelle Liste
+                </md-button>
+
+                <div class="col-sm-12" ng-show="creatingNew">
+
+                    <form name="createList" ng-submit="createList()" novalidate>
+                        <md-input-container class="col-sm-12">
+                            <label>Nom</label>
+                            <input name="name" ng-model="name" ng-required="true" />
+                            <div ng-messages="createList.name.$error">
+                                <div ng-message="required">Veillez entrer un nom pour votre liste</div>
+                            </div>
+                        </md-input-container>
+    
+                        <div class="col-sm-12">
+                            <md-button class="md-raised md-otiprix pull-right" ng-click="">
+                                Créer
+                            </md-button>
+                            <md-button type=submit class="md-raised pull-right" ng-click="creatingNew = false;">
+                                Anuller
+                            </md-button>
+                        </div>
+                    </form>
+                </div>
+                
+            </div>
+
+            <md-list-item ng-repeat="item in grocery_lists">
                 
                 <md-switch  class="md-primary" ng-model="item.selected" aria-label="Ajouter à liste" ng-change="addToList(item)">
                     <span>{{item.name}}</span>
