@@ -31,11 +31,11 @@
 
                 <div class="col-sm-12" ng-show="creatingNew">
 
-                    <form name="createList" ng-submit="createList()" novalidate>
+                    <form name="createListForm" ng-submit="createList()" novalidate>
                         <md-input-container class="col-sm-12">
                             <label>Nom</label>
                             <input name="name" ng-model="name" ng-required="true" />
-                            <div ng-messages="createList.name.$error">
+                            <div ng-messages="createListForm.name.$error">
                                 <div ng-message="required">Veillez entrer un nom pour votre liste</div>
                             </div>
                         </md-input-container>
