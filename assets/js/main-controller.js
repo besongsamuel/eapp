@@ -443,6 +443,10 @@ eappApp.component("addToList",
             
             $scope.product = product;
             
+            $scope.creatingNew = false;
+            
+            $scope.name = "Nouvelle liste";
+            
             $scope.hide = function() {
               $mdDialog.hide();
             };
@@ -455,8 +459,33 @@ eappApp.component("addToList",
               $mdDialog.hide(answer);
             };
             
+            $scope.createList = function()
+            {
+                var createNewListPromise = eapp.createNewList($scope.name);
+                
+                createNewListPromise.then(function(response)
+                {
+                    if(response.data.success)
+                    {
+                        var newList = response.data.data;
+                        newList.selected = false;
+                        $rootScope.loggedUser.grocery_lists.push(newList);
+                        $scope.grocery_lists = $rootScope.loggedUser.grocery_lists;
+                        $scope.successMessage = response.data.message;
+                    }
+                    else
+                    {
+                        $scope.errorMessage = response.data.message;
+                    }
+                    
+                    $scope.creatingNew = false;
+                });
+            };
+            
             $scope.addToList = function(item)
             {
+                $scope.successMessage = null;
+                $scope.errorMessage =  null;
                 if(item.selected)
                 {
                     eapp.addProductToList($scope.product, item.id).then(function(response)
