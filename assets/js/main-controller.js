@@ -394,6 +394,8 @@ eappApp.component("addToList",
         
         ctrl.selectListItem = function(ev)
         {
+            var scrollTop = $(document).scrollTop();
+            
             $mdDialog.show({
                 controller: DialogController,
                 templateUrl: '/templates/selectUserGroceryLists.html',
@@ -407,14 +409,16 @@ eappApp.component("addToList",
                 clickOutsideToClose:true,
                 fullscreen: false
             })
-            .then(function(answer) {
-              $scope.status = 'You said the information was "' + answer + '".';
-            }, function() {
-              $scope.status = 'You cancelled the dialog.';
+            .then(function(answer) 
+            {
+                $(document).scrollTop(scrollTop);
+            }, function() 
+            {
+                $(document).scrollTop(scrollTop);
             });
         };
         
-        function DialogController($scope, $mdDialog, grocery_lists, product, eapp) 
+        function DialogController($rootScope, $scope, $mdDialog, grocery_lists, product, eapp) 
         {
             $scope.grocery_lists = grocery_lists;
             
@@ -457,6 +461,7 @@ eappApp.component("addToList",
                 {
                     eapp.addProductToList($scope.product, item.id).then(function(response)
                     {
+                        $rootScope.loggedUser.grocery_lists = response.data.grocery_lists;
                         $scope.grocery_lists = response.data.grocery_lists;
                         $scope.refresh();
                     });
@@ -465,6 +470,7 @@ eappApp.component("addToList",
                 {
                     eapp.removeProductFromList($scope.product, item.id).then(function(response)
                     {
+                        $rootScope.loggedUser.grocery_lists = response.data.grocery_lists;
                         $scope.grocery_lists = response.data.grocery_lists;
                         $scope.refresh();
                     });
