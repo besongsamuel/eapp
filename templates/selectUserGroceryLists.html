@@ -14,14 +14,14 @@
 
         <div class="md-dialog-content">
 
-            <h4>{{product.name}}</h4>
+            <hp>Ajouter produit <span class="md-otiprix-text">{{product.name}}</span> à ...</hp>
 
             <md-list-item class="md-3-line" ng-repeat="item in grocery_lists">
-                <p class="md-otiprix-text">{{item.name}}</p>
-                <md-checkbox ng-model="item.selected" aria-label="Ajouter à liste" ng-change="addToList(item)">
-                    Ajouter à liste
-                </md-checkbox>
-                <md-divider ng-show="$last"></md-divider>
+                
+                <md-switch  class="md-primary" ng-model="item.selected" aria-label="Ajouter à liste" ng-change="addToList(item)">
+                    <span>{{item.name}}</span>
+                </md-switch>
+                <md-divider ng-if="!$last"></md-divider>
             </md-list-item>
 
         </div>
