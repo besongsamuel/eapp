@@ -14,6 +14,8 @@ angular.module('eappApp').controller('ShopController', ["$scope", "$q", "$http",
     
     $scope.isLoading = false;
     
+    $scope.root = $rootScope;
+    
     /**
      * This variable is true when a store is selected. 
      */

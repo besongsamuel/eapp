@@ -234,22 +234,6 @@ class CI_Controller {
 
     }
         
-    public function inUserList($product_id) 
-    {
-        if(isset($this->user))
-        {
-            foreach ($this->user->grocery_list as $product) 
-            {
-                if($product_id == $product->id)
-                {
-                    return true;
-                }
-            }
-        }
-
-        return false;
-    }
-
     public function send_verification_code($phone_number)
     {
 

@@ -41,14 +41,15 @@
                     <span>Description</span>
                 </th>
 
-                <th md-column md-numeric>Price (CAD)</th>
-                <th md-column>Quantity</th>
-                <th md-column md-numeric>Total Price (CAD)</th>
+                <th md-column md-numeric>Prix (C $)</th>
+                <th md-column>Quantité</th>
+                <th md-column md-numeric>Totale (C $)</th>
                 <th md-column>Actions</th>
             </tr>
         </thead>
         <tbody md-body>
           <tr md-row md-select="product" md-select-id="product.id" ng-repeat="product in products">
+              
             <td md-cell>
                 <div style="width: 160px;">
                     <img class="retailer-img" alt="" ng-src="{{product.retailer.image}}">
@@ -60,6 +61,7 @@
                     </div>
                 </div>
             </td>
+            
             <td md-cell>
                 <p><b><a  href ng-click="viewProduct(product.id, $event)">{{product.product.name | uppercase}}</a></b></p>
                 <p ng-show="product.size">{{product.size}}</p>
@@ -75,17 +77,25 @@
                 <b>{{(product.price * product.quantity) | number : 2}} C $</b>
             </td>
             <td md-cell>
-                <md-button class="md-otiprix md-raised pull-right" ng-hide="productInCart(product.product.id)"  ng-click="add_product_to_cart(product.product_id, isStoreSelected ? product.id : -1, product.quantity)">
-                    <md-icon>
-                        <i class="material-icons">add_shopping_cart</i>
-                    </md-icon>
-                    Ajouter
-                </md-button>
+                
+                <div class="row">
+                    <div class="center-div">
+                        <md-button class="md-otiprix md-raised pull-right" ng-hide="productInCart(product.product.id)"  ng-click="add_product_to_cart(product.product_id, isStoreSelected ? product.id : -1, product.quantity)">
+                            <md-icon>
+                                <i style="color : white;" class="material-icons">add_shopping_cart</i>
+                            </md-icon>
+                            Ajouter
+                        </md-button>
 
-                <md-button class="md-warn md-raised pull-right" ng-show="productInCart(product.product.id)" ng-click="remove_product_from_cart(product.product_id)">
-                    <md-icon><i class="material-icons">remove_shopping_cart</i></md-icon>
-                    Retirer
-                </md-button>
+                        <md-button class="md-warn md-raised pull-right" ng-show="productInCart(product.product.id)" ng-click="remove_product_from_cart(product.product_id)">
+                            <md-icon><i class="material-icons">remove_shopping_cart</i></md-icon>
+                            Retirer
+                        </md-button>
+                    </div>
+                </div>
+                
+                <add-to-list style='text-align: center;' class='pull-right' product='product.product' caption="Ajouter à liste" logged-user='root.loggedUser'></add-to-list>
+                
             </td>
             
           </tr>
@@ -114,14 +124,19 @@
 
                 <div class="format">{{product.format}} <span ng-show="product.unit">{{product.unit.name}}</span></div>
                 <p style="font-size: 18px; margin-top: 10px;"><b>{{product.price}} C $</b></p>
+                
+                <div class="row" style='text-align: center;'>
+                    <add-to-list product='product.product' caption="Ajouter à liste" logged-user='root.loggedUser'></add-to-list>
+                </div>
 
                 <div>
                     <quantity-input quantity="product.quantity" ></quantity-input>
                     <span class="price pull-right">{{(product.price * product.quantity) | number : 2}} C $</span>
                 </div>
+                
+                
 
                 <div class="row">
-
 
                     <div class="col-sm-12">
 

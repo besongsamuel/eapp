@@ -23,6 +23,8 @@ function CartListItemController($scope, $rootScope, eapp, $mdDialog)
 {
     var ctrl = this;
     
+    $scope.root = $rootScope;
+    
     ctrl.$onInit = function()
     {
         ctrl.isUserLogged = $rootScope.isUserLogged;

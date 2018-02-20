@@ -240,7 +240,6 @@ class Cart extends CI_Controller {
         
         foreach($this->get_filtered_cart_items($cart_items, $resultsFilter, $this->get_my_location(), $distance) as $cart_item)
         {
-            $in_user_list = isset($this->user) ? $this->inUserList($cart_item->product->id) : false;
             // get the best store product based on price
             $store_product = $this->cart_model->get_best_store_product(
                     $cart_item->product->id, 
@@ -253,9 +252,7 @@ class Cart extends CI_Controller {
                     $cart_item->store_product_id);
             $item = new stdClass();
             $item->store_product = $store_product;
-            $item->store_product->product->in_user_grocery_list = $in_user_list;
             $item->product = $this->cart_model->get_product($cart_item->product->id);
-            $item->product->in_user_grocery_list = $in_user_list;
             $item->rowid = $cart_item->rowid;
             $item->store_product_id = $cart_item->store_product_id;
             $item->quantity = $cart_item->quantity;

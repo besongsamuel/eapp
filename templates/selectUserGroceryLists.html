@@ -1,0 +1,39 @@
+<md-dialog>
+    <md-toolbar>
+        <div class="md-toolbar-tools md-otiprix">
+            <h2>Veillez sélectioner une liste d'épicerie</h2>
+            <md-button class="md-icon-button" ng-click="cancel()">
+                <md-icon>
+                    <i style="color : white;" class="material-icons">close</i>
+                </md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+
+    <md-dialog-content>
+
+        <div class="md-dialog-content">
+
+            <h4>{{product.name}}</h4>
+
+            <md-list-item class="md-3-line" ng-repeat="item in grocery_lists">
+                <p class="md-otiprix-text">{{item.name}}</p>
+                <md-checkbox ng-model="item.selected" aria-label="Ajouter à liste" ng-change="addToList(item)">
+                    Ajouter à liste
+                </md-checkbox>
+                <md-divider ng-show="$last"></md-divider>
+            </md-list-item>
+
+        </div>
+        <md-divider></md-divider>
+    </md-dialog-content>
+
+    <md-dialog-actions layout="row">
+
+        <md-button class="md-raised" ng-click="close()">
+            Fermer
+        </md-button>
+
+    </md-dialog-actions>
+
+</md-dialog>

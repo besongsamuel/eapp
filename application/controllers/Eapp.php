@@ -102,7 +102,7 @@ class Eapp extends CI_Controller
             // Get the product id to add
             $product_id = $this->input->post("product_id");
             // get the current product list
-            $product_list = $this->get_grocery_list();
+            $product_list = $this->get_grocery_list($this->input->post("list_id"));
             
             // check if product is already in list
             if($this->list_contains_product($product_list, $product_id) == FALSE)
@@ -113,17 +113,22 @@ class Eapp extends CI_Controller
                 // add product to list.
                 array_push($product_list, $item);
             }
+            
             // Save list
             $data = array
             (
-                "user_account_id" => $this->user->id,
+                "id" => $this->input->post("list_id"),
                 "grocery_list" => json_encode($product_list)
             );
 
-            $this->account_model->delete(USER_GROCERY_LIST_TABLE, array("user_account_id" => $this->user->id));
             $this->account_model->create(USER_GROCERY_LIST_TABLE, $data);
-
-            echo true;
+            
+            $user = $this->account_model->get_user($this->user->id);
+            $return = array();
+            $return["grocery_lists"] = $user->grocery_lists;
+            $return["success"] = true;
+            
+            echo json_encode($return);
         }
          
         echo false;
@@ -142,10 +147,10 @@ class Eapp extends CI_Controller
         return FALSE;
     }
     
-    private function get_grocery_list() 
+    private function get_grocery_list($listID) 
     {
         // get the current product list
-        $product_list = $this->account_model->get_specific(USER_GROCERY_LIST_TABLE, array("user_account_id" => $this->user->id));
+        $product_list = $this->account_model->get_specific(USER_GROCERY_LIST_TABLE, array("id" => $listID));
 
         if(isset($product_list->grocery_list))
         {
@@ -171,7 +176,7 @@ class Eapp extends CI_Controller
             // Get the product id to add
             $product_id = $this->input->post("product_id");
             // get the current product list
-            $product_list = $this->get_grocery_list();
+            $product_list = $this->get_grocery_list($this->input->post("list_id"));
             // check if product is already in list
             if($this->list_contains_product($product_list, $product_id) == TRUE)
             {
@@ -188,14 +193,19 @@ class Eapp extends CI_Controller
                 // Save list
                 $data = array
                 (
-                    "user_account_id" => $this->user->id,
+                    "id" => $this->input->post("list_id"),
                     "grocery_list" => json_encode($newProductList)
                 );
 
-                $this->account_model->delete(USER_GROCERY_LIST_TABLE, array("user_account_id" => $this->user->id));
                 $this->account_model->create(USER_GROCERY_LIST_TABLE, $data);
+                
+                $user = $this->account_model->get_user($this->user->id);
+                $return = array();
+                $return["grocery_lists"] = $user->grocery_lists;
+                $return["success"] = true;
 
-                echo true;
+                echo json_encode($return);
+
             }
         }
         

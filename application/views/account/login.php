@@ -30,8 +30,8 @@
                     </div>
                 </md-input-container>
 
-                <md-input-container class="md-block col-md-12" flex-gt-sm>
-                    <label>Mot de passe</label>
+                <md-input-container class="md-block col-md-12" flex-gt-sm md-no-float>
+                    <label class="md-no-float">Mot de passe</label>
                     <md-icon style="color: #1abc9c;"><i class="material-icons">lock</i></md-icon>
                     <input style="border-left : none; border-right : none;border-top : none;" type="password" required name="password" ng-model="user.password" />
                     <div ng-messages="loginForm.password.$error">

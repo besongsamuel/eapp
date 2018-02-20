@@ -378,6 +378,108 @@ function SettingsItemController($scope)
     };
 }
 
+// Component to Select from user grocery list
+eappApp.component("addToList", 
+{
+    template : "<a style='text-align : center;' href ng-click='$ctrl.selectListItem($event)'>{{$ctrl.caption}}</a>",
+    controller : function($mdDialog, $scope)
+    {
+        var ctrl = this;
+        
+        ctrl.$onInit = function()
+        {
+            $scope.loggedUser = ctrl.loggedUser;
+            $scope.product = ctrl.product;
+        };
+        
+        ctrl.selectListItem = function(ev)
+        {
+            $mdDialog.show({
+                controller: DialogController,
+                templateUrl: '/templates/selectUserGroceryLists.html',
+                parent: angular.element(document.body),
+                targetEvent: ev,
+                locals : 
+                {
+                    grocery_lists : $scope.loggedUser.grocery_lists,
+                    product : $scope.product
+                },
+                clickOutsideToClose:true,
+                fullscreen: false
+            })
+            .then(function(answer) {
+              $scope.status = 'You said the information was "' + answer + '".';
+            }, function() {
+              $scope.status = 'You cancelled the dialog.';
+            });
+        };
+        
+        function DialogController($scope, $mdDialog, grocery_lists, product, eapp) 
+        {
+            $scope.grocery_lists = grocery_lists;
+            
+            $scope.refresh = function()
+            {
+              for(var i in $scope.grocery_lists)
+                {
+                    $scope.grocery_lists[i].selected = false;
+
+                    for(var j in $scope.grocery_lists[i].products)
+                    {
+                        if(parseInt($scope.grocery_lists[i].products[j].id) === parseInt(product.id))
+                        {
+                            $scope.grocery_lists[i].selected = true;
+                            continue;
+                        }
+                    }
+                }  
+            };
+            
+            $scope.refresh();
+            
+            $scope.product = product;
+            
+            $scope.hide = function() {
+              $mdDialog.hide();
+            };
+
+            $scope.cancel = function() {
+              $mdDialog.cancel();
+            };
+
+            $scope.answer = function(answer) {
+              $mdDialog.hide(answer);
+            };
+            
+            $scope.addToList = function(item)
+            {
+                if(item.selected)
+                {
+                    eapp.addProductToList($scope.product, item.id).then(function(response)
+                    {
+                        $scope.grocery_lists = response.data.grocery_lists;
+                        $scope.refresh();
+                    });
+                }
+                else
+                {
+                    eapp.removeProductFromList($scope.product, item.id).then(function(response)
+                    {
+                        $scope.grocery_lists = response.data.grocery_lists;
+                        $scope.refresh();
+                    });
+                }
+            };
+        }
+    },
+    bindings : 
+    {
+        caption : '@',
+        loggedUser : '<',
+        product : '<'
+    }
+});
+
 // configure our routes
 eappApp.config(function($routeProvider) 
 {
@@ -616,18 +718,20 @@ eappApp.factory('eapp', ['$http','$rootScope', '$mdDialog', function($http, $roo
 
     };
     
-    eappService.addProductToList = function(product)
+    eappService.addProductToList = function(product, listID)
     {
         var formData = new FormData();
         formData.append("product_id", product.id);
+        formData.append("list_id", listID);
         
         return $http.post(eappService.getSiteUrl().concat("/eapp/add_product_to_list"), formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}});
     };
     
-    eappService.removeProductFromList = function(product)
+    eappService.removeProductFromList = function(product, listID)
     {
         var formData = new FormData();
         formData.append("product_id", product.id);
+        formData.append("list_id", listID);
         
         return $http.post(eappService.getSiteUrl().concat("/eapp/remove_product_from_list"), formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}});
     };
