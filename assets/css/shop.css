@@ -153,3 +153,8 @@ body{font-family: "Roboto Condensed",sans-serif;}
 
 
 /* GRID VIEW END */
+
+/*to make seach input more visible */
+.input-search{
+    box-shadow: 2px 2px 3px #aaa;
+}
