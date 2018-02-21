@@ -697,6 +697,7 @@ class CI_Model {
         $products = $this->order_product_results($products, $filter);
         
         $result["products"] = $products;
+        
         return $result;
     }
     
@@ -811,9 +812,10 @@ class CI_Model {
             array_push($related, $store_product);
         }
         
+        
         return array_merge($perfect_match, $matches, $close_matches, $related);
     }
-    
+        
     private function apply_order_by($order)
     {
         if($order)
@@ -855,34 +857,19 @@ class CI_Model {
     {
         if($filter != null && !empty($filter))
         {
-            $filter_array = explode(' ', $filter);
+            $this->db->group_start();
             
-            $first = false;
+            $this->db->like(PRODUCT_TABLE.".name", $filter, 'after');
+            $this->db->or_like(STORE_PRODUCT_TABLE.".store_name", $filter, 'after');
             
-            foreach ($filter_array as $new_filter) 
-            {
-                if(empty($new_filter))
-                    continue;
-                
-                if(!$first)
-                {
-                    $this->db->group_start();
-                    $this->db->like(PRODUCT_TABLE.".name", $new_filter);
-                }
-                else
-                {
-                    $this->db->or_like(PRODUCT_TABLE.".name", $new_filter);
-                }
-                
-                $this->db->or_like("tags", $new_filter);
-                $this->db->or_like("store_name", $new_filter);
-                
-                $first = true;
-            }
-            if($first)
-            {
-                $this->db->group_end();
-            }
+            $this->db->or_like(PRODUCT_TABLE.".name", ' '.$filter.' ');
+            $this->db->or_like(STORE_PRODUCT_TABLE.".store_name", ' '.$filter.' ');
+            
+            $this->db->or_like(PRODUCT_TABLE.".name", ' '.$filter);
+            $this->db->or_like(STORE_PRODUCT_TABLE.".store_name", ' '.$filter);
+            
+            $this->db->group_end();
+     
         }
     }
     
@@ -890,33 +877,18 @@ class CI_Model {
     {
         if($filter != null)
         {
-            $filter_array = explode(' ', $filter);
+            $this->db->group_start();
             
-            $first = false;
+            $this->db->like(PRODUCT_TABLE.".name", $filter, 'after');
             
-            foreach ($filter_array as $new_filter) 
-            {
-                if(empty($new_filter))
-                    continue;
-                
-                if(!$first)
-                {
-                    $this->db->group_start();
-                    $this->db->like(PRODUCT_TABLE.".name", $new_filter);
-                }
-                else
-                {
-                    $this->db->or_like(PRODUCT_TABLE.".name", $new_filter);
-                }
-                
-                $this->db->or_like("tags", $new_filter);
-                
-                $first = true;
-            }
-            if($first)
-            {
-                $this->db->group_end();
-            }
+            $this->db->or_like(PRODUCT_TABLE.".name", ' '.$filter.' ');
+            
+            $this->db->or_like(PRODUCT_TABLE.".name", ' '.$filter);
+            
+            $this->db->or_like(PRODUCT_TABLE.".tags", $filter);
+            
+            $this->db->group_end();
+            
         }
     }
     
