@@ -989,8 +989,8 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
                             $scope.departmenStores[index].distanceText = response.rows[0].elements[x].distance.text;
                             $scope.departmenStores[index].timeText = response.rows[0].elements[x].duration.text;
                             $scope.departmenStores[index].fullName = $scope.departmenStores[index].address + ', ' + 
-                                    $scope.departmenStores[index].state + ', ' + 
                                     $scope.departmenStores[index].city + ', ' + 
+                                    $scope.departmenStores[index].state + ', ' + 
                                     $scope.departmenStores[index].postcode;
                         }
                         
