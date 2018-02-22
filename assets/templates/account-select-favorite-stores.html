@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 
 <div id="select-store-box">
+    
     <div>
         
         <div class="col-sm-12">
@@ -12,12 +13,13 @@
             <div class="row">
 
                 <div ng-repeat="favoriteStore in favoriteStores">
-                    <div class="col-md-2 col-sm-4" style="padding-top:10px; margin-top: 5px; margin-bottom: 10px;">
+                    <div class="col-md-2 col-sm-3 layout-padding">
                         <label  class="btn item-block">
                             <img  ng-click="goto_retailer(avoriteStore.id)" id="{{favoriteStore.id}}" ng-src="{{favoriteStore.image}}" alt="{{favoriteStore.name}}" class="store-block img-check">
                         </label>
                     </div>
                 </div>
+
             </div>
                 
         </div>
@@ -28,16 +30,20 @@
             </div>
 	</md-toolbar>
         
-        <div style="" id="retailer-contents">
-            <div class="form-group-inline" ng-repeat="store in retailers" id="retailer_{{store.id}}">
-                <div class="col-md-2 col-sm-4" style="padding-top:10px;">
-                    <label  class="btn item-block">
+        
+        <div class="container">
+            
+            <div style="" id="retailer-contents" class="row">
+                <div class="col-md-2 col-sm-3" style="padding-top:10px;" ng-repeat="store in retailers" id="retailer_{{store.id}}">
+                    <label class="btn item-block">
                         <img  ng-click="select_retailer($event)" id="{{store.id}}" ng-src="{{store.image}}" alt="{{store.name}}" class="store-block img-check">
                         <input type="checkbox" name="store_{{store.id}}" value="{{store.id}}" class="hidden" autocomplete="off">
                     </label>
                 </div>
             </div>
+            
         </div>
+        
 
         <div ng-show="registering_user">
             <div style="margin : auto;">
@@ -53,7 +59,7 @@
         <div class="col-sm-12" style="margin-top: 30px;">
             
             <!-- Button -->  
-            <md-button id="btn-signup"  ng-click="saveFavoriteStores()" class="md-otiprix md-raised pull-right">Valider Sélectionn</md-button>
+            <md-button id="btn-signup"  ng-click="saveFavoriteStores()" class="md-otiprix md-raised pull-right">Valider Sélection</md-button>
             
             <md-button id="btn-signup"  ng-click="reset()" class="md-otiprix md-raised pull-right">Recommencer</md-button>
             

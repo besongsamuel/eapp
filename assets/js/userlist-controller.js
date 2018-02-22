@@ -469,11 +469,11 @@ angular.module("eappApp").controller("UserListController", ["$rootScope", "$scop
                 var items = [];
                 
                 // add cart contents from my list
-                for(var index in $rootScope.myCategories)
+                for(var index in $scope.myCategories)
                 {
-                    for(var i in $rootScope.myCategories[index].products)
+                    for(var i in $scope.myCategories[index].products)
                     {
-                        var product = $rootScope.myCategories[index].products[i];
+                        var product = $scope.myCategories[index].products[i];
                         
                         var item = 
                         {
