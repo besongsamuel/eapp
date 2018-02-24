@@ -1,69 +1,52 @@
 <!DOCTYPE html>
 
+<style>
+    .item
+    {
+        height: 150px;
+        width: 180px;
+        margin: 0 auto;
+        border: #cccccc solid thick;
+        background-color: #eeeeee;
+        text-align: center;
+        vertical-align: central;
+        
+    }
+    
+</style>
+
+
+
+
 <div id="select-store-box">
     
-    <div>
-        
-        <div class="col-sm-12">
-            <p class="md-otiprix-text" style="text-align: center; margin: 5px;"><b>Vos magasins préférés</b></p>
-        </div>
-        
-        <div class="container">
-                
-            <div class="row">
-
-                <div ng-repeat="favoriteStore in favoriteStores">
-                    <div class="col-md-2 col-sm-3 layout-padding">
-                        <label  class="btn item-block">
-                            <img  ng-click="goto_retailer(avoriteStore.id)" id="{{favoriteStore.id}}" ng-src="{{favoriteStore.image}}" alt="{{favoriteStore.name}}" class="store-block img-check">
-                        </label>
-                    </div>
-                </div>
-
-            </div>
-                
-        </div>
-        
-        <md-toolbar style="background-color: #1abc9c; margin-bottom : 10px;">
-            <div>
-                <h2 class="md-toolbar-tools">Sélectionner les {{max_stores}} magasins que vous utilisez souvent</h2>
-            </div>
-	</md-toolbar>
-        
-        
-        <div class="container">
-            
-            <div style="" id="retailer-contents" class="row">
-                <div class="col-md-2 col-sm-3" style="padding-top:10px;" ng-repeat="store in retailers" id="retailer_{{store.id}}">
-                    <label class="btn item-block">
-                        <img  ng-click="select_retailer($event)" id="{{store.id}}" ng-src="{{store.image}}" alt="{{store.name}}" class="store-block img-check">
-                        <input type="checkbox" name="store_{{store.id}}" value="{{store.id}}" class="hidden" autocomplete="off">
-                    </label>
-                </div>
-            </div>
-            
-        </div>
-        
-
-        <div ng-show="registering_user">
-            <div style="margin : auto;">
-                <p style="text-align: center;">Veillex patienter...</p>
-            </div>
-            <md-progress-linear md-mode="indeterminate"></md-progress-linear> 
-        </div>
-        
-        <div class="alert alert-success col-sm-12" ng-show="listChangedSuccess" style="margin-top: 15px; text-align: center;">
-            <strong>Success!</strong> {{listChangedSuccessMessage}}
-        </div>
-        
-        <div class="col-sm-12" style="margin-top: 30px;">
-            
-            <!-- Button -->  
-            <md-button id="btn-signup"  ng-click="saveFavoriteStores()" class="md-otiprix md-raised pull-right">Valider Sélection</md-button>
-            
-            <md-button id="btn-signup"  ng-click="reset()" class="md-otiprix md-raised pull-right">Recommencer</md-button>
-            
-        </div>
-            
+    <div class="col-sm-12 layout-padding">
+        <p class="md-otiprix-text" style="text-align: center; margin: 5px;"><b>Vos magasins préférés</b></p>
     </div>
+
+    <div class="container">
+        <div class="row ">
+            <div class="col-sm-3 layout-padding" ng-repeat="favoriteStore in favoriteStores">
+                <div class="center-div item" ng-class="favoriteStore.id == -1 ? 'image-container' : 'image-container-square'">
+                    <img ng-if="favoriteStore.id == -1" style="border : none;" ng-src="{{icons.add_img}}"  />
+                    <a href ng-click="goto_retailer(favoriteStore.id)"><img ng-if="favoriteStore.id != -1" ng-src="{{favoriteStore.image}}"  /></a>
+                    
+                    <div style="margin-top : 10px; padding-top: 10px">
+                        <md-divider></md-divider>
+                        <div ng-if="favoriteStore.id == -1">
+                        <p><a  ng-click="setRetailer($event, $index)" href style="text-align : center;">Ajouter Magasin</a></p>
+                        </div>
+                        <div ng-if="favoriteStore.id != -1">
+                            <p><a ng-click="setRetailer($event, $index)" href style="text-align : center;">Changer</a></p>
+                            <p><a ng-click="removeRetailer($event, $index)" href style="text-align : center;">Suprimmer</a></p>
+                        </div>
+                    </div>
+                    
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+        
 </div>

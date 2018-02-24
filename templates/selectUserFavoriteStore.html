@@ -1,0 +1,42 @@
+<md-dialog>
+    <md-toolbar>
+        <div class="md-toolbar-tools md-otiprix">
+            <h2>Veillez sélectioner un magasin</h2>
+            <md-button class="md-icon-button" ng-click="cancel()">
+                <md-icon>
+                    <i style="color : white;" class="material-icons">close</i>
+                </md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+
+    <md-dialog-content>
+
+        <div class="md-dialog-content">
+
+            <md-list-item ng-repeat="item in retailers">
+                
+                <div class="image-container-square layout-padding">
+                    <img ng-src="{{item.image}}">
+                    <span style="text-align : center; color :gray;"><b>{{item.name}}</b></span>
+                    <md-button ng-click="selectStore(item)" class="md-secondary md-raised md-otiprix">Séléctioner</md-button>
+                </div>
+                
+
+                <md-divider ng-if="!$last"></md-divider>
+
+            </md-list-item>
+
+        </div>
+        <md-divider></md-divider>
+    </md-dialog-content>
+
+    <md-dialog-actions layout="row">
+
+        <md-button class="md-raised" ng-click="cancel()">
+            Fermer
+        </md-button>
+
+    </md-dialog-actions>
+
+</md-dialog>

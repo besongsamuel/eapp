@@ -1357,7 +1357,7 @@ div.cart-collaterals ul.products li.product:hover .add_to_cart_button{background
 .image-container img
 {
     display: block;
-    margin: auto;
+    margin: 0 auto;
     object-fit: cover;
     border-radius:50%;
     width: 120px;

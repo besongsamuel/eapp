@@ -78,6 +78,7 @@ angular.module('eappApp').controller('AccountController', ["$scope", "$http", "$
             delete :  $scope.base_url + "/assets/icons/ic_delete_white_24px.svg",
             add :  $scope.base_url + "/assets/icons/ic_add_circle_white_24px.svg",
             search :  $scope.base_url + "/assets/icons/ic_search_black_24px.svg",
+            add_img : $scope.base_url + "/assets/img/add_image.png"
         };
     };
        

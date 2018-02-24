@@ -949,8 +949,8 @@ class CI_Model {
     {
         $this->db->join(PRODUCT_TABLE, $this->store_product_product_join);
         $this->db->join(SUB_CATEGORY_TABLE, $this->store_product_subcategory_join, "left outer");
-        $this->db->join(CHAIN_TABLE, CHAIN_TABLE.'.id = '.STORE_PRODUCT_TABLE.'.retailer_id');
-        $this->db->join(CHAIN_STORE_TABLE, CHAIN_TABLE.'.id = '.CHAIN_STORE_TABLE.'.chain_id');
+        $this->db->join(CHAIN_TABLE, CHAIN_TABLE.'.id = '.STORE_PRODUCT_TABLE.'.retailer_id', "left outer");
+        $this->db->join(CHAIN_STORE_TABLE, CHAIN_TABLE.'.id = '.CHAIN_STORE_TABLE.'.chain_id', "left outer");
         
         $this->add_distance_condition($my_location, $distance);
         
@@ -1129,16 +1129,33 @@ class CI_Model {
     public function get_favorite_stores($user_id)
     {
         $this->db->select(CHAIN_TABLE.".*");
-        $this->db->join(USER_FAVORITE_STORE_TABLE, USER_FAVORITE_STORE_TABLE.'.retailer_id = '.CHAIN_TABLE.'.id');
+        $this->db->join(USER_FAVORITE_STORE_TABLE, USER_FAVORITE_STORE_TABLE.'.retailer_id = '.CHAIN_TABLE.'.id', 'right outer');
         $this->db->where(array("user_account_id" => $user_id));
         $result = $this->db->get(CHAIN_TABLE)->result();
         
         foreach ($result as $key => $value) 
         {
-            if(strpos($result[$key]->image, 'http://') == FALSE)
+            
+            if(isset($value->id))
             {
-                 $result[$key]->image = base_url('/assets/img/stores/').$result[$key]->image;
+                if(strpos($result[$key]->image, 'http://') == FALSE)
+                {
+                     $result[$key]->image = base_url('/assets/img/stores/').$result[$key]->image;
+                }
             }
+            else
+            {
+                $newItem = new stdClass();
+                $newItem->id = -1;
+                $result[$key] = $newItem;
+            }
+        }
+        
+        while (sizeof($result) < 4)
+        {
+            $newItem = new stdClass();
+            $newItem->id = -1;
+            array_push($result, $newItem);
         }
         
         return $result;

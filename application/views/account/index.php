@@ -33,7 +33,7 @@ $(document).ready(function()
         </div>
     </div> <!-- End Page title area -->
     
-    <md-tabs md-dynamic-height md-border-bottom class="container" layout-padding md-selected = "<?php echo $tabIndex; ?>">
+    <md-tabs md-dynamic-height md-border-bottom layout-padding md-selected = "<?php echo $tabIndex; ?>">
         <div>
             
             <md-tab label="Historique de mes économies" md-on-select="onTabSelected(0)">
@@ -294,7 +294,7 @@ $(document).ready(function()
             </md-tab>
 
             <md-tab label="Modifier mes magasins préférés" md-on-select="onTabSelected(3)">
-                <div  ng-controller="SelectAccountStoreController" id="select-store-container" ng-include="'<?php echo base_url(); ?>/assets/templates/account-select-favorite-stores.html'"></div>
+                <div class="container"  ng-controller="SelectAccountStoreController" id="select-store-container" ng-include="'<?php echo base_url(); ?>/assets/templates/account-select-favorite-stores.html'"></div>
             </md-tab>
            
         </div>

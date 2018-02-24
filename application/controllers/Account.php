@@ -259,7 +259,7 @@ class Account extends CI_Controller {
     {
         if($this->user != null)
         {
-            echo json_encode($this->account_model->get_user_favorite_stores($this->user->id));
+            echo json_encode($this->account_model->get_favorite_stores($this->user->id));
         }
         else
         {

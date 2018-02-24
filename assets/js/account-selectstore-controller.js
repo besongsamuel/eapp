@@ -14,34 +14,23 @@ angular.module('eappApp').controller('SelectAccountStoreController', ["$scope", 
     
     $scope.Init = function()
     {
+        var favoriteStoresPromise = eapp.getFavoriteStores();
+            
+        favoriteStoresPromise.then(function(response)
+        {
+            $scope.favoriteStores = $.map(response.data, function(value, index) {
+                return [value];
+            });
+        });
+        
         var retailersPromise = eapp.getRetailers();
         
         retailersPromise.then(function(response)
         {
-            $scope.retailers = response.data;
-            
-            $scope.$watch("my_retailers", function(newValue, oldValue)
-            {		
-                $scope.favoriteStores = [];
-
-                for(var x in $scope.my_retailers)
-                {
-                    var retailer_id = parseInt($scope.my_retailers[x]);
-
-                    $scope.favoriteStores.push($scope.retailers[retailer_id]);
-
-                }
-
-            });
-            
-            var favoriteStoresPromise = eapp.getFavoriteStores();
-            
-            favoriteStoresPromise.then(function(response)
-            {
-                $scope.my_retailers = response.data;
+            $scope.retailers = $.map(response.data, function(value, index) {
+                return [value];
             });
         });
-        
         
     };
     
@@ -52,95 +41,121 @@ angular.module('eappApp').controller('SelectAccountStoreController', ["$scope", 
 	window.sessionStorage.setItem("store_id", store_id);    
 	window.location =  $scope.site_url.concat("/shop");
     };
-	
-    $scope.select_retailer = function($event)
-    {
-        var element = $event.target;
-        
-        $scope.clickedElement = element;
-        
-        $scope.listChangedSuccess = false;
-        
-        if($(element).hasClass( "check" ))
-        {
-            // Get the retailer ID
-            var index = $scope.selected_retailers.indexOf(parseInt(element.id));
-            
-            if (index > -1) 
-            {
-                $scope.selected_retailers.splice(index, 1);
-            }
-            
-            $(element).toggleClass("check");
-        }
-        else
-        {
-            if($scope.selected_retailers.length < $scope.max_stores)
-            {
-                $scope.selected_retailers.push(parseInt(element.id));
-                $(element).toggleClass("check");
-            }
-            else
-            {
-                $scope.showAlert($event, "Message", "Vous ne pouvez pas sélectionner plus de "+$scope.max_stores+" magasins. Veillez désélectionner certains magasins ou cliquer sur recommencer. ");
-            }
-        }
-    };
     
-    $scope.saveFavoriteStores = function()
+    $scope.removeRetailer = function(ev, index)
     {
-        $scope.listChangedSuccess = false;
-        if($scope.selected_retailers.length < $scope.max_stores)
+        var confirmDialog = $rootScope.createConfirmDIalog(ev, "Êtes-vous sûr de vouloir supprimer le magasin?");
+        
+        $mdDialog.show(confirmDialog).then(function() 
         {
-            $scope.showSimpleToast("Vous devez sélectionner au moins "+$scope.max_stores+" magasins.", "select-store-box");
-        }
-        else
-        {
-
-            var saveFavoriteStoresPromise = eapp.saveFavoriteStores(JSON.stringify($scope.selected_retailers));
-            // Send request to server to get optimized list 	
-            saveFavoriteStoresPromise.then(
-            function(response)
+            $scope.favoriteStores[index] = { id : -1};
+                        
+            
+            var arrayToSave = [];
+            
+            for(var x in $scope.favoriteStores)
             {
-                if(response.data.success)
+                arrayToSave.push($scope.favoriteStores[x].id);
+            }
+            
+            eapp.saveFavoriteStores(JSON.stringify(arrayToSave)).then(function()
+            {
+                var favoriteStoresPromise = eapp.getFavoriteStores();
+                favoriteStoresPromise.then(function(response)
                 {
-                    $scope.my_retailers = $scope.selected_retailers;
-                    $scope.selected_retailers = [];
-                    $scope.listChangedSuccess = true;
-                    $scope.listChangedSuccessMessage = "Votre liste de magasins a été modifiée.";
-                    $(".check").toggleClass("check");
-                }
-                else
-                {
-                    $scope.showSimpleToast("une erreur inattendue est apparue. Veuillez réessayer plus tard.", "select-store-box");
-                }
+                    $scope.favoriteStores = $.map(response.data, function(value, index) {
+                        return [value];
+                    });
+                });
             });
+        });
+            
+    };
+	
+    $scope.setRetailer = function(ev, index)
+    {
+        var scrollTop = $(document).scrollTop();
+            
+        $mdDialog.show({
+            controller: DialogController,
+            templateUrl: '/templates/selectUserFavoriteStore.html',
+            parent: angular.element(document.body),
+            targetEvent: ev,
+            locals : 
+            {
+                retailers : $scope.retailers,
+                favoriteStores : $scope.favoriteStores,
+                storeIndex : index
+            },
+            clickOutsideToClose:true,
+            fullscreen: true
+        })
+        .then(function(answer) 
+        {
+            var favoriteStoresPromise = eapp.getFavoriteStores();
+            
+            favoriteStoresPromise.then(function(response)
+            {
+                $scope.favoriteStores = response.data;
+                $(document).scrollTop(scrollTop);
+            });
+            
+            
+        }, function() 
+        {
+            $(document).scrollTop(scrollTop);
+        });
+    };
+        
+    function DialogController($scope, $mdDialog, retailers, favoriteStores, eapp, storeIndex) 
+    {
+        $scope.retailers = retailers;
+        
+        for(var x in favoriteStores)
+        {
+            if(parseInt(favoriteStores[x].id) > -1)
+            {
+                var index = $scope.retailers.map(function(e){ return e.id; }).indexOf(favoriteStores[x].id);
+                
+                if(index > -1)
+                {
+                    $scope.retailers.splice(index, 1);
+                }
+            }
         }
-    };
+
+        $scope.hide = function() {
+          $mdDialog.hide();
+        };
+
+        $scope.cancel = function() {
+          $mdDialog.cancel();
+        };
+        
+        $scope.selectStore = function(item)
+        {
+            var myStores = favoriteStores;
+            
+            myStores[storeIndex] = item;
+            
+            var arrayToSave = [];
+            
+            for(var x in myStores)
+            {
+                arrayToSave.push(myStores[x].id);
+            }
+            
+            eapp.saveFavoriteStores(JSON.stringify(arrayToSave)).then(function()
+            {
+                $mdDialog.hide(item);
+            });
+            
+            
+        };
+
+    }
     
-    $scope.showAlert = function(ev, title, message) 
-    {
-        // Appending dialog to document.body to cover sidenav in docs app
-        // Modal dialogs should fully cover application
-        // to prevent interaction outside of dialog
-        $mdDialog.show(
-          $mdDialog.alert()
-                .parent(angular.element(document.querySelector('#popupContainer')))
-                .clickOutsideToClose(true)
-                .title(title)
-                .textContent(message)
-                .ariaLabel('Alert')
-                .ok('Ok')
-                .targetEvent(ev)
-        );
-    };
     
-    $scope.reset = function()
-    {
-        $scope.listChangedSuccess = false;
-        $scope.selected_retailers = [];
-        $(".check").toggleClass("check");
-    };
     
     angular.element(document).ready(function()
     {
