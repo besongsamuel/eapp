@@ -34,7 +34,8 @@ $(document).ready(function()
     </div> <!-- End Page title area -->
     
     <md-tabs md-dynamic-height md-border-bottom layout-padding md-selected = "<?php echo $tabIndex; ?>">
-        <div>
+        
+        <div class="container">
             
             <md-tab label="Historique de mes économies" md-on-select="onTabSelected(0)">
                 <div class="md-padding">
