@@ -26,7 +26,7 @@
 
     <div class="container">
         <div class="row ">
-            <div class="col-sm-3 layout-padding" ng-repeat="favoriteStore in favoriteStores">
+            <div class="col-sm-3 layout-padding" ng-repeat="favoriteStore in favoriteStores track by $index">
                 <div class="center-div item" ng-class="favoriteStore.id == -1 ? 'image-container' : 'image-container-square'">
                     <img ng-if="favoriteStore.id == -1" style="border : none;" ng-src="{{icons.add_img}}"  />
                     <a href ng-click="goto_retailer(favoriteStore.id)"><img ng-if="favoriteStore.id != -1" ng-src="{{favoriteStore.image}}"  /></a>
