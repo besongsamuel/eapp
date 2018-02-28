@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 
 <link rel="stylesheet" href="<?php echo base_url("assets/css/intlTelInput.css")?>">
-<script src="<?php echo base_url("assets/js/account-controller.js")?>"></script> 
-<script src="<?php echo base_url("assets/js/userlist-controller.js")?>"></script> 
 
 <script src="<?php echo base_url("assets/js/intlTelInput.js")?>"></script>
 <script src="<?php echo base_url("assets/js/utils.js")?>"></script>
@@ -37,7 +35,7 @@ $(document).ready(function()
         
         <div class="container">
             
-            <md-tab label="Historique de mes économies" md-on-select="onTabSelected(0)">
+            <md-tab label="Historique de mes économies" md-on-select="onTabSelected(0)" ng-if="!loggedUser.company">
                 <div class="md-padding">
                 <md-list ng-controller="AccountOptimizationController">
                     <md-list-item class="md-3-line" ng-repeat="item in optimizations">
@@ -53,7 +51,7 @@ $(document).ready(function()
                 </div>
             </md-tab>
             
-            <md-tab label="Modifier ma liste d’épicerie" md-on-select="onTabSelected(1)">
+            <md-tab label="Modifier ma liste d’épicerie" md-on-select="onTabSelected(1)"  ng-if="!loggedUser.company">
                 <div  ng-controller="UserListController" id="groceryListContainer" ng-include="'<?php echo base_url(); ?>/assets/templates/user_grocery_list.html'"></div>
             </md-tab>
             
@@ -189,8 +187,11 @@ $(document).ready(function()
                                     Valider
                                 </md-button>
                             </div>
+                            
+                            
 
                         </form>
+
                     </div>    
                     
                     <!-- Change security question -->
@@ -292,10 +293,18 @@ $(document).ready(function()
                     
                 </div>
                 
+                
+                
             </md-tab>
 
-            <md-tab label="Modifier mes magasins préférés" md-on-select="onTabSelected(3)">
+            <md-tab label="Modifier mes magasins préférés" md-on-select="onTabSelected(3)" ng-if="!loggedUser.company">
                 <div class="container"  ng-controller="SelectAccountStoreController" id="select-store-container" ng-include="'<?php echo base_url(); ?>/assets/templates/account-select-favorite-stores.html'"></div>
+            </md-tab>
+            
+            <md-tab label="Détailants" ng-if="loggedUser.company">
+                <div class="row layout-padding" ng-controller="AccountController">
+                    <add-department-store department-stores='loggedUser.company.chain.department_stores'></add-department-store>
+                </div>
             </md-tab>
            
         </div>

@@ -65,7 +65,7 @@ angular.getSearchParam = function(name, url)
 };
 
 // Define the `eapp Application` module
-var eappApp = angular.module('eappApp', ['ngMaterial', 'md.data.table', 'lfNgMdFileInput', 'ngMessages', 'ngSanitize', 'mdCountrySelect', 'ngNotificationsBar', 'ngRoute', 'ngAnimate', 'angularCountryState']);
+var eappApp = angular.module('eappApp', ['ngMaterial', 'vsGoogleAutocomplete', 'md.data.table', 'lfNgMdFileInput', 'ngMessages', 'ngSanitize', 'mdCountrySelect', 'ngNotificationsBar', 'ngRoute', 'ngAnimate', 'angularCountryState']);
 
 eappApp.filter('titlecase', function() {
     return function (input) {
@@ -901,6 +901,24 @@ eappApp.factory('eapp', ['$http','$rootScope', '$mdDialog', function($http, $roo
 
     };
     
+    eappService.registerCompany = function(account, profile, company, logo_images)
+    {
+        var formData = new FormData();
+        formData.append("account", JSON.stringify(account));
+        formData.append("profile", JSON.stringify(profile));
+        formData.append("company", JSON.stringify(company));
+        
+        angular.forEach(logo_images, function(obj)
+        {
+            if(!obj.isRemote)
+            {
+                formData.append('image', obj.lfFile);
+            }
+        });
+        
+        return $http.post(eappService.getSiteUrl().concat("account/register_company"), formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}});
+    }
+    
     eappService.getSecurityQuestions = function()
     {
         return $http.post(eappService.getSiteUrl().concat("eapp/get_security_questions"), null);
@@ -1094,6 +1112,29 @@ eappApp.factory('eapp', ['$http','$rootScope', '$mdDialog', function($http, $roo
         
         return $http.post(eappService.getSiteUrl().concat("/account/delete_grocery_list"), formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}});
     };
+    
+    eappService.addDepartmentStore = function(departmentStore)
+    {
+        var formData = new FormData();
+        formData.append("department_store", JSON.stringify(departmentStore));
+        
+        return $http.post(eappService.getSiteUrl().concat("/account/add_department_store"), formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}});
+    };
+    
+    eappService.removeDepartmentStore = function(id)
+    {
+        var formData = new FormData();
+        formData.append("id", JSON.stringify(id));
+        
+        return $http.post(eappService.getSiteUrl().concat("/account/remove_department_store"), formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}});
+    };
+    
+    eappService.toggleIsNew = function()
+    {
+        return $http.post(eappService.getSiteUrl().concat("account/toggle_new"), null);
+    };
+    
+    
 
     return eappService;
 }]);

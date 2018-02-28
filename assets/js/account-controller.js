@@ -4,13 +4,114 @@
  * and open the template in the editor.
  */
 
-angular.module('eappApp').controller('AccountController', ["$scope", "$http", "$mdToast", "eapp", "$rootScope", "$mdDialog", function($scope, $http, $mdToast, eapp, $rootScope, $mdDialog) 
+
+// Component to Select from user grocery list
+angular.module('eappApp').component("addDepartmentStore", 
 {
+    templateUrl : "templates/addDepartmentStore.html",
+    controller : function($scope, eapp)
+    {
+        var ctrl = this;
+        
+        $scope.departmentStore = 
+        {
+            country : 'Canada',
+            state : 'Quebec',
+            name : 'Nouveau détailant'
+        };
+        
+        ctrl.$onInit = function()
+        {
+            $scope.addNewDepartmentStore = true;
+            
+            $scope.departmentStores = ctrl.departmentStores;
+            
+            if(angular.isNullOrUndefined($scope.departmentStores))
+            {
+                $scope.departmentStores = [];
+            }
+        };
+        
+        $scope.removeDepartmentStore = function(id)
+        {
+            eapp.removeDepartmentStore(id).then(function(response)
+            {
+                if(response.data)
+                {
+                    var index = $scope.departmentStores.map(function(e){ return e.id; }).indexOf(id);
+                    
+                    if(index > -1)
+                    {
+                        $scope.departmentStores.splice(index, 1);
+                    }
+                }
+            });
+        };
+        
+        $scope.addDepartmentStore = function()
+        {
+            if($scope.departmentStoreForm.$valid)
+            {
+                
+                eapp.addDepartmentStore($scope.departmentStore).then(function(response)
+                {
+                    if(response.data.success)
+                    {
+                        $scope.departmentStore.id = response.data.id;
+                        
+                        $scope.departmentStores.push($scope.departmentStore);
+                
+                        ctrl.onNewStoreAdded({ departmentStore : $scope.departmentStore});
+
+                        // Reset Department Store Object
+                        $scope.departmentStore = 
+                        {
+                            country : 'Canada',
+                            state : 'Quebec',
+                            name : 'Nouveau détailant'
+                        };
+
+                        $scope.addNewDepartmentStore = true;
+                        $scope.departmentStoreForm.$setPristine();
+                    }
+                });
+                
+            }
+        };
+        
+        
+    },
+    bindings : 
+    {
+        departmentStores : '<',
+        onNewStoreAdded : '&'
+    }
+});
+
+
+angular.module('eappApp').controller('AccountController', ["$scope", "$http", "$mdToast", "eapp", "$rootScope", "$mdDialog", function($scope, $http, $mdToast, eapp, $rootScope, $mdDialog) 
+{    
+    $scope.address = 
+    {
+        name : ''
+    };
+    
+    $scope.options = {
+        types: ['(cities)'],
+        componentRestrictions: { country: 'CA' }
+      };
+    
+    $scope.false = false;
+    
+    $scope.true = true;
+    
     $scope.selectedAccountTab = 3;
     
     $scope.enterVerificationNumber = true;
     
     $scope.message = null;
+    
+    $scope.confirm_password = null;
     
     $scope.userPhoneVerified = false;
     
@@ -81,8 +182,7 @@ angular.module('eappApp').controller('AccountController', ["$scope", "$http", "$
             add_img : $scope.base_url + "/assets/img/add_image.png"
         };
     };
-       
-    
+
     $scope.user = 
     {
         email : '',
@@ -100,6 +200,17 @@ angular.module('eappApp').controller('AccountController', ["$scope", "$http", "$
         phone2 : '',
 	rememberme : false
 
+    };
+    
+    $scope.profile = 
+    {
+        country : 'Canada',
+        state : 'Quebec',
+    };
+    
+    $scope.account = 
+    {
+        security_question_id : 1
     };
 	
     $scope.submit_favorite_stores = function()
@@ -185,6 +296,60 @@ angular.module('eappApp').controller('AccountController', ["$scope", "$http", "$
             );
         }
             
+    };
+    
+    $scope.registerCompany = function()
+    {
+        $scope.message = null;
+        
+        if($scope.signupForm.$valid)
+        {
+            var registrationPromise = eapp.registerCompany($scope.account, $scope.profile, $scope.company, $scope.store_image);
+
+            registrationPromise.then
+            (
+                function(result)
+                {
+
+                    if(result.data.success)
+                    {
+                        $rootScope.loggedUser = result.data.user;
+                        
+                        window.sessionStorage.setItem('newAccount', 'true');
+                        
+                        window.location =  $scope.site_url.concat("/account/select_department_stores");
+                        
+                    }
+
+                    if(!result.data.success)
+                    {
+                        $scope.message = result.data.message;
+                        
+                        document.getElementById("error_message").scrollIntoView();
+                    }
+                },
+                function(error)
+                {
+                    if(!error.data.success)
+                    {
+                        $scope.message = error.data.message;
+                    }
+                }
+            );
+        }
+            
+    };
+    
+    $scope.finishCompanyRegistration = function()
+    {
+        eapp.toggleIsNew().then(function(response)
+        {
+            if(response.data)
+            {
+                // Send the user to his account
+                window.location.href = $scope.site_url.concat("/account");
+            }
+        });
     };
     
     $scope.login = function()

@@ -4,11 +4,22 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Account extends CI_Controller {
 
-     public function __construct()
+    public function __construct()
     {
         parent::__construct();
         $this->load->library('form_validation');
         $this->load->library('geo');
+    }
+    
+    private function initialize_upload_library($uploadDirectory, $fileName)
+    {
+        $config['upload_path'] = $uploadDirectory;
+        $config['file_name'] = $fileName;
+        $config['overwrite'] = true;
+        $config['allowed_types'] = 'gif|jpg|png|jpeg|csv|tiff|jfif';
+        $config['max_size']     = '10000';
+        
+        $this->upload->initialize($config);
     }
     
     /**
@@ -30,6 +41,8 @@ class Account extends CI_Controller {
     {
         $this->account_model->update_user_store_table($this->user); 
     }
+    
+    
     
     public function index() 
     {
@@ -59,9 +72,21 @@ class Account extends CI_Controller {
         $this->parser->parse('eapp_template', $this->data);
     }
     
-    public function register() 
+    public function register($type = '') 
     {
-        $this->data['body'] = $this->load->view('account/register', $this->data, TRUE);
+        if(!isset($type) || empty($type))
+        {
+            $this->data['body'] = $this->load->view('account/select_account_type', $this->data, TRUE);
+        }
+        else if($type == "personal")
+        {
+            $this->data['body'] = $this->load->view('account/personal', $this->data, TRUE);
+        }
+        else if($type == "company")
+        {
+            $this->data['body'] = $this->load->view('account/company', $this->data, TRUE);
+        }
+        
         $this->parser->parse('eapp_template', $this->data);
     }
     
@@ -188,6 +213,20 @@ class Account extends CI_Controller {
     {
         $this->data['body'] = $this->load->view('account/unsubscribe', $this->data, TRUE);
         $this->parser->parse('eapp_template', $this->data);    
+    }
+    
+    public function select_department_stores() 
+    {
+        if($this->user != null && $this->user->subscription == COMPANY_SUBSCRIPTION && $this->user->is_new)
+        {
+            $this->data['body'] = $this->load->view('account/select_department_stores', $this->data, TRUE);
+            $this->parser->parse('eapp_template', $this->data);
+        }
+        else
+        {
+            header('Location: '.  site_url('/account'));
+        }
+        
     }
     
     public function page_under_construction() 
@@ -395,7 +434,7 @@ class Account extends CI_Controller {
 		
         if($_SERVER['REQUEST_METHOD'] === 'POST')
         {
-            $this->form_validation->set_rules('account[email]', 'Email', 'callback_email_check');
+            $this->form_validation->set_rules('email', 'Email', 'callback_email_check');
 
             $user_account = $this->input->post('account');
             $user_profile = $this->input->post('profile');
@@ -422,6 +461,104 @@ class Account extends CI_Controller {
                     }
                     
                     $insert = $this->account_model->create(USER_PROFILE_TABLE, $user_profile);
+                    $this->session->set_userdata('success_msg', 'Your registration was successfully. Please login to your account.');
+                    $data["success"] = true;
+                    
+                    $this->login_user(array(
+                        'email'=>$user_account['email'],
+                        'password' => $user_account['password'])
+                    );
+                    
+                    $this->send_registration_message();
+                    
+                    $data['user'] = $this->user;
+                }
+                else
+                {
+                    $data["success"] = false;
+                    $data["message"] = "Des problèmes sont survenus, veuillez réessayer plus tard.";
+                }
+            }
+            else
+            {
+                $data["success"] = false;
+                $data["message"] = "Le courrier électronique fourni est déjà pris.";
+            }
+        }
+        
+        echo json_encode($data);
+    }
+    
+    public function register_company() 
+    {
+        if($_SERVER['REQUEST_METHOD'] === 'POST')
+        {
+            $this->load->helper('file');
+            
+            $this->load->library('upload');
+            
+            $user_account = json_decode($this->input->post('account'), true);
+            $company_profile = json_decode($this->input->post('profile'), true);
+            $company = json_decode($this->input->post('company'), true);
+            
+            $this->form_validation->set_rules('email', 'Email', 'callback_email_check');
+            
+            $user_account['password'] = md5($user_account['password']);	
+            // Subscription of 10 is a company
+            $user_account['subscription'] = 10;
+            // User account and user email have the same value
+            $user_account['username'] = $user_account['email'];
+            // Set the account number
+            $user_account['account_number'] = mt_rand(1000000, 9999999);
+			
+            if($this->form_validation->run() == true)
+            {
+                // Create the account
+                $insert = $this->account_model->create(USER_ACCOUNT_TABLE, $user_account);
+		    
+                if($insert)
+                {
+                    // create user profile
+                    $company_profile['user_account_id'] = $insert;
+                    $company['user_account_id'] = $insert;
+                    
+                    // get longitude and latitude
+                    $coordinates = $this->geo->get_coordinates($company_profile["city"], $company_profile["address"], $company_profile["state"], $company_profile["country"]);
+                    
+                    if($coordinates)
+                    {
+                        $company_profile["longitude"] = $coordinates["long"];
+                        $company_profile["latitude"] = $coordinates["lat"];
+                    }
+                    
+                    // Create Company Profile
+                    $this->account_model->create(USER_PROFILE_TABLE, $company_profile);
+                    
+                    
+                    $this->initialize_upload_library(ASSETS_DIR_PATH.'img/stores/', uniqid().".png");
+        
+                    $chain = array();
+                    
+                    $chain['name'] = $company['name'];
+                    
+                    if($this->upload->do_upload('image'))
+                    {
+                        $upload_data = $this->upload->data();
+                        $chain['image'] = $upload_data['file_name'];
+                    }
+                    else
+                    {
+                        $chain['image'] = "no_image_available.png";
+                    }
+                    
+                    // Create company
+                    $company_id = $this->account_model->create(COMPANY_TABLE, $company);
+                    
+                    $chain['company_id'] = $company_id;
+                    
+                    // Create Chain
+                    $this->account_model->create(CHAIN_TABLE, $chain);
+                    
                     $this->session->set_userdata('success_msg', 'Your registration was successfully. Please login to your account.');
                     $data["success"] = true;
                     
@@ -812,6 +949,54 @@ class Account extends CI_Controller {
             
             echo json_encode($result);
         }
+    }
+    
+    public function add_department_store() 
+    {
+        if($this->user != null && $this->user->subscription == COMPANY_SUBSCRIPTION)
+        {
+            $department_store = json_decode($this->input->post('department_store'), true);
+            $department_store["chain_id"] = $this->user->company->chain->id;
+            
+            if(!isset($department_store["longitude"]))
+            {
+                $coordinates = $this->geo->get_coordinates($department_store["city"], $department_store["address"], $department_store["state"], $department_store["country"]);
+                if($coordinates)
+                {
+                    $department_store["longitude"] = $coordinates["long"];
+                    $department_store["latitude"] = $coordinates["lat"];
+                }
+            }
+            
+            $id = $this->account_model->create(CHAIN_STORE_TABLE, $department_store);
+            if($id)
+            {
+                echo json_encode(array("id" => $id, "success" => true));
+            }
+        }
+    }
+    
+    public function remove_department_store()
+    {
+        if($this->user != null && $this->user->subscription == COMPANY_SUBSCRIPTION)
+        {
+            $id = $this->input->post('id');
+            
+            $this->account_model->delete(CHAIN_STORE_TABLE, array("id" => $id));
+            
+            echo json_encode(true);
+        }
+    }
+    
+    public function toggle_new()
+    {
+        if($this->user != null && $this->user->is_new)
+        {
+            $this->account_model->create(USER_ACCOUNT_TABLE, array('id' => $this->user->id, 'is_new' => false));
+            
+            json_encode(true);
+        }
+        
     }
     
 }

@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{title}</title>
     
-     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBdUBJq3Y93iEd29Q6GAK5SHQJniqZiHu0"></script> 
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyBdUBJq3Y93iEd29Q6GAK5SHQJniqZiHu0"></script>
      <!-- Angular Material style sheet -->
     <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.4/angular-material.min.css">
     <link rel="stylesheet" href="<?php echo base_url("assets/css/lf-ng-md-file-input.css")?>">
@@ -78,6 +78,10 @@
     
     <!-- jQuery easing -->
     <script src="<?php echo base_url("assets/js/jquery.easing.1.3.min.js")?>"></script>
+    
+    <!-- Auto Complete address -->
+    <script src="<?php echo base_url("assets/js/vs-google-autocomplete.js")?>"></script>
+    <script src="<?php echo base_url("assets/js/vs-autocomplete-validator.js")?>"></script>
     
     <!-- Angular JS Country/State Select -->
     <script src="<?php echo base_url("assets/js/md-country-select.js")?>"></script>

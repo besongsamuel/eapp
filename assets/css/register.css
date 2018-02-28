@@ -2,3 +2,42 @@
 {
     padding: 20px;
 }
+
+.choice-block
+{
+    width : 200px !important;
+    height: 200px !important;
+    margin-top: 40px;
+    background-color: #1abc9c;
+    border: #e1e1e1 solid medium;
+    border-radius: 2%;
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.choice-block img
+{
+    width : 120px;
+    height: 120px;
+    margin: auto;
+    display: block;
+    -webkit-transition: all 1s ease;
+     -moz-transition: all 1s ease;
+       -o-transition: all 1s ease;
+      -ms-transition: all 1s ease;
+          transition: all 1s ease;
+}
+
+.choice-block img:hover 
+{
+    width : 150px;
+    height: 150px;
+}
+
+h3
+{
+    font-weight: 300;
+    margin : 10px;
+    
+}
+

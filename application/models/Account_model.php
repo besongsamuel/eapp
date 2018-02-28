@@ -67,6 +67,23 @@ class Account_model extends CI_Model
             return null;
         }
         
+        // It' a company
+        if($user_account->subscription == COMPANY_SUBSCRIPTION)
+        {
+            // Get company
+            $user_account->company = $this->get_specific(COMPANY_TABLE, array("user_account_id" => $account_id));
+            
+            // Get the chain of the company
+            $user_account->company->chain = $this->get_specific(CHAIN_TABLE, array("company_id" => $user_account->company->id));
+            
+            if($user_account->company->chain != null)
+            {
+                //  Get chain stores
+                $user_account->company->chain->department_stores = $this->get_where(CHAIN_STORE_TABLE, "*", array("chain_id" => $user_account->company->chain->id), true);
+            }
+            
+        }
+        
         $user_account->profile = $this->get_specific(USER_PROFILE_TABLE, array("user_account_id" => $account_id));
         
         $user_account->optimizations = $this->get_user_optimizations($user_account);
