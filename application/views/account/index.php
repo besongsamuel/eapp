@@ -83,18 +83,42 @@ $(document).ready(function()
                                     <div ng-message="required">Vous devez entrer au moins un nom</div>
                                 </div>
                             </md-input-container>
+                                
+                            <!-- User Address -->
+                            <md-input-container class="col-sm-12">
+                                <input 
+                                    vs-google-autocomplete
+                                    vs-autocomplete-validator
+                                    ng-model="loggedUserClone.profile.address"
 
-                            <!--Select the country and state origin of the product-->
-                            <country-state-select country="loggedUser.profile.country" flag="icons.flag" country-state="loggedUser.profile.state" show-hints="showHints"></country-state-select>
-
-                            <md-input-container class="md-block col-md-12 col-sm-12" flex-gt-sm>
-                                <label>Adresse</label>
-                                <md-icon style="color: #1abc9c;"><i class="material-icons">place</i></md-icon>
-                                <input required name="profile[address]" ng-model="loggedUserClone.profile.address" />
-                                <div ng-messages="userInfoForm.address.$error">
-                                    <div ng-message="required">Vous devez entrer une adresse</div>
+                                    vs-city="loggedUserClone.profile.city"
+                                    vs-state="loggedUserClone.profile.state"
+                                    vs-country="loggedUserClone.profile.country"
+                                    vs-post-code="loggedUserClone.profile.postcode"
+                                    vs-longitude="loggedUserClone.profile.longitude"
+                                    vs-latitude="loggedUserClone.profile.latitude"
+                                    name="address"
+                                >
+                            </md-input-container>
+                        
+                            <!-- Country -->
+                            <md-input-container class="md-block col-md-6" flex-gt-sm>
+                                <label>Pays</label>
+                                <input required name="country" ng-model="loggedUserClone.profile.country" />
+                                <div ng-messages="signupForm.country.$error">
+                                    <div ng-message="required">Vous devez entrer le pays</div>
                                 </div>
                             </md-input-container>
+
+                            <!-- State -->
+                            <md-input-container class="md-block col-md-6" flex-gt-sm>
+                                <label>État</label>
+                                <input required name="state" ng-model="loggedUserClone.profile.state" />
+                                <div ng-messages="signupForm.state.$error">
+                                    <div ng-message="required">Veillez entrer l'état</div>
+                                </div>
+                            </md-input-container>
+
                             <!-- -->
                             <md-input-container class="md-block col-md-6 col-sm-12" flex-gt-sm>
                                 <label>City</label>

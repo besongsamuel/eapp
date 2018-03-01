@@ -48,7 +48,6 @@
                                 vs-autocomplete-validator
                                 ng-model="user.address"
 
-                                vs-street="user.address"
                                 vs-city="user.city"
                                 vs-state="user.state"
                                 vs-country="user.country"
