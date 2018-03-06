@@ -14,7 +14,7 @@
                     </div>
                 </a>
 
-                <h3 class="md-otiprix-text" style="text-align: center"> Compte Personel</h3>
+                <h3 class="md-otiprix-text" style="text-align: center"> Compte Consommateur</h3>
 
             </div>
 
@@ -22,7 +22,7 @@
 
                 <a href="<?php echo site_url("account/register/company"); ?>" class="center-div">
                     <div class="choice-block layout-padding">
-                        <img src="<?php echo base_url("assets/img/register/briefcase-512.png");  ?>">
+                        <img src="<?php echo base_url("assets/img/register/white-shop-512.png");  ?>">
                     </div>
                 </a>
 
