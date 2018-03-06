@@ -15,8 +15,6 @@ $(document).ready(function()
 <link rel="stylesheet" href="<?php echo base_url("assets/css/account.css")?>">
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
 
-
-
 <md-content class="otiprix-section" id="admin-container" ng-cloak>
     
     <div class="product-big-title-area">
@@ -83,14 +81,14 @@ $(document).ready(function()
                                     <div ng-message="required">Vous devez entrer au moins un nom</div>
                                 </div>
                             </md-input-container>
-                                
-                            <!-- User Address -->
-                            <md-input-container class="col-sm-12">
+                               
+                            <!-- User Address -->    
+                            <md-input-container class="md-block col-md-12" flex-gt-sm>
+
                                 <input 
                                     vs-google-autocomplete
                                     vs-autocomplete-validator
                                     ng-model="loggedUserClone.profile.address"
-
                                     vs-city="loggedUserClone.profile.city"
                                     vs-state="loggedUserClone.profile.state"
                                     vs-country="loggedUserClone.profile.country"
@@ -99,6 +97,7 @@ $(document).ready(function()
                                     vs-latitude="loggedUserClone.profile.latitude"
                                     name="address"
                                 >
+
                             </md-input-container>
                         
                             <!-- Country -->
@@ -325,7 +324,7 @@ $(document).ready(function()
                 <div class="container"  ng-controller="SelectAccountStoreController" id="select-store-container" ng-include="'<?php echo base_url(); ?>/assets/templates/account-select-favorite-stores.html'"></div>
             </md-tab>
             
-            <md-tab label="Détailants" ng-if="loggedUser.company">
+            <md-tab label="Sucursales" ng-if="loggedUser.company">
                 <div class="row layout-padding" ng-controller="AccountController">
                     <add-department-store department-stores='loggedUser.company.chain.department_stores'></add-department-store>
                 </div>

@@ -9,16 +9,9 @@
 angular.module('eappApp').component("addDepartmentStore", 
 {
     templateUrl : "templates/addDepartmentStore.html",
-    controller : function($scope, eapp)
+    controller : function($scope, eapp, $mdDialog)
     {
         var ctrl = this;
-        
-        $scope.departmentStore = 
-        {
-            country : 'Canada',
-            state : 'Quebec',
-            name : 'Nouveau détailant'
-        };
         
         ctrl.$onInit = function()
         {
@@ -48,38 +41,66 @@ angular.module('eappApp').component("addDepartmentStore",
             });
         };
         
-        $scope.addDepartmentStore = function()
+        $scope.addStoreBranch = function (event) 
         {
-            if($scope.departmentStoreForm.$valid)
+            $mdDialog.show(
             {
-                
-                eapp.addDepartmentStore($scope.departmentStore).then(function(response)
+                clickOutsideToClose: true,
+                controller: function($scope, eapp)
                 {
-                    if(response.data.success)
+                    ctrl = this;
+
+                    $scope.departmentStore = 
                     {
-                        $scope.departmentStore.id = response.data.id;
-                        
-                        $scope.departmentStores.push($scope.departmentStore);
-                
-                        ctrl.onNewStoreAdded({ departmentStore : $scope.departmentStore});
-
-                        // Reset Department Store Object
-                        $scope.departmentStore = 
+                        country : 'Canada',
+                        state : 'Quebec',
+                        name : 'Nouveau Sucursale'
+                    };
+                    
+                    $scope.addStoreBranch = function(addMore)
+                    {
+                        if($scope.departmentStoreForm.$valid)
                         {
-                            country : 'Canada',
-                            state : 'Quebec',
-                            name : 'Nouveau détailant'
-                        };
+                            eapp.addDepartmentStore($scope.departmentStore).then(function(response)
+                            {
+                                if(response.data.success)
+                                {
+                                    $scope.departmentStore.id = response.data.id;
+                                    
+                                    
+                                    if(!addMore)
+                                    {
+                                        $mdDialog.hide($scope.departmentStore);
+                                    }
+                                    
+                                    
+                                    // Reset Department Store Object
+                                    $scope.departmentStore = 
+                                    {
+                                        country : 'Canada',
+                                        state : 'Quebec',
+                                        name : 'Nouveau Sucursale'
+                                    };
 
-                        $scope.addNewDepartmentStore = true;
-                        $scope.departmentStoreForm.$setPristine();
-                    }
-                });
-                
-            }
+                                    $scope.departmentStoreForm.$setPristine();
+                                    
+                                    
+                                }
+                            });
+
+                        }
+                    };
+                },
+                controllerAs: 'ctrl',
+                focusOnOpen: false,
+                targetEvent: event,
+                templateUrl: 'templates/add-department-store-dialog.html',
+            })
+            .then(function(response)
+            {
+                $scope.departmentStores.push(response);
+            });
         };
-        
-        
     },
     bindings : 
     {

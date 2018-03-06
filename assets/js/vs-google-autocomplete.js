@@ -185,18 +185,20 @@ angular.module('vsGoogleAutocomplete').directive('vsGoogleAutocomplete', ['vsGoo
 			var place;
 
 			// value for updating view
-			var	viewValue;
+			var viewValue;
 
 			// updates view value and address components on place_changed google api event
-			google.maps.event.addListener(autocomplete, 'place_changed', function() {
-				place = autocomplete.getPlace();
-				viewValue = place.formatted_address || modelCtrl.$viewValue;
-				scope.$apply(function() {
-					scope.vsPlace = place;
-					autocompleteCtrl.updatePlaceComponents(place);
-					modelCtrl.$setViewValue(viewValue);
-					modelCtrl.$render();
-				});
+			google.maps.event.addListener(autocomplete, 'place_changed', function() 
+                        {
+                            place = autocomplete.getPlace();
+                            viewValue = place.formatted_address || modelCtrl.$viewValue;
+                            scope.$apply(function() 
+                            {
+                                scope.vsPlace = place;
+                                autocompleteCtrl.updatePlaceComponents(place);
+                                modelCtrl.$setViewValue(viewValue);
+                                modelCtrl.$render();
+                            });
 			});
 
 			// updates view value on focusout

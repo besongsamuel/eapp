@@ -1387,3 +1387,8 @@ md-list-item .md-avatar, md-list-item .md-list-item-inner .md-avatar
     margin: 0 auto;
 }
 
+.pac-container 
+{
+    z-index: 10000 !important;
+}
+
