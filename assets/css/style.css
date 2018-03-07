@@ -883,7 +883,7 @@ div.cart-collaterals ul.products li.product .price ins {
 
 .otiprix-section
 {
-    margin-top: 107px;
+    padding-top: 107px;
 }
 
 .woocommerce-info {
@@ -982,7 +982,8 @@ div.cart-collaterals ul.products li.product:hover .add_to_cart_button{background
     margin-bottom: 10px;
     width: 250px;
 }
-#login-form-wrap input[type="submit"] {
+#login-form-wrap input[type="submit"] 
+{
     margin-bottom: 15px;
 }
 

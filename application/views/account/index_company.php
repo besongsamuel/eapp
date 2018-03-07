@@ -31,7 +31,45 @@ $(document).ready(function()
     <md-tabs md-dynamic-height md-border-bottom layout-padding>
         
         <div class="container">
-              
+            
+            <md-tab label="Vos produits">
+                
+                <div class="row download-products-form layout-padding">
+                    <div class="col-sm-12">
+                        <md-button style="margin : auto; display: block;" class="md-otiprix md-raised">
+                           Télécharger document des produits Otiprix
+                        </md-button>
+                    </div>
+                    <p class="md-otiprix-text" style="text-align: center">Téléchargez ce document pour faciliter le téléversement de produits sur Otiprix</p>
+                </div>
+                
+                <md-divider></md-divider>
+                
+                <div class="row layout-padding">
+                    <div class="col-sm-12">
+                        <md-button style="margin : auto; display: block;" class="md-otiprix md-raised">
+                           Téléverser vos produits
+                        </md-button>
+                    </div>
+                    <p class="md-otiprix-text" style="text-align: center">Téléversez le fichier de produits</p>
+                    <div class="row">
+                        <div flex-gt-xs style="text-align: center;">
+                            <label>Valide De</label>
+                            <md-datepicker ng-model="myDate" md-placeholder="Enter date"></md-datepicker>
+                            <label>À</label>
+                            <md-datepicker ng-model="myDate" md-placeholder="Enter date"></md-datepicker>
+                        </div>
+                    </div>
+                </div>
+                
+                <md-divider></md-divider>
+                
+                <h2 class="section-title md-otiprix-text">Vos Produits</h2>
+                
+                
+                
+            </md-tab>
+            
             <md-tab label="Sucursales">
                 <div class="row layout-padding" ng-controller="AccountController">
                     <add-department-store department-stores='loggedUser.company.chain.department_stores'></add-department-store>
@@ -306,6 +344,7 @@ $(document).ready(function()
             </md-tab>
             
         </div>
+            
     </md-tabs>
    
 </md-content>

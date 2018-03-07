@@ -64,12 +64,12 @@ class Account extends CI_Controller {
         
         if($this->user->subscription == COMPANY_SUBSCRIPTION)
         {
-            $this->data['body'] = $this->load->view('account/index', $this->data, TRUE);
+            $this->data['body'] = $this->load->view('account/index_company', $this->data, TRUE);
             $this->parser->parse('eapp_template', $this->data);
         }
         else
         {
-            $this->data['body'] = $this->load->view('account/company_index', $this->data, TRUE);
+            $this->data['body'] = $this->load->view('account/index', $this->data, TRUE);
             $this->parser->parse('eapp_template', $this->data);
         }
         
