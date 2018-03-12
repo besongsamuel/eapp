@@ -313,7 +313,7 @@ class CI_Model {
                 $store_product->product->image = $store_product->brand->image;
             }
             else if($store_product->brand != null 
-                    && file_exists(base_url("/assets/img/products/").$store_product->brand->image) !== FALSE
+                    && file_exists(ASSETS_DIR_PATH."/assets/img/products/".$store_product->brand->image) !== FALSE
                     && (empty($store_product->product->image) || isset($store_product->product->image)))
             {
                 $store_product->product->image = base_url("/assets/img/products/").$store_product->brand->image;
@@ -324,6 +324,11 @@ class CI_Model {
             if(strpos($store_product->image, 'http') !== FALSE)
             {
                 $store_product->product->image = $store_product->image;
+            }
+            
+            if(file_exists(ASSETS_DIR_PATH.'img/products/'.$store_product->image) !== FALSE)
+            {
+                $store_product->product->image = base_url("/assets/img/products/").$store_product->image;
             }
             
             // It has it's own store name. Override the product name with this
@@ -1102,13 +1107,13 @@ class CI_Model {
         
     }
     
-    public function get_where($table_name, $columns, $where, $as_array = false)
+    public function get_where($table_name, $columns, $where, $as_array = false, $escape = false)
     {
         $this->db->select($columns);
 
         if($where != null)
         {
-            $this->db->where($where, NULL, FALSE);
+            $this->db->where($where, NULL, $escape);
         }
         
         $select_sql = $this->db->get_compiled_select($table_name);
@@ -1122,7 +1127,9 @@ class CI_Model {
             return $this->db->query($select_sql)->result();
         }
     }
-	
+    
+    
+    
     /*
     * Method to get for a given user the different stores
     */

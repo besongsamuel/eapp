@@ -28,7 +28,7 @@ class InstalledAddOnExtensionList extends ListResource {
         parent::__construct($version);
 
         // Path Solution
-        $this->solution = array('installedAddOnSid' => $installedAddOnSid);
+        $this->solution = array('installedAddOnSid' => $installedAddOnSid, );
 
         $this->uri = '/InstalledAddOns/' . rawurlencode($installedAddOnSid) . '/Extensions';
     }
@@ -129,7 +129,11 @@ class InstalledAddOnExtensionList extends ListResource {
      * @return \Twilio\Rest\Preview\Marketplace\InstalledAddOn\InstalledAddOnExtensionContext 
      */
     public function getContext($sid) {
-        return new InstalledAddOnExtensionContext($this->version, $this->solution['installedAddOnSid'], $sid);
+        return new InstalledAddOnExtensionContext(
+            $this->version,
+            $this->solution['installedAddOnSid'],
+            $sid
+        );
     }
 
     /**

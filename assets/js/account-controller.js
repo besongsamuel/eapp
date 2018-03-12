@@ -94,7 +94,7 @@ angular.module('eappApp').component("addDepartmentStore",
                 controllerAs: 'ctrl',
                 focusOnOpen: false,
                 targetEvent: event,
-                templateUrl: 'templates/add-department-store-dialog.html',
+                templateUrl: 'templates/dialogs/add-department-store-dialog.html',
             })
             .then(function(response)
             {
@@ -110,7 +110,7 @@ angular.module('eappApp').component("addDepartmentStore",
 });
 
 
-angular.module('eappApp').controller('AccountController', ["$scope", "$http", "$mdToast", "eapp", "$rootScope", "$mdDialog", function($scope, $http, $mdToast, eapp, $rootScope, $mdDialog) 
+angular.module('eappApp').controller('AccountController', ["$scope", "$http", "$mdToast", "eapp", "$company", "$rootScope", "$mdDialog", function($scope, $http, $mdToast, eapp, $company, $rootScope, $mdDialog) 
 {    
     $scope.address = 
     {
@@ -233,6 +233,8 @@ angular.module('eappApp').controller('AccountController', ["$scope", "$http", "$
     {
         security_question_id : 1
     };
+    
+    $scope.storeLogo = null;
 	
     $scope.submit_favorite_stores = function()
     {
@@ -319,13 +321,18 @@ angular.module('eappApp').controller('AccountController', ["$scope", "$http", "$
             
     };
     
+    $scope.imageChanged= function(image)
+    {
+        $scope.storeLogo = image;
+    };
+    
     $scope.registerCompany = function()
     {
         $scope.message = null;
         
         if($scope.signupForm.$valid)
         {
-            var registrationPromise = eapp.registerCompany($scope.account, $scope.profile, $scope.company, $scope.store_image);
+            var registrationPromise = $company.register($scope.account, $scope.profile, $scope.company, $scope.storeLogo);
 
             registrationPromise.then
             (

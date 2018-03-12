@@ -8,6 +8,8 @@
 $(document).ready(function()
 {
     $("#phone").intlTelInput({utilsScript : "<?php echo base_url("assets/js/utils.js")?>"});
+    
+    $('#OpenImgUpload').click(function(){ $('#fileUploadButton').trigger('click'); });
 });
 </script>
 
@@ -34,39 +36,34 @@ $(document).ready(function()
             
             <md-tab label="Vos produits">
                 
-                <div class="row download-products-form layout-padding">
-                    <div class="col-sm-12">
-                        <md-button style="margin : auto; display: block;" class="md-otiprix md-raised">
-                           Télécharger document des produits Otiprix
-                        </md-button>
+                <form method="get" action="<?php echo base_url("/assets/files/Formulaire de Produits.xlsx")?>">
+                    <div class="row download-products-form layout-padding">
+                        <div class="col-sm-12">
+                            <md-button type="submit"  style="margin : auto; display: block;" class="md-otiprix md-raised">
+                               Télécharger fichier des produits Otiprix
+                            </md-button>
+                        </div>
+                        <p class="md-otiprix-text" style="text-align: center">Téléchargez ce document pour faciliter le téléversement de produits sur Otiprix</p>
                     </div>
-                    <p class="md-otiprix-text" style="text-align: center">Téléchargez ce document pour faciliter le téléversement de produits sur Otiprix</p>
-                </div>
+                </form>
                 
                 <md-divider></md-divider>
                 
-                <div class="row layout-padding">
+                <div class="row layout-padding" ng-controller="UploadController">
                     <div class="col-sm-12">
-                        <md-button style="margin : auto; display: block;" class="md-otiprix md-raised">
+                        <md-button ng-click="selectFile()" style="margin : auto; display: block;" ng-click="uploadStoreProducts()" class="md-otiprix md-raised">
                            Téléverser vos produits
                         </md-button>
                     </div>
                     <p class="md-otiprix-text" style="text-align: center">Téléversez le fichier de produits</p>
-                    <div class="row">
-                        <div flex-gt-xs style="text-align: center;">
-                            <label>Valide De</label>
-                            <md-datepicker ng-model="myDate" md-placeholder="Enter date"></md-datepicker>
-                            <label>À</label>
-                            <md-datepicker ng-model="myDate" md-placeholder="Enter date"></md-datepicker>
-                        </div>
-                    </div>
+                    <form id="uploadForm" method="post" action="<?php site_url('company/upload_products'); ?>" >
+                        <input type="file" name="products" id="fileUploadInput" style="display:none"/> 
+                    </form>
                 </div>
                 
                 <md-divider></md-divider>
                 
-                <h2 class="section-title md-otiprix-text">Vos Produits</h2>
-                
-                
+                <company-products></company-products>
                 
             </md-tab>
             
@@ -349,8 +346,7 @@ $(document).ready(function()
    
 </md-content>
 
-<script src="<?php echo base_url("assets/js/userlist-controller.js")?>"></script>
-<script src="<?php echo base_url("assets/js/account-optimization-controller.js")?>"></script>
-<script src="<?php echo base_url("assets/js/account-selectstore-controller.js")?>"></script>
+<script src="<?php echo base_url("assets/js/company-account-products.js")?>"></script>
+<script src="<?php echo base_url("assets/js/upload-controller.js")?>"></script>
  
 

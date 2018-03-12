@@ -4,18 +4,6 @@
  * and open the template in the editor.
  */
 
-$(function() {
-  $('a[href*=#]').on('click', function(e) {
-    e.preventDefault();
-    var element = $($(this).attr('href'));
-    $('html, body').animate(
-            { 
-                scrollTop: element.offset().top - 100}, 
-                500, 
-                'linear');
-  });
-});
-
 angular.module('eappApp').component('otiprixStep', {
     
     templateUrl: 'otiprixStep.html',

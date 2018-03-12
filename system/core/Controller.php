@@ -38,6 +38,8 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 require __DIR__ . '/../../vendor/twilio/sdk/Twilio/autoload.php';
+require __DIR__ . '/../../vendor/autoload.php';
+
 
 // Use the REST API Client to make requests to the Twilio REST API
 use Twilio\Rest\Client;

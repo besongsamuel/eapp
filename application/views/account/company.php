@@ -45,22 +45,7 @@
                             </div>
                         </md-input-container>
                         
-                        <div class="col-sm-12">
-                            <lf-ng-md-file-input 
-                                name="store_image"
-                                lf-files="store_image"
-                                lf-api="api" 
-                                lf-caption="Logo du Magasin"
-                                lf-placeholder="Sélectioner logo du magasin"
-                                lf-drag-and-drop-label="Déposez le logo ici"
-                                lf-browse-label="Parcourir..."
-                                lf-required
-                                preview drag></lf-ng-md-file-input>
-                            <div ng-messages="signupForm.store_image.$error" style="color:red;">
-                                <div ng-message="required">Vous devez sélectioner un logo pour votre magasin.</div>
-                            </div>
-                        </div>
-                            
+                        <image-upload caption="Ajouter logo" id="store-product-image" on-file-removed="onFileRemoved()" on-file-selected="imageChanged(file)"></image-upload>
                         
             
                     </fieldset>

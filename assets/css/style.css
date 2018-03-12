@@ -184,9 +184,9 @@ z-index: 9;
 
 .readmore:hover {background: #222;text-decoration: none;color: #fff;border: 1px solid #fff}
 
-.md-dialog-container
+.navbar-fixed-top
 {
-    z-index: 2000 !important;
+    z-index: 70;
 }
 
 .promo-area 

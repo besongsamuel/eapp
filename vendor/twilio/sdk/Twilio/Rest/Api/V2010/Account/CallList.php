@@ -36,7 +36,7 @@ class CallList extends ListResource {
         parent::__construct($version);
 
         // Path Solution
-        $this->solution = array('accountSid' => $accountSid);
+        $this->solution = array('accountSid' => $accountSid, );
 
         $this->uri = '/Accounts/' . rawurlencode($accountSid) . '/Calls.json';
     }
@@ -74,6 +74,9 @@ class CallList extends ListResource {
             'SipAuthPassword' => $options['sipAuthPassword'],
             'MachineDetection' => $options['machineDetection'],
             'MachineDetectionTimeout' => $options['machineDetectionTimeout'],
+            'RecordingStatusCallbackEvent' => Serialize::map($options['recordingStatusCallbackEvent'], function($e) { return $e; }),
+            'Trim' => $options['trim'],
+            'CallerId' => $options['callerId'],
         ));
 
         $payload = $this->version->create(

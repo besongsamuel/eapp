@@ -150,7 +150,7 @@ class Dial extends TwiML {
     /**
      * Add Record attribute.
      * 
-     * @param enum:Trim $record Record the call
+     * @param dial:Enum:Record $record Record the call
      * @return TwiML $this.
      */
     public function setRecord($record) {
@@ -160,7 +160,7 @@ class Dial extends TwiML {
     /**
      * Add Trim attribute.
      * 
-     * @param enum:Trim $trim Trim the recording
+     * @param dial:Enum:Trim $trim Trim the recording
      * @return TwiML $this.
      */
     public function setTrim($trim) {
@@ -189,6 +189,18 @@ class Dial extends TwiML {
     }
 
     /**
+     * Add RecordingStatusCallbackEvent attribute.
+     * 
+     * @param dial:Enum:RecordingEvent $recordingStatusCallbackEvent Recording
+     *                                                               status
+     *                                                               callback events
+     * @return TwiML $this.
+     */
+    public function setRecordingStatusCallbackEvent($recordingStatusCallbackEvent) {
+        return $this->setAttribute('recordingStatusCallbackEvent', $recordingStatusCallbackEvent);
+    }
+
+    /**
      * Add AnswerOnBridge attribute.
      * 
      * @param boolean $answerOnBridge Preserve the ringing behavior of the inbound
@@ -202,9 +214,9 @@ class Dial extends TwiML {
     /**
      * Add RingTone attribute.
      * 
-     * @param enum:RingTone $ringTone Ringtone allows you to override the ringback
-     *                                tone that Twilio will play back to the caller
-     *                                while executing the Dial
+     * @param dial:Enum:RingTone $ringTone Ringtone allows you to override the
+     *                                     ringback tone that Twilio will play back
+     *                                     to the caller while executing the Dial
      * @return TwiML $this.
      */
     public function setRingTone($ringTone) {

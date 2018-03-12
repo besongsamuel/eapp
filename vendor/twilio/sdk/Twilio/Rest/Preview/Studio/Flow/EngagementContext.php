@@ -36,7 +36,7 @@ class EngagementContext extends InstanceContext {
         parent::__construct($version);
 
         // Path Solution
-        $this->solution = array('flowSid' => $flowSid, 'sid' => $sid);
+        $this->solution = array('flowSid' => $flowSid, 'sid' => $sid, );
 
         $this->uri = '/Flows/' . rawurlencode($flowSid) . '/Engagements/' . rawurlencode($sid) . '';
     }
@@ -61,15 +61,6 @@ class EngagementContext extends InstanceContext {
             $this->solution['flowSid'],
             $this->solution['sid']
         );
-    }
-
-    /**
-     * Deletes the EngagementInstance
-     * 
-     * @return boolean True if delete succeeds, false otherwise
-     */
-    public function delete() {
-        return $this->version->delete('delete', $this->uri);
     }
 
     /**

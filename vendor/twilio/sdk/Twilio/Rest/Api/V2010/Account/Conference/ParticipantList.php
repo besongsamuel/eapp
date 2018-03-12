@@ -29,7 +29,7 @@ class ParticipantList extends ListResource {
         parent::__construct($version);
 
         // Path Solution
-        $this->solution = array('accountSid' => $accountSid, 'conferenceSid' => $conferenceSid);
+        $this->solution = array('accountSid' => $accountSid, 'conferenceSid' => $conferenceSid, );
 
         $this->uri = '/Accounts/' . rawurlencode($accountSid) . '/Conferences/' . rawurlencode($conferenceSid) . '/Participants.json';
     }
@@ -74,6 +74,8 @@ class ParticipantList extends ListResource {
             'Region' => $options['region'],
             'ConferenceRecordingStatusCallback' => $options['conferenceRecordingStatusCallback'],
             'ConferenceRecordingStatusCallbackMethod' => $options['conferenceRecordingStatusCallbackMethod'],
+            'RecordingStatusCallbackEvent' => Serialize::map($options['recordingStatusCallbackEvent'], function($e) { return $e; }),
+            'ConferenceRecordingStatusCallbackEvent' => Serialize::map($options['conferenceRecordingStatusCallbackEvent'], function($e) { return $e; }),
         ));
 
         $payload = $this->version->create(

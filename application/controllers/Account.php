@@ -62,7 +62,7 @@ class Account extends CI_Controller {
             $this->data['redirectToLogin'] = json_encode(true);
         }
         
-        if($this->user->subscription == COMPANY_SUBSCRIPTION)
+        if($this->user != null && $this->user->subscription >= COMPANY_SUBSCRIPTION)
         {
             $this->data['body'] = $this->load->view('account/index_company', $this->data, TRUE);
             $this->parser->parse('eapp_template', $this->data);
@@ -227,7 +227,7 @@ class Account extends CI_Controller {
     
     public function select_department_stores() 
     {
-        if($this->user != null && $this->user->subscription == COMPANY_SUBSCRIPTION && $this->user->is_new)
+        if($this->user != null && $this->user->subscription >= COMPANY_SUBSCRIPTION && $this->user->is_new)
         {
             $this->data['body'] = $this->load->view('account/select_department_stores', $this->data, TRUE);
             $this->parser->parse('eapp_template', $this->data);
@@ -963,7 +963,7 @@ class Account extends CI_Controller {
     
     public function add_department_store() 
     {
-        if($this->user != null && $this->user->subscription == COMPANY_SUBSCRIPTION)
+        if($this->user != null && $this->user->subscription >= COMPANY_SUBSCRIPTION)
         {
             $department_store = json_decode($this->input->post('department_store'), true);
             $department_store["chain_id"] = $this->user->company->chain->id;
@@ -988,7 +988,7 @@ class Account extends CI_Controller {
     
     public function remove_department_store()
     {
-        if($this->user != null && $this->user->subscription == COMPANY_SUBSCRIPTION)
+        if($this->user != null && $this->user->subscription >= COMPANY_SUBSCRIPTION)
         {
             $id = $this->input->post('id');
             

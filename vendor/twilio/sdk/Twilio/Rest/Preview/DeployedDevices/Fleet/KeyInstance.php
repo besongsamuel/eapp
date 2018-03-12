@@ -55,7 +55,7 @@ class KeyInstance extends InstanceResource {
             'dateUpdated' => Deserialize::dateTime(Values::array_get($payload, 'date_updated')),
         );
 
-        $this->solution = array('fleetSid' => $fleetSid, 'sid' => $sid ?: $this->properties['sid']);
+        $this->solution = array('fleetSid' => $fleetSid, 'sid' => $sid ?: $this->properties['sid'], );
     }
 
     /**
@@ -68,7 +68,11 @@ class KeyInstance extends InstanceResource {
      */
     protected function proxy() {
         if (!$this->context) {
-            $this->context = new KeyContext($this->version, $this->solution['fleetSid'], $this->solution['sid']);
+            $this->context = new KeyContext(
+                $this->version,
+                $this->solution['fleetSid'],
+                $this->solution['sid']
+            );
         }
 
         return $this->context;

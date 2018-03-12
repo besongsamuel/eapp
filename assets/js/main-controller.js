@@ -515,6 +515,83 @@ eappApp.component("addToList",
     }
 });
 
+eappApp.component("imageUpload", 
+{
+    templateUrl : "templates/imageUpload.html",
+    controller : function($scope)
+    {
+        var ctrl = this;
+        
+        $scope.removeImage = function()
+        {
+            $('.product-pic').attr('src', 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==');
+            $scope.hasImage = false;
+            
+            ctrl.onFileRemoved({});
+        };
+        
+        ctrl.$onInit = function()
+        {
+            $scope.hasImage = false;
+            
+            if($('.product-pic'))
+            {
+                $('.product-pic').on('load', function()
+                {
+                    
+                    if($('.product-pic').attr('src') != 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==')
+                    {
+                        $scope.hasImage = true;
+                    }
+                    
+                    $scope.$apply();
+                });
+            }
+        };
+        
+        var readURL = function(input) 
+        {
+            if (input.files && input.files[0]) 
+            {
+                var reader = new FileReader();
+
+                reader.onload = function (e) 
+                {
+                    $('.product-pic').attr('src', e.target.result);
+                };
+
+                reader.readAsDataURL(input.files[0]);
+                
+                ctrl.onFileSelected({ file : input.files[0]});
+                
+                $scope.hasImage = true;
+                
+                $scope.$apply();
+                                
+            }
+        };
+    
+
+        $(".file-upload").on('change', function()
+        {
+            readURL(this);
+        });
+    
+        $(".upload-button").on('click', function() 
+        {
+           $(".file-upload").click();
+        });
+    },
+    bindings : 
+    {
+        caption : '@',
+        name : '@',
+        id : '@',
+        onFileSelected : '&',
+        onFileRemoved : '&'
+    }
+});
+
 // configure our routes
 eappApp.config(function($routeProvider) 
 {
@@ -533,6 +610,7 @@ eappApp.factory('eapp', ['$http','$rootScope', '$mdDialog', function($http, $roo
 {
     var eappService = {};
     
+   
     eappService.showAlert = function(ev, title, message) 
     {
         
@@ -900,24 +978,6 @@ eappApp.factory('eapp', ['$http','$rootScope', '$mdDialog', function($http, $roo
         return $http.post(eappService.getSiteUrl().concat("account/registration"), formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}});
 
     };
-    
-    eappService.registerCompany = function(account, profile, company, logo_images)
-    {
-        var formData = new FormData();
-        formData.append("account", JSON.stringify(account));
-        formData.append("profile", JSON.stringify(profile));
-        formData.append("company", JSON.stringify(company));
-        
-        angular.forEach(logo_images, function(obj)
-        {
-            if(!obj.isRemote)
-            {
-                formData.append('image', obj.lfFile);
-            }
-        });
-        
-        return $http.post(eappService.getSiteUrl().concat("account/register_company"), formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}});
-    }
     
     eappService.getSecurityQuestions = function()
     {

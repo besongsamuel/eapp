@@ -41,7 +41,7 @@ class IntentContext extends InstanceContext {
         parent::__construct($version);
 
         // Path Solution
-        $this->solution = array('serviceSid' => $serviceSid, 'sid' => $sid);
+        $this->solution = array('serviceSid' => $serviceSid, 'sid' => $sid, );
 
         $this->uri = '/Services/' . rawurlencode($serviceSid) . '/Intents/' . rawurlencode($sid) . '';
     }
@@ -113,7 +113,11 @@ class IntentContext extends InstanceContext {
      */
     protected function getFields() {
         if (!$this->_fields) {
-            $this->_fields = new FieldList($this->version, $this->solution['serviceSid'], $this->solution['sid']);
+            $this->_fields = new FieldList(
+                $this->version,
+                $this->solution['serviceSid'],
+                $this->solution['sid']
+            );
         }
 
         return $this->_fields;

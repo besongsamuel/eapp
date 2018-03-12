@@ -30,7 +30,7 @@ class HostedNumberOrderContext extends InstanceContext {
         parent::__construct($version);
 
         // Path Solution
-        $this->solution = array('sid' => $sid);
+        $this->solution = array('sid' => $sid, );
 
         $this->uri = '/HostedNumberOrders/' . rawurlencode($sid) . '';
     }
@@ -77,6 +77,10 @@ class HostedNumberOrderContext extends InstanceContext {
             'CcEmails' => Serialize::map($options['ccEmails'], function($e) { return $e; }),
             'Status' => $options['status'],
             'VerificationCode' => $options['verificationCode'],
+            'VerificationType' => $options['verificationType'],
+            'VerificationDocumentSid' => $options['verificationDocumentSid'],
+            'Extension' => $options['extension'],
+            'CallDelay' => $options['callDelay'],
         ));
 
         $payload = $this->version->update(
