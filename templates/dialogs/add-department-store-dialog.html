@@ -1,0 +1,114 @@
+<md-dialog>
+
+    <h2 class="section-title md-otiprix-text">Ajouter Sucursale</h2>
+
+    <md-dialog-content class="md-dialog-content">
+        
+        <form name="departmentStoreForm" ng-submit="addStoreBranch()" novalidate> 
+
+            <div style="padding : 15px;">
+            
+                <md-input-container class="md-block col-md-12" flex-gt-sm>
+                    <label>Nom du détaillant</label>
+                    <input required name="name" ng-model="departmentStore.name" />
+                    <div ng-messages="departmentStoreForm.name.$error">
+                        <div ng-message="required">Vous devez entrer un nom pour le détailant</div>
+                    </div>
+                </md-input-container>
+        
+                <!-- Addresse -->
+                <md-input-container class="md-block col-md-12" flex-gt-sm>
+
+                    <input 
+                        vs-google-autocomplete
+                        vs-autocomplete-validator
+                        ng-model="departmentStore.address"
+                        vs-city="departmentStore.city"
+                        vs-state="departmentStore.state"
+                        vs-country="departmentStore.country"
+                        vs-post-code="departmentStore.postcode"
+                        vs-longitude="departmentStore.longitude"
+                        vs-latitude="departmentStore.latitude"
+                        name="address"
+                    >
+                    <div ng-messages="departmentStoreForm.address.$error">
+                        <div ng-message="required">Vous entrer l'adresse de la sucursale.</div>
+                    </div>
+
+                </md-input-container>
+
+                <!-- Country -->
+                <md-input-container class="md-block col-md-6" flex-gt-sm>
+                    <label>Pays</label>
+                    <input required name="country" ng-model="departmentStore.country" />
+                    <div ng-messages="departmentStoreForm.country.$error">
+                        <div ng-message="required">Vous devez entrer le pays</div>
+                    </div>
+                </md-input-container>
+                
+                <!-- State -->
+                <md-input-container class="md-block col-md-6" flex-gt-sm>
+                    <label>État</label>
+                    <input required name="state" ng-model="departmentStore.state" />
+                    <div ng-messages="departmentStoreForm.state.$error">
+                        <div ng-message="required">Veillez entrer l'état</div>
+                    </div>
+                </md-input-container>
+                                    
+                <!-- Ville -->
+                <md-input-container class="md-block col-md-6" flex-gt-sm>
+                    <label>Ville</label>
+                    <input required name="city" ng-model="departmentStore.city" placeholder="Ville" />
+                    <div ng-messages="departmentStoreForm.city.$error">
+                        <div ng-message="required">Vous devez entrer une ville</div>
+                    </div>
+                </md-input-container>
+                
+                <!-- Code Postale -->
+                <md-input-container class="md-block col-md-6" flex-gt-sm>
+                    <label>Code Postal</label>
+                    <input required name="postcode" ng-model="departmentStore.postcode" placeholder="Code Postale" />
+                    <div ng-messages="departmentStoreForm.postcode.$error">
+                        <div ng-message="required">Veillez entrer votre code postale</div>
+                    </div>
+                </md-input-container>
+                
+                <!-- Email number -->
+                <md-input-container class="md-block col-md-6" flex-gt-sm>
+                    <label>Email</label>
+                    <input style="border-left: none; border-top: none; border-right: none;" name="email" type="email" ng-model="departmentStore.email" placeholder="Email" />
+                    <div ng-messages="departmentStoreForm.email.$error">
+                        <div ng-message="email">Entrez un email valide.</div>
+                    </div>
+                </md-input-container>
+
+                <!-- Phone number -->
+                <md-input-container class="md-block col-md-6" flex-gt-sm>
+                    <label>Numero de téléphone</label>
+                    <input name="phone" ng-model="departmentStore.phonenumber" placeholder="Numero de téléphone" />
+                </md-input-container>
+        
+            </div>
+    
+        </form>
+
+    </md-dialog-content>
+
+    <md-dialog-actions>
+
+        <div class="col-md-12 col-sm-12">
+            <md-input-container class='pull-right' form="departmentStoreForm" ng-click="addStoreBranch(false)">
+                <md-button class='md-raised md-otiprix'>
+                    Ajouter
+                </md-button>
+            </md-input-container>
+            <md-input-container class='pull-right' form="departmentStoreForm" ng-click="addStoreBranch(true)">
+                <md-button class='md-raised md-otiprix'>
+                    Ajouter et continuer
+                </md-button>
+            </md-input-container>
+        </div>
+
+    </md-dialog-actions>
+
+</md-dialog>

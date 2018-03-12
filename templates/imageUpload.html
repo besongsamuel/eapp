@@ -1,0 +1,84 @@
+<style>
+    
+.product-pic 
+{
+    max-width: 200px !important;
+    max-height: 200px !important;
+    display: block;
+}
+
+.file-upload 
+{
+    display: none !important;
+}
+
+.circle 
+{
+    border-radius: 1000px !important;
+    overflow: hidden;
+    width: 168px;
+    height: 168px;
+    border: 8px solid rgba(0,184,147,0.90);
+}
+
+img 
+{
+    max-width: 100% !important;
+    height: auto;
+}
+
+.p-image 
+{
+  position: absolute;
+  top: 130px;
+  right: 8px;
+  color: #666666;
+  transition: all .3s cubic-bezier(.175, .885, .32, 1.275);
+}
+
+.p-image:hover {
+  transition: all .3s cubic-bezier(.175, .885, .32, 1.275);
+}
+
+.upload-button 
+{
+  font-size: 1.2em;
+}
+
+.upload-button:hover 
+{
+  transition: all .3s cubic-bezier(.175, .885, .32, 1.275);
+  color: #999;
+}
+
+.column, .columns 
+{
+    position: relative;
+    padding-left: 0.9375rem;
+    padding-right: 0.9375rem;
+    display: table;
+    margin: auto;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+</style>
+
+<div class="row">
+    <div class="columns">
+        <div class="circle">
+            <!-- User Profile Image -->
+            <img id="{{$ctrl.id}}" class="product-pic" src="">
+    
+            <!-- Default Image -->
+            <!-- <i class="fa fa-user fa-5x"></i> -->
+        </div>
+        <div class="p-image">
+            <i class="fa fa-camera upload-button" ng-show="!hasImage"></i>
+            <i class="fa fa-close" style="color : red;" ng-click="removeImage()" ng-show="hasImage"></i>
+            <input name="{{$ctrl.name}}" class="file-upload" type="file" accept="image/*"/>
+        </div>
+    </div>
+
+    <p style="text-align : center" class="md-otiprix-text">{{$ctrl.caption}}</p>
+</div>

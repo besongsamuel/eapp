@@ -1,0 +1,159 @@
+<md-dialog>
+
+    <h2 class="section-title md-otiprix-text">Ajouter Produit</h2>  
+    <md-divider></md-divider>  
+
+    <md-dialog-content class="md-dialog-content">
+                
+        <form name="addStoreProductForm" ng-submit="addStoreProduct()" novalidate> 
+
+            <div>
+            
+                <image-upload caption="Ajouter Image" id="store-product-image" on-file-removed="onFileRemoved()" on-file-selected="imageChanged(file)"></image-upload>
+
+                <div class="row">
+                    <div flex-gt-xs style="text-align: center;">
+                        
+                        <md-input-container>
+                            <label>Valide De</label>
+                            <md-datepicker ng-model="period_from" md-placeholder="Choisir date" required></md-datepicker>
+                        </md-input-container>
+                        
+                        <md-input-container>
+                            <label>À</label>
+                            <md-datepicker ng-model="period_to" md-placeholder="Choisir date" required></md-datepicker>
+                        </md-input-container>
+                        
+                    </div>
+                </div>
+
+                <md-input-container class="md-block col-md-12" flex-gt-sm>
+                    <label>Nom du produit</label>
+                    <input required name="name" ng-model="storeProduct.store_name" />
+                    <div ng-messages="addStoreProductForm.name.$error">
+                        <div ng-message="required">Vous devez entrer un nom du produit.</div>
+                    </div>
+                </md-input-container>
+
+                <md-autocomplete 
+                    class="col-sm-6"
+                    md-input-name="brand"
+                    md-selected-item="brand"
+                    md-no-cache="trueValue"
+                    md-search-text="ctrl.brandSearchText"
+                    md-items="item in queryBrands(ctrl.brandSearchText)"
+                    md-item-text="item.display"
+                    md-min-length="0"
+                    md-floating-label="Marque">
+
+                    <md-item-template>
+                        <span md-highlight-text="ctrl.brandSearchText">{{item.display}}</span>
+                    </md-item-template>
+                    <md-not-found>
+                        Aucune marque de nom "{{ctrl.brandSearchText}}" n'a été trouvée.
+                        <a ng-click="ctrl.addProductBrand(ctrl.brandSearchText)">Ajouter le!</a>
+                    </md-not-found>
+                    
+                </md-autocomplete>
+
+                <md-autocomplete 
+                    class="col-sm-6"
+                    md-input-name="unit"
+                    md-no-cache="trueValue"
+                    md-selected-item="unit"
+                    md-search-text="ctrl.unitSearchText"
+                    md-items="item in queryUnits(ctrl.unitSearchText)"
+                    md-item-text="item.display"
+                    md-min-length="0"
+                    md-floating-label="Unité">
+
+                    <md-item-template>
+                        <span md-highlight-text="ctrl.unitSearchText">{{item.display}}</span>
+                    </md-item-template>
+                    <md-not-found>
+                        Aucune unité de nom "{{ctrl.unitSearchText}}" n'a été trouvée.
+                        <a ng-click="ctrl.addUnit(ctrl.unitSearchText)">Ajouter le!</a>
+                    </md-not-found>
+                </md-autocomplete>
+
+                <md-input-container class="md-block col-sm-6">
+                    <label>Pays D'origine</label>
+                    <input 
+                        ng-model="storeProduct.country"
+                        name="address"
+                    >
+                </md-input-container>
+
+                <md-input-container class="md-block col-sm-6">
+                    <label>Ville D'origine</label>
+                    <input 
+                        ng-model="storeProduct.state"
+                        name="address"
+                    >
+                </md-input-container>
+
+                <md-input-container class="md-block col-sm-12 col-md-4">
+                    <label>Taille</label>
+                    <input 
+                        ng-model="storeProduct.size"
+                        name="size"
+                    >
+                </md-input-container>
+
+                <md-input-container class="md-block col-sm-12 col-md-4">
+                    <label>Format</label>
+                    <input 
+                        ng-model="storeProduct.format"
+                        name="format"
+                        required
+                    >
+                    <div ng-messages="addStoreProductForm.format.$error">
+                        <div ng-message="required">Vous devez entrer un format. </div>
+                    </div>
+                </md-input-container>
+
+                <md-input-container class="md-icon-float md-icon-right md-block col-md-4">
+                    <label>Prix</label>
+                    <input ng-model="storeProduct.price" name="price" required type="number" step="0.01">
+                    <md-icon style="color: #1abc9c;"><i class="material-icons">attach_money</i></md-icon>
+                    <div ng-messages="addStoreProductForm.price.$error">
+                        <div ng-message="required">Vous devez entrer le prix du produit.</div>
+                    </div>
+                </md-input-container>
+
+                <div class="row">
+                    <div class="col-sm-6">
+                        <md-checkbox ng-model="organic" aria-label="Bio">
+                            Bio
+                        </md-checkbox>
+                    </div>
+    
+                    <div class="col-sm-6">
+                        <md-checkbox ng-model="in_flyer" aria-label="Dans circulaire">
+                            Dans circulaire
+                        </md-checkbox>
+                    </div>
+                </div>
+                
+            </div>
+    
+            <md-dialog-actions>
+
+                <div class="col-md-12 col-sm-12">
+                    <md-input-container class='pull-right'>
+                        <md-button type="submit" class='md-raised md-otiprix'>
+                            {{buttonCaption}}
+                        </md-button>
+                    </md-input-container>
+                </div>
+
+        
+            </md-dialog-actions>
+
+        </form>
+
+    </md-dialog-content>
+
+    
+
+</md-dialog>

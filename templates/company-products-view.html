@@ -1,15 +1,15 @@
-
+<h2 class="section-title md-otiprix-text">Vos Produits</h2>
 <div>
 
     <md-toolbar class="md-table-toolbar md-default" ng-hide="selected.length || filter.show">
       <div class="md-toolbar-tools">
-        <h2 class="section-title md-otiprix-text">Vos Produits</h2>
+        
         <div flex></div>
         <md-button class="md-icon-button" ng-click="filter.show = true">
           <md-icon>filter_list</md-icon>
         </md-button>
         <md-button class="md-icon-button" ng-click="addNewStoreProduct($event)">
-          <md-icon>local_dining</md-icon>
+          <md-icon>add</md-icon>
         </md-button>
       </div>
     </md-toolbar>
@@ -26,11 +26,11 @@
       </div>
     </md-toolbar>
 
-    <md-toolbar class="md-table-toolbar alternate" ng-show="selected.length">
+    <md-toolbar class="md-table-toolbar md-warn md-hue-1" ng-show="selected.length">
       <div class="md-toolbar-tools" layout-align="space-between">
-        <div>{{selected.length}} {{selected.length > 1 ? 'items' : 'item'}} selected</div>
+        <div><p style="margin-top: 15px; color : white;">{{selected.length}} {{selected.length > 1 ? 'items' : 'item'}} Sélectionné</p></div>
         <md-button class="md-icon-button" ng-click="delete($event)">
-          <md-icon>delete</md-icon>
+          <md-icon style="margin-top: 15px; color : white;">delete</md-icon>
         </md-button>
       </div>
     </md-toolbar>
@@ -40,31 +40,28 @@
         <thead md-head md-order="query.order" md-on-reorder="getCompanyProducts">
           <tr md-row>
             <th md-column md-numeric></th>
-            <th md-column md-order-by="nameToLower"><span>Nom du Produit</span></th>
-            <th md-column md-numeric md-order-by="calories.value"><span>Details</span></th>
+            <th md-column md-order-by="calories.value"><span>Details</span></th>
             <th md-column md-numeric>Valide de</th>
             <th md-column md-numeric>Valide jusque</th>
             <th md-column md-numeric>Actions</th>
           </tr>
         </thead>
         <tbody md-body>
-            <tr md-row md-select="storeProduct" md-select-id="name" md-auto-select ng-repeat="sp in storeProducts.data">
+            <tr md-row md-select="sp" md-select-id="id" ng-repeat="sp in storeProducts.data">
                 <td md-cell>
                     <div class="image-container">
                         <img alt=""  ng-src="{{sp.product.image}}">
                     </div>
                 </td>
-                <td md-cell>
+                <td md-cell style="text-align: left;">
                     <p><b>{{sp.product.name | uppercase}}</b></p>
-                </td>
-                <td md-cell>
-                    <p ng-show="sp.size">{{sp.size}}</p>
+                    <p ng-show="sp.size">Taille : {{sp.size}}</p>
                     <p ng-show="sp.brand">{{sp.brand.name | uppercase}}</p>
                     <p>{{sp.format}} <span ng-show="sp.unit">{{sp.unit.name}}</span></p>
                     <p ng-show="sp.country">Pays : {{sp.country}}</p>
                     <p ng-show="sp.state">Origine : {{sp.state}}</p>
-                    <p ng-show="sp.in_flyer">Disponible en Circulaire</p>
-                    <p ng-show="sp.organic">Bio</p>
+                    <p ng-show="sp.in_flyer == 1">Disponible en Circulaire</p>
+                    <p ng-show="sp.organic == 1">Bio</p>
                     
                 </td>
                 <td md-cell>
@@ -76,13 +73,9 @@
                 
                 <td md-cell>
                     <div class="col-sm-12">
-                        <md-button class="md-otiprix md-raised">
+                        <md-button class="md-otiprix md-raised" ng-click="editStoreProduct($event, sp.store_product)">
                             Modifier
                         </md-button>
-                        <md-button class="md-otiprix md-raised">
-                            Effacer
-                        </md-button>
-                        
                     </div>
                 </td>
            
