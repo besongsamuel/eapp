@@ -197,10 +197,20 @@ class Company extends CI_Controller
                 {
                     $store_product["brand_id"] = $this->get_brand($value["B"])->id;
                 }
-                $store_product["country"] = $value["C"];
-                $store_product["state"] = $value["D"] == null ? '' : $value["D"];
-                $store_product["format"] = $value["E"] == null ? '' : $value["E"];
-
+                
+                if($value["C"] != null)
+                {
+                    $store_product["country"] = $value["C"];
+                }
+                if($value["D"] != null)
+                {
+                    $store_product["state"] = $value["D"];
+                }
+                if($value["E"] != null)
+                {
+                    $store_product["format"] = $value["E"];
+                }
+                
                 if($value["F"] && !empty($value["F"]))
                 {
                     $store_product["unit_id"] = $this->get_unit($value["F"])->id;
@@ -210,13 +220,21 @@ class Company extends CI_Controller
                     $store_product["unit_id"] = -1;
                 }
 
-                $store_product["size"] = $value["G"] == null ? '' : $value["G"];
+                if($value["G"] != null)
+                {
+                    $store_product["size"] = $value["G"];
+                }
+                
                 $store_product["price"] = $value["H"];
 
                 $store_product["period_from"] = $value["I"];
                 $store_product["period_to"] = $value["J"];
 
-                $store_product["image"] = $value["K"] == null ? '' : $value["K"];
+                if($value["K"] != null)
+                {
+                    $store_product["image"] = $value["K"];
+                }
+                
                 $store_product["retailer_id"] = $this->user->company->chain->id;
                 $store_product["product_id"] = $this->company_model->get_product_id($store_product);
 
