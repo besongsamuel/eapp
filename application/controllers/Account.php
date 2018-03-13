@@ -42,19 +42,20 @@ class Account extends CI_Controller {
         $this->account_model->update_user_store_table($this->user); 
     }
     
-    
-    
-    public function index() 
+    public function index($index = 3) 
     {
-        $this->data['tabIndex'] = 3; 
+        $this->data['tabIndex'] = $index; 
         
         if($this->user)
         {
-            $favoriteStores = $this->account_model->get_user_favorite_stores($this->user->id);
-            
-            if(sizeof($favoriteStores) > 0)
+            if($this->user->subscription < COMPANY_SUBSCRIPTION)
             {
-                $this->data['tabIndex'] = 0;
+                $favoriteStores = $this->account_model->get_user_favorite_stores($this->user->id);
+            
+                if(sizeof($favoriteStores) > 0)
+                {
+                    $this->data['tabIndex'] = 0;
+                }
             }
         }
         else
@@ -367,41 +368,6 @@ class Account extends CI_Controller {
         exit;
     }
     
-    private function login_user($loginData) 
-    {
-        $data = array("success" => false);
-        
-        $checkLogin = $this->account_model->get_specific(USER_ACCOUNT_TABLE, $loginData);
-            
-        if($checkLogin)
-        {
-            $this->session->set_userdata('isUserLoggedIn',TRUE);
-            $this->session->set_userdata('userId',$checkLogin->id);
-            $data["success"] = true;
-            $this->set_user();
-            $data["user"] = $this->user;
-            $data["redirect"] = $this->rememberme->getOrigPage();
-
-            if(!$data["redirect"])
-            {
-                $data["redirect"] = "home";
-            }
-
-            $rememberme = $this->input->post("rememberme");
-
-            if($rememberme)
-            {
-                $this->rememberme->setCookie($this->input->post('email'));
-            }    
-        }
-        else
-        {
-            $data['message'] = 'E-mail ou mot de passe incorrect, réessayez.';
-        }
-        
-        return $data;
-    }
-    
     public function send_verification()
     {
         $phone_number = $this->input->post("number");
@@ -498,105 +464,7 @@ class Account extends CI_Controller {
         
         echo json_encode($data);
     }
-    
-    public function register_company() 
-    {
-        if($_SERVER['REQUEST_METHOD'] === 'POST')
-        {
-            $this->load->helper('file');
-            
-            $this->load->library('upload');
-            
-            $user_account = json_decode($this->input->post('account'), true);
-            $company_profile = json_decode($this->input->post('profile'), true);
-            $company = json_decode($this->input->post('company'), true);
-            
-            $this->form_validation->set_rules('email', 'Email', 'callback_email_check');
-            
-            $user_account['password'] = md5($user_account['password']);	
-            // Subscription of 10 is a company
-            $user_account['subscription'] = 10;
-            // User account and user email have the same value
-            $user_account['username'] = $user_account['email'];
-            // Set the account number
-            $user_account['account_number'] = mt_rand(1000000, 9999999);
-			
-            if($this->form_validation->run() == true)
-            {
-                // Create the account
-                $insert = $this->account_model->create(USER_ACCOUNT_TABLE, $user_account);
-		    
-                if($insert)
-                {
-                    // create user profile
-                    $company_profile['user_account_id'] = $insert;
-                    $company['user_account_id'] = $insert;
-                    
-                    // get longitude and latitude
-                    $coordinates = $this->geo->get_coordinates($company_profile["city"], $company_profile["address"], $company_profile["state"], $company_profile["country"]);
-                    
-                    if($coordinates)
-                    {
-                        $company_profile["longitude"] = $coordinates["long"];
-                        $company_profile["latitude"] = $coordinates["lat"];
-                    }
-                    
-                    // Create Company Profile
-                    $this->account_model->create(USER_PROFILE_TABLE, $company_profile);
-                    
-                    
-                    $this->initialize_upload_library(ASSETS_DIR_PATH.'img/stores/', uniqid().".png");
         
-                    $chain = array();
-                    
-                    $chain['name'] = $company['name'];
-                    
-                    if($this->upload->do_upload('image'))
-                    {
-                        $upload_data = $this->upload->data();
-                        $chain['image'] = $upload_data['file_name'];
-                    }
-                    else
-                    {
-                        $chain['image'] = "no_image_available.png";
-                    }
-                    
-                    // Create company
-                    $company_id = $this->account_model->create(COMPANY_TABLE, $company);
-                    
-                    $chain['company_id'] = $company_id;
-                    
-                    // Create Chain
-                    $this->account_model->create(CHAIN_TABLE, $chain);
-                    
-                    $this->session->set_userdata('success_msg', 'Your registration was successfully. Please login to your account.');
-                    $data["success"] = true;
-                    
-                    $this->login_user(array(
-                        'email'=>$user_account['email'],
-                        'password' => $user_account['password'])
-                    );
-                    
-                    $this->send_registration_message();
-                    
-                    $data['user'] = $this->user;
-                }
-                else
-                {
-                    $data["success"] = false;
-                    $data["message"] = "Des problèmes sont survenus, veuillez réessayer plus tard.";
-                }
-            }
-            else
-            {
-                $data["success"] = false;
-                $data["message"] = "Le courrier électronique fourni est déjà pris.";
-            }
-        }
-        
-        echo json_encode($data);
-    }
-    
     private function send_registration_message() 
     {
         
@@ -626,38 +494,6 @@ class Account extends CI_Controller {
         mail($this->user->email, $mail_subject, $message, $this->get_otiprix_header());
     }
     
-    private function send_company_registration_message() 
-    {
-        $mail_subject = 'Bienvenue';
-
-        $login_link = site_url("/account/login");
-        
-        $message = '<div>';
-    
-        $message += '<div style="padding: 30px; margin-left: 20px; margin-right: 20px;">';
-        $message += '<p style="font-size: 12px; color : #1abc9c; text-align: center;">L’ÉPICERIE AU PETIT PRIX</p>';
-    
-        $message += '<h1>Bienvenue</h1>';
-        $message += '<p><b>et merci, <span style="color: #1abc9c;">'.$this->user->profile->firstname.'</span></b></p>';
-        $message += '<br>';
-        $message += '<br>';
-        $message += '<p>C\'est officiel. Vous êtes un client OtiPrix. Merci pour la confiance accordée à OtiPrix.com. Cet email confirme la création de votre compte associé à votre adresse courriel: <span style="color: #1abc9c;">'.$this->user->email.'</span></p>';
-        $message += '<p>N’attendez pas, <a href="'.$login_link.'">connectez-vous</a>, ersonnalisez votre compte et commencez à explorer. Vous trouverez des conseils pour faciliter votre mise en route, des offres spéciales et bien plus. Commencez ensuite à afficher vos produits sur OtiPrix.com afin de présenter vos meilleurs rabais aux consommateurs. Pour toute assistance, appelez le numéro indiqué ci-dessous et nous vous mettrons sur la bonne voie.</p>';
-        $message += '<br>';
-        $message += '<p>Merci de ne pas répondre à ce message : nous ne traitons pas les mails envoyés à cette adresse.</p>';
-        $message += '<br>';
-        $message += '</div>';
-    
-        $message += '<div style="color : #1abc9c; text-align: center; border: 1px solid #1abc9c; padding: 30px; margin-left: 20px; margin-right: 20px;">';
-        $message += '<p><b>Votre numéro de client : <span style="color: #1abc9c;">'.$this->user->account_number.'</span></b></p>';
-        $message += '<p><b>8h30 à 20h du lundi au vendredi : <a href>Infos@otiprix.com</a></b></p>';
-        $message += '<a><input type="button" value="Commencez a reduire votre facture"/></a>';
-        $message .= '</div>';
-        $message += $this->get_otiprix_mail_footer($this->user->email);
-        
-        mail($this->user->email, $mail_subject, $message, $this->get_otiprix_header());
-    }
-
     public function save_profile() 
     {
         $result = array("success" => false);
@@ -806,85 +642,6 @@ class Account extends CI_Controller {
         $this->session->sess_destroy();
     }
     
-    /*
-     * Existing email check during validation
-     */
-    public function email_check($str){
-        $condition = array('email'=>$str);
-        $checkEmail = $this->account_model->get_specific(USER_ACCOUNT_TABLE, $condition);
-        if($checkEmail != null){
-            $this->form_validation->set_message('email_check', 'The given email already exists.');
-            return FALSE;
-        } 
-        return TRUE;
-    }
-    
-    private function get_otiprix_mail_footer($email)
-    {
-        // Check if the user is subscribed to our service
-        $subscription = $this->account_model->get_specific(NEWSLETTER_SUBSCRIPTIONS, array("email" => $email));
-        
-        $unsubscribe_link = site_url("/account/unsubscribe?token=");
-        
-        if(isset($subscription))
-        {
-            $unsubscribe_link .= $subscription->unsubscribe_token;
-        }
-        
-        $otiprix_address = OtIPRIX_ADDRESS;
-        
-        $output = '
-                
-            <table align="center" width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#f1f1f1">
-                <tbody>
-                    <tr>
-                        <td width="100%" align="center">
-                            <table width="650" align="center" border="0" cellspacing="0" cellpadding="0">
-                                <tbody>
-                                    <tr><td width="100%" height="32"></td></tr>
-                                    <tr><td align="center"><span style="color:#75787D;font-size:12px;line-height:18px;font-family:\'Roboto\', Helvetica, Arial, sans-serif;" class="yiv7776326831fallback-text yiv7776326831appleLinksGrey">© 2017 Otiprix Technology. All Rights Reserved.<br>'.$otiprix_address.'</span></td></tr>
-                                    <tr><td align="center"><span style="color:#75787D;font-size:12px;line-height:18px;font-family:\'Roboto\', Helvetica, Arial, sans-serif;" class="yiv7776326831fallback-text yiv7776326831appleLinksGrey">8h30 à 20h du lundi au vendredi : infos@otiprix.com</span></td></tr>
-                                    <tr><td height="8" width="100%"></td></tr>
-                                    <tr><td align="center">
-                                        <span style="color:#75787D;font-size:12px;line-height:18px;">
-                                            <a rel="nofollow" target="_blank" href onclick="window.open("www.otiprix.com/assets/files/privacy_policy.pdf", "_blank", "fullscreen=yes"); return false;" style="color:#75787D;text-decoration:underline;font-family:\'Roboto\', Helvetica, Arial, sans-serif;" class="yiv7776326831fallback-text">Privacy Policy</a> | 
-                                            <a rel="nofollow" target="_blank" href onclick="window.open("www.otiprix.com/assets/files/terms_and_conditions.pdf", "_blank", "fullscreen=yes"); return false;" style="color:#75787D;text-decoration:underline;font-family:\'Roboto\', Helvetica, Arial, sans-serif;" class="yiv7776326831fallback-text">Terms and Conditions</a> |';
-        
-        if(isset($subscription) && $subscription->type == 1)
-        {
-            $output =   '<a rel="nofollow" target="_blank" href="'.$unsubscribe_link.'" style="color:#75787D;text-decoration:underline;font-family:\'Roboto\', Helvetica, Arial, sans-serif;" class="yiv7776326831fallback-text">Unsubscribe</a>'; 
-        }
-        
-                
-        $output .=  '</span></td></tr>
-                                    <tr><td height="16" width="100%"></td></tr>
-                                    <tr><td align="center" width="100%">
-                                        <table width="auto" align="center" border="0" cellspacing="0" cellpadding="0">
-                                            <tbody>
-                                                <tr>
-                                                    <td>
-                                                        <a rel="nofollow" target="_blank" href="https://www.facebook.com/otiprix.otiprix.1"><img src="https://loebig.files.wordpress.com/2013/10/facebook2.png" width="24" alt="Facebook" border="0"></a>&nbsp;
-                                                        <a rel="nofollow" target="_blank" href="https://www.youtube.com/channel/UCbwxS8s1WKYgGCRzd9vIl5A"><img width="24" src="https://loebig.files.wordpress.com/2013/10/youtube2.png" alt="Instagram" border="0"></a>&nbsp;
-                                                        <a rel="nofollow" target="_blank" href="https://twitter.com/otiprix"><img width="24" src="https://loebig.files.wordpress.com/2013/10/twitter2.png" alt="Twitter" border="0"></a>&nbsp;
-                                                        <a rel="nofollow" target="_blank" href="https://plus.google.com/u/0/117638375580963001925"><img width="24" src="https://loebig.files.wordpress.com/2013/10/google2.png" alt="Google+" border="0"></a>&nbsp;
-                                                    </td>
-                                                    <td width="16"></td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </td>
-                                    </tr>
-                                    <tr><td width="100%" height="32"></td></tr>
-                                </tbody>
-                            </table>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>';
-        
-        return $output;
-    }
-    
     public function delete_grocery_list() 
     {
         if($this->user != null)
@@ -979,8 +736,12 @@ class Account extends CI_Controller {
             }
             
             $id = $this->account_model->create(CHAIN_STORE_TABLE, $department_store);
+            
             if($id)
             {
+                // Change company to not new
+                $this->account_model->create(COMPANY_TABLE, array("id" => $this->user->company->id, "is_new" => 0));
+                
                 echo json_encode(array("id" => $id, "success" => true));
             }
         }

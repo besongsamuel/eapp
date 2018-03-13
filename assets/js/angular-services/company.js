@@ -31,7 +31,7 @@ angular.module('eappApp').factory("$company", function($rootScope, $http)
                 formData.append('image', logo);
             }
 
-            return $http.post($rootScope.site_url.concat("/account/register_company"), formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}});
+            return $http.post($rootScope.site_url.concat("/company/register"), formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}});
         },
         addStoreProduct : function(storeProduct, image, success)
         {

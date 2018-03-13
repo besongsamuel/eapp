@@ -16,7 +16,7 @@ angular.module("eappApp").controller("UploadController", ["$rootScope", "$scope"
     function fileUploaded()
     {
         // Reload Page
-        window.location.href = $rootScope.site_url.concat("/account");
+        window.location.href = $rootScope.site_url.concat("/account/index/1");
     };
     
     $("#fileUploadInput").change(function()

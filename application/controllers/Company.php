@@ -138,7 +138,6 @@ class Company extends CI_Controller
         }
     }
     
-    
     public function batch_delete_store_products() 
     {
         $store_products = json_decode($this->input->post("store_products"));
@@ -265,6 +264,140 @@ class Company extends CI_Controller
         }
         
         
+    }
+    
+    public function register() 
+    {
+        $this->load->library('form_validation');
+        $this->load->library('geo');
+        
+        if($_SERVER['REQUEST_METHOD'] === 'POST')
+        {
+            $this->load->helper('file');
+                        
+            $user_account = json_decode($this->input->post('account'), true);
+            $company_profile = json_decode($this->input->post('profile'), true);
+            $company = json_decode($this->input->post('company'), true);
+            
+            $this->form_validation->set_rules('email', 'Email', 'callback_email_check');
+            
+            $user_account['password'] = md5($user_account['password']);	
+            // Subscription of 10 is a company
+            $user_account['subscription'] = 10;
+            // User account and user email have the same value
+            $user_account['username'] = $user_account['email'];
+            // Set the account number
+            $user_account['account_number'] = mt_rand(1000000, 9999999);
+			
+            if($this->form_validation->run() == true)
+            {
+                // Create the account
+                $user_account_id = $this->account_model->create(USER_ACCOUNT_TABLE, $user_account);
+		    
+                if($user_account_id)
+                {
+                    // create user profile
+                    $company_profile['user_account_id'] = $user_account_id;
+                    
+                    $company['user_account_id'] = $user_account_id;
+                    
+                    if(!isset($company_profile["longitude"]) || !isset($company_profile["latitude"]))
+                    {
+                        // get longitude and latitude
+                        $coordinates = $this->geo->get_coordinates($company_profile["city"], $company_profile["address"], $company_profile["state"], $company_profile["country"]);
+
+                        if($coordinates)
+                        {
+                            $company_profile["longitude"] = $coordinates["long"];
+                            $company_profile["latitude"] = $coordinates["lat"];
+                        }
+                    }
+                    
+                    // Create Company Profile
+                    $this->account_model->create(USER_PROFILE_TABLE, $company_profile);
+                    
+                    $this->initialize_upload_library(ASSETS_DIR_PATH.'img/stores/', uniqid().".png");
+        
+                    $chain = array();
+                    
+                    $chain['name'] = $company['name'];
+                    
+                    if($this->upload->do_upload('image'))
+                    {
+                        $upload_data = $this->upload->data();
+                        $chain['image'] = $upload_data['file_name'];
+                    }
+                    else
+                    {
+                        $chain['image'] = "no_image_available.png";
+                    }
+                    
+                    // Create company
+                    $company_id = $this->account_model->create(COMPANY_TABLE, $company);
+                    
+                    $chain['company_id'] = $company_id;
+                    
+                    // Create Chain
+                    $this->account_model->create(CHAIN_TABLE, $chain);
+                                        
+                    $data["success"] = true;
+                    
+                    $this->login_user(array(
+                        'email'=>$user_account['email'],
+                        'password' => $user_account['password'])
+                    );
+                    
+                    $this->send_registration_message();
+                    
+                    $data['user'] = $this->user;
+                }
+                else
+                {
+                    $data["success"] = false;
+                    $data["message"] = "Des problèmes sont survenus, veuillez réessayer plus tard.";
+                }
+            }
+            else
+            {
+                $data["success"] = false;
+                $data["message"] = "Le courrier électronique fourni est déjà pris.";
+            }
+        }
+        
+        echo json_encode($data);
+    }
+    
+    private function send_registration_message() 
+    {
+        
+        $mail_subject = 'Bienvenue a Otiprix';
+
+        $login_link = site_url("/account/login");
+        
+        $message =  
+                '<table width="100%" style="padding: 2%; margin-left: 2%; margin-right: 2%;">
+                    <tbody>
+                        <tr><td width="100%" height="18;"><p style="font-size: 12px; color : #1abc9c; text-align: center;">L\’ÉPICERIE AU PETIT PRIX</p></td></tr>
+                        <tr><td width="100%" height="32"></td></tr>
+                        <tr><td><h1>Bienvenue,</h1></td></tr>
+                        <tr><td><p><b>et merci, <span style="color: #1abc9c;">'.$this->user->profile->lastname.' '.$this->user->profile->firstname.'</span></b></p></td></tr>
+                        <tr><td width="100%" height="8"></td></tr>
+                        <tr><td><p>C\'est officiel. Vous êtes un client OtiPrix. Merci pour la confiance accordée à OtiPrix.com. Cet email confirme la création de votre compte associé à votre adresse courriel: <span style="color: #1abc9c;">'.$this->user->email.'</span></p></td></tr>
+                        <tr><td><p>N’attendez pas, <a href="'.$login_link.'">connectez-vous</a>, personnalisez votre compte et commencez à explorer. Vous trouverez des conseils pour faciliter votre mise en route, des offres spéciales et bien plus. Commencez ensuite à afficher vos produits sur OtiPrix.com afin de présenter vos meilleurs rabais aux consommateurs. Pour toute assistance, appelez le numéro indiqué ci-dessous et nous vous mettrons sur la bonne voie.</p></td></tr>
+                        <tr><td width="100%" height="32"></td></tr>
+                        <tr><td><p>Pour toute assistance ou commentaires, écrivez-nous à l’adresse ci-dessous et nous vous mettrons sur la bonne voie.</p></td></tr>
+                        <tr><td width="100%" height="32"></td></tr>
+                        <tr><td width="100%" height="32"></td></tr>
+                        <tr><td><p>Merci de ne pas répondre à ce message : nous ne traitons pas les mails envoyés à cette adresse.</p></td></tr>
+                        <tr><td width="100%" height="32"></td></tr>
+                        <tr><td width="100%" height="32"></td></tr>
+                        <tr><td width="100%" height="32"></td></tr>
+                    </tbody>
+                </table>';
+        
+        $message .= $this->get_otiprix_mail_footer($this->user->email);
+        
+        mail($this->user->email, $mail_subject, $message, $this->get_otiprix_header());
     }
 
     

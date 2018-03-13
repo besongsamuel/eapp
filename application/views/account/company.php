@@ -191,10 +191,11 @@
                     </p>
 
                     <div class="col-sm-12">
+                        <md-progress-circular ng-show="creatingAccount"  class="md-hue-2 pull-right" md-diameter="20px" style="margin-top: 12px;"></md-progress-circular>
                         <md-button type="submit" class="md-raised md-otiprix pull-right" type="submit">
-                            &nbsp Séléctioner Détailants du magasin 
-                            <md-icon style="color: white;"><i class="material-icons">navigate_next</i></md-icon>
+                            &nbsp Créer Entreprise 
                         </md-button>
+                        
                     </div>
 
                 </form>

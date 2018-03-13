@@ -431,6 +431,120 @@ class CI_Controller {
         
         return $result;
     }
+    
+    protected function get_otiprix_mail_footer($email)
+    {
+        // Check if the user is subscribed to our service
+        $subscription = $this->account_model->get_specific(NEWSLETTER_SUBSCRIPTIONS, array("email" => $email));
+        
+        $unsubscribe_link = site_url("/account/unsubscribe?token=");
+        
+        if(isset($subscription))
+        {
+            $unsubscribe_link .= $subscription->unsubscribe_token;
+        }
+        
+        $otiprix_address = OtIPRIX_ADDRESS;
+        
+        $output = '
+                
+            <table align="center" width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#f1f1f1">
+                <tbody>
+                    <tr>
+                        <td width="100%" align="center">
+                            <table width="650" align="center" border="0" cellspacing="0" cellpadding="0">
+                                <tbody>
+                                    <tr><td width="100%" height="32"></td></tr>
+                                    <tr><td align="center"><span style="color:#75787D;font-size:12px;line-height:18px;font-family:\'Roboto\', Helvetica, Arial, sans-serif;" class="yiv7776326831fallback-text yiv7776326831appleLinksGrey">© 2017 Otiprix Technology. All Rights Reserved.<br>'.$otiprix_address.'</span></td></tr>
+                                    <tr><td align="center"><span style="color:#75787D;font-size:12px;line-height:18px;font-family:\'Roboto\', Helvetica, Arial, sans-serif;" class="yiv7776326831fallback-text yiv7776326831appleLinksGrey">8h30 à 20h du lundi au vendredi : infos@otiprix.com</span></td></tr>
+                                    <tr><td height="8" width="100%"></td></tr>
+                                    <tr><td align="center">
+                                        <span style="color:#75787D;font-size:12px;line-height:18px;">
+                                            <a rel="nofollow" target="_blank" href onclick="window.open("www.otiprix.com/assets/files/privacy_policy.pdf", "_blank", "fullscreen=yes"); return false;" style="color:#75787D;text-decoration:underline;font-family:\'Roboto\', Helvetica, Arial, sans-serif;" class="yiv7776326831fallback-text">Privacy Policy</a> | 
+                                            <a rel="nofollow" target="_blank" href onclick="window.open("www.otiprix.com/assets/files/terms_and_conditions.pdf", "_blank", "fullscreen=yes"); return false;" style="color:#75787D;text-decoration:underline;font-family:\'Roboto\', Helvetica, Arial, sans-serif;" class="yiv7776326831fallback-text">Terms and Conditions</a> |';
+        
+        if(isset($subscription) && $subscription->type == 1)
+        {
+            $output =   '<a rel="nofollow" target="_blank" href="'.$unsubscribe_link.'" style="color:#75787D;text-decoration:underline;font-family:\'Roboto\', Helvetica, Arial, sans-serif;" class="yiv7776326831fallback-text">Unsubscribe</a>'; 
+        }
+        
+                
+        $output .=  '</span></td></tr>
+                                    <tr><td height="16" width="100%"></td></tr>
+                                    <tr><td align="center" width="100%">
+                                        <table width="auto" align="center" border="0" cellspacing="0" cellpadding="0">
+                                            <tbody>
+                                                <tr>
+                                                    <td>
+                                                        <a rel="nofollow" target="_blank" href="https://www.facebook.com/otiprix.otiprix.1"><img src="https://loebig.files.wordpress.com/2013/10/facebook2.png" width="24" alt="Facebook" border="0"></a>&nbsp;
+                                                        <a rel="nofollow" target="_blank" href="https://www.youtube.com/channel/UCbwxS8s1WKYgGCRzd9vIl5A"><img width="24" src="https://loebig.files.wordpress.com/2013/10/youtube2.png" alt="Instagram" border="0"></a>&nbsp;
+                                                        <a rel="nofollow" target="_blank" href="https://twitter.com/otiprix"><img width="24" src="https://loebig.files.wordpress.com/2013/10/twitter2.png" alt="Twitter" border="0"></a>&nbsp;
+                                                        <a rel="nofollow" target="_blank" href="https://plus.google.com/u/0/117638375580963001925"><img width="24" src="https://loebig.files.wordpress.com/2013/10/google2.png" alt="Google+" border="0"></a>&nbsp;
+                                                    </td>
+                                                    <td width="16"></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                    </tr>
+                                    <tr><td width="100%" height="32"></td></tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>';
+        
+        return $output;
+    }
+    
+    /*
+     * Existing email check during validation
+     */
+    public function email_check($str){
+        $condition = array('email'=>$str);
+        $checkEmail = $this->account_model->get_specific(USER_ACCOUNT_TABLE, $condition);
+        if($checkEmail != null){
+            $this->form_validation->set_message('email_check', 'The given email already exists.');
+            return FALSE;
+        } 
+        return TRUE;
+    }
+    
+    protected function login_user($loginData) 
+    {
+        $data = array("success" => false);
+        
+        $checkLogin = $this->account_model->get_specific(USER_ACCOUNT_TABLE, $loginData);
+            
+        if($checkLogin)
+        {
+            $this->session->set_userdata('isUserLoggedIn',TRUE);
+            $this->session->set_userdata('userId',$checkLogin->id);
+            $data["success"] = true;
+            $this->set_user();
+            $data["user"] = $this->user;
+            $data["redirect"] = $this->rememberme->getOrigPage();
+
+            if(!$data["redirect"])
+            {
+                $data["redirect"] = "home";
+            }
+
+            $rememberme = $this->input->post("rememberme");
+
+            if($rememberme)
+            {
+                $this->rememberme->setCookie($this->input->post('email'));
+            }    
+        }
+        else
+        {
+            $data['message'] = 'E-mail ou mot de passe incorrect, réessayez.';
+        }
+        
+        return $data;
+    }
        
 
 }

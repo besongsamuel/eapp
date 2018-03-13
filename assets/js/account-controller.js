@@ -157,6 +157,11 @@ angular.module('eappApp').controller('AccountController', ["$scope", "$http", "$
             $scope.securityQuestions = response.data;
         });
         
+        if($scope.loggedUser.company.is_new == 1)
+        {
+            $scope.isNewAccount = true;
+        }
+        
         // Create a copy of the logged user
         $scope.loggedUserClone = angular.copy($scope.loggedUser);
         
@@ -326,12 +331,16 @@ angular.module('eappApp').controller('AccountController', ["$scope", "$http", "$
         $scope.storeLogo = image;
     };
     
+    $scope.creatingAccount = false;
+    
     $scope.registerCompany = function()
     {
         $scope.message = null;
         
         if($scope.signupForm.$valid)
         {
+            $scope.creatingAccount = true;
+            
             var registrationPromise = $company.register($scope.account, $scope.profile, $scope.company, $scope.storeLogo);
 
             registrationPromise.then
@@ -342,10 +351,10 @@ angular.module('eappApp').controller('AccountController', ["$scope", "$http", "$
                     if(result.data.success)
                     {
                         $rootScope.loggedUser = result.data.user;
+                                                
+                        $scope.creatingAccount = false;
                         
-                        window.sessionStorage.setItem('newAccount', 'true');
-                        
-                        window.location =  $scope.site_url.concat("/account/select_department_stores");
+                        window.location =  $scope.site_url.concat("/account");
                         
                     }
 

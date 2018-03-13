@@ -18,6 +18,8 @@ $(document).ready(function()
 
 <md-content class="otiprix-section" id="admin-container" ng-cloak>
     
+    
+    
     <div class="product-big-title-area">
         <div class="container">
             <div class="row">
@@ -30,9 +32,23 @@ $(document).ready(function()
         </div>
     </div> <!-- End Page title area -->
     
-    <md-tabs md-dynamic-height md-border-bottom layout-padding>
+    <div style="text-align: center;" ng-controller="AccountController">
+        <div ng-show="isNewAccount" class="alert alert-success" role="alert">      
+            Votre compte a été créé avec succès. Commencez par ajouter des sucursales à votre compte d'entreprise.
+        </div>
+    </div>
+    
+    
+    
+    <md-tabs md-dynamic-height md-border-bottom layout-padding md-selected="<?php echo $tabIndex; ?>">
         
         <div class="container">
+            
+            <md-tab label="Sucursales">
+                <div class="row layout-padding" ng-controller="AccountController">
+                    <add-department-store department-stores='loggedUser.company.chain.department_stores'></add-department-store>
+                </div>
+            </md-tab>
             
             <md-tab label="Vos produits">
                 
@@ -65,12 +81,6 @@ $(document).ready(function()
                 
                 <company-products></company-products>
                 
-            </md-tab>
-            
-            <md-tab label="Sucursales">
-                <div class="row layout-padding" ng-controller="AccountController">
-                    <add-department-store department-stores='loggedUser.company.chain.department_stores'></add-department-store>
-                </div>
             </md-tab>
             
             <md-tab label="Modifier mes renseignements personnels" md-on-select="onTabSelected(2)">
