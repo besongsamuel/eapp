@@ -157,7 +157,7 @@ angular.module('eappApp').controller('AccountController', ["$scope", "$http", "$
             $scope.securityQuestions = response.data;
         });
         
-        if($scope.loggedUser.company.is_new == 1)
+        if($scope.isUserLogged && $scope.loggedUser.company && $scope.loggedUser.company.is_new == 1)
         {
             $scope.isNewAccount = true;
         }
