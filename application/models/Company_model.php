@@ -22,9 +22,13 @@ class Company_model extends CI_Model
     {
         $result = array();
         
-        $this->db->join(PRODUCT_TABLE, $this->store_product_product_join);
+        $this->db->join(PRODUCT_TABLE, $this->store_product_product_join, "left outer");
         $this->db->limit($query->limit, $query->limit * ($query->page - 1));
-        $this->add_name_filter($query->filter);
+        
+        if(isset($query->filter) && !empty($query->filter))
+        {
+            $this->add_name_filter($query->filter);
+        }
         
         $store_products = $this->get_where(STORE_PRODUCT_TABLE, STORE_PRODUCT_TABLE.".id", array("retailer_id" => $retailer_id));
         
@@ -54,8 +58,7 @@ class Company_model extends CI_Model
     {
         // Search for product
         $this->db->select(PRODUCT_TABLE.'.*');
-        $this->db->join(STORE_PRODUCT_TABLE, $this->store_product_product_join);
-        $this->add_name_filter($store_product["store_name"]);
+        $this->add_product_name_filter($store_product["store_name"]);
         $products = $this->db->get(PRODUCT_TABLE)->result_array();
         
         // Get Match

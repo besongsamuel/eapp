@@ -878,7 +878,7 @@ class CI_Model {
         }
     }
     
-    private function add_product_name_filter($filter) 
+    public function add_product_name_filter($filter) 
     {
         if($filter != null)
         {
