@@ -417,6 +417,44 @@ class Company extends CI_Controller
         
         mail($this->user->email, $mail_subject, $message, $this->get_otiprix_header());
     }
+    
+    public function edit_company() 
+    {
+        if($this->user && $this->user->subscription >= COMPANY_SUBSCRIPTION)
+        {
+            $company = json_decode($this->input->post('company'), true);
+            $company['id'] = $this->user->company->id;
+            
+            $this->company_model->create(COMPANY_TABLE, $company);
+        }
+    }
+    
+    public function change_logo() 
+    {
+        if($this->user && $this->user->subscription >= COMPANY_SUBSCRIPTION)
+        {
+            // Upload the image
+            $this->load->helper('file');
+            
+            $this->initialize_upload_library(ASSETS_DIR_PATH.'img/stores/', uniqid().".png");
+        
+            $chain = array();
+
+            $chain['id'] = $this->user->company->chain->id;
+
+            if($this->upload->do_upload('image'))
+            {
+                $upload_data = $this->upload->data();
+                $chain['image'] = $upload_data['file_name'];
+            }
+            else
+            {
+                $chain['image'] = $this->input->post('image_name');
+            }
+            
+            $this->company_model->create(CHAIN_TABLE, $chain);
+        }
+    }
 
     
 }

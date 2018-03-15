@@ -9,7 +9,6 @@
             <md-toolbar style="background-color: #1abc9c;">
                 <div>
                     <h2 class="md-toolbar-tools">INSCRIPTION</h2>
-                    
                 </div>
             </md-toolbar>
 

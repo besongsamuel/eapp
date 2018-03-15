@@ -547,6 +547,8 @@ eappApp.component("imageUpload",
                     $scope.$apply();
                 });
             }
+            
+            $('.product-pic').attr('src', ctrl.image);
         };
         
         var readURL = function(input) 
@@ -571,7 +573,6 @@ eappApp.component("imageUpload",
             }
         };
     
-
         $(".file-upload").on('change', function()
         {
             readURL(this);
@@ -587,6 +588,7 @@ eappApp.component("imageUpload",
         caption : '@',
         name : '@',
         id : '@',
+        image : '<',
         onFileSelected : '&',
         onFileRemoved : '&'
     }

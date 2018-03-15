@@ -93,6 +93,30 @@ angular.module('eappApp').factory("$company", function($rootScope, $http)
                 $rootScope.site_url.concat("/company/upload_products"), 
                 formData, 
                 { transformRequest: angular.identity, headers: {'Content-Type': undefined}}).then(success, onError);
+        },
+        changeLogo : function(image, imageName,  success)
+        {
+            var formData = new FormData();
+        
+            formData.append("image", image);
+            
+            formData.append("image_name", imageName);
+                        
+            return $http.post(
+                $rootScope.site_url.concat("/company/change_logo"), 
+                formData, 
+                { transformRequest: angular.identity, headers: {'Content-Type': undefined}}).then(success, onError);
+        },
+        editCompany : function(company, success)
+        {
+            var formData = new FormData();
+        
+            formData.append("company", JSON.stringify(company));
+                        
+            return $http.post(
+                $rootScope.site_url.concat("/company/edit_company"), 
+                formData, 
+                { transformRequest: angular.identity, headers: {'Content-Type': undefined}}).then(success, onError);
         }
         
         

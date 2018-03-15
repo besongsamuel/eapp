@@ -83,6 +83,52 @@ $(document).ready(function()
                 
             </md-tab>
             
+            <md-tab label="Informations sur l'entreprise">
+                <div ng-controller="CompanyAccountController" >
+                    
+                    <div id="error_message" class="alert alert-success" ng-show="successMessage">
+                        <p>{{successMessage}}</p>
+                        <span></span>
+                    </div>
+                    
+                    <form class="companyForm" novalidate ng-submit="editCompany()" class="layout-padding">
+                        
+                        <!-- COMPANY INFORMATION -->
+                        <fieldset style="margin: 10px;">
+
+                            <legend>RENSEIGNEMENTS D'ENTREPRISE</legend>
+                            
+                            <image-upload image="storeLogo" caption="Ajouter logo" id="store-product-image" on-file-removed="onFileRemoved()" on-file-selected="imageChanged(file)"></image-upload>
+
+                            <!-- NEQ -->
+                            <md-input-container class="md-block col-md-12" flex-gt-sm>
+                                <label>NEQ</label>
+                                <input required name="neq" ng-model="company.neq" />
+                                <div ng-messages="companyForm.neq.$error">
+                                    <div ng-message="required">Vous devez entrer le NEQ de l'entreprise</div>
+                                </div>
+                            </md-input-container>
+
+                            <!-- NOM DE L'ENTREPRISE -->
+                            <md-input-container class="md-block col-md-12" flex-gt-sm>
+                                <label>Nom de l'entreprise</label>
+                                <input required name="company_name" ng-model="company.name" />
+                                <div ng-messages="companyForm.company_name.$error">
+                                    <div ng-message="required">Vous devez entrer au moins un nom pour l'entreprise</div>
+                                </div>
+                            </md-input-container>
+                            
+                            <div class="col-sm-12" style="margin-top : 30px; margin-bottom: 30px;">
+                                <md-button type="submit" class="pull-right md-otiprix md-raised">Valider</md-button>
+                            </div>
+
+
+                        </fieldset>
+                        
+                    </form>
+                </div>
+            </md-tab>
+            
             <md-tab label="Modifier mes renseignements personnels" md-on-select="onTabSelected(2)">
 
                 <div ng-controller="AccountController">
@@ -357,6 +403,7 @@ $(document).ready(function()
 </md-content>
 
 <script src="<?php echo base_url("assets/js/company-account-products.js")?>"></script>
+<script src="<?php echo base_url("assets/js/company-account-controller.js")?>"></script>
 <script src="<?php echo base_url("assets/js/upload-controller.js")?>"></script>
  
 
