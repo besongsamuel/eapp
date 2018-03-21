@@ -44,8 +44,19 @@ class Company_model extends CI_Model
     public function get_store_products_count($retailer_id, $query)
     {
         
-        $this->db->limit($query->limit, $query->limit * ($query->page - 1));
+        $this->db->join(PRODUCT_TABLE, $this->store_product_product_join, "left outer");
         
+        if(isset($query->filter) && !empty($query->filter))
+        {
+            $this->add_name_filter($query->filter);
+        }
+        
+        return sizeof($this->get_where(STORE_PRODUCT_TABLE, STORE_PRODUCT_TABLE.".id", array("retailer_id" => $retailer_id)));
+        
+    }
+    
+    public function get_company_products_count($retailer_id)
+    {        
         return sizeof($this->get_where(STORE_PRODUCT_TABLE, "id", array("retailer_id" => $retailer_id), true));
     }
     

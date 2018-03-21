@@ -538,7 +538,6 @@ eappApp.component("imageUpload",
             {
                 $('.product-pic').on('load', function()
                 {
-                    
                     if($('.product-pic').attr('src') != 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==')
                     {
                         $scope.hasImage = true;

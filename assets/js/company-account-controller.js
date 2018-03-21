@@ -1,5 +1,5 @@
 
-angular.module('eappApp').controller('CompanyAccountController', function($scope, $company)
+angular.module('eappApp').controller('CompanyAccountController', function($scope, $company, $timeout)
 {
     
     var ctrl = this;
@@ -34,7 +34,7 @@ angular.module('eappApp').controller('CompanyAccountController', function($scope
     $scope.onFileRemoved = function()
     {
         $scope.image_name = '';
-        $company.changeLogo(null, $scope.image_name, success);
+        $company.changeLogo(null, $scope.image_name, function(){ });
     };
     
     $scope.editCompany = function()
@@ -46,6 +46,15 @@ angular.module('eappApp').controller('CompanyAccountController', function($scope
     {
         $scope.successMessage = "Les informations sur votre entreprise ont été enregistrées avec succès ";
         ctrl.scrollToTop();
+        
+        $scope.timeOutPromise = $timeout(cancelTimeout, 5000);
+    }
+    
+    function cancelTimeout()
+    {
+        $scope.successMessage = null;
+        
+        $timeout.cancel($scope.timeOutPromise);
     }
         
     angular.element(document).ready(function()

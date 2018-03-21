@@ -9,7 +9,7 @@
 angular.module('eappApp').component("addDepartmentStore", 
 {
     templateUrl : "templates/addDepartmentStore.html",
-    controller : function($scope, eapp, $mdDialog)
+    controller : function($scope, eapp, $mdDialog, $rootScope)
     {
         var ctrl = this;
         
@@ -25,20 +25,32 @@ angular.module('eappApp').component("addDepartmentStore",
             }
         };
         
-        $scope.removeDepartmentStore = function(id)
+        $scope.removeDepartmentStore = function(id, $event)
         {
-            eapp.removeDepartmentStore(id).then(function(response)
+            var confirmDialog = $rootScope.createConfirmDIalog ($event, "Êtes-vous sûr de vouloir supprimer cette sucursalle de votre liste??");
+            
+            $mdDialog.show(confirmDialog).then(function()
             {
-                if(response.data)
+             
+                eapp.removeDepartmentStore(id).then(function(response)
                 {
-                    var index = $scope.departmentStores.map(function(e){ return e.id; }).indexOf(id);
-                    
-                    if(index > -1)
+                    if(response.data)
                     {
-                        $scope.departmentStores.splice(index, 1);
+                        var index = $scope.departmentStores.map(function(e){ return e.id; }).indexOf(id);
+
+                        if(index > -1)
+                        {
+                            $scope.departmentStores.splice(index, 1);
+                        }
                     }
-                }
+                });
+                
+            }, function()
+            {
+                
             });
+            
+            
         };
         
         $scope.addStoreBranch = function (event) 
@@ -110,7 +122,7 @@ angular.module('eappApp').component("addDepartmentStore",
 });
 
 
-angular.module('eappApp').controller('AccountController', ["$scope", "$http", "$mdToast", "eapp", "$company", "$rootScope", "$mdDialog", function($scope, $http, $mdToast, eapp, $company, $rootScope, $mdDialog) 
+angular.module('eappApp').controller('AccountController', ["$scope", "$http", "$mdToast", "eapp", "$company", "$rootScope", "$mdDialog", "$timeout", function($scope, $http, $mdToast, eapp, $company, $rootScope, $mdDialog, $timeout) 
 {    
     $scope.address = 
     {
@@ -369,13 +381,20 @@ angular.module('eappApp').controller('AccountController', ["$scope", "$http", "$
                 {
                     if(!error.data.success)
                     {
+                        $scope.timeoutPromise = $timeout(cancelTimeout, 5000);
                         $scope.message = error.data.message;
                     }
                 }
             );
         }
-            
     };
+    
+    function cancelTimeout()
+    {
+        $scope.message = null;
+        $scope.saveProfileSucess = false;
+        $timeout.cancel($scope.timeoutPromise);
+    }
     
     $scope.finishCompanyRegistration = function()
     {

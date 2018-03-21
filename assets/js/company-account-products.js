@@ -37,7 +37,7 @@ function Controller($scope, $rootScope, $mdDialog, $company)
     $scope.query = 
     {
         filter: '',
-        limit: '5',
+        limit: '10',
         order: 'nameToLower',
         page: 1
     };

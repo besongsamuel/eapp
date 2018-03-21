@@ -83,11 +83,12 @@ angular.module('eappApp').factory("$company", function($rootScope, $http)
                 formData, 
                 { transformRequest: angular.identity, headers: {'Content-Type': undefined}}).then(success, onError);
         },
-        uploadProducts : function(file, success)
+        uploadProducts : function(file, success, replace)
         {
             var formData = new FormData();
         
             formData.append("products", file);
+            formData.append("replace", JSON.stringify(replace))
                         
             return $http.post(
                 $rootScope.site_url.concat("/company/upload_products"), 

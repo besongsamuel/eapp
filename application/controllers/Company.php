@@ -31,15 +31,13 @@ class Company extends CI_Controller
     public function get_store_products() 
     {
         $query = json_decode($this->input->post("query"));
-        $query_no_filter = json_decode($this->input->post("query"));
-        $query_no_filter->filter = "";
         
         $result = array("data" => array(), "count" => 0);
         
         if($this->user != null && $this->user->subscription >= COMPANY_SUBSCRIPTION)
         {
             
-            $result["count"] = $this->company_model->get_store_products_count($this->user->company->chain->id, $query_no_filter);
+            $result["count"] = $this->company_model->get_store_products_count($this->user->company->chain->id, $query);
             
             $result["data"] = $this->company_model->get_store_products($this->user->company->chain->id, $query);
         }
@@ -51,25 +49,40 @@ class Company extends CI_Controller
     {
         if($this->user != null && $this->user->subscription >= COMPANY_SUBSCRIPTION)
         {
-            // Get the store product
-            $store_product = json_decode($this->input->post("store_product"), true);
+            $products_count = $this->company_model->get_company_products_count($this->user->company->chain->id);
             
-            // Upload image
-            $this->initialize_upload_library(ASSETS_DIR_PATH.'img/products/', uniqid().".png");
+            $res = $this->company_model->get_where(COMPANY_SUBSCRIPTIONS_TABLE, "*", array("subscription" => $this->user->subscription));
             
-            if($this->upload->do_upload('image'))
+            $company_subscription = $res[0];
+            
+            if($products_count < $company_subscription->product_count)
             {
-                $upload_data = $this->upload->data();
-                $store_product['image'] = $upload_data['file_name'];
+                // Get the store product
+                $store_product = json_decode($this->input->post("store_product"), true);
+
+                // Upload image
+                $this->initialize_upload_library(ASSETS_DIR_PATH.'img/products/', uniqid().".png");
+
+                if($this->upload->do_upload('image'))
+                {
+                    $upload_data = $this->upload->data();
+                    $store_product['image'] = $upload_data['file_name'];
+                }
+
+                // Get the product_id
+                $store_product["product_id"] = $this->company_model->get_product_id($store_product);
+
+                // Assign the retailer id
+                $store_product["retailer_id"] = $this->user->company->chain->id;
+
+                $this->company_model->add_store_product($store_product);
+                
+                echo json_encode(array("success" => true, "max_items" => $company_subscription->product_count));
+                return;
             }
             
-            // Get the product_id
-            $store_product["product_id"] = $this->company_model->get_product_id($store_product);
+            echo json_encode(array("success" => false, "max_items" => $company_subscription->product_count));
             
-            // Assign the retailer id
-            $store_product["retailer_id"] = $this->user->company->chain->id;
-            
-            $this->company_model->add_store_product($store_product);
         }
     }
     
@@ -123,7 +136,7 @@ class Company extends CI_Controller
             
             $unit["is_new"] = true;
 
-            $compare_unit["name"] = $this->input->post("name");
+            $compare_unit["name"] = $name;
             $compare_unit["is_new"] = true;
 
             $compareunit_id = $this->company_model->create(COMPAREUNITS_TABLE, $compare_unit);
@@ -149,17 +162,20 @@ class Company extends CI_Controller
         
     }
     
-    public function uploadExcelProducts($fileName) 
+    public function uploadExcelProducts($fileName, $replace) 
     {
         if($this->user && $this->user->subscription >= COMPANY_SUBSCRIPTION)
         {
-            $this->company_model->delete(STORE_PRODUCT_TABLE, array("retailer_id" => $this->user->company->chain->id));
+            if($replace)
+            {
+                $this->company_model->delete(STORE_PRODUCT_TABLE, array("retailer_id" => $this->user->company->chain->id));
+            }
             
             $res = $this->company_model->get_where(COMPANY_SUBSCRIPTIONS_TABLE, "*", array("subscription" => $this->user->subscription));
             
             $company_subscription = $res[0];
             
-            $items_added = 0;
+            $items_added = $this->company_model->get_company_products_count($this->user->company->chain->id);
             
             $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
         
@@ -171,6 +187,7 @@ class Company extends CI_Controller
             {
                 if($items_added > $company_subscription->product_count)
                 {
+                    echo json_encode(array("success" => false, "max_items" => $company_subscription->product_count));
                     return;
                 }
                 
@@ -234,6 +251,10 @@ class Company extends CI_Controller
                 {
                     $store_product["image"] = $value["K"];
                 }
+                else
+                {
+                    $store_product["image"] = "";
+                }
                 
                 $store_product["retailer_id"] = $this->user->company->chain->id;
                 $store_product["product_id"] = $this->company_model->get_product_id($store_product);
@@ -243,6 +264,8 @@ class Company extends CI_Controller
                 $items_added++;
 
             }
+            
+            echo json_encode(array("success" => true, "max_items" => $company_subscription->product_count));
         }
 
     }
@@ -252,6 +275,8 @@ class Company extends CI_Controller
         $this->load->library('upload');
         
         $this->load->helper('text');
+        
+        $replace = json_decode($this->input->post("replace"));
         
         if($this->user->subscription >= COMPANY_SUBSCRIPTION)
         {
@@ -271,7 +296,7 @@ class Company extends CI_Controller
                 // Create csv_array from file uploaded
                 $file_path = ASSETS_DIR_PATH."files/".$fileName.".xlsx";
 
-                $this->uploadExcelProducts($file_path);
+                $this->uploadExcelProducts($file_path, $replace);
 
                 unlink($file_path);
             }

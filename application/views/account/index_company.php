@@ -38,8 +38,6 @@ $(document).ready(function()
         </div>
     </div>
     
-    
-    
     <md-tabs md-dynamic-height md-border-bottom layout-padding md-selected="<?php echo $tabIndex; ?>">
         
         <div class="container">
@@ -51,6 +49,17 @@ $(document).ready(function()
             </md-tab>
             
             <md-tab label="Vos produits">
+                
+                <div ng-controller="UploadController" style="text-align: center;">
+                    <div ng-show="success" class="alert alert-success" role="alert">      
+                    Vos produits ont été mis à jour.
+                    </div>
+
+                    <div ng-show="incomplete" class="alert alert-danger" role="alert">      
+                        Certains produits n'ont pas été mis à jour car votre abonnement ne prend en charge que {{maxItems}} produits. Vous pouvez modifier votre abonnement à partir de "Informations sur l'entreprise".
+                    </div>
+                </div>
+                
                 
                 <form method="get" action="<?php echo base_url("/assets/files/Formulaire de Produits.xlsx")?>">
                     <div class="row download-products-form layout-padding">
