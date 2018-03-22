@@ -45,7 +45,7 @@ and open the template in the editor.
 
                             <div class="col-sm-12 col-md-6">
                                 <div style="text-align:center;">
-                                    <md-button class="md-raised md-otiprix" style="margin: 0 auto;" ng-click="unsubscribe()">
+                                    <md-button class="md-raised md-primary" style="margin: 0 auto;" ng-click="unsubscribe()">
                                         OUI
                                     </md-button>
                                 </div>

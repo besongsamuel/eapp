@@ -27,7 +27,7 @@ and open the template in the editor.
             <p style="text-align: center;">Cliquez sur le bouton ci-dessous pour configurer vos magasins préférés.</p>
             <div style="text-align: center;" class="col-sm-12">
                 <md-input-container>
-                    <md-button class="md-raised md-otiprix" ng-click="gotoAccount()">
+                    <md-button class="md-raised md-primary" ng-click="gotoAccount()">
                         Configurer
                     </md-button>
                 </md-input-container>
@@ -36,7 +36,7 @@ and open the template in the editor.
             <h3 style="text-align: center;">Ou</h3>
             <div style="text-align: center;" class="col-sm-12">
                 <md-input-container>
-                    <md-button class="md-raised md-otiprix" ng-click="gotoHome()">
+                    <md-button class="md-raised md-primary" ng-click="gotoHome()">
                         Commencez a reduire votre epicerie
                     </md-button>
                 </md-input-container>

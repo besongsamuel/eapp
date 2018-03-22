@@ -31,7 +31,7 @@
 <md-content class="otiprix-section layout-padding" ng-controller="ViewProductsController" ng-cloak>
     
     <div class="row">
-        <md-button class="md-raised md-otiprix pull-left" ng-click="gotoCreateNewProduct()">
+        <md-button class="md-raised md-primary pull-left" ng-click="gotoCreateNewProduct()">
             Create New Product
         </md-button>
     </div>
@@ -119,7 +119,7 @@
                         <md-button class="md-raised md-primary" ng-click="edit_product(product.id)">
                             Edit
                         </md-button>
-                        <md-button class="md-raised md-otiprix" ng-click="directEdit($event, product)">
+                        <md-button class="md-raised md-primary" ng-click="directEdit($event, product)">
                             Update
                         </md-button>
                         <md-button class="md-raised md-warn" ng-click="deleteProduct($event, product.id)">

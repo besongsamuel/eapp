@@ -42,7 +42,7 @@ $(document).ready(function()
                         <h4>Économies moyen : <b style="color : red;"><span ng-show="item.value != '-'">$ CAD</span> {{item.value}}</b></h4>
                         <p>Nombre moyen de produits par panier : <b>{{item.count}}</b></p>
                       </div>
-                        <md-button class="md-secondary md-otiprix" ng-click="viewOptimization($index, $event)">Voir détails</md-button>
+                        <md-button class="md-secondary md-primary" ng-click="viewOptimization($index, $event)">Voir détails</md-button>
                       <md-divider ng-if="!$last"></md-divider>
                     </md-list-item>
                 </md-list>
@@ -146,7 +146,7 @@ $(document).ready(function()
                             </div>
 
                             <div class="col-sm-12" style="margin-top : 30px; margin-bottom: 30px;">
-                                <md-button type="submit" class="pull-right md-otiprix md-raised">Valider</md-button>
+                                <md-button type="submit" class="pull-right md-primary md-raised">Valider</md-button>
                             </div>
 
                         </form>
@@ -206,7 +206,7 @@ $(document).ready(function()
                             </div>
 
                             <div class="col-md-12">
-                                <md-button class="md-raised md-otiprix pull-right" type="submit">
+                                <md-button class="md-raised md-primary pull-right" type="submit">
                                     Valider
                                 </md-button>
                             </div>
@@ -251,7 +251,7 @@ $(document).ready(function()
                                 </div>
 
                                 <div class="col-md-12">
-                                    <md-button class="md-raised md-otiprix pull-right" type="submit">
+                                    <md-button class="md-raised md-primary pull-right" type="submit">
                                         Valider
                                     </md-button>
                                 </div>

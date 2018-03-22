@@ -67,6 +67,35 @@ angular.getSearchParam = function(name, url)
 // Define the `eapp Application` module
 var eappApp = angular.module('eappApp', ['ngMaterial', 'vsGoogleAutocomplete', 'md.data.table', 'lfNgMdFileInput', 'ngMessages', 'ngSanitize', 'mdCountrySelect', 'ngNotificationsBar', 'ngRoute', 'ngAnimate', 'angularCountryState']);
 
+eappApp.config(function($mdThemingProvider)
+{
+    $mdThemingProvider.definePalette('otiprixPalette', {
+    '50': 'e0f2f1',
+    '100': 'b2dfdb',
+    '200': '80cbc4',
+    '300': '4db6ac',
+    '400': '26a69a',
+    '500': '00b893',
+    '600': '00897b',
+    '700': '00796b',
+    '800': '00695c',
+    '900': '004d40',
+    'A100': 'a7ffeb',
+    'A200': '64ffda',
+    'A400': '1de9b6',
+    'A700': '00bfa5',
+    'contrastDefaultColor': 'light',    // whether, by default, text (contrast)
+                                        // on this palette should be dark or light
+
+    'contrastDarkColors': ['50', '100', //hues which contrast should be 'dark' by default
+     '200', '300', '400', 'A100'],
+    'contrastLightColors': undefined    // could also specify this if default was 'dark'
+  });
+
+  $mdThemingProvider.theme('default')
+    .primaryPalette('otiprixPalette');
+});
+
 eappApp.filter('titlecase', function() {
     return function (input) {
         var smallWords = /^(a|an|and|as|at|but|by|en|for|if|in|nor|of|on|or|per|the|to|vs?\.?|via)$/i;

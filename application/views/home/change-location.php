@@ -29,7 +29,7 @@
             <p>La géolocalisation nous permet d'obtenir votre position géographique. Dans ce cas, nous identifions votre ville pour diffuser les promotions disponibles dans ce domaine.</p>
             
             <div class="col-sm-12">
-                <md-button class="md-raised md-otiprix pull-right" ng-click="getUserCoordinates()">
+                <md-button class="md-raised md-primary pull-right" ng-click="getUserCoordinates()">
                     Me géolocaliser
                 </md-button>
             </div>
@@ -49,7 +49,7 @@
             </md-input-container>
             
             <div class="col-sm-12">
-                <md-button class="md-raised md-otiprix pull-right" ng-click="getUserCoordinatesFromPostcode()">
+                <md-button class="md-raised md-primary pull-right" ng-click="getUserCoordinatesFromPostcode()">
                     Changer
                 </md-button>
             </div>

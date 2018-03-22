@@ -14,9 +14,7 @@
     <link rel="stylesheet" href="<?php echo base_url("assets/css/lf-ng-md-file-input.css")?>">
       
     <!-- Google Fonts -->
-    <link href='<?php echo CONNECTION_TYPE; ?>://fonts.googleapis.com/css?family=Titillium+Web:400,200,300,700,600' rel='stylesheet' type='text/css'>
-    <link href='<?php echo CONNECTION_TYPE; ?>://fonts.googleapis.com/css?family=Roboto+Condensed:400,700,300' rel='stylesheet' type='text/css'>
-    <link href='<?php echo CONNECTION_TYPE; ?>://fonts.googleapis.com/css?family=Raleway:400,100' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="<?php echo CONNECTION_TYPE; ?>://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic">
     
     <!-- Bootstrap -->
     <link rel="stylesheet" href="<?php echo CONNECTION_TYPE; ?>://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
@@ -181,7 +179,7 @@
   <script src="<?php echo base_url("assets/js/rootscope.js")?>"></script> 
 	  
   </head>
-  <body>
+  <body class="md-body-1">
             
   <notifications-bar class="notifications"></notifications-bar>
 
@@ -371,7 +369,7 @@
                             <form novalidate>
                                 <input type="email" placeholder="Entrez votre email" ng-model="subscribe_email">
                                 <div class="col-sm-12">
-                                    <md-button type="submit" class="md-raised md-otiprix pull-right" >S’INSCRIRE</md-button>
+                                    <md-button type="submit" class="md-raised md-primary pull-right" >S’INSCRIRE</md-button>
                                 </div>
                             </form>
                         </div>

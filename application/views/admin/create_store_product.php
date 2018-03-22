@@ -184,8 +184,8 @@
         </div>
             
         <div class="form-group eapp-create col-md-12 col-sm-12">
-            <md-button class="md-raised md-otiprix pull-right" type="submit" ng-click="continue = false">{{getSaveLabel()}}</md-button>
-            <md-button class="md-raised md-otiprix pull-right" type="submit" ng-click="continue = true">{{getSaveLabel()}} and Continue</md-button>
+            <md-button class="md-raised md-primary pull-right" type="submit" ng-click="continue = false">{{getSaveLabel()}}</md-button>
+            <md-button class="md-raised md-primary pull-right" type="submit" ng-click="continue = true">{{getSaveLabel()}} and Continue</md-button>
         </div>
         
     </form>

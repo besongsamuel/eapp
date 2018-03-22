@@ -27,7 +27,7 @@
                     <p ng-show="storeProduct.state">{{storeProduct.state}}</p>
                     <p>Valide du <b>{{storeProduct.period_from}}</b> au <b>{{storeProduct.period_to}}</b></p>
                     
-                    <md-button class="md-otiprix md-raised pull-right" ng-hide="productInCart(storeProduct.product.id)"  ng-click="add_product_to_cart(storeProduct.product.id, storeProduct.id)">
+                    <md-button class="md-primary md-raised pull-right" ng-hide="productInCart(storeProduct.product.id)"  ng-click="add_product_to_cart(storeProduct.product.id, storeProduct.id)">
                         <md-icon><i class="material-icons">add_shopping_cart</i></md-icon>
                         Ajouter au panier
                     </md-button>
@@ -58,7 +58,7 @@
                         <p>Valide du <b>{{sp.period_from}}</b> au <b>{{sp.period_to}}</b></p>
                         
                         <div class="col-sm-12">
-                            <md-button class="md-otiprix md-raised md-secondary" ng-hide="productInCart(sp.product.id)"  ng-click="add_product_to_cart(sp.product.id, sp.id)">
+                            <md-button class="md-primary md-raised md-secondary" ng-hide="productInCart(sp.product.id)"  ng-click="add_product_to_cart(sp.product.id, sp.id)">
                                 <md-icon><i class="material-icons">add_shopping_cart</i></md-icon>
                                 Ajouter au panier
                             </md-button>
@@ -75,7 +75,7 @@
     </md-dialog-content>
     
     <md-dialog-actions>
-        <md-button class="md-raised md-otiprix" ng-click="close()">
+        <md-button class="md-raised md-primary" ng-click="close()">
             Fermer
         </md-button>
     </md-dialog-actions>

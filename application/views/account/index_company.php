@@ -58,13 +58,18 @@ $(document).ready(function()
                     <div ng-show="incomplete" class="alert alert-danger" role="alert">      
                         Certains produits n'ont pas été mis à jour car votre abonnement ne prend en charge que {{maxItems}} produits. Vous pouvez modifier votre abonnement à partir de "Informations sur l'entreprise".
                     </div>
+                    
+                    <div ng-show="loggedUser.company.is_valid == 0" class="alert alert-danger" role="alert">      
+                        Vous ne pouvez pas encore ajouter de produits à votre compte. Nous validons toujours votre NEQ. Veuillez réessayer plus tard.
+                    </div>
+                    
                 </div>
                 
                 
                 <form method="get" action="<?php echo base_url("/assets/files/Formulaire de Produits.xlsx")?>">
                     <div class="row download-products-form layout-padding">
                         <div class="col-sm-12">
-                            <md-button type="submit"  style="margin : auto; display: block;" class="md-otiprix md-raised">
+                            <md-button type="submit"  style="margin : auto; display: block;" class="md-raised md-primary">
                                Télécharger fichier des produits Otiprix
                             </md-button>
                         </div>
@@ -76,7 +81,7 @@ $(document).ready(function()
                 
                 <div class="row layout-padding" ng-controller="UploadController">
                     <div class="col-sm-12">
-                        <md-button ng-click="selectFile()" style="margin : auto; display: block;" ng-click="uploadStoreProducts()" class="md-otiprix md-raised">
+                        <md-button ng-disabled="loggedUser.company.is_valid == 0" ng-click="selectFile()" style="margin : auto; display: block;" ng-click="uploadStoreProducts()" class="md-primary md-raised">
                            Téléverser vos produits
                         </md-button>
                     </div>
@@ -88,7 +93,7 @@ $(document).ready(function()
                 
                 <md-divider></md-divider>
                 
-                <company-products></company-products>
+                <company-products ng-if="loggedUser.company.is_valid == 1"></company-products>
                 
             </md-tab>
             
@@ -128,7 +133,7 @@ $(document).ready(function()
                             </md-input-container>
                             
                             <div class="col-sm-12" style="margin-top : 30px; margin-bottom: 30px;">
-                                <md-button type="submit" class="pull-right md-otiprix md-raised">Valider</md-button>
+                                <md-button type="submit" class="pull-right md-primary md-raised">Valider</md-button>
                             </div>
 
 
@@ -231,7 +236,7 @@ $(document).ready(function()
                             </div>
 
                             <div class="col-sm-12" style="margin-top : 30px; margin-bottom: 30px;">
-                                <md-button type="submit" class="pull-right md-otiprix md-raised">Valider</md-button>
+                                <md-button type="submit" class="pull-right md-primary md-raised">Valider</md-button>
                             </div>
 
                         </form>
@@ -291,7 +296,7 @@ $(document).ready(function()
                             </div>
 
                             <div class="col-md-12">
-                                <md-button class="md-raised md-otiprix pull-right" type="submit">
+                                <md-button class="md-raised md-primary pull-right" type="submit">
                                     Valider
                                 </md-button>
                             </div>
@@ -336,7 +341,7 @@ $(document).ready(function()
                                 </div>
 
                                 <div class="col-md-12">
-                                    <md-button class="md-raised md-otiprix pull-right" type="submit">
+                                    <md-button class="md-raised md-primary pull-right" type="submit">
                                         Valider
                                     </md-button>
                                 </div>

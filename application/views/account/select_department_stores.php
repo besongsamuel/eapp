@@ -11,7 +11,7 @@
         </div>
         
         <div class="col-sm-12">
-            <md-button class='md-raised md-otiprix pull-right' ng-click="finishCompanyRegistration()">
+            <md-button class='md-raised md-primary pull-right' ng-click="finishCompanyRegistration()">
                 Términer Inscription
             </md-button>
         </div>

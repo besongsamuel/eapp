@@ -12,7 +12,7 @@
     <div class="layout-padding">
         
         <div class="col-sm-12">
-            <md-button data-toggle="collapse" data-target="#create_category" class="md-raised md-otiprix pull-left">
+            <md-button data-toggle="collapse" data-target="#create_category" class="md-raised md-primary pull-left">
                 Create Category   
             </md-button>
         </div>
@@ -34,7 +34,7 @@
                     </div>
 
                     <md-input-container class="col-sm-12">
-                        <md-button type="submit" class="md-raised md-otiprix pull-right">
+                        <md-button type="submit" class="md-raised md-primary pull-right">
                             Create    
                         </md-button>
                     </md-input-container>
@@ -45,7 +45,7 @@
         </div>
         
         <div class="col-sm-12">
-            <md-button data-toggle="collapse" data-target="#create_subcategory" class="md-raised md-otiprix pull-left">
+            <md-button data-toggle="collapse" data-target="#create_subcategory" class="md-raised md-primary pull-left">
                 Create Subcategory   
             </md-button>
         </div>
@@ -69,7 +69,7 @@
                     </md-input-container>
 
                     <md-input-container class="col-sm-12">
-                        <md-button type="submit" class="md-raised md-otiprix pull-right">
+                        <md-button type="submit" class="md-raised md-primary pull-right">
                             Create    
                         </md-button>
                     </md-input-container>
@@ -82,7 +82,7 @@
         
     </div>
     
-    <md-toolbar class="md-otiprix">
+    <md-toolbar class="md-primary">
         <h2 class="md-toolbar-tools">
             <span>Sub Categories</span>
         </h2>
@@ -145,7 +145,7 @@
 
                     <td md-cell>
 
-                        <md-button class="md-raised md-otiprix" ng-click="edit($event, subcategory)">
+                        <md-button class="md-raised md-primary" ng-click="edit($event, subcategory)">
                             Edit
                         </md-button>
                         <md-button class="md-raised md-warn" ng-click="delete($event, subcategory.id)">

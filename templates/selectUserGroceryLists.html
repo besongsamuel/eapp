@@ -1,6 +1,6 @@
 <md-dialog>
     <md-toolbar>
-        <div class="md-toolbar-tools md-otiprix">
+        <div class="md-toolbar-tools md-primary">
             <h2>Veillez sélectioner une ou plusieurs liste d'épicerie</h2>
             <md-button class="md-icon-button" ng-click="cancel()">
                 <md-icon>
@@ -25,7 +25,7 @@
                     <div class="alert alert-danger" ng-show="errorMessage">
                         <strong>Erreur!</strong> {{errorMessage}}
                     </div>
-                <md-button class="md-raised pull-right md-otiprix" ng-hide="creatingNew" ng-click="creatingNew = true; errorMessage = null; successMessage = null;">
+                <md-button class="md-raised pull-right md-primary" ng-hide="creatingNew" ng-click="creatingNew = true; errorMessage = null; successMessage = null;">
                     Créer Nouvelle Liste
                 </md-button>
 
@@ -41,7 +41,7 @@
                         </md-input-container>
     
                         <div class="col-sm-12">
-                            <md-button type="submit" class="md-raised md-otiprix pull-right">
+                            <md-button type="submit" class="md-raised md-primary pull-right">
                                 Créer
                             </md-button>
                             <md-button class="md-raised pull-right" ng-click="creatingNew = false;">

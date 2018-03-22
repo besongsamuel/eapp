@@ -5,7 +5,7 @@
 <md-content class="otiprix-section layout-padding" ng-controller="EditProductController">
     
     <div class="row">
-        <md-button class="md-raised md-otiprix pull-left" ng-click="gotoViewProducts()">
+        <md-button class="md-raised md-primary pull-left" ng-click="gotoViewProducts()">
             Goto Products
         </md-button>
     </div>

@@ -31,7 +31,7 @@
                 </div>
 
                 <div class="col-sm-12">
-                    <md-button type="submit" class="md-raised md-otiprix pull-right">Upload</md-button>
+                    <md-button type="submit" class="md-raised md-primary pull-right">Upload</md-button>
                 </div>    
             </form>
         </fieldset>
@@ -47,7 +47,7 @@
             </div>
 
             <div class="col-sm-12">
-                <md-button type="submit" class="md-raised md-otiprix pull-right">Upload</md-button>
+                <md-button type="submit" class="md-raised md-primary pull-right">Upload</md-button>
             </div>
         </form>
         </fieldset>
@@ -63,7 +63,7 @@
             </div>
 
             <div class="col-sm-12">
-                <md-button type="submit" class="md-raised md-otiprix pull-right">Upload</md-button>
+                <md-button type="submit" class="md-raised md-primary pull-right">Upload</md-button>
             </div>
         </form>
         </fieldset>
@@ -79,7 +79,7 @@
             </div>
 
             <div class="col-sm-12">
-                <md-button type="submit" class="md-raised md-otiprix pull-right">Upload</md-button>
+                <md-button type="submit" class="md-raised md-primary pull-right">Upload</md-button>
             </div>
         </form>
         </fieldset>
@@ -95,7 +95,7 @@
             </div>
 
             <div class="col-sm-12">
-                <md-button type="submit" class="md-raised md-otiprix pull-right">Upload</md-button>
+                <md-button type="submit" class="md-raised md-primary pull-right">Upload</md-button>
             </div>
         </form>
         </fieldset>
@@ -111,7 +111,7 @@
                 </div>
 
                 <div class="col-sm-12">
-                    <md-button type="submit" class="md-raised md-otiprix pull-right">Upload</md-button>
+                    <md-button type="submit" class="md-raised md-primary pull-right">Upload</md-button>
                 </div>
             </form>
 
@@ -128,7 +128,7 @@
                 </div>
 
                 <div class="col-sm-12">
-                    <md-button type="submit" class="md-raised md-otiprix pull-right">Upload</md-button>
+                    <md-button type="submit" class="md-raised md-primary pull-right">Upload</md-button>
                 </div>
             </form>
         </fieldset>
@@ -144,7 +144,7 @@
                 </div>
 
                 <div class="col-sm-12">
-                    <md-button type="submit" class="md-raised md-otiprix pull-right">Upload</md-button>
+                    <md-button type="submit" class="md-raised md-primary pull-right">Upload</md-button>
                 </div>
             </form>
         </fieldset>

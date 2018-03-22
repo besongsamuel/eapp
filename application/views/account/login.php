@@ -46,7 +46,7 @@
                 </div>
                 
                 <div class="col-sm-12">
-                  <md-button class="md-raised md-otiprix pull-right" type="submit">
+                  <md-button class="md-raised md-primary pull-right" type="submit">
                       Se connecter
                   </md-button>
                 </div>

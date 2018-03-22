@@ -14,11 +14,11 @@
                 <md-icon style="color: white;"><i class="material-icons">delete</i></md-icon>
                 Supprimer liste
             </md-button>
-            <md-button class="md-raised md-otiprix pull-left" ng-click="createList($event)">
+            <md-button class="md-raised md-primary pull-left" ng-click="createList($event)">
                 <md-icon style="color: white;"><i class="material-icons">create</i></md-icon>
                 Créer une nouvelle liste
             </md-button>
-            <md-button class="md-raised md-otiprix pull-left" ng-click="renameList($event)" ng-if="selectedList.id != -1">
+            <md-button class="md-raised md-primary pull-left" ng-click="renameList($event)" ng-if="selectedList.id != -1">
                 <md-icon style="color: white;"><i class="material-icons">edit</i></md-icon>
                 Renommer liste
             </md-button>
@@ -57,7 +57,7 @@
         </md-autocomplete>
 
         <div class="col-sm-12 col-md-3">
-            <md-button ng-click="addNewProductToList($event)" class="md-raised md-otiprix pull-right" style="background-color : #1abc9c;" aria-label="Ajouter">
+            <md-button ng-click="addNewProductToList($event)" class="md-raised md-primary pull-right" style="background-color : #1abc9c;" aria-label="Ajouter">
 
                 <md-icon md-svg-src="{{icons.add | trustUrl}}"></md-icon>
                 Ajouter à votre liste
@@ -108,7 +108,7 @@
             
             <div class="">
                 
-                <md-button class="md-raised md-otiprix pull-right" aria-label="Optimizer votre liste" ng-click="optimizeMyList()" ng-if="myCategories.length > 0">
+                <md-button class="md-raised md-primary pull-right" aria-label="Optimizer votre liste" ng-click="optimizeMyList()" ng-if="myCategories.length > 0">
                     
                     <md-tooltip
                         md-direction="top">

@@ -191,7 +191,7 @@
                             Effacer Liste
                         </md-button>
 
-                        <md-button class="md-raised md-otiprix md-rounded-corners" aria-label="Impression" ng-click="printCart()">
+                        <md-button class="md-raised md-primary md-rounded-corners" aria-label="Impression" ng-click="printCart()">
                             <md-tooltip
                                 md-direction="bottom">
                                 Impression
@@ -200,7 +200,7 @@
                             Imprimer
                         </md-button>
 
-                        <md-button class="md-raised md-otiprix md-rounded-corners" ng-click="sendListAsSMS($event)" aria-label="Envoyer à votre téléphone" ng-disabled="!isUserLogged">
+                        <md-button class="md-raised md-primary md-rounded-corners" ng-click="sendListAsSMS($event)" aria-label="Envoyer à votre téléphone" ng-disabled="!isUserLogged">
                             <md-tooltip
                                 md-direction="bottom">
                                 Envoyer par sms
@@ -209,7 +209,7 @@
                           Envoyer par SMS
                         </md-button>
 
-                        <md-button class="md-raised md-otiprix md-rounded-corners" aria-label="Partager" ng-hide="true">
+                        <md-button class="md-raised md-primary md-rounded-corners" aria-label="Partager" ng-hide="true">
                             <md-tooltip
                                 md-direction="bottom">
                                 Partager
@@ -218,7 +218,7 @@
                             Partager
                         </md-button>
 
-                        <md-button class="md-raised md-otiprix md-rounded-corners" aria-label="Envoyer à votre courrier électronique" ng-click="sendListAsEmail($event)"  ng-disabled="!isUserLogged">
+                        <md-button class="md-raised md-primary md-rounded-corners" aria-label="Envoyer à votre courrier électronique" ng-click="sendListAsEmail($event)"  ng-disabled="!isUserLogged">
                             <md-tooltip
                                 md-direction="bottom">
                                 Envoyer à votre courrier électronique

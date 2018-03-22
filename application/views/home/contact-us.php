@@ -112,7 +112,7 @@
                                             </div>
 
                                             <div class="col-sm-12">
-                                                <md-button type="submit" class="md-raised md-otiprix pull-right">
+                                                <md-button type="submit" class="md-raised md-primary pull-right">
                                                     Envoyer
                                                 </md-button>
                                             </div>

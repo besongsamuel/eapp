@@ -47,7 +47,7 @@ class Company extends CI_Controller
     
     public function add_store_product() 
     {
-        if($this->user != null && $this->user->subscription >= COMPANY_SUBSCRIPTION)
+        if($this->user != null && $this->user->subscription >= COMPANY_SUBSCRIPTION && $this->user->company->is_valid)
         {
             $products_count = $this->company_model->get_company_products_count($this->user->company->chain->id);
             
@@ -164,7 +164,7 @@ class Company extends CI_Controller
     
     public function uploadExcelProducts($fileName, $replace) 
     {
-        if($this->user && $this->user->subscription >= COMPANY_SUBSCRIPTION)
+        if($this->user && $this->user->subscription >= COMPANY_SUBSCRIPTION && $this->user->company->is_valid)
         {
             if($replace)
             {
