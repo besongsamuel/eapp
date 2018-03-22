@@ -324,7 +324,7 @@
                 <div class="col-md-3 col-sm-6">
                     <div class="footer-about-us">
                         <a href="<?php echo site_url("home"); ?>"><img src="<?php echo base_url("assets/img/logo.png"); ?>" class="eapp-logo-footer" /></a>
-                        <p>  
+                        <p style="margin-top : 10px;">  
                             En un seul clic, otiPrix réduit le coût de votre panier d’épicerie en identifiant les meilleurs et les vrais rabais dans les magasins proches de vous. Avec OTIPRIX, consulter en un seul et même endroit l’ensemble des produits alimentaires en rabais dans les grandes surfaces, mais aussi dans tous les petits magasins situés à proximité de votre lieu de résidence.
                         </p>
                         <div class="footer-social">
@@ -339,7 +339,7 @@
                 
                 <div class="col-md-3 col-sm-6">
                     <div class="footer-menu">
-                        <h2 class="footer-wid-title">Navigation de l'utilisateur</h2>
+                        <h2 class="md-title">Navigation de l'utilisateur</h2>
                         <ul>
                             <li><a href="<?php echo site_url("account"); ?>">Mon compte</a></li>
                             <li><a href="<?php echo site_url("account/my_grocery_list"); ?>">Ma liste d'epicerie</a></li>
@@ -352,7 +352,7 @@
                 
                 <div class="col-md-3 col-sm-6">
                     <div class="footer-menu">
-                        <h2 class="footer-wid-title">Categories</h2>
+                        <h2 class="md-title">Categories</h2>
                         <ul>
                             <li ng-click="select_category($event, category)" id="{{category.id}}"  ng-repeat="category in categories"><a href>{{category.name}}</a></li>
                         </ul>                        
@@ -361,7 +361,7 @@
                 
                 <div class="col-md-3 col-sm-6">
                     <div class="footer-newsletter">
-                        <h2 class="footer-wid-title">Bulletin</h2>
+                        <h2 class="md-title white-color">Bulletin</h2>
 		    	<p>Inscrivez-vous à notre Infolettre et soyez les premiers informés sur :</p>
 		     	<p> - l’évolution des prix des denrées alimentaires;</p>
 		    	<p> - toutes les opportunités  pour réduire le coût de votre épicerie.</p>
