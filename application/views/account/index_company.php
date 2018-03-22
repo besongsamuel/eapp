@@ -115,7 +115,7 @@ $(document).ready(function()
                             <image-upload image="storeLogo" caption="Ajouter logo" id="store-product-image" on-file-removed="onFileRemoved()" on-file-selected="imageChanged(file)"></image-upload>
 
                             <!-- NEQ -->
-                            <md-input-container class="md-block col-md-12" flex-gt-sm>
+                            <md-input-container ng-disabled="loggedUser.company.is_valid == 1" class="md-block col-md-12" flex-gt-sm>
                                 <label>NEQ</label>
                                 <input required name="neq" ng-model="company.neq" />
                                 <div ng-messages="companyForm.neq.$error">

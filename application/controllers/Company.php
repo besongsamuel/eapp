@@ -448,6 +448,12 @@ class Company extends CI_Controller
         if($this->user && $this->user->subscription >= COMPANY_SUBSCRIPTION)
         {
             $company = json_decode($this->input->post('company'), true);
+            
+            if($this->user->company->is_valid == 1)
+            {
+                unset($company['neq']);
+            }
+            
             $company['id'] = $this->user->company->id;
             
             $this->company_model->create(COMPANY_TABLE, $company);
