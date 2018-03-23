@@ -298,7 +298,13 @@
                             <ul class="nav navbar-nav pull-right"  ng-controller="AccountController">
                                 <li ng-hide="isUserLogged"><a href="<?php echo site_url("account/login"); ?>"><i class="fa fa-user"></i>    S'identifier</a></li>
                                 <li ng-hide="isUserLogged"><a href="<?php echo site_url("account/register"); ?>"><i class="fa fa-user"></i>    Créer un compte</a></li>
-                                <li ng-show="isUserLogged" class=" dropdown"><a href="#" class="dropdown-toggle active" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Bonjour <span ng-show="loggedUser.profile.firstname">{{loggedUser.profile.firstname}},</span> {{loggedUser.profile.lastname}}  <span class="caret"></span></a>
+                                <li ng-show="isUserLogged" class=" dropdown">
+                                    <a href="#" class="dropdown-toggle active" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                        Bonjour 
+                                        <span ng-if="!loggedUser.company"><span ng-show="loggedUser.profile.firstname">{{loggedUser.profile.firstname}},</span> {{loggedUser.profile.lastname}}</span>
+                                        <span ng-if="loggedUser.company">{{loggedUser.company.name}}</span>
+                                        <span class="caret"></span>
+                                    </a>
                                     <ul class="dropdown-menu">
                                         <li><a  href="<?php echo site_url("account"); ?>"><i class="fa fa-user"></i> Mon compte</a></li>
                                         <li><a href="<?php echo site_url("account/my_grocery_list"); ?>"><i class="fa fa-heart"></i> Ma liste d'épicerie</a></li>

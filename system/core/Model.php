@@ -305,28 +305,30 @@ class CI_Model {
             
             // Get the brand from the database
             $store_product->brand = $this->get(PRODUCT_BRAND_TABLE, $store_product->brand_id, $brand_columns);
+            
             // If the brand contains a web image and the product has no image
             if($store_product->brand != null 
                     && strpos($store_product->brand->image, 'http') !== FALSE
-                    && (empty($store_product->product->image) || isset($store_product->product->image)))
+                    && (empty($store_product->product->image) || !isset($store_product->product->image)))
             {
                 $store_product->product->image = $store_product->brand->image;
             }
+            // If the brand contains a local image and the product has no image
             else if($store_product->brand != null 
-                    && file_exists(ASSETS_DIR_PATH."/assets/img/products/".$store_product->brand->image) !== FALSE
-                    && (empty($store_product->product->image) || isset($store_product->product->image)))
+                    && file_exists(ASSETS_DIR_PATH."/assets/img/products/".$store_product->brand->image)
+                    && (empty($store_product->product->image) || !isset($store_product->product->image)))
             {
                 $store_product->product->image = base_url("/assets/img/products/").$store_product->brand->image;
             }
             
-            // The store product has its own specific image. 
-            // Override the product image. 
+            // If the store product has a web image, use it instead
             if(strpos($store_product->image, 'http') !== FALSE)
             {
                 $store_product->product->image = $store_product->image;
             }
             
-            if(file_exists(ASSETS_DIR_PATH.'img/products/'.$store_product->image) !== FALSE)
+            // If the store product has a local image, use it
+            else if(file_exists(ASSETS_DIR_PATH.'img/products/'.$store_product->image))
             {
                 $store_product->product->image = base_url("/assets/img/products/").$store_product->image;
             }

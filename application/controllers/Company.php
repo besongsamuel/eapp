@@ -322,6 +322,14 @@ class Company extends CI_Controller
             $company_profile = json_decode($this->input->post('profile'), true);
             $company = json_decode($this->input->post('company'), true);
             
+            if(sizeof($this->company_model->get_where(COMPANY_TABLE, "*", array("neq" => $company["neq"]))) > 0)
+            {
+                $data["success"] = false;
+                $data["message"] = "Le NEQ fourni est déjà pris..";
+                echo json_encode($data);
+                return;
+            }
+            
             $this->form_validation->set_rules('email', 'Email', 'callback_email_check');
             
             $user_account['password'] = md5($user_account['password']);	

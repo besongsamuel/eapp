@@ -243,7 +243,7 @@ angular.module('eappApp').controller('AccountController', ["$scope", "$http", "$
     $scope.profile = 
     {
         country : 'Canada',
-        state : 'Quebec',
+        state : 'Quebec'
     };
     
     $scope.account = 
@@ -323,7 +323,7 @@ angular.module('eappApp').controller('AccountController', ["$scope", "$http", "$
                     {
                         $scope.message = result.data.message;
                         
-                        document.getElementById("error_message").scrollIntoView();
+                        $("html").animate({ scrollTop: 0 }, "slow");
                     }
                 },
                 function(error)
@@ -374,7 +374,9 @@ angular.module('eappApp').controller('AccountController', ["$scope", "$http", "$
                     {
                         $scope.message = result.data.message;
                         
-                        document.getElementById("error_message").scrollIntoView();
+                        $scope.creatingAccount = false;
+                        
+                        $("html").animate({ scrollTop: 0 }, "slow");
                     }
                 },
                 function(error)

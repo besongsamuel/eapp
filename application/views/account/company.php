@@ -16,7 +16,7 @@
                 
                 <form id="signupForm" name="signupForm" class="form-horizontal" novalidate ng-submit="registerCompany()">
 
-                    <div id="error_message" class="alert alert-danger" ng-show="message">
+                    <div id="error_message" class="alert alert-danger" style="text-align: center;" ng-show="message">
                         <p>{{message}}</p>
                         <span></span>
                     </div>
