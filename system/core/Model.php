@@ -320,19 +320,7 @@ class CI_Model {
             {
                 $store_product->product->image = base_url("/assets/img/products/").$store_product->brand->image;
             }
-            
-            // If the product has a web image, use it instead
-            if(strpos($store_product->product->image, 'http') !== FALSE)
-            {
-                $store_product->product->image = $store_product->product->image;
-            }
-            
-            // If the product has a local image, use it
-            else if(file_exists(ASSETS_DIR_PATH.'img/products/'.$store_product->product->image))
-            {
-                $store_product->product->image = base_url("/assets/img/products/").$store_product->product->image;
-            }
-            
+                        
             // If the store product has a web image, use it instead
             if(strpos($store_product->image, 'http') !== FALSE)
             {
@@ -340,7 +328,9 @@ class CI_Model {
             }
             
             // If the store product has a local image, use it
-            else if(file_exists(ASSETS_DIR_PATH.'img/products/'.$store_product->image))
+            else if(file_exists(ASSETS_DIR_PATH.'img/products/'.$store_product->image) 
+                    && !empty($store_product->image) 
+                    && isset($store_product->image))
             {
                 $store_product->product->image = base_url("/assets/img/products/").$store_product->image;
             }
@@ -528,10 +518,10 @@ class CI_Model {
                         
         $store_image_path = ASSETS_DIR_PATH."img/products/".$value->image;
         
-        if(strpos($value->image, 'http') === false)
+        if(strpos($value->image, 'http') === FALSE)
         {
             // File doesn't exist or image value is empty, set the empty image value
-            if((!file_exists($store_image_path) || empty($value->image)))
+            if(!file_exists($store_image_path) || empty($value->image))
             {
                 $value->image = "no_image_available.png";
             }
