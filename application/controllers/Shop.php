@@ -168,7 +168,7 @@ class Shop extends CI_Controller {
     
     private function get_settings_item($property, $category_id, $store_id, $my_location = null, $distance = 100) 
     {
-        return $this->shop_model->get_distinct_latest_store_product_property($property, null, $store_id, $category_id, null, true, $my_location, $distance);
+        return $this->shop_model->get_distinct_latest_store_product_property($property, null, $store_id, $category_id, null, true, $this->shop_model->get_close_stores($my_location, $distance));
     }
     
     

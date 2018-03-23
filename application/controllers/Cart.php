@@ -328,7 +328,7 @@ class Cart extends CI_Controller {
             
         }
         
-        $unique_ids =  $this->shop_model->get_store_product_property(PRODUCT_TABLE.'.id', $product_list, $resultsFilter, $my_location, $distance, false);
+        $unique_ids =  $this->shop_model->get_store_product_property(PRODUCT_TABLE.'.id', $product_list, $resultsFilter, $this->shop_model->get_close_stores($my_location, $distance), false);
         
         foreach ($cart_items as $cart_item) 
         {
@@ -389,7 +389,7 @@ class Cart extends CI_Controller {
     private function get_settings_item($property, $product_ids, $resulstFilter, $my_location = null, $distance = 100) 
     {
         // Get the cart Items
-        return $this->shop_model->get_store_product_property($property, $product_ids, $resulstFilter, $my_location, $distance, true);
+        return $this->shop_model->get_store_product_property($property, $product_ids, $resulstFilter, $$this->cart_model->get_close_stores($my_location, $distance), true);
     }
     
 }
