@@ -321,6 +321,18 @@ class CI_Model {
                 $store_product->product->image = base_url("/assets/img/products/").$store_product->brand->image;
             }
             
+            // If the product has a web image, use it instead
+            if(strpos($store_product->product->image, 'http') !== FALSE)
+            {
+                $store_product->product->image = $store_product->product->image;
+            }
+            
+            // If the product has a local image, use it
+            else if(file_exists(ASSETS_DIR_PATH.'img/products/'.$store_product->product->image))
+            {
+                $store_product->product->image = base_url("/assets/img/products/").$store_product->product->image;
+            }
+            
             // If the store product has a web image, use it instead
             if(strpos($store_product->image, 'http') !== FALSE)
             {
