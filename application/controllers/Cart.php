@@ -388,7 +388,6 @@ class Cart extends CI_Controller {
        
     private function get_settings_item($property, $product_ids, $resulstFilter, $my_location = null, $distance = 100) 
     {
-        
         // Get the cart Items
         $close_stores = $this->cart_model->get_close_stores($my_location, $distance);
         
