@@ -1,8 +1,5 @@
 <div style="margin-top: 30px; margin-bottom: 40px;">
 
-
-    
-
     <h4 style="margin-bottom : 30px; color :rgb(29, 29, 29);">Configuration</h4>
 
     <div flex="100" layout layout-align="center center">
@@ -10,7 +7,7 @@
     </div>
     <md-slider-container layout>
         
-        <md-slider flex md-discrete class="md-warn md-hue-1" ng-model="distance" step="1" min="1" max="100" aria-label="Distance">
+        <md-slider flex md-discrete class="md-warn" ng-model="distance" step="1" min="1" max="100" aria-label="Distance">
         </md-slider>
         <md-input-container>
             <input flex type="number" ng-model="distance" aria-label="Distance">
@@ -19,24 +16,22 @@
 
     <div class="row" style="margin-bottom : 20px;">
         <div class="col-sm-12">
-            <md-button ng-click="$ctrl.distanceChanged()" class="md-warn md-hue-1 md-raised" style="min-width : auto; min-height : auto; margin : 0px; width : 100%;">Valider</md-button>
+            <md-button ng-click="$ctrl.distanceChanged()" class="md-warn md-raised" style="min-width : auto; min-height : auto; margin : 0px; width : 100%;">Valider</md-button>
         </div>
     </div>
     
-
-
     <div style="margin-bottom: 30px; font-size : 13px;">
         <md-radio-group ng-model="viewConfig.viewAll" ng-change="$ctrl.refresh();">
-            <md-radio-button ng-value="trueVal" class="md-primary">{{showAllResultsCaption}}</md-radio-button>
-            <md-radio-button ng-value="falseVal" class="md-primary">{{showOptimizedResultsCaption}}</md-radio-button>
+            <md-radio-button ng-value="trueVal" class="md-warn">{{showAllResultsCaption}}</md-radio-button>
+            <md-radio-button ng-value="falseVal" class="md-warn">{{showOptimizedResultsCaption}}</md-radio-button>
         </md-radio-group>
 
         <div ng-show="isCart">
             <md-divider></md-divider>
             <div style="margin-top : 10px;">
                 <md-radio-group  ng-model="viewConfig.cartView" ng-change="$ctrl.refresh();">
-                    <md-radio-button ng-value="trueVal" class="md-primary">Vue du panier</md-radio-button>
-                    <md-radio-button ng-value="falseVal" class="md-primary">Vue par magasin</md-radio-button>
+                    <md-radio-button ng-value="trueVal" class="md-warn">Vue du panier</md-radio-button>
+                    <md-radio-button ng-value="falseVal" class="md-warn">Vue par magasin</md-radio-button>
                 </md-radio-group>
             </div>
 
@@ -44,8 +39,8 @@
                 <md-divider></md-divider>
                 <div style="margin-top : 10px;">
                     <md-radio-group  ng-model="viewConfig.searchMyList" ng-change="$ctrl.refresh();">
-                        <md-radio-button ng-value="trueVal" class="md-primary">Rechercher dans tout les magasins</md-radio-button>
-                        <md-radio-button ng-value="falseVal" class="md-primary">Rechercher dans votre liste de magasins</md-radio-button>
+                        <md-radio-button ng-value="trueVal" class="md-warn">Rechercher dans tout les magasins</md-radio-button>
+                        <md-radio-button ng-value="falseVal" class="md-warn">Rechercher dans votre liste de magasins</md-radio-button>
                     </md-radio-group>
                 </div>
             </div>
