@@ -16,7 +16,7 @@
 
 <div id="admin-container" class="otiprix-section" ng-controller="ProductsTableController" ng-cloak>
     
-    <md-toolbar style="background-color: #1abc9c; margin-bottom : 10px;">
+    <md-toolbar class="md-primary" style="margin-bottom : 10px;">
         <div>
             <h2 class="md-toolbar-tools">Products</h2>
         </div>

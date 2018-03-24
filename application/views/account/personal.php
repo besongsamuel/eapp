@@ -8,7 +8,7 @@
     <div id="signupbox">
         <div class="panel panel-info">
 
-            <md-toolbar style="background-color: #1abc9c;">
+            <md-toolbar class="md-primary">
                 <div>
                     <h2 class="md-toolbar-tools">INSCRIPTION</h2>
                 </div>
@@ -23,12 +23,12 @@
                     </div>
                     <fieldset style="margin: 10px;">
 
-                        <legend>FORMULAIRE D'INSCRIPTION</legend>
+                        <legend class="md-title">FORMULAIRE D'INSCRIPTION</legend>
 
                         <!-- -->
                         <md-input-container class="md-block col-md-6" flex-gt-sm>
                             <label>Prenom</label>
-                            <md-icon style="color: #1abc9c;"><i class="material-icons">person</i></md-icon>
+                            <md-icon class="md-primary"><i class="material-icons">person</i></md-icon>
                             <input name="firstname" ng-model="user.firstname" />
                         </md-input-container>
 
@@ -97,11 +97,11 @@
 
                     <fieldset style="margin: 10px;">
 
-                        <legend>IDENTIFICATION</legend>
+                        <legend class="md-title">IDENTIFICATION</legend>
 
                         <md-input-container class="md-block col-md-12" flex-gt-sm>
                             <label>Email</label>
-                            <md-icon style="color: #1abc9c;"><i class="material-icons">email</i></md-icon>
+                            <md-icon class="md-primary"><i class="material-icons">email</i></md-icon>
                             <input style="border-left: none; border-top: none; border-right: none;" type="email" required name="email" ng-model="user.email" />
                             <div ng-messages="signupForm.email.$error">
                                 <div ng-message="email">Entrez un email valide.</div>
@@ -111,7 +111,7 @@
 
                         <md-input-container class="md-block col-md-6" flex-gt-sm>
                             <label>Mot de passe</label>
-                            <md-icon style="color: #1abc9c;"><i class="material-icons">lock</i></md-icon>
+                            <md-icon class="md-primary"><i class="material-icons">lock</i></md-icon>
                             <input style="border-left : none; border-right : none;border-top : none;" type="password" required name="password" ng-model="user.password" equals="{{user.confirm_password}}" ng-pattern="/^(?=.*?[0-9])(?=.*?[a-z])(?=.*?[A-Z]).{8,}/" />
                             <div ng-messages="signupForm.password.$error">
                                 <div ng-message="required">Un mot de passe est requis.</div>

@@ -29,7 +29,7 @@
           <div id="signupbox" style=" margin-top:50px" class="container">
             <div class="panel panel-info">
 
-                <md-toolbar style="background-color: #1abc9c;">
+                <md-toolbar class="md-primary">
                     <div>
                         <h2 class="md-toolbar-tools">Sélectionnez une categorie pour voir son contenu</h2>
                     </div>

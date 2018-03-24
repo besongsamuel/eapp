@@ -91,9 +91,10 @@ eappApp.config(function($mdThemingProvider)
      '200', '300', '400', 'A100'],
     'contrastLightColors': undefined    // could also specify this if default was 'dark'
   });
-
+  
   $mdThemingProvider.theme('default')
     .primaryPalette('otiprixPalette');
+    
 });
 
 eappApp.filter('titlecase', function() {

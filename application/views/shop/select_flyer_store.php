@@ -34,7 +34,7 @@
            
 	    <div class="panel panel-info">
 
-                <md-toolbar style="background-color: #1abc9c;">
+                <md-toolbar class="md-primary">
                     <div>
                         <h2 class="md-toolbar-tools">Sélectionnez le magasin pour afficher le contenu du circulaire</h2>
                     </div>

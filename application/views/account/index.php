@@ -38,7 +38,7 @@ $(document).ready(function()
                 <md-list ng-controller="AccountOptimizationController">
                     <md-list-item class="md-3-line" ng-repeat="item in optimizations">
                       <div class="md-list-item-text"  style="margin-bottom: 10px;">
-                        <h3 style="color : #1abc9c;"><b>{{item.label}}</b></h3>
+                        <h3 class="md-otiprix-text"><b>{{item.label}}</b></h3>
                         <h4>Économies moyen : <b style="color : red;"><span ng-show="item.value != '-'">$ CAD</span> {{item.value}}</b></h4>
                         <p>Nombre moyen de produits par panier : <b>{{item.count}}</b></p>
                       </div>
@@ -63,19 +63,19 @@ $(document).ready(function()
 
                             <md-input-container class="md-block col-md-12 col-sm-12" flex-gt-sm>
                                 <label>Email</label>
-                                <md-icon style="color: #1abc9c;"><i class="material-icons">email</i></md-icon>
+                                <md-icon class="md-primary"><i class="material-icons">email</i></md-icon>
                                 <input disabled="true" style="border-left: none; border-top: none; border-right: none;" type="email" name="email" ng-model="loggedUserClone.email" />
                             </md-input-container>
                                 <!-- -->
                             <md-input-container class="md-block col-md-6 col-sm-12" flex-gt-sm>
                                 <label>Prenom</label>
-                                <md-icon style="color: #1abc9c;"><i class="material-icons">person</i></md-icon>
+                                <md-icon class="md-primary"><i class="material-icons">person</i></md-icon>
                                 <input name="profile[firstname]" ng-model="loggedUserClone.profile.firstname" />
                             </md-input-container>
                                 <!-- -->
                             <md-input-container class="md-block col-md-6 col-sm-12" flex-gt-sm>
                                 <label>Nom</label>
-                                <md-icon style="color: #1abc9c;"><i class="material-icons">person</i></md-icon>
+                                <md-icon class="md-primary"><i class="material-icons">person</i></md-icon>
                                 <input required name="profile[lastname]" ng-model="loggedUserClone.profile.lastname" />
                                 <div ng-messages="userInfoForm.lastname.$error">
                                     <div ng-message="required">Vous devez entrer au moins un nom</div>
@@ -121,7 +121,7 @@ $(document).ready(function()
                             <!-- -->
                             <md-input-container class="md-block col-md-6 col-sm-12" flex-gt-sm>
                                 <label>City</label>
-                                <md-icon style="color: #1abc9c;"><i class="material-icons">place</i></md-icon>
+                                <md-icon class="md-primary"><i class="material-icons">place</i></md-icon>
                                 <input required name="profile[city]" ng-model="loggedUserClone.profile.city" />
                                 <div ng-messages="userInfoForm.city.$error">
                                     <div ng-message="required">Vous devex entrer une ville</div>
@@ -130,7 +130,7 @@ $(document).ready(function()
 
                             <md-input-container class="md-block col-md-6 col-sm-12" flex-gt-sm>
                                 <label>Code Postal</label>
-                                <md-icon style="color: #1abc9c;"><i class="material-icons">place</i></md-icon>
+                                <md-icon class="md-primary"><i class="material-icons">place</i></md-icon>
                                 <input required name="profile[postcode]" ng-model="loggedUserClone.profile.postcode" />
                                 <div ng-messages="userInfoForm.postcode.$error">
                                     <div ng-message="required">Veillez entrer votre code postale</div>
@@ -163,13 +163,13 @@ $(document).ready(function()
 
                             <md-input-container class="md-block col-md-12" flex-gt-sm>
                                 <label>Email</label>
-                                <md-icon style="color: #1abc9c;"><i class="material-icons">email</i></md-icon>
+                                <md-icon class="md-primary"><i class="material-icons">email</i></md-icon>
                                 <input disabled="true" style="border-left: none; border-top: none; border-right: none;" type="email" name="email" ng-model="loggedUser.email" />
                             </md-input-container>
 
                             <md-input-container class="md-block col-md-4 col-sm-12" flex-gt-sm>
                                 <label>Ancien mot de passe</label>
-                                <md-icon style="color: #1abc9c;"><i class="material-icons">lock</i></md-icon>
+                                <md-icon class="md-primary"><i class="material-icons">lock</i></md-icon>
                                 <input style="border-left : none; border-right : none;border-top : none;" type="password" required name="old_password" ng-model="old_password" />
                                 <div ng-messages="userSecurityForm.old_password.$error">
                                     <div ng-message="required">Vous devez confirmer votre ancien mot de passe.</div>
@@ -178,7 +178,7 @@ $(document).ready(function()
 
                             <md-input-container class="md-block col-md-4 col-sm-12" flex-gt-sm>
                                 <label>Mot de passe</label>
-                                <md-icon style="color: #1abc9c;"><i class="material-icons">lock</i></md-icon>
+                                <md-icon class="md-primary"><i class="material-icons">lock</i></md-icon>
                                 <input style="border-left : none; border-right : none;border-top : none;" type="password" required name="password" ng-model="password" equals="{{confirm_password}}" ng-pattern="/^(?=.*?[0-9])(?=.*?[a-z])(?=.*?[A-Z]).{8,}/" />
                                 <div ng-messages="userSecurityForm.password.$error">
                                     <div ng-message="required">Un mot de passe est requis.</div>
@@ -189,7 +189,7 @@ $(document).ready(function()
 
                             <md-input-container class="md-block col-md-4 col-sm-12" flex-gt-sm>
                                 <label>Confirmer mot de passe</label>
-                                <md-icon style="color: #1abc9c;"><i class="material-icons">lock</i></md-icon>
+                                <md-icon class="md-primary"><i class="material-icons">lock</i></md-icon>
                                 <input style="border-left : none; border-right : none;border-top : none;" type="password" required name="confirm_password" ng-model="confirm_password" equals="{{password}}" />
                                 <div ng-messages="userSecurityForm.confirm_password.$error">
                                     <div ng-message="required">Vous devez confirmer votre mot de passe.</div>
@@ -284,7 +284,7 @@ $(document).ready(function()
                             <p class="message">Veuillez entrer ci-dessous un numéro de téléphone où nous vous enverrons le code de vérification.</p>
                             
                             <md-input-container class="col-sm-12 col-md-6 col-md-offset-3">
-                                <md-icon style="color: #1abc9c;"><i class="material-icons">phone</i></md-icon>
+                                <md-icon class="md-primary"><i class="material-icons">phone</i></md-icon>
                                 <input class="form-control" style="border-radius: 2px;" type="tel" id="phone">
                             </md-input-container>
                             

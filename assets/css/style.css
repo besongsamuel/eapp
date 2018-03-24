@@ -33,7 +33,10 @@ html
     background-color: white;
 }
 
-body { font-family: 'Titillium Web', sans-serif; }
+body 
+{ 
+    font-family: 'Roboto', 'Helvetica Neue', sans-serif; 
+}
 
 .md-dialog-container
 {
@@ -44,9 +47,9 @@ body { font-family: 'Titillium Web', sans-serif; }
 
 .eapp-container
 {
-	padding-left : 20px;
-	padding-right : 20px;
-	margin : 15px;
+    padding-left : 20px;
+    padding-right : 20px;
+    margin : 15px;
 }
 
 .check
@@ -55,10 +58,13 @@ body { font-family: 'Titillium Web', sans-serif; }
     color:#996;
 }
 
-.mainmenu-area {background: none repeat scroll 0 0 #1abc9c;
-font-family: "Roboto Condensed",sans-serif;
-width: 100%;
-z-index: 999;}
+.mainmenu-area 
+{
+    background: none repeat scroll 0 0 #1abc9c;
+    font-family: "Roboto Condensed",sans-serif;
+    width: 100%;
+    z-index: 999;
+}
 
 .shopping-item {
     border: 1px solid #ddd;

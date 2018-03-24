@@ -13,7 +13,7 @@ and open the template in the editor.
        
         <div class="panel panel-info">
             
-            <md-toolbar style="background-color: #1abc9c;">
+            <md-toolbar class="md-primary">
                 <div>
                     <h2 class="md-toolbar-tools">Compte créé</h2>
                 </div>

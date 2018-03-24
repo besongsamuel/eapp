@@ -37,7 +37,7 @@ and open the template in the editor.
 
                     <md-input-container class="md-block col-md-12" flex-gt-sm>
                         <label>Email</label>
-                        <md-icon style="color: #1abc9c;"><i class="material-icons">email</i></md-icon>
+                        <md-icon class="md-primary"><i class="material-icons">email</i></md-icon>
                         <input required name="email" ng-model="email" />
                         <div ng-messages="passwordForgottenForm.email.$error">
                             <div ng-message="required">Veillez entrer votre addresse email.</div>

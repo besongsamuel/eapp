@@ -34,7 +34,7 @@ and open the template in the editor.
 
                     <md-input-container class="md-block col-sm-12" flex-gt-sm>
                         <label>Mot de passe</label>
-                        <md-icon style="color: #1abc9c;"><i class="material-icons">lock</i></md-icon>
+                        <md-icon class="md-primary"><i class="material-icons">lock</i></md-icon>
                         <input style="border-left : none; border-right : none;border-top : none;" type="password" required name="password" ng-model="password" equals="{{confirm_password}}" ng-pattern="/^(?=.*?[0-9])(?=.*?[a-z])(?=.*?[A-Z]).{8,}/" />
                         <div ng-messages="resetPasswordForm.password.$error">
                             <div ng-message="required">Un mot de passe est requis.</div>
@@ -45,7 +45,7 @@ and open the template in the editor.
 
                     <md-input-container class="md-block col-sm-12" flex-gt-sm>
                         <label>Confirmer mot de passe</label>
-                        <md-icon style="color: #1abc9c;"><i class="material-icons">lock</i></md-icon>
+                        <md-icon class="md-primary"><i class="material-icons">lock</i></md-icon>
                         <input style="border-left : none; border-right : none;border-top : none;" type="password" required name="confirm_password" ng-model="confirm_password" equals="{{password}}" />
                         <div ng-messages="resetPasswordForm.confirm_password.$error">
                             <div ng-message="required">Vous devez confirmer votre mot de passe.</div>
