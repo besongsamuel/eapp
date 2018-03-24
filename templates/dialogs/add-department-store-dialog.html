@@ -15,6 +15,7 @@
                         <div ng-message="required">Vous devez entrer un nom pour le détailant</div>
                     </div>
                 </md-input-container>
+
         
                 <!-- Addresse -->
                 <md-input-container class="md-block col-md-12" flex-gt-sm>
@@ -97,12 +98,12 @@
     <md-dialog-actions>
 
         <div class="col-md-12 col-sm-12">
-            <md-input-container class='pull-right' form="departmentStoreForm" ng-click="addStoreBranch(false)">
+            <md-input-container class='pull-right' ng-click="addStoreBranch(false)">
                 <md-button class='md-raised md-primary'>
                     Ajouter
                 </md-button>
             </md-input-container>
-            <md-input-container class='pull-right' form="departmentStoreForm" ng-click="addStoreBranch(true)">
+            <md-input-container class='pull-right' ng-click="addStoreBranch(true)">
                 <md-button class='md-raised md-primary'>
                     Ajouter et continuer
                 </md-button>

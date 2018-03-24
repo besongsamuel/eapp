@@ -1,7 +1,7 @@
 
 angular.module('eappApp').component('companyProducts', 
 {
-    templateUrl : "templates/company-products-view.html",
+    templateUrl : "templates/components/company-products-view.html",
     controller : Controller,
     binding : 
     {

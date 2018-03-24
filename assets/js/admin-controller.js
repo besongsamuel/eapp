@@ -677,7 +677,7 @@ angular.module("eappApp").controller('AdminController', ["$scope", "Form", "$htt
 angular.module('eappApp').directive('fileUpload', function () 
 {
     return {
-        templateUrl:'uploadFileView.html',
+        templateUrl:'emplates/components/tuploadFileView.html',
         link: function (scope, element) {
 
             scope.fileName = 'Choose a file...';

@@ -1,0 +1,64 @@
+<div style="margin-top: 30px; margin-bottom: 40px;">
+
+    <h4 style="margin-bottom : 30px; color :rgb(29, 29, 29);">Configuration</h4>
+
+    <div flex="100" layout layout-align="center center">
+        <span class="md-body-1">Résultats dans un rayon de {{distance}} km</span>
+    </div>
+    <md-slider-container layout>
+        
+        <md-slider flex md-discrete class="md-warn" ng-model="distance" step="1" min="1" max="100" aria-label="Distance">
+        </md-slider>
+        <md-input-container>
+            <input flex type="number" ng-model="distance" aria-label="Distance">
+        </md-input-container>
+    </md-slider-container>
+
+    <div class="row" style="margin-bottom : 20px;">
+        <div class="col-sm-12">
+            <md-button ng-click="$ctrl.distanceChanged()" class="md-warn md-raised" style="min-width : auto; min-height : auto; margin : 0px; width : 100%;">Valider</md-button>
+        </div>
+    </div>
+    
+    <div style="margin-bottom: 30px; font-size : 13px;">
+        <md-radio-group ng-model="viewConfig.viewAll" ng-change="$ctrl.refresh();">
+            <md-radio-button ng-value="trueVal" class="md-warn">{{showAllResultsCaption}}</md-radio-button>
+            <md-radio-button ng-value="falseVal" class="md-warn">{{showOptimizedResultsCaption}}</md-radio-button>
+        </md-radio-group>
+
+        <div ng-show="isCart">
+            <md-divider></md-divider>
+            <div style="margin-top : 10px;">
+                <md-radio-group  ng-model="viewConfig.cartView" ng-change="$ctrl.refresh();">
+                    <md-radio-button ng-value="trueVal" class="md-warn">Vue du panier</md-radio-button>
+                    <md-radio-button ng-value="falseVal" class="md-warn">Vue par magasin</md-radio-button>
+                </md-radio-group>
+            </div>
+
+            <div ng-show="isUserLogged">
+                <md-divider></md-divider>
+                <div style="margin-top : 10px;">
+                    <md-radio-group  ng-model="viewConfig.searchMyList" ng-change="$ctrl.refresh();">
+                        <md-radio-button ng-value="trueVal" class="md-warn">Rechercher dans tout les magasins</md-radio-button>
+                        <md-radio-button ng-value="falseVal" class="md-warn">Rechercher dans votre liste de magasins</md-radio-button>
+                    </md-radio-group>
+                </div>
+            </div>
+            
+        </div>
+
+    </div>
+
+    <h4 style="margin-bottom : 30px; color :rgb(29, 29, 29);">Filtré par</h4>
+
+    <div class="selected-filters" style="margin-bottom: 50px; font-size : 13px;">
+        <div ng-repeat="group in selectedItems">
+            <p><b>{{group.name | titlecase}}</b></p>
+            <md-divider></md-divider>
+            <p style="color :rgb(134, 0, 0)" ng-repeat="item in group.items">&nbsp;&nbsp;&nbsp;&nbsp;<span><a href ng-click="removeFromFilter(item)">×</a></span>&nbsp;&nbsp;{{getDisplayName(item.name) | titlecase}}</p>
+        </div>
+        
+    </div>
+
+    <settings-item ng-repeat="setting in settings" settings-object="setting.values" ready="$ctrl.ready" name="{{setting.setting.caption}}" on-change="$ctrl.change(item)" ></settings-item>
+</div>

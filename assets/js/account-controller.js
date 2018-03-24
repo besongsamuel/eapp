@@ -8,7 +8,7 @@
 // Component to Select from user grocery list
 angular.module('eappApp').component("addDepartmentStore", 
 {
-    templateUrl : "templates/addDepartmentStore.html",
+    templateUrl : "templates/components/addDepartmentStore.html",
     controller : function($scope, eapp, $mdDialog, $rootScope)
     {
         var ctrl = this;
@@ -106,7 +106,7 @@ angular.module('eappApp').component("addDepartmentStore",
                 controllerAs: 'ctrl',
                 focusOnOpen: false,
                 targetEvent: event,
-                templateUrl: 'templates/dialogs/add-department-store-dialog.html',
+                templateUrl: 'templates/dialogs/add-department-store-dialog.html'
             })
             .then(function(response)
             {

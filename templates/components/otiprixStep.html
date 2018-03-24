@@ -1,0 +1,63 @@
+<style>
+
+    @media (min-width : 1000px)
+    {
+        .right-border
+        {
+            border-right: 1px solid lightgray;
+        }
+    }
+
+    @media (min-width : 200px) and (max-width : 800px)
+    {
+        .right-border
+        {
+            border-right: none;
+        }
+    }
+
+    .caption
+    {
+        text-align : center; 
+        margin-top : 10px; 
+        margin-bottom : 10px;
+    }
+
+    .heading
+    {
+        text-align: center;
+        height: 80px;
+    }
+
+    .heading h2
+    {
+        font-weight: 500;
+        font-size: 25px;
+    }
+
+    .promo-image
+    {
+        width : 200px !important; 
+        height : 200px !important; 
+        border-color : rgb(160, 160, 160) !important; 
+        border-width : 3px !important;
+        padding: 0px !important;
+    }
+    
+</style>
+
+<div class="layout-padding" ng-class="{'right-border' : displayBorder }">
+    <div class="row heading">
+        <h2>{{$ctrl.index}}</h2>
+    </div>
+
+    <div class="row">
+        <div class="image-container">
+            <img class="promo-image" alt="poster_1_up" ng-src="{{$ctrl.image}}">
+        </div>
+    </div>
+
+    <div class="row">
+        <p class="caption">{{caption}}</p>
+    </div>
+</div>

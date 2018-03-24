@@ -6,7 +6,7 @@
 
 angular.module('eappApp').component('otiprixStep', {
     
-    templateUrl: 'otiprixStep.html',
+    templateUrl: 'templates/components/otiprixStep.html',
     controller : function($scope)
     {
         var ctrl = this;

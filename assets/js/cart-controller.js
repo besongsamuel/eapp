@@ -6,7 +6,7 @@
 
 angular.module('eappApp').component('cartListItem', {
     
-    templateUrl: 'cartListItem.html',
+    templateUrl: 'templates/components/cartListItem.html',
     controller : CartListItemController,
     bindings: 
     {

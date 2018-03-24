@@ -78,7 +78,7 @@ angular.module('eappApp').controller('SelectAccountStoreController', ["$scope", 
             
         $mdDialog.show({
             controller: DialogController,
-            templateUrl: '/templates/selectUserFavoriteStore.html',
+            templateUrl: 'templates/components/selectUserFavoriteStore.html',
             parent: angular.element(document.body),
             targetEvent: ev,
             locals : 

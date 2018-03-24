@@ -129,7 +129,7 @@ eappApp.directive("currentAddress", function()
 
 eappApp.component("quantityInput", 
 {
-    templateUrl : "quantityInput.html",
+    templateUrl : "templates/components/quantityInput.html",
     controller : QuantityInputController,
     bindings : 
     {
@@ -190,7 +190,7 @@ function QuantityInputController($scope)
 
 eappApp.component("resultFilter", 
 {
-    templateUrl : "resultFilter.html",
+    templateUrl : "templates/components/resultFilter.html",
     controller : ResultFilterController,
     bindings : 
     {
@@ -325,7 +325,7 @@ function ResultFilterController($scope)
 
 eappApp.component("settingsItem", 
 {
-    templateUrl : "settingsItem.html",
+    templateUrl : "templates/components/settingsItem.html",
     controller : SettingsItemController,
     bindings : 
     {
@@ -428,7 +428,7 @@ eappApp.component("addToList",
             
             $mdDialog.show({
                 controller: DialogController,
-                templateUrl: '/templates/selectUserGroceryLists.html',
+                templateUrl: 'templates/components/selectUserGroceryLists.html',
                 parent: angular.element(document.body),
                 targetEvent: ev,
                 locals : 
@@ -547,7 +547,7 @@ eappApp.component("addToList",
 
 eappApp.component("imageUpload", 
 {
-    templateUrl : "templates/imageUpload.html",
+    templateUrl : "templates/components/imageUpload.html",
     controller : function($scope)
     {
         var ctrl = this;
