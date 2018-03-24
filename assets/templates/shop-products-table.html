@@ -1,6 +1,8 @@
 
 <md-table-container>
 
+    <md-progress-linear md-mode="indeterminate" ng-disabled="!isLoading"></md-progress-linear>
+    
     <div class="col-sm-12" style="margin : 5px;">
         
         <div class="pull-left" ng-show="maxPageItem > 0">
@@ -25,7 +27,7 @@
       </div>
     </md-toolbar>
     
-    <md-progress-linear md-mode="indeterminate" ng-disabled="!isLoading"></md-progress-linear>
+    
     
     <p class="md-otiprix-text" style="text-align: center;" ng-show="products.length === 0">Aucun résultat trouvé</p>
     
