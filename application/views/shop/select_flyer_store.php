@@ -5,24 +5,25 @@
 <!-- Animate CSS -->
 <link rel="stylesheet" href="<?php echo base_url("assets/css/shop.css")?>">
 
-<div class="product-big-title-area">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="product-bit-title text-center">
-                    <h2>Circulaires</h2>
+
+
+<div id="admin-container" class="otiprix-section" ng-controller="SelectStoreController" ng-cloak>    
+        
+    <div class="product-big-title-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="product-bit-title text-center">
+                        <h2>Circulaires</h2>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</div> <!-- End Page title area -->
-
-<div id="admin-container" class="container" ng-controller="SelectStoreController" ng-cloak>    
-        
+    </div> <!-- End Page title area -->
     
-        <div layout="row" layout-sm="column" style="margin-top: 10px;" layout-align="space-around">
-            <md-progress-circular ng-disabled="!loading"  class="md-hue-2" md-diameter="30px" md-mode="indeterminate" ng-show="loading"></md-progress-circular>
-        </div>
+    <div layout="row" layout-sm="column" style="margin-top: 10px;" layout-align="space-around">
+        <md-progress-circular ng-disabled="!loading"  class="md-hue-2" md-diameter="30px" md-mode="indeterminate" ng-show="loading"></md-progress-circular>
+    </div>
     
         <div id="signupbox" style=" margin-top:50px" class="container">
             

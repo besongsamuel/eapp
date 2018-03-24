@@ -4,9 +4,12 @@
 <div id="admin-container" class="container mainbox" ng-controller="AccountController"> 
     
     <div>
+        
         <h2 class="section-title md-otiprix-text">Sélectionnez le type de compte</h2>
-        <div class="row" style="margin-bottom: 150px; margin-top: 50px;">
-            <div class="col-sm-6 col-md-4 col-md-offset-2">
+        
+        <div layout="row" layout-xs="column" style="margin-bottom: 150px; margin-top: 50px;">
+            
+            <div  layout="column" layout-align="center center" class="col-sm-6 col-md-6">
 
                 <a href="<?php echo site_url("account/register/personal"); ?>" class="center-div">
                     <div class="choice-block layout-padding">
@@ -18,9 +21,9 @@
 
             </div>
 
-            <div class="col-sm-6 col-md-4">
+            <div  layout="column" layout-align="center center" class="col-sm-6 col-md-6">
 
-                <a href="<?php echo site_url("account/register/company"); ?>" class="center-div">
+                <a href="<?php echo site_url("account/register/company"); ?>">
                     <div class="choice-block layout-padding">
                         <img src="<?php echo base_url("assets/img/register/white-shop-512.png");  ?>">
                     </div>
