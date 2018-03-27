@@ -14,6 +14,8 @@ angular.module('eappApp').controller('ShopController', ["$scope", "$q", "$http",
     
     $scope.isLoading = false;
     
+    $scope.isInitialized = false;
+    
     $scope.root = $rootScope;
     
     /**
@@ -27,10 +29,11 @@ angular.module('eappApp').controller('ShopController', ["$scope", "$q", "$http",
     
     angular.element(document).ready(function()
     {
-        $scope.ready = true;
-
-        $scope.Init();
-        
+        if(!$scope.ready)
+        {
+            $scope.Init();
+            $scope.ready = true;
+        }
     });
     var bookmark;
     
@@ -66,7 +69,9 @@ angular.module('eappApp').controller('ShopController', ["$scope", "$q", "$http",
             }
             
             $rootScope.isSearch = true;
-            $scope.getProducts();
+            
+            $scope.isInitialized = true;
+            
         }
         
         if(window.sessionStorage.getItem("gridView"))
@@ -88,7 +93,7 @@ angular.module('eappApp').controller('ShopController', ["$scope", "$q", "$http",
         }
         
         $scope.distance = $rootScope.getCartDistance();
-        
+                
     };
 
     $rootScope.add_product_to_cart = function(product_id, store_product_id = -1, product_quantity = 1)
@@ -149,7 +154,7 @@ angular.module('eappApp').controller('ShopController', ["$scope", "$q", "$http",
         $scope.isStoreSelected = false;
         $scope.isLoading = true;
         
-        if(!$scope.ready)
+        if(!$scope.ready || !$scope.isInitialized)
         {
             return;
         }
@@ -282,8 +287,10 @@ angular.module('eappApp').controller('ShopController', ["$scope", "$q", "$http",
         {
             $scope.query.page = bookmark;
         }
-
+        
+        
         $scope.getProducts();
+        
     });
     
     $scope.refresh = function(viewConfig)
