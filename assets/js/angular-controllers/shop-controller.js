@@ -85,6 +85,7 @@ angular.module('eappApp').controller('ShopController', ["$scope", "$q", "$http",
             else
             {
                 $scope.gridView = false;
+                
             }
         }
         else
