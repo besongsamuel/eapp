@@ -1,4 +1,4 @@
-<script src="<?php echo base_url("assets/js/password-forgotten-controller.js")?>"></script>
+
 
 <!DOCTYPE html>
 <!--
@@ -56,3 +56,4 @@ and open the template in the editor.
       </div>
    </div>
 </div>
+

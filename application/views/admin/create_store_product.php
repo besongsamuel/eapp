@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 
 <!-- Main Script -->
-<script src="<?php echo addslashes(base_url("assets/js/admin-controller.js")); ?>"></script>
+
 
 <div class="product-big-title-area">
     <div class="container">
@@ -191,3 +191,5 @@
     </form>
     </div>
 </div>
+
+<script src="<?php echo addslashes(base_url("assets/js/angular-controllers/admin-controller.js")); ?>"></script>

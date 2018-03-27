@@ -1,4 +1,4 @@
-<script src="<?php echo base_url("assets/js/reset-password-controller.js")?>"></script>
+
 
 <!DOCTYPE html>
 <!--
@@ -65,3 +65,4 @@ and open the template in the editor.
       </div>
    </div>
 </div>
+

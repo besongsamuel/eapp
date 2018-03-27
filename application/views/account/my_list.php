@@ -18,4 +18,4 @@
     
 </md-content>
 
-<script src="<?php echo base_url("assets/js/userlist-controller.js")?>"></script>
+

@@ -142,4 +142,4 @@
     
 </div>
     
-<script src="<?php echo base_url("assets/js/home-controller.js")?>"></script>
+

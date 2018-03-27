@@ -4,28 +4,6 @@
  * and open the template in the editor.
  */
 
-angular.module('eappApp').component('otiprixStep', {
-    
-    templateUrl: 'templates/components/otiprixStep.html',
-    controller : function($scope)
-    {
-        var ctrl = this;
-        
-        ctrl.$onInit = function()
-        {
-            $scope.displayBorder = ctrl.displayBorder;
-            $scope.caption = ctrl.caption;
-        };
-    },
-    bindings: 
-    {
-        index: '@',
-        image : '@',
-        caption: '<',
-        displayBorder: '<'
-    }
-});
-
 angular.module("eappApp").controller("HomeController", ["$rootScope", "$scope", "eapp", function($rootScope, $scope, eapp) 
 {
     

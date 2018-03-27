@@ -1,4 +1,4 @@
-<script src="<?php echo base_url("assets/js/selectstore-controller.js")?>"></script>
+
 
 <!-- Main Script -->
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -56,6 +56,8 @@
 	    </div>
          </div> 
     </div>
+
+<script src="<?php echo base_url("assets/js/angular-controllers/selectstore-controller.js")?>"></script>
     
    
         

@@ -1,9 +1,5 @@
 <!DOCTYPE html>
 
-<link rel="stylesheet" href="<?php echo base_url("assets/css/intlTelInput.css")?>">
-
-<script src="<?php echo base_url("assets/js/intlTelInput.js")?>"></script>
-<script src="<?php echo base_url("assets/js/utils.js")?>"></script>
 <script>
     
 $(document).ready(function()
@@ -13,7 +9,7 @@ $(document).ready(function()
 </script>
 
 <link rel="stylesheet" href="<?php echo base_url("assets/css/account.css")?>">
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
+
 
 <md-content class="otiprix-section" id="admin-container" ng-cloak>
     
@@ -96,6 +92,7 @@ $(document).ready(function()
                                     vs-longitude="loggedUserClone.profile.longitude"
                                     vs-latitude="loggedUserClone.profile.latitude"
                                     name="address"
+                                    aria-label="Addresse"
                                 >
 
                             </md-input-container>
@@ -335,8 +332,6 @@ $(document).ready(function()
    
 </md-content>
 
-<script src="<?php echo base_url("assets/js/userlist-controller.js")?>"></script>
-<script src="<?php echo base_url("assets/js/account-optimization-controller.js")?>"></script>
-<script src="<?php echo base_url("assets/js/account-selectstore-controller.js")?>"></script>
+
  
 

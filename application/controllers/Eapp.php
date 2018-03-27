@@ -507,5 +507,10 @@ class Eapp extends CI_Controller
         
         
     }
+    
+    public function hit_table() 
+    {
+        
+    }
    
 }

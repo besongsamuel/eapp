@@ -1,4 +1,4 @@
-<script src="<?php echo base_url("assets/js/product-controller.js")?>"></script>
+
 
 <script>
 

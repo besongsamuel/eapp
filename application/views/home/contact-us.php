@@ -135,9 +135,7 @@
             <div id="map"></div>
         </div><!-- end map -->
     </div>
-	
-    <!-- Map Scripts-->
-    <script src="<?php echo base_url("assets/js/contactus-controller.js")?>"></script>
+	    
 
 	
 	

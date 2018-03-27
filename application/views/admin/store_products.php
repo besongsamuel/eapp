@@ -11,7 +11,6 @@
 </style>
 
 <!-- Main Script -->
-<script src="<?php echo base_url("assets/js/admin-controller.js")?>"></script>
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
 <div id="admin-container" class="otiprix-section" ng-controller="ProductsTableController" ng-cloak>
@@ -98,3 +97,5 @@
         <md-table-pagination md-limit="query.limit" md-limit-options="[10, 25, 50]" md-page="query.page" md-total="{{count}}" md-on-paginate="getProducts" md-page-select></md-table-pagination>
     </md-table-container>                        
 </div>
+
+<script src="<?php echo addslashes(base_url("assets/js/angular-controllers/admin-controller.js")); ?>"></script>

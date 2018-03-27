@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-angular.module("eappApp").controller("AboutUsController", ["$rootScope", "$scope", "eapp", function($rootScope, $scope, eapp) 
+angular.module("eappApp").controller("AboutUsController", ["$rootScope", "$scope", function($rootScope, $scope) 
 {
     $rootScope.isAboutUs = true;
     

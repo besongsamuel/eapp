@@ -1,4 +1,4 @@
-<script src="<?php echo base_url("assets/js/category-controller.js")?>"></script>
+
 
 <!-- Main Script -->
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -54,4 +54,4 @@
 </md-content>
 
 
-    
+<script src="<?php echo base_url("assets/js/angular-controllers/category-controller.js")?>"></script>    

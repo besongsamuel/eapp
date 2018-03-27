@@ -3,8 +3,6 @@
         
 </style>
 
-<script src="<?php echo base_url("assets/js/admin-controller.js")?>"></script>
-
 <link rel="stylesheet" href="<?php echo base_url("assets/css/admin.css")?>">
 
 <md-content class="otiprix-section" ng-controller="ViewSubCategoriesController" ng-cloak>
@@ -163,3 +161,5 @@
 
     
 </md-content>
+
+<script src="<?php echo addslashes(base_url("assets/js/angular-controllers/admin-controller.js")); ?>"></script>

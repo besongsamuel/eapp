@@ -1,4 +1,4 @@
-<script src="<?php echo base_url("assets/js/account-created-controller.js")?>"></script>
+
 
 <!DOCTYPE html>
 <!--
