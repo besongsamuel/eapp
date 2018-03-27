@@ -7,7 +7,7 @@
 
 var scripts = document.getElementsByTagName("script");
 var currentScriptPath = scripts[scripts.length-1].src;
-var directory = currentScriptPath.substring(0,currentScriptPath.lastIndexOf("/")+1) + "../templates/";
+var directory = currentScriptPath.substring(0,currentScriptPath.lastIndexOf("/")+1) + "../../templates/";
 
 (function() {
     "use strict";

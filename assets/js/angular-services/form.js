@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-angular.module('eappApp').factory('Form', [ '$http', 'notifications', 'eapp', function($http, notifications, eapp) 
+angular.module('eappApp').factory('Form', [ '$http', 'eapp', function($http, eapp) 
 {
     this.postForm = function (formData, url, redirect_url, ev) 
     {       

@@ -47,13 +47,4 @@
     </div><!-- end container -->
 </section><!-- end section white -->
 <!-- /#wrapper -->
-
-<script>
-	var scope = angular.element($("#blog-container")).scope;
-	
-	scope.$apply(function()
- 	{
-		scope.blog = JSON.parse('<?php echo $post; ?>');
-	});
-</script>
    

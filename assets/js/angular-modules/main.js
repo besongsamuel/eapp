@@ -100,14 +100,7 @@ eappApp.config(function($mdThemingProvider)
 // configure our routes
 eappApp.config(function($routeProvider) 
 {
-    $routeProvider
-
-    // route for the home page
-    .when('/cart', {
-        templateUrl : 'pages/cart.html',
-        controller  : 'CartController'
-    });
-
+   
 });
 
 

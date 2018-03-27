@@ -66,20 +66,21 @@ class Account extends CI_Controller
         
         if($this->user != null && $this->user->subscription >= COMPANY_SUBSCRIPTION)
         {
+            $this->data['script'] = $this->load->view('account/scripts/index_company', $this->data, TRUE);
             $this->data['body'] = $this->load->view('account/index_company', $this->data, TRUE);
             $this->parser->parse('eapp_template', $this->data);
         }
         else
         {
+            $this->data['script'] = $this->load->view('account/scripts/index', $this->data, TRUE);
             $this->data['body'] = $this->load->view('account/index', $this->data, TRUE);
             $this->parser->parse('eapp_template', $this->data);
         }
-        
-        
     }
     
     public function login() 
     {
+        $this->data['script'] = $this->load->view('account/scripts/login', $this->data, TRUE);
         $this->data['body'] = $this->load->view('account/login', $this->data, TRUE);
         $this->parser->parse('eapp_template', $this->data);
     }
@@ -88,14 +89,17 @@ class Account extends CI_Controller
     {
         if(!isset($type) || empty($type))
         {
+            $this->data['script'] = $this->load->view('account/scripts/select_account_type', $this->data, TRUE);
             $this->data['body'] = $this->load->view('account/select_account_type', $this->data, TRUE);
         }
         else if($type == "personal")
         {
+            $this->data['script'] = $this->load->view('account/scripts/personal', $this->data, TRUE);
             $this->data['body'] = $this->load->view('account/personal', $this->data, TRUE);
         }
         else if($type == "company")
         {
+            $this->data['script'] = $this->load->view('account/scripts/company', $this->data, TRUE);
             $this->data['body'] = $this->load->view('account/company', $this->data, TRUE);
         }
         
@@ -104,12 +108,14 @@ class Account extends CI_Controller
     
     public function account_created() 
     {
+        $this->data['script'] = $this->load->view('account/scripts/account_created', $this->data, TRUE);
         $this->data['body'] = $this->load->view('account/account_created', $this->data, TRUE);
         $this->parser->parse('eapp_template', $this->data);
     }
     
     public function password_forgotten() 
     {
+        $this->data['script'] = $this->load->view('account/scripts/password_forgotten', $this->data, TRUE);
         $this->data['body'] = $this->load->view('account/password_forgotten', $this->data, TRUE);
         $this->parser->parse('eapp_template', $this->data);
     }
@@ -202,6 +208,7 @@ class Account extends CI_Controller
         if($account && !empty($account->reset_token))
         {
             // Load the reset view
+            $this->data['script'] = $this->load->view('account/scripts/reset_password', $this->data, TRUE);
             $this->data['body'] = $this->load->view('account/reset_password', $this->data, TRUE);
             $this->parser->parse('eapp_template', $this->data);
         }
@@ -209,6 +216,7 @@ class Account extends CI_Controller
         {
             // Load page that token is no longer available
             // Load the reset view
+            $this->data['script'] = $this->load->view('errors/scripts/message', $this->data, TRUE);
             $this->data['body'] = $this->load->view('errors/message', $this->data, TRUE);
             $this->parser->parse('eapp_template', $this->data);
         }
@@ -217,12 +225,14 @@ class Account extends CI_Controller
     
     public function invalid() 
     {
+        $this->data['script'] = $this->load->view('errors/scripts/message', $this->data, TRUE);
         $this->data['body'] = $this->load->view('errors/message', $this->data, TRUE);
         $this->parser->parse('eapp_template', $this->data);    
     }
     
     public function unsubscribe() 
     {
+        $this->data['script'] = $this->load->view('account/scripts/unsubscribe', $this->data, TRUE);
         $this->data['body'] = $this->load->view('account/unsubscribe', $this->data, TRUE);
         $this->parser->parse('eapp_template', $this->data);    
     }
@@ -231,6 +241,7 @@ class Account extends CI_Controller
     {
         if($this->user != null && $this->user->subscription >= COMPANY_SUBSCRIPTION && $this->user->is_new)
         {
+            $this->data['script'] = $this->load->view('account/scripts/select_department_stores', $this->data, TRUE);
             $this->data['body'] = $this->load->view('account/select_department_stores', $this->data, TRUE);
             $this->parser->parse('eapp_template', $this->data);
         }
@@ -251,6 +262,7 @@ class Account extends CI_Controller
         
         if($this->user != null)
         {
+            $this->data['script'] = $this->load->view('account/scripts/my_list', $this->data, TRUE);
             $this->data['body'] = $this->load->view('account/my_list', $this->data, TRUE);
             $this->parser->parse('eapp_template', $this->data);
         }
@@ -276,9 +288,17 @@ class Account extends CI_Controller
             }
         }
         $this->data['retailers'] = addslashes(json_encode($retailers));
+        $this->data['script'] = $this->load->view('account/scripts/select_store', $this->data, TRUE);
         $this->data['body'] = $this->load->view('account/select_store', $this->data, TRUE);
         $this->parser->parse('eapp_template', $this->data);
     }
+    
+    
+    
+    
+    
+    
+    
     
     public function save_favorite_stores() 
     {
@@ -318,7 +338,6 @@ class Account extends CI_Controller
         }
     }
 
-
     public function save_user_list()
     {
         $data = array("success" => false);
@@ -349,9 +368,6 @@ class Account extends CI_Controller
         echo json_encode($data);
     }
 
-    /*
-     * User login
-     */
     public function perform_login()
     {
         if($_SERVER['REQUEST_METHOD'] === 'POST')
@@ -400,7 +416,6 @@ class Account extends CI_Controller
         
         echo json_encode($result);
     }
-
 
     /*
      * User registration

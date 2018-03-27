@@ -97,11 +97,7 @@ class Admin extends CI_Controller
         echo json_encode($response);
         
     }
-    
-    
-    
-    
-    
+
     public function upload_product_image()
     {
 
@@ -173,6 +169,7 @@ class Admin extends CI_Controller
             
             $this->rememberme->recordOrigPage();
             $this->data['body'] = $this->load->view('admin/create_store_product', $this->data, TRUE);
+            $this->data['script'] = $this->load->view('admin/scripts/create_store_product', $this->data, TRUE);
             $this->parser->parse('eapp_template', $this->data);
         }
     }
@@ -192,6 +189,7 @@ class Admin extends CI_Controller
         
         $this->rememberme->recordOrigPage();
         $this->data['body'] = $this->load->view('admin/store_products', $this->data, TRUE);
+        $this->data['script'] = $this->load->view('admin/scripts/store_products', $this->data, TRUE);
         $this->parser->parse('eapp_template', $this->data);
     }
     
@@ -204,6 +202,7 @@ class Admin extends CI_Controller
         
         $this->rememberme->recordOrigPage();
         $this->data['body'] = $this->load->view('admin/view_products', $this->data, TRUE);
+        $this->data['script'] = $this->load->view('admin/scripts/view_products', $this->data, TRUE);
         $this->parser->parse('eapp_template', $this->data);
     }
     
@@ -216,6 +215,7 @@ class Admin extends CI_Controller
         
         $this->rememberme->recordOrigPage();
         $this->data['body'] = $this->load->view('admin/edit_product', $this->data, TRUE);
+        $this->data['script'] = $this->load->view('admin/scripts/edit_product', $this->data, TRUE);
         $this->parser->parse('eapp_template', $this->data);
     }
     
@@ -228,6 +228,7 @@ class Admin extends CI_Controller
         
         $this->rememberme->recordOrigPage();
         $this->data['body'] = $this->load->view('admin/create_otiprix_product', $this->data, TRUE);
+        $this->data['script'] = $this->load->view('admin/scripts/create_otiprix_product', $this->data, TRUE);
         $this->parser->parse('eapp_template', $this->data);
     }
     
@@ -317,6 +318,7 @@ class Admin extends CI_Controller
         }
         
         $this->rememberme->recordOrigPage();
+        $this->data['script'] = $this->load->view('admin/scripts/view_subcategories', $this->data, TRUE);
         $this->data['body'] = $this->load->view('admin/view_subcategories', $this->data, TRUE);
         $this->parser->parse('eapp_template', $this->data);
     }
@@ -540,6 +542,7 @@ class Admin extends CI_Controller
         
         $this->rememberme->recordOrigPage();
         $this->data['body'] = $this->load->view('admin/uploads', $this->data, TRUE);
+        $this->data['script'] = $this->load->view('admin/scripts/uploads', $this->data, TRUE);
         $this->parser->parse('eapp_template', $this->data);
     }
     

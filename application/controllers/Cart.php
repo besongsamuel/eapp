@@ -49,6 +49,7 @@ class Cart extends CI_Controller {
      */
     public function index()
     {
+        $this->data['script'] = $this->load->view('cart/scripts/index', '', TRUE);
         $this->data['body'] = $this->load->view('cart/index', '', TRUE);
         $this->data['distance_from_home'] = 'Distance from home';
         $this->rememberme->recordOrigPage();

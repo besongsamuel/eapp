@@ -1,11 +1,6 @@
 
-
-<!-- Main Script -->
-<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <!-- Animate CSS -->
 <link rel="stylesheet" href="<?php echo base_url("assets/css/shop.css")?>">
-
-
 
 <div id="admin-container" class="otiprix-section" ng-controller="SelectStoreController" ng-cloak>    
         
@@ -57,8 +52,6 @@
          </div> 
     </div>
 
-<script src="<?php echo base_url("assets/js/angular-controllers/selectstore-controller.js")?>"></script>
-    
    
         
     

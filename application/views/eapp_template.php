@@ -237,6 +237,7 @@
   </body>
   
   {scripts}
+  {script}
   
    <!-- Initialize angular root scope -->
     <script>

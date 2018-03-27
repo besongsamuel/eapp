@@ -26,6 +26,7 @@ class Home extends CI_Controller {
      */
     public function index()
     {
+        $this->data['script'] = $this->load->view('home/scripts/index', '', TRUE);
         $this->data['latestProducts'] = $this->home_model->get_store_products_limit(25, 0)["products"];
         $this->data['body'] = $this->load->view('home/index', $this->data, TRUE);
         $this->rememberme->recordOrigPage();
@@ -45,6 +46,7 @@ class Home extends CI_Controller {
     
     public function about()
     {
+        $this->data['script'] = $this->load->view('home/scripts/about-us', $this->data, TRUE);
         $this->data['body'] = $this->load->view('home/about-us', $this->data, TRUE);
         $this->parser->parse('eapp_template', $this->data);
     }
@@ -52,6 +54,7 @@ class Home extends CI_Controller {
     public function contact()
     {
         $this->data['body'] = $this->load->view('home/contact-us', $this->data, TRUE);
+        $this->data['script'] = $this->load->view('home/scripts/contact-us', $this->data, TRUE);
         $this->parser->parse('eapp_template', $this->data);
     }
     

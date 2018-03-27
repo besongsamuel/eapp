@@ -31,7 +31,7 @@
     <script src="<?php echo CONNECTION_TYPE; ?>://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/js/bootstrap-select.min.js"></script>
     <script src="<?php echo base_url("assets/js/utils.js")?>"></script>
     <script src="<?php echo base_url("assets/js/intlTelInput.js")?>"></script>
-    <script src="<?php echo base_url("assets/js/admin.js")?>"></script>
+    
     
     <!-- Angular Modules -->
     <script src="<?php echo base_url("assets/js/angular-modules/lf-ng-md-file-input.js")?>"></script>
@@ -45,17 +45,7 @@
     <!-- Angular Directives -->
     <script src="<?php echo base_url("assets/js/angular-directives/current-address.js")?>"></script>
     <script src="<?php echo base_url("assets/js/angular-directives/equals.js")?>"></script>
-    
-    <!-- Angular Components -->
-    <script src="<?php echo base_url("assets/js/angular-components/quantity-input.js")?>"></script>
-    <script src="<?php echo base_url("assets/js/angular-components/results-filter.js")?>"></script>
-    <script src="<?php echo base_url("assets/js/angular-components/settings-item.js")?>"></script>
-    <script src="<?php echo base_url("assets/js/angular-components/add-to-list.js")?>"></script>
-    <script src="<?php echo base_url("assets/js/angular-components/image-upload.js")?>"></script>
-    <script src="<?php echo base_url("assets/js/angular-components/otiprix-step.js")?>"></script>
-    <script src="<?php echo base_url("assets/js/angular-components/add-department-store.js")?>"></script>
-    <script src="<?php echo base_url("assets/js/angular-components/company-account-products.js")?>"></script>
-    
+            
     <!-- Angular Filters -->
     <script src="<?php echo base_url("assets/js/angular-filters/trust-url.js")?>"></script>
     <script src="<?php echo base_url("assets/js/angular-filters/title-case.js")?>"></script>
@@ -66,27 +56,13 @@
     <script src="<?php echo base_url("assets/js/angular-services/eapp.js")?>"></script>
     
     <!-- Angular Controllers -->
-    <script src="<?php echo base_url("assets/js/angular-controllers/account-controller.js")?>"></script> 
+    <script src="<?php echo base_url("assets/js/angular-controllers/account-controller.js")?>"></script>
     <script src="<?php echo base_url("assets/js/angular-controllers/menu-controller.js")?>"></script>
     <script src="<?php echo base_url("assets/js/angular-controllers/cart-controller.js")?>"></script>
     <script src="<?php echo base_url("assets/js/angular-controllers/shop-controller.js")?>"></script>
-    <script src="<?php echo base_url("assets/js/angular-controllers/blog-controller.js")?>"></script> 
     <script src="<?php echo base_url("assets/js/angular-controllers/footer-controller.js")?>"></script>
     <script src="<?php echo base_url("assets/js/angular-controllers/home-controller.js")?>"></script>
-    <script src="<?php echo base_url("assets/js/angular-controllers/account-created-controller.js")?>"></script>
-    <script src="<?php echo base_url("assets/js/angular-controllers/userlist-controller.js")?>"></script>
-    <script src="<?php echo base_url("assets/js/angular-controllers/account-optimization-controller.js")?>"></script>
-    <script src="<?php echo base_url("assets/js/angular-controllers/account-selectstore-controller.js")?>"></script>
-    <script src="<?php echo base_url("assets/js/angular-controllers/company-account-controller.js")?>"></script>
-    <script src="<?php echo base_url("assets/js/angular-controllers/upload-controller.js")?>"></script>
-    <script src="<?php echo base_url("assets/js/angular-controllers/password-forgotten-controller.js")?>"></script>
-    <script src="<?php echo base_url("assets/js/angular-controllers/reset-password-controller.js")?>"></script>
-    <script src="<?php echo base_url("assets/js/angular-controllers/unsubscribe-controller.js")?>"></script>
-    <script src="<?php echo base_url("assets/js/angular-controllers/admin-controller.js")?>"></script>
-    <script src="<?php echo base_url("assets/js/angular-controllers/product-controller.js")?>"></script>
-    <script src="<?php echo base_url("assets/js/angular-controllers/error-controller.js")?>"></script>
-    <script src="<?php echo base_url("assets/js/angular-controllers/aboutus-controller.js"); ?>"></script>
-    <script src="<?php echo base_url("assets/js/angular-controllers/contactus-controller.js")?>"></script>
+    
     
     
     

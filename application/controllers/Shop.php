@@ -29,15 +29,25 @@ class Shop extends CI_Controller {
         $this->data['stores'] = addslashes(json_encode($this->admin_model->get_all(CHAIN_TABLE))) ;
         $this->data['products'] = addslashes(json_encode($this->admin_model->get_all(STORE_PRODUCT_TABLE)));
         $this->data['body'] = $this->load->view('shop/index', $this->data, TRUE);
+        $this->data['script'] = $this->load->view('shop/scripts/index', $this->data, TRUE);
         $this->rememberme->recordOrigPage();
         $this->parser->parse('eapp_template', $this->data);
     }
     
     public function select_flyer_store()
     {
+        $this->data['script'] = $this->load->view('shop/scripts/select_flyer_store', $this->data, TRUE);
         $this->data['body'] = $this->load->view('shop/select_flyer_store', $this->data, TRUE);
         $this->parser->parse('eapp_template', $this->data);
     }
+    
+    public function categories()
+    {
+        $this->data['script'] = $this->load->view('shop/scripts/select_category', $this->data, TRUE);
+        $this->data['body'] = $this->load->view('shop/select_category', $this->data, TRUE);
+        $this->parser->parse('eapp_template', $this->data);
+    }
+    
     
     public function get_retailers() 
     {
@@ -74,12 +84,6 @@ class Shop extends CI_Controller {
         $result = array();
         $result["retailers"] = $retailers;
         echo json_encode($result);
-    }
-	
-    public function categories()
-    {
-        $this->data['body'] = $this->load->view('shop/select_category', $this->data, TRUE);
-        $this->parser->parse('eapp_template', $this->data);
     }
     
     public function get_store_products()
@@ -162,9 +166,6 @@ class Shop extends CI_Controller {
         return $result;
         
     }
-    
-    
-    
     
     private function get_settings_item($property, $category_id, $store_id, $my_location = null, $distance = 100) 
     {

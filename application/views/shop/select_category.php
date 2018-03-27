@@ -1,7 +1,5 @@
 
 
-<!-- Main Script -->
-<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <!-- Animate CSS -->
 <link rel="stylesheet" href="<?php echo base_url("assets/css/shop.css")?>">
 
@@ -52,6 +50,3 @@
     </div>
     
 </md-content>
-
-
-<script src="<?php echo base_url("assets/js/angular-controllers/category-controller.js")?>"></script>    

@@ -51,7 +51,7 @@ function apsUploadFileLink(scope, element, attrs)
     });
 }
 
-angular.module("eappApp").controller('AdminController', ["$scope", "Form", "$http", "notifications", "$q", "$mdDialog", "eapp", "$rootScope", function($scope, Form, $http, notifications, $q, $mdDialog, eapp, $rootScope) {
+angular.module("eappApp").controller('AdminController', ["$scope", "Form", "$http", "$q", "$mdDialog", "eapp", "$rootScope", function($scope, Form, $http, $q, $mdDialog, eapp, $rootScope) {
       
     $scope.selectedProduct = null;
     $scope.searchProductText = "";
@@ -397,7 +397,6 @@ angular.module("eappApp").controller('AdminController', ["$scope", "Form", "$htt
                     {
                         $scope.store_product.brand = result.data.newBrand;
                         $scope.brands[result.data.newBrand.id] = result.data.newBrand;
-                        notifications.showSuccess(result.data.message);
                         $mdDialog.cancel();
                     }
                 });
@@ -441,7 +440,6 @@ angular.module("eappApp").controller('AdminController', ["$scope", "Form", "$htt
                     {
                         $scope.selectedProduct = result.data.newProduct;
                         $scope.products[$scope.selectedProduct.id] = result.data.newProduct;
-                        notifications.showSuccess(result.data.message);
                         $mdDialog.cancel();
                     }		
                 });
@@ -548,7 +546,6 @@ angular.module("eappApp").controller('AdminController', ["$scope", "Form", "$htt
                 {
                     if(result.data.success)
                     {
-                        notifications.showSuccess(result.data.message);
                         $scope.post_create_product();
                     }
                     else

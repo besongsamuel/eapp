@@ -182,6 +182,7 @@ $(document).ready(function()
                                     vs-longitude="loggedUserClone.profile.longitude"
                                     vs-latitude="loggedUserClone.profile.latitude"
                                     name="address"
+                                    aria-label="Addresse"
                                 >
 
                             </md-input-container>

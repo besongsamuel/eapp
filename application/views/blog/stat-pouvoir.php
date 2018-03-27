@@ -1,11 +1,5 @@
 <!DOCTYPE html>
-<!--[if lt IE 7 ]><html class="ie ie6" lang="en"> <![endif]-->
-<!--[if IE 7 ]><html class="ie ie7" lang="en"> <![endif]-->
-<!--[if IE 8 ]><html class="ie ie8" lang="en"> <![endif]-->
-<!--[if (gte IE 9)|!(IE)]><!-->
-<html lang="en">
-<!--<![endif]-->
-<head>
+
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -34,8 +28,6 @@
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 
-</head>
-<body>
 
 
     <header id="header-one" class="header">
@@ -180,39 +172,3 @@
         </div><!-- end container -->
     </section><!-- end section white -->
     <!-- /#wrapper -->
-    <!-- jQuery -->
-    <script src="js/jquery.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/retina.js"></script>
-    <script src="js/wow.min.js"></script>
-    <script src="js/jquery.stellar.js"></script>
-    <script src="js/jquery.fitvids.js"></script>
-    <script src="js/home-scripts.js"></script>
-    <script>
-        $(document).ready(function () {
-            // Target your .container, .wrapper, .post, etc.
-            $(".blog-item").fitVids();
-        });
-    </script>
-    <!-- Portfolio -->
-    <script src="js/jquery.isotope.min.js"></script>
-    <script src="js/portfolio_01.js"></script>
-    <!-- Carousel -->
-    <script src="js/owl.carousel.js"></script>
-    <script src="js/owl-scripts.js"></script>
-    <!-- FlexSlider Scripts-->
-    <script src="js/jquery.flexslider.js"></script>
-    <script type="text/javascript">
-        (function ($) {
-            "use strict";
-            $('.flexslider').flexslider({
-                animation: 'fade',
-                slideshow: true,
-                controlNav: false,
-                animationLoop: true,
-            });
-        })(jQuery);
-    </script>
-
-</body>
-</html>

@@ -76,21 +76,5 @@
     </div><!-- end container -->
 </section><!-- end section white -->
 
-<script>
-    
-    $(document).ready(function()
-    {
-        var scope = angular.element($("#blog-container")).scope();
-	scope.$apply(function()
- 	{
-            scope.baseurl = scope.base_url;
-            
-            scope.postType = parseInt('<?php echo $post_type; ?>');
-            
-            scope.gotoPage({ value : 1});
-	});
-        
-    });
-	
-</script>
+
 
