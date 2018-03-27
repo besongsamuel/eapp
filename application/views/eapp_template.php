@@ -13,6 +13,7 @@
     <script src="https://code.jquery.com/jquery.min.js"></script>
     	  
   </head>
+  
   <body class="md-body-1">
             
     <div class="container search-box" id="search-box" ng-controller="ShopController" ng-hide="true" style="margin-top: 110px;" ng-cloak>

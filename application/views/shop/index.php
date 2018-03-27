@@ -11,7 +11,7 @@ and open the template in the editor.
 
 
 
-<md-content id="shop-container" class="white-container otiprix-section" ng-controller="ShopController">
+<md-content id="shop-container" class="white-container otiprix-section" ng-controller="ShopController" ng-cloak>
 
     <div class="product-big-title-area">
         <div class="container">
