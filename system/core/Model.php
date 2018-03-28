@@ -938,8 +938,6 @@ class CI_Model {
     {
         $this->db->join(PRODUCT_TABLE, $this->store_product_product_join);
         $this->db->join(SUB_CATEGORY_TABLE, $this->store_product_subcategory_join, "left outer");
-        $this->db->join(CHAIN_TABLE, CHAIN_TABLE.'.id = '.STORE_PRODUCT_TABLE.'.retailer_id');
-        $this->db->join(CHAIN_STORE_TABLE, CHAIN_TABLE.'.id = '.CHAIN_STORE_TABLE.'.chain_id');
         
         $this->add_distance_condition($close_stores);
         
@@ -960,8 +958,6 @@ class CI_Model {
     {
         $this->db->join(PRODUCT_TABLE, $this->store_product_product_join);
         $this->db->join(SUB_CATEGORY_TABLE, $this->store_product_subcategory_join, "left outer");
-        $this->db->join(CHAIN_TABLE, CHAIN_TABLE.'.id = '.STORE_PRODUCT_TABLE.'.retailer_id', "left outer");
-        $this->db->join(CHAIN_STORE_TABLE, CHAIN_TABLE.'.id = '.CHAIN_STORE_TABLE.'.chain_id', "left outer");
         
         $this->add_distance_condition($close_stores);
         
