@@ -118,6 +118,19 @@ angular.module('eappApp').factory("$company", function($rootScope, $http)
                 $rootScope.site_url.concat("/company/edit_company"), 
                 formData, 
                 { transformRequest: angular.identity, headers: {'Content-Type': undefined}}).then(success, onError);
+        },
+        getStats : function(order, limit, period, success)
+        {
+            var formData = new FormData();
+        
+            formData.append("order", order);
+            formData.append("limit", limit);
+            formData.append("period", period);
+                        
+            return $http.post(
+                $rootScope.site_url.concat("/account/get_stats"), 
+                formData, 
+                { transformRequest: angular.identity, headers: {'Content-Type': undefined}}).then(success, onError);
         }
         
         

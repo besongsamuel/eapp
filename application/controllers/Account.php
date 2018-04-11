@@ -10,6 +10,8 @@ class Account extends CI_Controller
         parent::__construct();
         $this->load->library('form_validation');
         $this->load->library('geo');
+        $this->load->library('statistics', array('user' => $this->user));
+
     }
     
     private function initialize_upload_library($uploadDirectory, $fileName)
@@ -21,6 +23,57 @@ class Account extends CI_Controller
         $config['max_size']     = '10000';
         
         $this->upload->initialize($config);
+    }
+    
+    public function get_stats() 
+    {
+        
+        $order = $this->input->post("order");
+        $period = $this->input->post("period");
+        $limit = $this->input->post("limit");
+        
+        
+        if(!$this->user)
+        {
+            return;
+        }
+        
+        $stats = new stdClass();
+                
+       
+        $stats->top_product_categories = $this->statistics->get_top_product_categories($order, $period, $limit);
+        
+        $stats->top_bio_products = $this->statistics->get_top_products($period, $order, -1,  1, -1, $limit);
+        
+        $stats->top_cart_bio_products = $this->statistics->get_top_products($period, $order, -1,  1, 1, $limit);
+        
+        if($this->user->subscription > COMPANY_SUBSCRIPTION)
+        {
+            $stats->top_product_retailers = $this->statistics->get_top_product_retailers($order, $period, $limit);
+            
+            // Get top viewed products
+            $stats->top_viewed_products = $this->statistics->get_top_products($period, $order, -1,  -1, 0, $limit);
+            
+             // Get top cart products
+            $stats->top_cart_products = $this->statistics->get_top_products($period, $order, -1,  -1, 1, $limit);
+            
+            //Get top viewed product states
+            $stats->top_viewed_product_states = $this->statistics->get_top_states($order, $period, 0, $limit);
+            
+        }
+        
+        if($this->user->subscription == COMPANY_SUBSCRIPTION + 2)
+        {
+            // Get top products added to cart by state
+            $stats->top_cart_product_states = $this->statistics->get_top_states($order, $period, 1, $limit);
+            
+            $stats->top_listed_products = $this->statistics->get_top_products($period, $order, -1,  -1, 2, $limit);
+            
+            $stats->top_product_brands = $this->statistics->get_top_product_brands($order, $period, $limit);
+        }
+                
+        echo json_encode($stats);
+        
     }
     
     /**
@@ -42,7 +95,7 @@ class Account extends CI_Controller
     {
         $this->account_model->update_user_store_table($this->user); 
     }
-    
+        
     public function index($index = 3) 
     {
         $this->data['tabIndex'] = $index; 
@@ -293,13 +346,6 @@ class Account extends CI_Controller
         $this->parser->parse('eapp_template', $this->data);
     }
     
-    
-    
-    
-    
-    
-    
-    
     public function save_favorite_stores() 
     {
         $result = array("success" => false);
@@ -461,7 +507,9 @@ class Account extends CI_Controller
                         'password' => $user_account['password'])
                     );
                     
-                    $this->send_registration_message();
+                    $this->add_user_to_mailchimp('09a06e4d7e');
+                    
+                    //$this->send_registration_message();
                     
                     $data['user'] = $this->user;
                 }

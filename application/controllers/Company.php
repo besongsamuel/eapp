@@ -398,7 +398,9 @@ class Company extends CI_Controller
                         'password' => $user_account['password'])
                     );
                     
-                    $this->send_registration_message();
+                    $this->add_user_to_mailchimp('018c4a6a3c');
+                    
+                    //$this->send_registration_message();
                     
                     $data['user'] = $this->user;
                 }

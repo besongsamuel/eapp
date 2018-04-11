@@ -4,6 +4,9 @@
  * and open the template in the editor.
  */
 
+const STAT_TYPE_CLICK = 0;
+
+
 // Create eapp service to get and update our data
 angular.module('eappApp').factory('eapp', ['$http','$rootScope', '$mdDialog', function($http, $rootScope, $mdDialog)
 {
@@ -429,6 +432,8 @@ angular.module('eappApp').factory('eapp', ['$http','$rootScope', '$mdDialog', fu
     
         promise.then(function(response)
         {
+            eappService.recordProductStat(product_id, STAT_TYPE_CLICK);
+            
             $scope.storeProduct = response.data;
             
             $scope.scrollTop = $(document).scrollTop();
@@ -593,7 +598,14 @@ angular.module('eappApp').factory('eapp', ['$http','$rootScope', '$mdDialog', fu
         return $http.post(eappService.getSiteUrl().concat("account/toggle_new"), null);
     };
     
-    
+    eappService.recordProductStat = function(storeProductId, type)
+    {
+        var formData = new FormData();
+        formData.append("id", storeProductId);
+        formData.append("type", type);
+        
+        return $http.post(eappService.getSiteUrl().concat("/eapp/record_stat"), formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}});
+    };
 
     return eappService;
 }]);

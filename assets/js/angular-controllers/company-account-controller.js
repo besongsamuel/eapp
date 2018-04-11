@@ -14,7 +14,7 @@ angular.module('eappApp').controller('CompanyAccountController', function($scope
             name : $scope.loggedUser.company.name,
             neq : $scope.loggedUser.company.neq
         };
-        
+                
         $scope.image_name = $scope.loggedUser.company.chain.image;
         $scope.storeLogo = $scope.base_url.concat("/assets/img/stores/").concat($scope.loggedUser.company.chain.image);
     };

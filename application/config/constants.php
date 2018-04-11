@@ -97,6 +97,8 @@ defined('STORE_LOGO_HEIGHT')        OR define('STORE_LOGO_HEIGHT', 720); // high
 
 defined('POST_TYPE_STAT')           OR define('POST_TYPE_STAT', 1);
 defined('COMPANY_SUBSCRIPTION')     OR define('COMPANY_SUBSCRIPTION', 10);
+defined('STAT_TYPE_CLICK')          OR define('STAT_TYPE_CLICK', 0);
+defined('STAT_TYPE_ADD_TO_CART')    OR define('STAT_TYPE_ADD_TO_CART', 1);
 
 defined('CONNECTION_TYPE')          OR define('CONNECTION_TYPE', $http);
 defined('OtIPRIX_ADDRESS')          OR define('OtIPRIX_ADDRESS', '550 Avenue Saint-Dominique, Saint-Hyacinthe, J2S 5M6');
@@ -127,6 +129,7 @@ defined('CONTACTS_TABLE')               OR define('CONTACTS_TABLE', 'eapp_contac
 defined('SECURITY_QUESTIONS')           OR define('SECURITY_QUESTIONS', 'eapp_security_question');
 defined('UNIT_CONVERSION')              OR define('UNIT_CONVERSION', 'otiprix_unit_compareunit');
 defined('PRODUCT_UNIT_CONVERSION')      OR define('PRODUCT_UNIT_CONVERSION', 'otiprix_product_unit_compareunit');
+defined('PRODUCT_STATS')                OR define('PRODUCT_STATS', 'otiprix_product_statistics');
 defined('NEWSLETTER_SUBSCRIPTIONS')     OR define('NEWSLETTER_SUBSCRIPTIONS', 'otiprix_newsletter_subscriptions');
 defined('COMPANY_TABLE')                OR define('COMPANY_TABLE', 'eapp_company');
 defined('COMPANY_SUBSCRIPTIONS_TABLE')  OR define('COMPANY_SUBSCRIPTIONS_TABLE', 'eapp_company_subscriptions');

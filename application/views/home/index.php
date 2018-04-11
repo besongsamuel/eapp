@@ -10,7 +10,6 @@
         <div class="otiprix-intro layout-padding">
             <h2>OTIPRIX</h2>
             <h3>En quelques clics, économisez sur vos listes d'épicerie</h3>
-            
         </div>
         
         <div style="width: 100%; position: absolute; bottom: 60px; z-index: 5;">
@@ -119,8 +118,8 @@
                                     <div class="product-f-image">
                                         <img ng-src="<?php echo $product->product->image;?>" style="height: 100%;" alt="">
                                         <div class="product-hover">
-                                            <a href ng-hide="productInCart(<?php echo $product->product_id; ?>)" class="add-to-cart-link" ng-click="add_product_to_cart(<?php echo $product->product_id; ?>)"><i class="fa fa-shopping-cart"></i>Ajouter</a>
-                                            <a href ng-show="productInCart(<?php echo $product->product_id; ?>)" class="add-to-cart-link" ng-click="remove_product_from_cart(<?php echo $product->product_id; ?>)"><i class="fa fa-shopping-cart"></i>Retirer</a>
+                                            <a href ng-hide="productInCart(<?php echo $product->product_id; ?>)" class="add-to-cart-link" ng-click="add_product_to_cart(<?php echo $product->product_id; ?>, <?php echo $product->id; ?>)"><i class="fa fa-shopping-cart"></i>Ajouter</a>
+                                            <a href ng-show="productInCart(<?php echo $product->product_id; ?>)" class="add-to-cart-link md-warn" ng-click="remove_product_from_cart(<?php echo $product->product_id; ?>)"><i class="fa fa-shopping-cart"></i>Retirer</a>
                                             <a href ng-click="viewProduct(<?php echo $product->id; ?>)" class="view-details-link"><i class="fa fa-link"></i>Détails</a>
                                         </div>
                                     </div>

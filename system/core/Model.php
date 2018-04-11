@@ -162,7 +162,7 @@ class CI_Model {
         {
             return null;
         }
-    }
+    }    
     
     public function get_specific($table_name, $data)
     {

@@ -77,6 +77,8 @@ class Cart extends CI_Controller {
             {
                 continue;
             }
+            
+            $this->record_product_stat($store_product->id, STAT_TYPE_ADD_TO_CART);
 
             $data = array
             (
@@ -119,6 +121,7 @@ class Cart extends CI_Controller {
         }
         else
         {
+            $this->record_product_stat($store_product_id, STAT_TYPE_ADD_TO_CART);
             $store_product = $this->cart_model->getStoreProduct($store_product_id, false, true, true);
             $store_product->department_store = new stdClass();
             $store_product->department_store->name = "Le magasin n'est pas disponible près de chez vous.";

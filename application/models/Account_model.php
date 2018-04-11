@@ -69,7 +69,7 @@ class Account_model extends CI_Model
         
         // It' a company
         if($user_account->subscription >= COMPANY_SUBSCRIPTION)
-        {
+        {            
             // Get company
             $user_account->company = $this->get_specific(COMPANY_TABLE, array("user_account_id" => $account_id));
             
@@ -179,7 +179,7 @@ class Account_model extends CI_Model
         
         return $user_account;
     }
-	
+    
 	/*
      * get rows from the users table
      */

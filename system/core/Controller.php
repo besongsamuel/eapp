@@ -77,6 +77,7 @@ class CI_Controller {
     private $sms_username = 'admin';
     private $sms_password = 'Password01$';
     private $sms_port = 9710;
+    
 
     /**
      * Class constructor
@@ -130,6 +131,7 @@ class CI_Controller {
         {
             //header('Location: '.  site_url('/account/page_under_construction'));
         }
+        
         $this->sid = $this->config->item("sid");
 
         $this->token = $this->config->item("token");
@@ -233,8 +235,12 @@ class CI_Controller {
          {
              $this->user = $this->account_model->get_user($this->session->userdata('userId'));
          }
+         
+        
 
     }
+    
+    
         
     public function send_verification_code($phone_number)
     {
@@ -532,7 +538,7 @@ class CI_Controller {
             }
 
             $rememberme = $this->input->post("rememberme");
-
+            
             if($rememberme)
             {
                 $this->rememberme->setCookie($this->input->post('email'));
@@ -544,6 +550,123 @@ class CI_Controller {
         }
         
         return $data;
+    }
+    
+    protected function add_user_to_mailchimp($listID)
+    {
+        // MailChimp API credentials
+        $apiKey = 'f20c5391b20bb4ba2a0ef0c69c700712-us12';
+        
+        // MailChimp API URL
+        $memberID = md5(strtolower($this->user->email));
+        
+        $dataCenter = substr($apiKey,strpos($apiKey,'-')+1);
+        
+        $url = 'https://' . $dataCenter . '.api.mailchimp.com/3.0/lists/' . $listID . '/members/' . $memberID;
+        
+        
+        $mergeFields  = [
+                'FNAME'     => $this->user->profile->firstname,
+                'LNAME'     => $this->user->profile->lastname,
+                'ACCNUMBER' => $this->user->account_number,
+                'ADDRESS'   => $this->user->profile->address
+            ];
+        
+        if($this->user->company)
+        {
+            $mergeFields['CMPYNAME'] = $this->user->company->name;
+            $mergeFields['NEQ'] = $this->user->company->neq;
+        }
+        
+        // member information
+        $json = json_encode([
+            'email_address' => $this->user->email,
+            'status'        => 'subscribed',
+            'merge_fields'  => $mergeFields
+        ]);
+        
+        // send a HTTP POST request with curl
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_USERPWD, 'user:' . $apiKey);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $json);
+        
+        $result = curl_exec($ch);
+        
+        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+        
+        // store the status message based on response code
+        if ($httpCode == 200) {
+            $_SESSION['msg'] = '<p style="color: #34A853">You have successfully subscribed to CodexWorld.</p>';
+        } else {
+            switch ($httpCode) {
+                case 214:
+                    $msg = 'You are already subscribed.';
+                    break;
+                default:
+                    $msg = 'Some problem occurred, please try again.';
+                    break;
+            }
+            $_SESSION['msg'] = '<p style="color: #EA4335">'.$msg.'</p>';
+        }
+    }
+    
+    protected function record_product_stat($id, $type) 
+    {
+        
+        $store_product = $this->cart_model->get(STORE_PRODUCT_TABLE, $id);
+        
+        $today = date("Y-m-d");
+        
+        if($store_product)
+        {
+            $search_data = null;
+            
+            if($this->user)
+            {
+                $search_data = array(
+                        'user_account_id' => $this->user->id, 
+                        'product_id' => $store_product->product_id,
+                        'date_created' => $today,
+                        'type' => $type);
+            }
+            else
+            {
+                $search_data = array(
+                        'session_id' => session_id(), 
+                        'product_id' => $store_product->product_id,
+                        'date_created' => $today,
+                        'type' => $type);
+            }
+            
+            // Check if the same sesion entered data in the current day
+            $session_statistics = $this->cart_model->get_specific(PRODUCT_STATS, $search_data);
+            
+            if(!$session_statistics)
+            {
+                $data = array
+                (
+                    'user_account_id' => ($this->user == null ? -1 : $this->user->id),
+                    'session_id' => session_id(),
+                    'product_id' => $store_product->product_id,
+                    'bio' => $store_product->organic,
+                    'in_flyer' => $store_product->in_flyer,
+                    'date_created' => $today,
+                    'retailer_id' => $store_product->retailer_id,
+                    'brand_id' => $store_product->brand_id,
+                    'country' => $store_product->country,
+                    'state' => $store_product->state,
+                    'type' => $type
+                );
+                
+                $this->cart_model->create(PRODUCT_STATS, $data);
+            }            
+        }
     }
        
 
