@@ -98,7 +98,8 @@ class Statistics
             $order = 'desc', 
             $in_flyer = -1, 
             $bio = -1,
-            $action = 0) 
+            $action = 0,
+            $limit) 
     {
         
         if($period == 0)
@@ -138,7 +139,7 @@ class Statistics
         }
         
         $query = $this->CI->db->query("SELECT COUNT(id) as count, product_id FROM "
-                .PRODUCT_STATS." ".$action_sql." ".$in_flyer_sql." ".$period_sql." ".$bio_sql." GROUP BY product_id ORDER BY count ".$order);
+                .PRODUCT_STATS." ".$action_sql." ".$in_flyer_sql." ".$period_sql." ".$bio_sql." GROUP BY product_id ORDER BY count ".$order." LIMIT ".$limit);
         
         
         return $this->get_products_from_query($query);
