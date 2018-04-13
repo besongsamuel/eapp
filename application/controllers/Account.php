@@ -39,7 +39,10 @@ class Account extends CI_Controller
         }
         
         $stats = new stdClass();
-                
+           
+        $stats->get_percentage_bio_added_to_cart = $this->statistics->get_percentage_bio($period, 1);
+        
+        $stats->get_percentage_bio_viewed = $this->statistics->get_percentage_bio($period, 0);
        
         $stats->top_product_categories = $this->statistics->get_top_product_categories($order, $period, $limit);
         

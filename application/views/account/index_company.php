@@ -408,110 +408,85 @@ $(document).ready(function()
             </md-tab>
             
             <md-tab label="Statistics">
+                
                 <div ng-controller="CompanyStatsController">
                     
-                    <md-list ng-if="stats.top_bio_products">
-                        <md-subheader class="md-no-sticky">La proportion des produits biologiques ajoutés au panier par les utilisateurs</md-subheader>
-                        <md-list-item class="md-2-line" ng-repeat="product in stats.top_bio_products">
-                            <md-icon ng-src="{{product.image}}" ng-class="md-avatar-icon"></md-icon>
-                            <div class="md-list-item-text" ng-class="md-offset">
-                                <h3> {{ product.name }} </h3>
-                                <p> Vues : {{ product.count }} </p>
-                            </div>
-                        </md-list-item>
+                    <md-subheader class="md-no-sticky">La proportion des produits biologiques ajoutés au panier ou visitées par les utilisateurs</md-subheader>
+
+                    <div class="layout-padding">
+                        <p> Pourcentage produits bio ajoutées au panier : <b>{{stats.get_percentage_bio_added_to_cart}} % </b></p>
+                        <p> Pourcentage produits bio visitées : <b>{{stats.get_percentage_bio_viewed}} % </b></p>
                         <md-divider></md-divider>
-                    </md-list>
+                    </div>
                     
-                    <md-list ng-if="stats.top_product_retailers">
+                    <md-list ng-if="stats.top_product_retailers && stats.top_product_retailers.length > 0">
                         <md-subheader class="md-no-sticky">Les 5 produits qui reviennent le plus souvent en circulaire</md-subheader>
-                        <md-list-item class="md-2-line" ng-repeat="product in stats.top_product_retailers">
-                            <md-icon md-svg-icon="{{product.image}}" ng-class="md-avatar-icon"></md-icon>
-                            <div class="md-list-item-text" ng-class="md-offset">
-                                <h3> {{ product.name }} </h3>
-                                <p> Vues : {{ product.count }} </p>
-                                <p> Magasin : {{ product.retailer.name }} </p>
-                            </div>
+                        <md-list-item ng-repeat="product in stats.top_product_retailers">
+                            <span><b>{{ product.name }}</b>, Vues : {{ product.count }}, {{ product.retailer.name }}</span>
                         </md-list-item>
                         <md-divider></md-divider>
                     </md-list>
                     
-                    <md-list ng-if="stats.top_listed_products">
+                    <md-list ng-if="stats.top_listed_products && stats.top_listed_products.length > 0">
                         <md-subheader class="md-no-sticky">Les 5 produits qui reviennent le plus souvent dans la liste d'épicerie des utilisateurs</md-subheader>
-                        <md-list-item class="md-2-line" ng-repeat="product in stats.top_listed_products">
-                            <md-icon md-svg-icon="{{product.image}}" ng-class="md-avatar-icon"></md-icon>
-                            <div class="md-list-item-text" ng-class="md-offset">
-                                <h3> {{ product.name }} </h3>
-                                <p> Vues : {{ product.count }} </p>
-                            </div>
+                        <md-list-item ng-repeat="product in stats.top_listed_products">
+                            <span><b>{{ product.name }}</b>, Vues : {{ product.count }}</span>
                         </md-list-item>
                         <md-divider></md-divider>
                     </md-list>
                     
-                    <md-list ng-if="stats.top_viewed_products">
+                    <md-list ng-if="stats.top_viewed_products && stats.top_viewed_products.length > 0">
                         <md-subheader class="md-no-sticky">Les 5 produits les plus visités par les utilisateurs</md-subheader>
-                        <md-list-item class="md-2-line" ng-repeat="product in stats.top_viewed_products">
-                            <md-icon ng-src="{{product.image}}" ng-class="md-avatar-icon"></md-icon>
-                            <div class="md-list-item-text" ng-class="md-offset">
-                                <h3> {{ product.name }} </h3>
-                                <p> Vues : {{ product.count }} </p>
-                            </div>
+                        <md-list-item ng-repeat="product in stats.top_viewed_products">
+                            <span><b>{{ product.name }}</b>, Vues : {{ product.count }}</span>
                         </md-list-item>
                         <md-divider></md-divider>
                     </md-list>
                     
-                    <md-list ng-if="stats.top_product_categories">
+                    <md-list ng-if="stats.top_product_categories && stats.top_product_categories.length > 0">
                         <md-subheader class="md-no-sticky">La catégorie de produits la plus visitée par les utilisateurs</md-subheader>
-                        <md-list-item class="md-2-line" ng-repeat="category in stats.top_product_categories">
-                            <div class="md-list-item-text" ng-class="md-offset">
-                                <h3> {{ category.name }} </h3>
-                                <p> Vues : {{ category.count }} </p>
-                            </div>
+                        <md-list-item ng-repeat="category in stats.top_product_categories">
+                            <span>
+                                <b>{{ category.name }} </b>,  Vues : {{ category.count }} 
+                            </span>
                         </md-list-item>
                         <md-divider></md-divider>
                     </md-list>
                     
-                    <md-list ng-if="stats.top_cart_products">
+                    <md-list ng-if="stats.top_cart_products && stats.top_cart_products.length > 0">
                         <md-subheader class="md-no-sticky">Les 5 produits les plus ajoutés au panier par les utilisateurs</md-subheader>
-                        <md-list-item class="md-2-line" ng-repeat="product in stats.top_cart_products">
-                            <md-icon md-svg-icon="{{product.image}}" ng-class="md-avatar-icon"></md-icon>
-                            <div class="md-list-item-text" ng-class="md-offset">
-                                <h3> {{ product.name }} </h3>
-                                <p> Vues : {{ product.count }} </p>
-                            </div>
+                        <md-list-item ng-repeat="product in stats.top_cart_products">
+                            <span><b>{{ product.name }}</b>, Vues : {{ product.count }}</span>
                         </md-list-item>
                         <md-divider></md-divider>
                     </md-list>
                     
-                    <md-list ng-if="stats.top_product_brands">
+                    <md-list ng-if="stats.top_product_brands && stats.top_product_brands.length > 0">
                         <md-subheader class="md-no-sticky">Les 5 marques les plus ajoutées au panier par les utilisateurs</md-subheader>
-                        <md-list-item class="md-2-line" ng-repeat="brand in stats.top_product_brands">
-                            <md-icon ng-src="{{brand.image}}" ng-class="md-avatar-icon"></md-icon>
-                            <div class="md-list-item-text" ng-class="md-offset">
-                                <h3> {{ brand.name }} </h3>
-                                <p> Vues : {{ brand.count }} </p>
-                            </div>
+                        <md-list-item ng-repeat="brand in stats.top_product_brands">
+                            <span>
+                                <b>{{ brand.name }} </b>,  Vues : {{ brand.count }} 
+                            </span>
                         </md-list-item>
                         <md-divider></md-divider>
                     </md-list>
                     
-                    <md-list ng-if="stats.top_cart_product_states">
+                    <md-list ng-if="stats.top_cart_product_states && stats.top_cart_product_states.length > 0">
                         <md-subheader class="md-no-sticky">Origine des produits ajoutés au panier par les utilisateurs</md-subheader>
-                        <md-list-item class="md-2-line" ng-repeat="state in stats.top_cart_product_states">
-                            <div class="md-list-item-text">
-                                <h3> {{ state.state }} </h3>
-                                <p> Vues : {{ state.count }} </p>
-                            </div>
+                        <md-list-item ng-repeat="state in stats.top_cart_product_states">
+                            <span>
+                                <b>{{ state.state }} </b>,  Vues : {{ state.count }} 
+                            </span>
                         </md-list-item>
                         <md-divider></md-divider>
                     </md-list>
                     
-                    <md-list ng-if="stats.top_viewed_product_states">
+                    <md-list ng-if="stats.top_viewed_product_states && stats.top_viewed_product_states.length > 0">
                         <md-subheader class="md-no-sticky">Origine des produits visités par les utilisateurs</md-subheader>
-                        <md-list-item class="md-2-line" ng-repeat="state in stats.top_viewed_product_states">
-                            <div class="md-list-item-text">
-                                <h3> {{ state.state }} </h3>
-                                <p> Vues : {{ state.count }} </p>
-                            </div>
+                        <md-list-item ng-repeat="state in stats.top_viewed_product_states">
+                            <span>
+                                <b>{{ state.state }} </b>,  Vues : {{ state.count }} 
+                            </span>
                         </md-list-item>
                         <md-divider></md-divider>
                     </md-list>

@@ -99,7 +99,7 @@ class Statistics
             $in_flyer = -1, 
             $bio = -1,
             $action = 0,
-            $limit) 
+            $limit = 5) 
     {
         
         if($period == 0)
@@ -138,11 +138,75 @@ class Statistics
             $action_sql = "WHERE (type = 0 OR type = 1) ";
         }
         
+        $limit_sql = " LIMIT ".$limit;
+        
+        if($limit == -1)
+        {
+            $limit_sql = "";
+        }
+        
         $query = $this->CI->db->query("SELECT COUNT(id) as count, product_id FROM "
-                .PRODUCT_STATS." ".$action_sql." ".$in_flyer_sql." ".$period_sql." ".$bio_sql." GROUP BY product_id ORDER BY count ".$order." LIMIT ".$limit);
+                .PRODUCT_STATS." ".$action_sql." ".$in_flyer_sql." ".$period_sql." ".$bio_sql." GROUP BY product_id ORDER BY count ".$order.$limit_sql);
         
         
         return $this->get_products_from_query($query);
+    }
+    
+    private function get_total_products(
+            $period = 0, 
+            $in_flyer = -1, 
+            $bio = -1,
+            $action = 0) 
+    {
+         if($period == 0)
+        {
+            // Get products for current month
+            $period_sql = " AND MONTH(date_created) = MONTH(CURRENT_DATE()) AND YEAR(date_created) = YEAR(CURRENT_DATE())";
+        }
+        else
+        {
+            // Get products for current year
+            $period_sql = " AND YEAR(date_created) = YEAR(CURRENT_DATE())";
+        }
+        
+        if($in_flyer == -1)
+        {
+            $in_flyer_sql = "";
+        }
+        else
+        {
+            $in_flyer_sql = " AND in_flyer = ".$in_flyer;
+        }
+        
+        if($bio == -1)
+        {
+            $bio_sql = "";
+        }
+        else
+        {
+            $bio_sql = "AND bio = ".$bio;
+        }
+        
+        $action_sql = " WHERE type = ".$action;
+        
+        if($action == -1)
+        {
+            $action_sql = " WHERE (type = 0 OR type = 1) ";
+        }
+        
+        $query = $this->CI->db->query("SELECT COUNT(id) as count FROM "
+                .PRODUCT_STATS." ".$action_sql." ".$in_flyer_sql." ".$period_sql." ".$bio_sql);
+        
+        return $query->row()->count;
+    }
+    
+    public function get_percentage_bio($period = 0, $action = 0) 
+    {
+        $bio_count = $this->get_total_products($period, -1, 0, $action);
+        
+        $non_bio_count = $this->get_total_products($period, -1, 1, $action);
+        
+        return ((float)$bio_count / (float)($bio_count + $non_bio_count)) * 100;
     }
      
     /**
@@ -214,7 +278,7 @@ class Statistics
             $period_sql = " AND YEAR(date_created) = YEAR(CURRENT_DATE())";
         }
         
-        $query = $this->CI->db->query("SELECT count(id) as count, state FROM ".PRODUCT_STATS." ".$action_sql." ".$period_sql." GROUP BY state order by count ".$order." LIMIT ".$limit);
+        $query = $this->CI->db->query("SELECT count(id) as count, state FROM ".PRODUCT_STATS." ".$action_sql." ".$period_sql." AND state != '' GROUP BY state order by count ".$order." LIMIT ".$limit);
         
         return $query->result();
     }
@@ -252,7 +316,7 @@ class Statistics
         }
         
         $products_join_clause = " INNER JOIN ".PRODUCT_TABLE." ON (".PRODUCT_STATS.".product_id = ".PRODUCT_TABLE.".id) ";
-        $subcategories_join_clause = " INNER JOIN ".SUB_CATEGORY_TABLE." ON (".SUB_CATEGORY_TABLE.".id = ".PRODUCT_TABLE.".subcategory_id) ";
+        $subcategories_join_clause = " LEFT OUTER JOIN ".SUB_CATEGORY_TABLE." ON (".SUB_CATEGORY_TABLE.".id = ".PRODUCT_TABLE.".subcategory_id) ";
         
         $query_string = "SELECT count(".PRODUCT_STATS.".id) as count, ".SUB_CATEGORY_TABLE.".product_category_id FROM ".PRODUCT_STATS." ".$products_join_clause." ".$subcategories_join_clause." ".$period_sql." GROUP BY product_category_id order by count ".$order." LIMIT ".$limit;
         
