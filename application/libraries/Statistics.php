@@ -202,9 +202,9 @@ class Statistics
     
     public function get_percentage_bio($period = 0, $action = 0) 
     {
-        $bio_count = $this->get_total_products($period, -1, 0, $action);
+        $non_bio_count = $this->get_total_products($period, -1, 0, $action);
         
-        $non_bio_count = $this->get_total_products($period, -1, 1, $action);
+        $bio_count = $this->get_total_products($period, -1, 1, $action);
         
         return ((float)$bio_count / (float)($bio_count + $non_bio_count)) * 100;
     }
