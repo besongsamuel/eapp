@@ -206,7 +206,7 @@ class Statistics
         
         $bio_count = $this->get_total_products($period, -1, 1, $action);
         
-        return ((float)$bio_count / (float)($bio_count + $non_bio_count)) * 100;
+        return round(((float)$bio_count / (float)($bio_count + $non_bio_count)) * 100, 2);
     }
      
     /**
