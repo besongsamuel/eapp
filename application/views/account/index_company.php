@@ -414,17 +414,19 @@ $(document).ready(function()
                     <md-subheader class="md-no-sticky">La proportion des produits biologiques ajoutés au panier ou visitées par les utilisateurs</md-subheader>
 
                     <div>
+                        {{stats.get_percentage_bio_added_to_cart}} % de produits  bio sont ajoutées au panier
                         <div class="progress">
                             <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40"
                             aria-valuemin="0" aria-valuemax="100" style="width:{{stats.get_percentage_bio_added_to_cart}}%">
-                                {{stats.get_percentage_bio_added_to_cart}} % de produits  bio sont ajoutées au panier
+                                {{stats.get_percentage_bio_added_to_cart}} %
                             </div>
                         </div>
 
+                        {{stats.get_percentage_bio_viewed}} % de produits  bio sont visitées
                         <div class="progress">
                             <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="50"
                                 aria-valuemin="0" aria-valuemax="100" style="width:{{stats.get_percentage_bio_viewed}}%">
-                                {{stats.get_percentage_bio_viewed}} % de produits  bio sont visitées
+                                {{stats.get_percentage_bio_viewed}} %
                             </div>
                         </div>
 
@@ -451,6 +453,16 @@ $(document).ready(function()
                             ng-if="stats.top_cart_products && stats.top_cart_products.length > 0" 
                             data="stats.top_cart_products" 
                             caption="Les 5 produits les plus ajoutés au panier par les utilisateurs"></top-products>
+                        
+                        <top-products 
+                            ng-if="stats.top_searched_products && stats.top_searched_products.length > 0" 
+                            data="stats.top_searched_products" 
+                            caption="Les 5 produits les plus recherchés par les utilisateurs"></top-products>
+                        
+                        <top-products 
+                            ng-if="stats.top_listed_products && stats.top_listed_products.length > 0" 
+                            data="stats.top_listed_products" 
+                            caption="Quels sont les 5 produits qui reviennent le plus souvent dans la liste d'épicerie des utilisateurs"></top-products>
                         
                         <top-products 
                             ng-if="stats.top_product_brands && stats.top_product_brands.length > 0" 
