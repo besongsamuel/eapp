@@ -413,84 +413,66 @@ $(document).ready(function()
                     
                     <md-subheader class="md-no-sticky">La proportion des produits biologiques ajoutés au panier ou visitées par les utilisateurs</md-subheader>
 
-                    <div class="layout-padding">
-                        <p> Pourcentage produits bio ajoutées au panier : <b>{{stats.get_percentage_bio_added_to_cart}} % </b></p>
-                        <p> Pourcentage produits bio visitées : <b>{{stats.get_percentage_bio_viewed}} % </b></p>
+                    <div>
+                        <div class="progress">
+                            <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40"
+                            aria-valuemin="0" aria-valuemax="100" style="width:{{stats.get_percentage_bio_added_to_cart}}%">
+                                {{stats.get_percentage_bio_added_to_cart}} % de produits  bio sont ajoutées au panier
+                            </div>
+                        </div>
+
+                        <div class="progress">
+                            <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="50"
+                                aria-valuemin="0" aria-valuemax="100" style="width:{{stats.get_percentage_bio_viewed}}%">
+                                {{stats.get_percentage_bio_viewed}} % de produits  bio sont visitées
+                            </div>
+                        </div>
+
                         <md-divider></md-divider>
                     </div>
                     
-                    <md-list ng-if="stats.top_product_retailers && stats.top_product_retailers.length > 0">
-                        <md-subheader class="md-no-sticky">Les 5 produits qui reviennent le plus souvent en circulaire</md-subheader>
-                        <md-list-item ng-repeat="product in stats.top_product_retailers">
-                            <span><b>{{ product.name }}</b>, Vues : {{ product.count }}, {{ product.retailer.name }}</span>
-                        </md-list-item>
-                        <md-divider></md-divider>
-                    </md-list>
-                    
-                    <md-list ng-if="stats.top_listed_products && stats.top_listed_products.length > 0">
-                        <md-subheader class="md-no-sticky">Les 5 produits qui reviennent le plus souvent dans la liste d'épicerie des utilisateurs</md-subheader>
-                        <md-list-item ng-repeat="product in stats.top_listed_products">
-                            <span><b>{{ product.name }}</b>, Vues : {{ product.count }}</span>
-                        </md-list-item>
-                        <md-divider></md-divider>
-                    </md-list>
-                    
-                    <md-list ng-if="stats.top_viewed_products && stats.top_viewed_products.length > 0">
-                        <md-subheader class="md-no-sticky">Les 5 produits les plus visités par les utilisateurs</md-subheader>
-                        <md-list-item ng-repeat="product in stats.top_viewed_products">
-                            <span><b>{{ product.name }}</b>, Vues : {{ product.count }}</span>
-                        </md-list-item>
-                        <md-divider></md-divider>
-                    </md-list>
-                    
-                    <md-list ng-if="stats.top_product_categories && stats.top_product_categories.length > 0">
-                        <md-subheader class="md-no-sticky">La catégorie de produits la plus visitée par les utilisateurs</md-subheader>
-                        <md-list-item ng-repeat="category in stats.top_product_categories">
-                            <span>
-                                <b>{{ category.name }} </b>,  Vues : {{ category.count }} 
-                            </span>
-                        </md-list-item>
-                        <md-divider></md-divider>
-                    </md-list>
-                    
-                    <md-list ng-if="stats.top_cart_products && stats.top_cart_products.length > 0">
-                        <md-subheader class="md-no-sticky">Les 5 produits les plus ajoutés au panier par les utilisateurs</md-subheader>
-                        <md-list-item ng-repeat="product in stats.top_cart_products">
-                            <span><b>{{ product.name }}</b>, Vues : {{ product.count }}</span>
-                        </md-list-item>
-                        <md-divider></md-divider>
-                    </md-list>
-                    
-                    <md-list ng-if="stats.top_product_brands && stats.top_product_brands.length > 0">
-                        <md-subheader class="md-no-sticky">Les 5 marques les plus ajoutées au panier par les utilisateurs</md-subheader>
-                        <md-list-item ng-repeat="brand in stats.top_product_brands">
-                            <span>
-                                <b>{{ brand.name }} </b>,  Vues : {{ brand.count }} 
-                            </span>
-                        </md-list-item>
-                        <md-divider></md-divider>
-                    </md-list>
-                    
-                    <md-list ng-if="stats.top_cart_product_states && stats.top_cart_product_states.length > 0">
-                        <md-subheader class="md-no-sticky">Origine des produits ajoutés au panier par les utilisateurs</md-subheader>
-                        <md-list-item ng-repeat="state in stats.top_cart_product_states">
-                            <span>
-                                <b>{{ state.state }} </b>,  Vues : {{ state.count }} 
-                            </span>
-                        </md-list-item>
-                        <md-divider></md-divider>
-                    </md-list>
-                    
-                    <md-list ng-if="stats.top_viewed_product_states && stats.top_viewed_product_states.length > 0">
-                        <md-subheader class="md-no-sticky">Origine des produits visités par les utilisateurs</md-subheader>
-                        <md-list-item ng-repeat="state in stats.top_viewed_product_states">
-                            <span>
-                                <b>{{ state.state }} </b>,  Vues : {{ state.count }} 
-                            </span>
-                        </md-list-item>
-                        <md-divider></md-divider>
-                    </md-list>
-                    
+                    <div class="row">
+                        
+                        <top-products ng-if="stats.top_product_retailers && stats.top_product_retailers.length > 0" data="stats.top_product_retailers" caption="Les 5 produits qui reviennent le plus souvent en circulaire"></top-products>
+
+                        <top-products ng-if="stats.top_listed_products && stats.top_listed_products.length > 0" data="stats.top_listed_products" caption="Les 5 produits qui reviennent le plus souvent dans la liste d'épicerie des utilisateurs"></top-products>
+
+                        <top-products 
+                            ng-if="stats.top_viewed_products && stats.top_viewed_products.length > 0" 
+                            data="stats.top_viewed_products" 
+                            caption="Les 5 produits les plus visités par les utilisateurs"></top-products>
+                        
+                        <top-products 
+                            ng-if="stats.top_product_categories && stats.top_product_categories.length > 0" 
+                            data="stats.top_product_categories" 
+                            caption="La catégorie de produits la plus visitée par les utilisateurs"></top-products>
+                        
+                        <top-products 
+                            ng-if="stats.top_cart_products && stats.top_cart_products.length > 0" 
+                            data="stats.top_cart_products" 
+                            caption="Les 5 produits les plus ajoutés au panier par les utilisateurs"></top-products>
+                        
+                        <top-products 
+                            ng-if="stats.top_product_brands && stats.top_product_brands.length > 0" 
+                            data="stats.top_product_brands" 
+                            caption="Les 5 marques les plus ajoutées au panier par les utilisateurs"></top-products>
+                        
+                        <top-products 
+                            ng-if="stats.top_product_brands && stats.top_product_brands.length > 0" 
+                            data="stats.top_product_brands" 
+                            caption="Les 5 marques les plus ajoutées au panier par les utilisateurs"></top-products>
+                        
+                        <top-products 
+                            ng-if="stats.top_product_brands && stats.top_cart_product_states.length > 0" 
+                            data="stats.top_cart_product_states" 
+                            caption="Origine des produits ajoutés au panier par les utilisateurs"></top-products>
+                        
+                        <top-products 
+                            ng-if="stats.top_viewed_product_states && stats.top_viewed_product_states.length > 0" 
+                            data="stats.top_viewed_product_states" 
+                            caption="Origine des produits visités par les utilisateurs"></top-products>
+
+                    </div>
                 </div>
             </md-tab>
             

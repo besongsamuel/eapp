@@ -1,10 +1,4 @@
-.message
-{
-    text-align: center;
-    margin-top: 20px;
-    margin-bottom: 20px;
-}
-
+<style>
 .list-type5
 {
     margin-top: 20px;
@@ -58,3 +52,18 @@ overflow: hidden;
 content: counter(li-counter);
 counter-increment: li-counter;
 }
+
+
+</style>
+
+    <div class="col-sm-6" style="min-height : 342px !important;">
+        <md-subheader class="md-no-sticky">{{caption}}</md-subheader>
+        <md-divider></md-divider>
+        <div class="list-type5">
+            <ol>
+                <li ng-repeat="product in products"><a href="#"><span><b>{{ product.name }}</b>, Vues : {{ product.count }}, {{ product.retailer.name }}</span> </a></li>
+            </ol>
+        </div>
+    </div>
+    
+

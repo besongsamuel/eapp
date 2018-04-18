@@ -253,7 +253,7 @@ class Statistics
             $period_sql = " AND YEAR(date_created) = YEAR(CURRENT_DATE())";
         }
         
-        $query = $this->CI->db->query("SELECT count(id) as count, country, product_id FROM ".PRODUCT_STATS." ".$action_sql." ".$period_sql." GROUP BY country, product_id order by count ".$order." LIMIT ".$limit);
+        $query = $this->CI->db->query("SELECT count(id) as count, country as name, product_id FROM ".PRODUCT_STATS." ".$action_sql." ".$period_sql." GROUP BY country, product_id order by country ".$order." LIMIT ".$limit);
         
         return $query->result();
     }
@@ -278,7 +278,7 @@ class Statistics
             $period_sql = " AND YEAR(date_created) = YEAR(CURRENT_DATE())";
         }
         
-        $query = $this->CI->db->query("SELECT count(id) as count, state FROM ".PRODUCT_STATS." ".$action_sql." ".$period_sql." AND state != '' GROUP BY state order by count ".$order." LIMIT ".$limit);
+        $query = $this->CI->db->query("SELECT count(id) as count, state as name FROM ".PRODUCT_STATS." ".$action_sql." ".$period_sql." AND state != '' GROUP BY state order by count ".$order." LIMIT ".$limit);
         
         return $query->result();
     }

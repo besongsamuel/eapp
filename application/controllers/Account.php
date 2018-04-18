@@ -57,7 +57,7 @@ class Account extends CI_Controller
             // Get top viewed products
             $stats->top_viewed_products = $this->statistics->get_top_products($period, $order, -1,  -1, 0, $limit);
             
-             // Get top cart products
+            // Get top cart products
             $stats->top_cart_products = $this->statistics->get_top_products($period, $order, -1,  -1, 1, $limit);
             
             //Get top viewed product states
@@ -67,6 +67,12 @@ class Account extends CI_Controller
         
         if($this->user->subscription == COMPANY_SUBSCRIPTION + 2)
         {
+            // Get top viewed products
+            $stats->top_searched_products = $this->statistics->get_top_products($period, $order, -1,  -1, 3, $limit);
+            
+            // Get top viewed products
+            $stats->top_listed_products = $this->statistics->get_top_products($period, $order, -1,  -1, 2, $limit);
+            
             // Get top products added to cart by state
             $stats->top_cart_product_states = $this->statistics->get_top_states($order, $period, 1, $limit);
             
