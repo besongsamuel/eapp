@@ -4,6 +4,9 @@
  * and open the template in the editor.
  */
 
+const STAT_TYPE_ADDED_TO_LIST = 2;
+
+
 angular.module("eappApp").controller("UserListController", ["$rootScope", "$scope", "$mdDialog", "$http", "$q", "eapp", function($rootScope, $scope, $mdDialog, $http, $q, eapp) 
 {
     
@@ -129,6 +132,8 @@ angular.module("eappApp").controller("UserListController", ["$rootScope", "$scop
         product.quantity = 1;
 
         $scope.AddProductToList(product);
+        
+        eapp.recordProductStat(product.id, STAT_TYPE_ADDED_TO_LIST, true);
 
         $scope.saveMyList();
     };

@@ -132,6 +132,15 @@ class Shop extends CI_Controller {
         
         $products["settings"] = $this->get_settings($category_id, $store_id, $resultsFilter, $my_location, $distance);
         
+        if($filter && !empty($filter))
+        {
+            foreach ($products["products"] as $sp) 
+            {
+                $this->record_product_stat($sp->id, STAT_TYPE_SEARCH);
+            }
+        }
+        
+        
         echo json_encode($products);
     }
     

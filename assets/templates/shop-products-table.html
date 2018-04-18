@@ -18,16 +18,18 @@
         </div>
     </div>
     
-    <md-toolbar class="md-table-toolbar md-default">
-        <div class="md-toolbar-tools">
-        <md-icon>search</md-icon>
-        <form flex name="filter.form">
-          <input class="input-search" type="text" ng-model="query.filter" ng-model-options="filter.options" placeholder="Recherche">
+    <div style="margin-top : 15px;">
+        <form flex layout-padding name="filter.form" ng-submit="search()">
+            <md-input-container class="md-block" md-no-float>
+                <md-icon>search</md-icon>
+                <input ng-model="query.filter" ng-model-options="filter.options" placeholder="Recherche">
+            </md-input-container>
+
         </form>
-      </div>
-    </md-toolbar>
+    </div>
     
     
+
     
     <p class="md-otiprix-text" style="text-align: center;" ng-show="products.length === 0">Aucun résultat trouvé</p>
     

@@ -598,11 +598,12 @@ angular.module('eappApp').factory('eapp', ['$http','$rootScope', '$mdDialog', fu
         return $http.post(eappService.getSiteUrl().concat("account/toggle_new"), null);
     };
     
-    eappService.recordProductStat = function(storeProductId, type)
+    eappService.recordProductStat = function(storeProductId, type, is_product = false)
     {
         var formData = new FormData();
         formData.append("id", storeProductId);
         formData.append("type", type);
+        formData.append("is_product", JSON.stringify(is_product));
         
         return $http.post(eappService.getSiteUrl().concat("/eapp/record_stat"), formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}});
     };

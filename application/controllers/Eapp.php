@@ -510,7 +510,7 @@ class Eapp extends CI_Controller
     
     public function record_stat() 
     {
-        $this->record_product_stat($this->input->post('id'), $this->input->post('type'));
+        $this->record_product_stat($this->input->post('id'), $this->input->post('type'), json_decode($this->input->post('is_product')));
     }
    
 }

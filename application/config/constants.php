@@ -99,6 +99,8 @@ defined('POST_TYPE_STAT')           OR define('POST_TYPE_STAT', 1);
 defined('COMPANY_SUBSCRIPTION')     OR define('COMPANY_SUBSCRIPTION', 10);
 defined('STAT_TYPE_CLICK')          OR define('STAT_TYPE_CLICK', 0);
 defined('STAT_TYPE_ADD_TO_CART')    OR define('STAT_TYPE_ADD_TO_CART', 1);
+defined('STAT_TYPE_ADD_TO_LIST')    OR define('STAT_TYPE_ADD_TO_LIST', 2);
+defined('STAT_TYPE_SEARCH')         OR define('STAT_TYPE_SEARCH', 3);
 
 defined('CONNECTION_TYPE')          OR define('CONNECTION_TYPE', $http);
 defined('OtIPRIX_ADDRESS')          OR define('OtIPRIX_ADDRESS', '550 Avenue Saint-Dominique, Saint-Hyacinthe, J2S 5M6');

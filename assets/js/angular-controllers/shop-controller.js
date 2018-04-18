@@ -18,6 +18,8 @@ angular.module('eappApp').controller('ShopController', ["$scope", "$q", "$http",
     
     $scope.root = $rootScope;
     
+    var ctrl = this;
+    
     /**
      * This variable is true when a store is selected. 
      */
@@ -272,27 +274,30 @@ angular.module('eappApp').controller('ShopController', ["$scope", "$q", "$http",
         return false;
     };
   
-    $scope.$watch('query.filter', function (newValue, oldValue) 
+  
+    ctrl.oldValue = null;
+    
+    $scope.search = function()
     {
-        if(!oldValue) 
+        if(!ctrl.oldValue) 
         {
             bookmark = $scope.query.page;
         }
 
-        if(newValue !== oldValue) 
+        if($scope.query.filter !== ctrl.oldValue) 
         {
             $scope.query.page = 1;
         }
 
-        if(!newValue) 
+        if(!ctrl.oldValue) 
         {
             $scope.query.page = bookmark;
         }
         
         
         $scope.getProducts();
-        
-    });
+    };
+    
     
     $scope.refresh = function(viewConfig)
     {

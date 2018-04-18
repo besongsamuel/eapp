@@ -616,10 +616,26 @@ class CI_Controller {
         }
     }
     
-    protected function record_product_stat($id, $type) 
+    protected function record_product_stat($id, $type, $is_product = false) 
     {
         
-        $store_product = $this->cart_model->get(STORE_PRODUCT_TABLE, $id);
+        if(!$is_product)
+        {
+            $store_product = $this->cart_model->get(STORE_PRODUCT_TABLE, $id);
+        }
+        else
+        {
+            $store_product = new stdClass();
+            $store_product->id = -1;
+            $store_product->product_id = $id;
+            $store_product->organic = -1;
+            $store_product->in_flyer = -1;
+            $store_product->brand_id = -1;
+            $store_product->retailer_id = -1;
+            $store_product->state = "";
+            $store_product->country = "";
+        }
+        
         
         $today = date("Y-m-d");
         
@@ -668,6 +684,5 @@ class CI_Controller {
             }            
         }
     }
-       
 
 }
