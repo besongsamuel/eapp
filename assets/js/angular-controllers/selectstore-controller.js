@@ -106,6 +106,7 @@ angular.module('eappApp').controller('SelectStoreController', ["$scope", "$mdDia
     {
         $scope.clearSessionItems();  
 	var store_id = parseInt(store.id);
+        eapp.recordRetailerHit(store.id);
 	window.sessionStorage.setItem("store_id", store_id); 
         window.sessionStorage.setItem("store_name", store.name); 
 	window.location =  $scope.site_url.concat("/shop");

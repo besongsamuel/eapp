@@ -4,8 +4,11 @@
  * and open the template in the editor.
  */
 
+
 angular.module('eappApp').controller('AccountController', ["$scope", "$http", "$mdToast", "eapp", "$company", "$rootScope", "$mdDialog", "$timeout", function($scope, $http, $mdToast, eapp, $company, $rootScope, $mdDialog, $timeout) 
-{    
+{   
+    "use strict";
+    
     $scope.address = 
     {
         name : ''

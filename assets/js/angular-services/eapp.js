@@ -333,6 +333,48 @@ angular.module('eappApp').factory('eapp', ['$http','$rootScope', '$mdDialog', fu
         return $http.post(eappService.getSiteUrl().concat("admin/hit"), formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}});
     };
     
+    eappService.recordRetailerHit = function(id)
+    {
+        var formData = new FormData();
+        formData.append("id", id);
+        
+        if($rootScope.isUserLogged)
+        {
+            formData.append("distance", $rootScope.profile.optimization_distance);
+            formData.append("postcode", $rootScope.profile.postcode);
+            return $http.post(eappService.getSiteUrl().concat("eapp/record_retailer_hit"), formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}});
+
+        }
+        else
+        {
+            var geocoder = new google.maps.Geocoder;
+            var latlng = {lat: parseFloat($rootScope.latitude), lng: parseFloat($rootScope.longitude)};
+            geocoder.geocode({'location': latlng}, function(results, status) 
+            {
+                
+                var postcode = '';
+                
+                if (status === 'OK') 
+                {
+                    if(results[0]) 
+                    {
+                        if(results[0].address_components[8])
+                        {
+                            postcode = results[0].address_components[8].long_name;
+                        }
+                    } 
+                } 
+                
+                formData.append("postcode", postcode);
+                formData.append("distance", $rootScope.getCartDistance());
+                return $http.post(eappService.getSiteUrl().concat("eapp/record_retailer_hit"), formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}});
+
+                
+            });
+        }
+        
+    };
+    
     eappService.saveFavoriteStores = function(favoriteStores)
     {
         var formData = new FormData();
@@ -605,7 +647,42 @@ angular.module('eappApp').factory('eapp', ['$http','$rootScope', '$mdDialog', fu
         formData.append("type", type);
         formData.append("is_product", JSON.stringify(is_product));
         
-        return $http.post(eappService.getSiteUrl().concat("/eapp/record_stat"), formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}});
+        if($rootScope.isUserLogged)
+        {
+            formData.append("distance", $rootScope.getCartDistance());
+            formData.append("postcode", $rootScope.profile.postcode);
+            return $http.post(eappService.getSiteUrl().concat("/eapp/record_stat"), formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}});
+
+        }
+        else
+        {
+            var geocoder = new google.maps.Geocoder;
+            var latlng = {lat: parseFloat($rootScope.latitude), lng: parseFloat($rootScope.longitude)};
+            geocoder.geocode({'location': latlng}, function(results, status) 
+            {
+                
+                var postcode = '';
+                
+                if (status === 'OK') 
+                {
+                    if(results[0]) 
+                    {
+                        if(results[0].address_components[8])
+                        {
+                            postcode = results[0].address_components[8].long_name;
+                        }
+                    } 
+                } 
+                
+                formData.append("postcode", postcode);
+                formData.append("distance", $rootScope.getCartDistance());
+                return $http.post(eappService.getSiteUrl().concat("/eapp/record_stat"), formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}});
+
+                
+            });
+        }
+        
+        
     };
 
     return eappService;

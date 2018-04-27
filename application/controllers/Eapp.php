@@ -504,13 +504,21 @@ class Eapp extends CI_Controller
             
             echo json_encode($this->eapp_model->get_products_with_store_products($filter, $user_stores));
         }
-        
-        
     }
     
     public function record_stat() 
     {
-        $this->record_product_stat($this->input->post('id'), $this->input->post('type'), json_decode($this->input->post('is_product')));
+        $this->record_product_stat(
+                $this->input->post('id'), 
+                $this->input->post('type'), 
+                json_decode($this->input->post('is_product')),
+                $this->input->post('distance'),
+                $this->input->post('postcode'));
+    }
+    
+    public function record_retailer_hit() 
+    {
+        $this->record_retailer_visit($this->input->post('id'), $this->input->post('distance'), $this->input->post('postcode'));
     }
    
 }

@@ -50,8 +50,13 @@ class Account extends CI_Controller
         
         $stats->top_cart_bio_products = $this->statistics->get_top_products($period, $order, -1,  1, 1, $limit);
         
+        $stats->get_product_count_per_month_for_most_visited_store = 
+                $this->statistics->get_product_count_per_month_for_most_visited_store($order, $period, 1);
+        
         if($this->user->subscription > COMPANY_SUBSCRIPTION)
         {
+            $stats->get_top_recurring_products = $this->statistics->get_top_recurring_products($period, $order, 0, $limit);
+            
             $stats->top_product_retailers = $this->statistics->get_top_product_retailers($order, $period, $limit);
             
             // Get top viewed products
@@ -62,6 +67,8 @@ class Account extends CI_Controller
             
             //Get top viewed product states
             $stats->top_viewed_product_states = $this->statistics->get_top_states($order, $period, 0, $limit);
+            
+            $stats->get_store_visitors_info = $this->statistics->get_store_visitors_info();
             
         }
         
@@ -79,6 +86,12 @@ class Account extends CI_Controller
             $stats->top_listed_products = $this->statistics->get_top_products($period, $order, -1,  -1, 2, $limit);
             
             $stats->top_product_brands = $this->statistics->get_top_product_brands($order, $period, $limit);
+            
+            $stats->get_top_visited_chains = $this->statistics->get_top_visited_chains($order, $period, $limit);
+            
+            $stats->get_product_visitors_info = $this->statistics->get_product_visitors_info(1);
+            
+            $stats->get_store_userlist_info = $this->statistics->get_store_userlist_info();
         }
                 
         echo json_encode($stats);

@@ -616,7 +616,28 @@ class CI_Controller {
         }
     }
     
-    protected function record_product_stat($id, $type, $is_product = false) 
+    protected function record_retailer_visit($id, $distance, $postcode)
+    {
+        $today = date("Y-m-d");
+        
+        $search_data = array(
+                        'session_id' => session_id(), 
+                        'retailer_id' => $id,
+                        'date_created' => $today);
+        
+        $session_statistics = $this->eapp_model->get_specific(CHAIN_VISITS, $search_data);
+        
+        if(!$session_statistics)
+        {
+            $search_data['distance'] = $distance;
+            $search_data['postcode'] = $postcode;
+            
+            $this->eapp_model->create(CHAIN_VISITS, $search_data);
+        }
+    }
+
+
+    protected function record_product_stat($id, $type, $is_product = false, $distance = -1, $postcode = "") 
     {
         
         if(!$is_product)
@@ -677,7 +698,9 @@ class CI_Controller {
                     'brand_id' => $store_product->brand_id,
                     'country' => $store_product->country,
                     'state' => $store_product->state,
-                    'type' => $type
+                    'type' => $type,
+                    'postcode' => $postcode,
+                    'distance' => $distance
                 );
                 
                 $this->cart_model->create(PRODUCT_STATS, $data);

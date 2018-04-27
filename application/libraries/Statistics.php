@@ -55,6 +55,23 @@ class Statistics
         return $result;
     }
     
+    private function get_retailers_from_query($query) 
+    {
+        $result = array();
+        
+        foreach ($query->result() as $row) 
+        {
+            if(isset($row->retailer_id))
+            {
+                $retailer = $this->CI->eapp_model->get(CHAIN_TABLE, $row->retailer_id);
+                
+                array_push($result, $retailer);
+            }
+        }
+        
+        return $result;
+    }
+    
     private function get_brands_from_query($query) 
     {
         $result = array();
@@ -147,6 +164,45 @@ class Statistics
         
         $query = $this->CI->db->query("SELECT COUNT(id) as count, product_id FROM "
                 .PRODUCT_STATS." ".$action_sql." ".$in_flyer_sql." ".$period_sql." ".$bio_sql." GROUP BY product_id ORDER BY count ".$order.$limit_sql);
+        
+        
+        return $this->get_products_from_query($query);
+    }
+    
+    public function get_top_recurring_products(
+            $period = 0, 
+            $order = 'desc', 
+            $action = 0,
+            $limit = 5) 
+    {
+        
+        if($period == 0)
+        {
+            // Get products for current month
+            $period_sql = " AND MONTH(date_created) = MONTH(CURRENT_DATE()) AND YEAR(date_created) = YEAR(CURRENT_DATE())";
+        }
+        else
+        {
+            // Get products for current year
+            $period_sql = " AND YEAR(date_created) = YEAR(CURRENT_DATE())";
+        }
+        
+        $action_sql = "WHERE type = ".$action;
+        
+        if($action == -1)
+        {
+            $action_sql = "WHERE (type = 0 OR type = 1) ";
+        }
+        
+        $limit_sql = " LIMIT ".$limit;
+        
+        if($limit == -1)
+        {
+            $limit_sql = "";
+        }
+        
+        $query = $this->CI->db->query("SELECT COUNT(id) as count, product_id FROM "
+                .CHAIN_STATS." ".$action_sql." ".$period_sql." GROUP BY product_id ORDER BY count ".$order.$limit_sql);
         
         
         return $this->get_products_from_query($query);
@@ -326,4 +382,133 @@ class Statistics
     }
     
     
+    public function get_top_visited_chains($order = 'desc', $period = 0, $limit = 5) 
+    {
+         if($period == 0)
+        {
+            // Get products for current month
+            $period_sql = " WHERE MONTH(date_created) = MONTH(CURRENT_DATE()) AND YEAR(date_created) = YEAR(CURRENT_DATE())";
+        }
+        else
+        {
+            // Get products for current year
+            $period_sql = " WHERE YEAR(date_created) = YEAR(CURRENT_DATE())";
+        }
+        
+        $query = $this->CI->db->query("SELECT count(id) as count, retailer_id FROM ".PRODUCT_STATS." ".$period_sql." GROUP BY retailer_id order by count ".$order." LIMIT ".$limit);
+        
+        return $this->get_retailers_from_query($query);
+    }
+    
+    public function get_store_visitors_info() 
+    {
+        $result = new stdClass();
+        
+        // Get all visits
+        $total_visits =  count($this->CI->db->query("SELECT count(*) FROM ".CHAIN_VISITS)->result());
+        
+        $my_store_visits = $this->CI->db->query("SELECT * FROM ".CHAIN_VISITS." WHERE retailer_id = ".$this->user->company->chain->id)->result();
+        
+        if(count($my_store_visits) > 0)
+        {
+            $result->visits = round((float)($total_visits / count($my_store_visits)) * 100, 2);
+        
+            $distance_total = 0;
+
+            foreach ($my_store_visits as $value) 
+            {
+                $distance_total += $value->distance;
+            }
+
+            $result->avg_distance = round((float)($distance_total / count($my_store_visits)), 2);
+            
+            return $result;
+            
+        }
+        
+        
+    }
+    
+    public function get_store_userlist_info() 
+    {
+        $result = new stdClass();
+        
+        // Get all visits
+        $total_users_with_favorite_stores =  count($this->CI->db->query("SELECT DISTINCT user_account_id FROM ".USER_FAVORITE_STORE_TABLE)->result());
+        
+        $users_with_my_store_as_favorite = $this->CI->db->query("SELECT DISTINCT user_account_id FROM ".USER_FAVORITE_STORE_TABLE." WHERE retailer_id = ".$this->user->company->chain->id)->result();
+        
+        if(count($users_with_my_store_as_favorite) > 0)
+        {
+            $result->users = round((float)($total_users_with_favorite_stores / count($users_with_my_store_as_favorite)) * 100, 2);
+            
+            return $result;
+        }
+        
+        
+    }
+    
+    public function get_product_visitors_info($action) 
+    {
+        $result = new stdClass();
+        
+        // Get all visits
+        $all_product_stats =  count($this->CI->db->query("SELECT count(*) FROM ".PRODUCT_STATS." WHERE type = ".$action)->result());
+        
+        $store_product_stats = $this->CI->db->query("SELECT * FROM ".PRODUCT_STATS." WHERE retailer_id = ".$this->user->company->chain->id." AND type = ".$action)->result();
+        
+        if(count($store_product_stats) > 0)
+        {
+            $result->visits = round((float)($all_product_stats / count($store_product_stats)) * 100, 2);
+        
+            $distance_total = 0;
+
+            foreach ($store_product_stats as $value) 
+            {
+                $distance_total += $value->distance;
+            }
+
+            $result->avg_distance = round((float)($distance_total / count($store_product_stats)), 2);
+            
+            return $result;
+            
+        }
+        
+        
+    }
+    
+    
+    
+    public function get_product_count_per_month_for_most_visited_store($order = 'desc', $period = 0, $limit = 5) 
+    {
+        $retailers =  $this->get_top_visited_chains($order, $period, $limit);
+        
+        if(sizeof($retailers) > 0)
+        {
+            $most_visited_retailer = $retailers[0];
+            
+            $month_year = "MONTH(date_created) as month, YEAR(date_created) as year";
+                        
+            $query = $this->CI->db->query("SELECT count(id) as count, ".$month_year." FROM ".CHAIN_STATS." WHERE retailer_id = ".$most_visited_retailer->id." GROUP BY year, month");
+            
+            $sum = 0;
+            
+            $result = $query->result();
+            
+            foreach ($result as $value) 
+            {
+                $sum += $value->count;
+            }
+            
+            if(count($result) == 0)
+            {
+                return 0;
+            }
+            
+            $avg =  $sum / count($result);
+            
+            return $avg;
+
+        }
+    }
 }

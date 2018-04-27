@@ -18,7 +18,7 @@ angular.module('eappApp').component("settingsItem",
     }
 });
 
-function SettingsItemController($scope)
+function SettingsItemController($scope, eapp)
 {
     ctrl = this;
     
@@ -73,6 +73,14 @@ function SettingsItemController($scope)
     
     ctrl.change = function(item)
     {
+        if(item.type == 'stores')
+        {
+            if(item.selected)
+            {
+                eapp.recordRetailerHit(item.id);
+            }
+        }
+        
         ctrl.onChange({item : item});
     };
     
