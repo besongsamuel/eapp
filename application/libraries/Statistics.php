@@ -477,7 +477,7 @@ class Statistics
     
     public function most_visited_store($order = 'desc', $period = 0, $limit = 5) 
     {
-        $result = new stdClass();
+        $mvs = new stdClass();
         
         $retailers =  $this->get_top_visited_chains($order, $period, $limit);
         
@@ -503,11 +503,11 @@ class Statistics
                 return;
             }
             
-            $result->avg =  $sum / count($result);
+            $mvs->avg =  $sum / count($result);
             
-            $result->retailer = $most_visited_retailer;
+            $mvs->retailer = $most_visited_retailer;
             
-            return $result;
+            return $mvs;
 
         }
     }
