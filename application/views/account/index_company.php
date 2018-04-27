@@ -32,7 +32,7 @@ $(document).ready(function()
         </div>
     </div>
     
-    <md-tabs md-dynamic-height md-border-bottom layout-padding md-selected="<?php echo $tabIndex; ?>">
+    <md-tabs md-stretch-tabs='always' md-dynamic-height md-border-bottom='true' md-swipe-content='true' layout-padding md-selected="<?php echo $tabIndex; ?>">
         
         <div class="container">
             
