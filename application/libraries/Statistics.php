@@ -411,7 +411,7 @@ class Statistics
         
         if(count($my_store_visits) > 0)
         {
-            $result->visits = round((float)($total_visits / count($my_store_visits)) * 100, 2);
+            $result->visits = round((float)(count($my_store_visits) / $total_visits) * 100, 2);
         
             $distance_total = 0;
 
@@ -425,8 +425,6 @@ class Statistics
             return $result;
             
         }
-        
-        
     }
     
     public function get_store_userlist_info() 
@@ -440,7 +438,7 @@ class Statistics
         
         if(count($users_with_my_store_as_favorite) > 0)
         {
-            $result->users = round((float)($total_users_with_favorite_stores / count($users_with_my_store_as_favorite)) * 100, 2);
+            $result->users = round((float)(count($users_with_my_store_as_favorite) / $total_users_with_favorite_stores) * 100, 2);
             
             return $result;
         }
@@ -459,7 +457,7 @@ class Statistics
         
         if(count($store_product_stats) > 0)
         {
-            $result->visits = round((float)($all_product_stats / count($store_product_stats)) * 100, 2);
+            $result->visits = round((float)(count($store_product_stats) / $all_product_stats) * 100, 2);
         
             $distance_total = 0;
 
@@ -476,8 +474,6 @@ class Statistics
         
         
     }
-    
-    
     
     public function get_product_count_per_month_for_most_visited_store($order = 'desc', $period = 0, $limit = 5) 
     {
