@@ -500,7 +500,7 @@ class Statistics
             
             if(count($result) == 0)
             {
-                return 0;
+                return;
             }
             
             $result->avg =  $sum / count($result);
