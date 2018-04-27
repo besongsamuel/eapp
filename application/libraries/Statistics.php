@@ -477,6 +477,8 @@ class Statistics
     
     public function get_product_count_per_month_for_most_visited_store($order = 'desc', $period = 0, $limit = 5) 
     {
+        $result = new stdClass();
+        
         $retailers =  $this->get_top_visited_chains($order, $period, $limit);
         
         if(sizeof($retailers) > 0)
@@ -501,9 +503,11 @@ class Statistics
                 return 0;
             }
             
-            $avg =  $sum / count($result);
+            $result->avg =  $sum / count($result);
             
-            return $avg;
+            $result->retailer = $most_visited_retailer;
+            
+            return $result;
 
         }
     }

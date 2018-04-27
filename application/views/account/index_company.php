@@ -554,19 +554,9 @@ $(document).ready(function()
                                         <div ng-if="stats.get_product_count_per_month_for_most_visited_store">
                                         
                                             <span class="col-sm-12">
-                                                Le magasin le plus visité entre environs {{stats.get_product_count_per_month_for_most_visited_store}} produits par mois en moyenne.
+                                                <b>{{stats.get_product_count_per_month_for_most_visited_store.retailer.name}}</b> entre environs {{stats.get_product_count_per_month_for_most_visited_store.avg}} produits par mois en moyenne.
                                             </span>
 
-                                            <div class="col-sm-12">
-                                                <div class="progress">
-                                                    <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="50"
-                                                        aria-valuemin="0" aria-valuemax="100" style="width:{{stats.get_product_count_per_month_for_most_visited_store}}%">
-                                                        {{stats.get_product_count_per_month_for_most_visited_store}} %
-                                                    </div>
-                                                </div>
-
-                                            </div>
-                                            
                                         </div>
                                         
                                         <top-products 
