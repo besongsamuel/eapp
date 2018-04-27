@@ -419,9 +419,7 @@ $(document).ready(function()
                     </div>
 
                     <div class="container" style="margin-top: 30px;">
-                        
-                        <top-products ng-if="stats.top_listed_products && stats.top_listed_products.length > 0" data="stats.top_listed_products" caption="Les 5 produits qui reviennent le plus souvent dans la liste d'épicerie des utilisateurs"></top-products>
-                        
+                                                
                         <div class="panel-group" role="tablist" id="accordion" aria-multiselectable="true">
                                                         
                             <div id="origin-products" class="panel panel-default">
@@ -656,7 +654,7 @@ $(document).ready(function()
                             
                             </div>
 
-                    </div>
+                        </div>
                     
                 </div>
             </md-tab>
