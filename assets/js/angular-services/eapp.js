@@ -340,8 +340,8 @@ angular.module('eappApp').factory('eapp', ['$http','$rootScope', '$mdDialog', fu
         
         if($rootScope.isUserLogged)
         {
-            formData.append("distance", $rootScope.profile.optimization_distance);
-            formData.append("postcode", $rootScope.profile.postcode);
+            formData.append("distance", $rootScope.getCartDistance());
+            formData.append("postcode", $rootScope.loggedUser.profile.postcode);
             return $http.post(eappService.getSiteUrl().concat("eapp/record_retailer_hit"), formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}});
 
         }
@@ -650,7 +650,7 @@ angular.module('eappApp').factory('eapp', ['$http','$rootScope', '$mdDialog', fu
         if($rootScope.isUserLogged)
         {
             formData.append("distance", $rootScope.getCartDistance());
-            formData.append("postcode", $rootScope.profile.postcode);
+            formData.append("postcode", $rootScope.loggedUser.profile.postcode);
             return $http.post(eappService.getSiteUrl().concat("/eapp/record_stat"), formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}});
 
         }
