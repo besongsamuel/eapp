@@ -50,8 +50,8 @@ class Account extends CI_Controller
         
         $stats->top_cart_bio_products = $this->statistics->get_top_products($period, $order, -1,  1, 1, $limit);
         
-        $stats->get_product_count_per_month_for_most_visited_store = 
-                $this->statistics->get_product_count_per_month_for_most_visited_store($order, $period, 1);
+        $stats->most_visited_store = 
+                $this->statistics->most_visited_store($order, $period, 1);
         
         if($this->user->subscription > COMPANY_SUBSCRIPTION)
         {

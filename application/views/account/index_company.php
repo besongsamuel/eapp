@@ -551,10 +551,10 @@ $(document).ready(function()
                                     
                                     <div class="panel-body">
                                         
-                                        <div ng-if="stats.get_product_count_per_month_for_most_visited_store">
+                                        <div ng-if="stats.most_visited_store">
                                         
                                             <span class="col-sm-12">
-                                                <b>{{stats.get_product_count_per_month_for_most_visited_store.retailer.name}}</b> entre environs {{stats.get_product_count_per_month_for_most_visited_store.avg}} produits par mois en moyenne.
+                                                <b>{{stats.most_visited_store.retailer.name}}</b> entre environs {{stats.most_visited_store.avg}} produits par mois en moyenne.
                                             </span>
 
                                         </div>

@@ -475,7 +475,7 @@ class Statistics
         
     }
     
-    public function get_product_count_per_month_for_most_visited_store($order = 'desc', $period = 0, $limit = 5) 
+    public function most_visited_store($order = 'desc', $period = 0, $limit = 5) 
     {
         $result = new stdClass();
         
