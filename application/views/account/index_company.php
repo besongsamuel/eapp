@@ -42,7 +42,7 @@ $(document).ready(function()
                 </div>
             </md-tab>
             
-            <md-tab label="Vos produits">
+            <md-tab label="Produits">
                 
                 <div ng-controller="UploadController" style="text-align: center;">
                     <div ng-show="success" class="alert alert-success" role="alert">      
@@ -91,7 +91,7 @@ $(document).ready(function()
                 
             </md-tab>
             
-            <md-tab label="Informations sur l'entreprise">
+            <md-tab label="Entreprise">
                 <div ng-controller="CompanyAccountController" >
                     
                     <div id="error_message" class="alert alert-success" ng-show="successMessage">
@@ -137,7 +137,7 @@ $(document).ready(function()
                 </div>
             </md-tab>
             
-            <md-tab label="Modifier mes renseignements personnels" md-on-select="onTabSelected(2)">
+            <md-tab label="Informations personnels" md-on-select="onTabSelected(2)">
 
                 <div ng-controller="AccountController">
                 
@@ -401,20 +401,28 @@ $(document).ready(function()
                     
                 </div>
                 
-                
-                
             </md-tab>
             
-            <md-tab label="Statistics">
+            <md-tab label="Statistiques">
                 
-                <div ng-controller="CompanyStatsController">
+                <div ng-controller="CompanyStatsController as ctrl">
                     
-                    <div class="row">
-                        <div class="col-sm-3 col-md-4">
+                    <div layout="row" layout-align='center center' layout-padding>
+                        <div class='col-sm-12'>
+                            
+                            <md-radio-group ng-change="ctrl.periodChanged()" layout="row" layout-align='center center' ng-model="period" >
+
+                                <md-radio-button flex='10' value="1" class="md-primary">Année</md-radio-button>
+                                <md-radio-button flex='10' value="0" class="md-primary"> Mois </md-radio-button>
+
+                            </md-radio-group>
                             
                         </div>
-                        <div class="col-sm-3 col-md-4">
-                            
+                    </div>
+                    
+                    <div layout='row' layout-align='center center'>
+                        <div>
+                            <md-progress-circular ng-show='loading' md-mode="indeterminate"></md-progress-circular>
                         </div>
                     </div>
 
@@ -432,7 +440,7 @@ $(document).ready(function()
                                     </h4>
                                 </div>
                                 
-                                <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+                                <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
                                     
                                     <div class="panel-body">
                                     
@@ -657,6 +665,9 @@ $(document).ready(function()
                         </div>
                     
                 </div>
+                    
+                </div>
+                
             </md-tab>
             
         </div>

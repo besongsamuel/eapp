@@ -4,26 +4,42 @@ angular.module('eappApp').controller('CompanyStatsController', function($scope, 
     
     var ctrl = this;
     
-    $scope.Init = function()
-    {
-        $scope.company = 
-        {
-            id : $scope.loggedUser.company.id,
-            name : $scope.loggedUser.company.name,
-            neq : $scope.loggedUser.company.neq
-        };
-        
-        $company.getStats('desc', 5, 1, getStatsSuccess);
-        
-    };
+    $scope.period = 1;
     
-    function getStatsSuccess(response)
+    $scope.sort = "desc";
+    
+    $scope.limit = 5;
+    
+    ctrl.periodChanged = function()
     {
-        $scope.stats = response.data;
+        $scope.loading = true;
+        $company.getStats('desc', $scope.limit, $scope.period, getStatsSuccess);
     };
         
     angular.element(document).ready(function()
     {
-        $scope.Init();
+        
+        (function()
+        {
+             $scope.company = 
+            {
+                id : $scope.loggedUser.company.id,
+                name : $scope.loggedUser.company.name,
+                neq : $scope.loggedUser.company.neq
+            };
+
+            $scope.loading = true;
+
+            $company.getStats('desc', $scope.limit, $scope.period, getStatsSuccess);
+            
+        })();
+        
     });
+    
+    function getStatsSuccess(response)
+    {
+        $scope.loading = false;
+
+        $scope.stats = response.data;
+    };
 });
