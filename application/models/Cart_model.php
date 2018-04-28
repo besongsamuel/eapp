@@ -47,9 +47,6 @@ class Cart_model extends CI_Model
         parent::__construct();
         // Your own constructor code
         $this->load->library("geo");
-        
-        // Load the statistics library
-        $this->load->library('statistics', array('user' => $this->user));
     }
     
     /**

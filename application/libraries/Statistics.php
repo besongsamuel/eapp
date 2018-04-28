@@ -408,7 +408,7 @@ class Statistics
         
         // Get all visits
         $total_visits =  count($this->CI->db->query("SELECT count(*) FROM ".CHAIN_VISITS)->result());
-        
+                
         $my_store_visits = $this->CI->db->query("SELECT * FROM ".CHAIN_VISITS." WHERE retailer_id = ".$this->user->company->chain->id)->result();
         
         if(count($my_store_visits) > 0)

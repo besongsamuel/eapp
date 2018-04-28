@@ -120,8 +120,6 @@ class CI_Model {
         
         $this->product_unit_conversions = $this->get_all(PRODUCT_UNIT_CONVERSION);
         
-        // Load the statistics library
-        $this->load->library('statistics', array('user' => null));
     }
 
     // --------------------------------------------------------------------
