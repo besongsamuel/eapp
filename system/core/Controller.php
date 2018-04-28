@@ -620,10 +620,29 @@ class CI_Controller {
     {
         $today = date("Y-m-d");
         
-        $search_data = array(
+        $user_id = -1;
+        
+        if($this->CI->session->userdata('userId'))
+        {
+            $user_id = $this->CI->session->userdata('userId');
+        }
+        
+        if($user_id == -1)
+        {
+            $search_data = array(
                         'session_id' => session_id(), 
                         'retailer_id' => $id,
                         'date_created' => $today);
+        }
+        else
+        {
+            $search_data = array(
+                        'user_account_id' => $user_id, 
+                        'retailer_id' => $id,
+                        'date_created' => $today);
+        }
+        
+        
         
         $session_statistics = $this->eapp_model->get_specific(CHAIN_VISITS, $search_data);
         
@@ -631,6 +650,8 @@ class CI_Controller {
         {
             $search_data['distance'] = $distance;
             $search_data['postcode'] = $postcode;
+            $search_data['session_id'] = session_id();
+            $search_data['user_account_id'] = $user_id;
             
             $this->eapp_model->create(CHAIN_VISITS, $search_data);
         }

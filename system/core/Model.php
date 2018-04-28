@@ -97,6 +97,9 @@ class CI_Model {
     public $store_product_product_join;
     public $store_product_subcategory_join;
     private $filter_settings;
+    private $units;
+    private $product_unit_conversions;
+    public  $user;
 
 
     /**
@@ -111,6 +114,14 @@ class CI_Model {
         $this->latest_products_condition = 'period_from <= CURDATE() AND period_to >= CURDATE()';
         $this->store_product_product_join = sprintf("%s.product_id = %s.id", STORE_PRODUCT_TABLE, PRODUCT_TABLE);
         $this->store_product_subcategory_join = sprintf("%s.subcategory_id = %s.id", PRODUCT_TABLE, SUB_CATEGORY_TABLE);
+        
+        // Get all unit conversion table
+        $this->units = $this->get_all(UNIT_CONVERSION);
+        
+        $this->product_unit_conversions = $this->get_all(PRODUCT_UNIT_CONVERSION);
+        
+        // Load the statistics library
+        $this->load->library('statistics', array('user' => null));
     }
 
     // --------------------------------------------------------------------
@@ -181,13 +192,19 @@ class CI_Model {
     
     private function compare_unit_price($store_product)
     {      
+        
+        if($this->units == null)
+        {
+            $this->units = $this->get_all(UNIT_CONVERSION);
+        }
+        
+        if($this->product_unit_conversions == null)
+        {
+            $this->product_unit_conversions = $this->get_all(PRODUCT_UNIT_CONVERSION);
+        }
+        
         $result = array("compare_unit_price" => 0, "equivalent" => 0);
-        
-        // Get all unit conversion table
-        $units = $this->get_all(UNIT_CONVERSION);
-        
-        $product_unit_conversions = $this->get_all(PRODUCT_UNIT_CONVERSION);
-        
+                
         $format = 1;
                 
         // get format
@@ -207,7 +224,7 @@ class CI_Model {
         
         $sp_unit = $this->get_specific(UNITS_TABLE, array("id" => $store_product->unit_id));
         
-        foreach ($units as $unit) 
+        foreach ($this->units as $unit) 
         {
             if($store_product->unit_id == $unit->unit_id 
                     && $store_product->compareunit_id == $unit->compareunit_id)
@@ -222,7 +239,7 @@ class CI_Model {
             }
         }
         
-        foreach ($product_unit_conversions as $product_unit_conversion) 
+        foreach ($this->product_unit_conversions as $product_unit_conversion) 
         {
             if($store_product->product_id == $product_unit_conversion->product_id)
             {
@@ -255,7 +272,6 @@ class CI_Model {
         
         return $result;
     }
-
 
     public function getStoreProduct($id, $includeRelatedProducts = true, $latestProduct = true, $minified = false) 
     {
@@ -639,6 +655,7 @@ class CI_Model {
             $my_location = null, 
             $distance = 100)
     {
+        
         $result = array();
         
         $close_stores = $this->get_close_stores($my_location, $distance);
@@ -1026,13 +1043,9 @@ class CI_Model {
     {
         $this->db->join(PRODUCT_TABLE, $this->store_product_product_join);
         $this->db->join(SUB_CATEGORY_TABLE, $this->store_product_subcategory_join, "left outer");
-        
-        $this->db->limit(1);
-
         $this->add_name_filter($filter);
-        
         $this->db->order_by("price", "ASC");
-        $this->db->select(STORE_PRODUCT_TABLE.".id, price, product_id, ".PRODUCT_TABLE.".name");
+        $this->db->select(STORE_PRODUCT_TABLE.".*, price, product_id, ".PRODUCT_TABLE.".name");
         $this->db->where("product_id", $product_id);
         $this->db->where($this->latest_products_condition, NULL, FALSE);
         
@@ -1042,7 +1055,36 @@ class CI_Model {
         
         $this->add_settings_filter($settingsFilter);
         
-        return $this->db->get(STORE_PRODUCT_TABLE)->row();
+        $result_array = $this->db->get(STORE_PRODUCT_TABLE)->result();
+        
+        $best_store_product = null;
+        
+        foreach ($result_array as $store_product) 
+        {
+            $compare = $this->compare_unit_price($store_product);
+            
+            if($best_store_product == null)
+            {
+                $best_store_product = $store_product;
+                $best_store_product->compare_unit_price = $compare['compare_unit_price'];
+            }
+            else
+            {
+                if($compare['compare_unit_price'] < $best_store_product->compare_unit_price)
+                {
+                    $best_store_product = $store_product;
+                    $best_store_product->compare_unit_price = $compare['compare_unit_price'];
+                }
+            }
+        }
+        
+        if(isset($result_array) && count($result_array) > 1 && $best_store_product != null)
+        {
+            // add to product optimization table
+            $this->statistics->record_product_optimization_stat($best_store_product);
+        }
+        
+        return $best_store_product;
     }
     
     private function get_all_products($filter = null, $store_id = null, $category_id = null, $settingsFilter = null)
@@ -1094,10 +1136,8 @@ class CI_Model {
     private function get_best_store_product($product_id, $filter, $store_id, $category_id, $settingsFilter = null)
     {
         $this->db->join(PRODUCT_TABLE, $this->store_product_product_join);
-        $this->db->join(SUB_CATEGORY_TABLE, $this->store_product_subcategory_join, "left outer");
-        // Add filter for search puroses
-        $this->db->limit(1);
-		
+        $this->db->join(SUB_CATEGORY_TABLE, $this->store_product_subcategory_join, "left outer");	
+        
         $this->add_name_filter($filter);
         
         $this->add_specific_store_filter($store_id);
@@ -1107,10 +1147,41 @@ class CI_Model {
         $this->add_settings_filter($settingsFilter);
         
         $this->db->order_by("price", "ASC");
-        $this->db->select(STORE_PRODUCT_TABLE.".id, price, product_id, ".PRODUCT_TABLE.".name");
+        $this->db->select(STORE_PRODUCT_TABLE.".*, price, product_id, ".PRODUCT_TABLE.".name");
         $this->db->where(STORE_PRODUCT_TABLE.".id", $product_id);
+        
+        // search for the cheapest
+        
+        $result_array = $this->db->get(STORE_PRODUCT_TABLE)->array();
+        
+        $best_store_product = null;
+        
+        foreach ($result_array as $store_product) 
+        {
+            $compare = $this->compare_unit_price($store_product);
+            
+            if($best_store_product == null)
+            {
+                $best_store_product = $store_product;
+                $best_store_product->compare_unit_price = $compare['compare_unit_price'];
+            }
+            else
+            {
+                if($compare['compare_unit_price'] < $best_store_product->compare_unit_price)
+                {
+                    $best_store_product = $store_product;
+                    $best_store_product->compare_unit_price = $compare['compare_unit_price'];
+                }
+            }
+        }
+        
+        if(isset($result_array) && count($result_array) > 1 && $best_store_product != null)
+        {
+            // add to product optimization table
+            $this->statistics->record_product_optimization_stat($best_store_product);
+        }
 
-        return $this->db->get(STORE_PRODUCT_TABLE)->row();
+        return $best_store_product;
     }
 
     public function get_distinct($table_name, $columns, $where, $assoc = false)

@@ -132,8 +132,9 @@ defined('SECURITY_QUESTIONS')           OR define('SECURITY_QUESTIONS', 'eapp_se
 defined('UNIT_CONVERSION')              OR define('UNIT_CONVERSION', 'otiprix_unit_compareunit');
 defined('PRODUCT_UNIT_CONVERSION')      OR define('PRODUCT_UNIT_CONVERSION', 'otiprix_product_unit_compareunit');
 defined('PRODUCT_STATS')                OR define('PRODUCT_STATS', 'otiprix_product_statistics');
+defined('PRODUCT_OPTIMIZATION_STATS')   OR define('PRODUCT_OPTIMIZATION_STATS', 'otiprix_product_optimization_statstics');
 defined('CHAIN_STATS')                  OR define('CHAIN_STATS', 'otiprix_chain_statistics');
-defined('CHAIN_VISITS')                  OR define('CHAIN_VISITS', 'otiprix_chain_visits');
+defined('CHAIN_VISITS')                 OR define('CHAIN_VISITS', 'otiprix_chain_visits');
 defined('NEWSLETTER_SUBSCRIPTIONS')     OR define('NEWSLETTER_SUBSCRIPTIONS', 'otiprix_newsletter_subscriptions');
 defined('COMPANY_TABLE')                OR define('COMPANY_TABLE', 'eapp_company');
 defined('COMPANY_SUBSCRIPTIONS_TABLE')  OR define('COMPANY_SUBSCRIPTIONS_TABLE', 'eapp_company_subscriptions');

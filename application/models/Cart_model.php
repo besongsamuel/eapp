@@ -47,6 +47,9 @@ class Cart_model extends CI_Model
         parent::__construct();
         // Your own constructor code
         $this->load->library("geo");
+        
+        // Load the statistics library
+        $this->load->library('statistics', array('user' => $this->user));
     }
     
     /**
@@ -255,6 +258,11 @@ class Cart_model extends CI_Model
 		// The worst store product (most expensive) will be at the end of the list
 		$store_product->worst_product = end($close_store_products);
 		//$store_product->worst_product->department_store->distance = $this->compute_driving_distance($store_product->worst_product->department_store, $user, $coords);
+                
+                if(isset($close_store_products) && count($close_store_products) > 1)
+                {
+                    $this->statistics->record_product_optimization_stat($cheapest_store_product);
+                }
             }
              
             $distance += DEFAULT_DISTANCE;
@@ -306,6 +314,24 @@ class Cart_model extends CI_Model
         if($store_product != null)
         {
             $cheapest_store_product = $this->getStoreProduct($store_product->id, true, $latest, true);
+            
+            if(isset($cheapest_store_product->similar_products) && count($cheapest_store_product->similar_products) > 1)
+            {
+                // search for the cheapest
+                foreach ($cheapest_store_product->similar_products as $similar_sp) 
+                {
+                    if($similar_sp->compare_unit_price < $cheapest_store_product->compare_unit_price)
+                    {
+                        $cheapest_store_product = $similar_sp;
+                    }
+                }
+                
+                $cheapest_store_product = $this->getStoreProduct($cheapest_store_product->id, true, $latest, true);
+                
+                // add to product optimization table
+                $this->statistics->record_product_optimization_stat($cheapest_store_product);
+                
+            }
         }
 		        
         if($cheapest_store_product == null)

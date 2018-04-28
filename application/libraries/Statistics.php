@@ -31,6 +31,8 @@ class Statistics
         $this->user = $params['user'];
         
         $this->CI->load->model('eapp_model');
+        
+        $this->CI->load->library("session");
             
     }
     
@@ -509,6 +511,44 @@ class Statistics
             
             return $mvs;
 
+        }
+    }
+    
+    public function record_product_optimization_stat($store_product) 
+    {
+        $today = date("Y-m-d");
+        
+        $user_id = -1;
+        
+        if($this->CI->session->userdata('userId'))
+        {
+            $user_id = $this->CI->session->userdata('userId');
+        }
+        
+        $search_data = array(
+                        'retailer_id' => $store_product->retailer_id,
+                        'product_id' => $store_product->product_id,
+                        'period_from' => $store_product->period_from);
+        
+        if($user_id != -1)
+        {
+            $search_data['user_account_id'] = $user_id;
+        }
+        else
+        {
+            $search_data['session_id'] = session_id();
+        }
+        
+        $session_statistics = $this->CI->eapp_model->get_specific(PRODUCT_OPTIMIZATION_STATS, $search_data);
+        
+        if(!$session_statistics)
+        {
+            $search_data['json_store_product'] = json_encode($store_product);
+            $search_data['date_created'] = $today;
+            $search_data['user_account_id'] = $user_id;
+            $search_data['session_id'] = session_id();
+            
+            $this->CI->eapp_model->create(PRODUCT_OPTIMIZATION_STATS, $search_data);
         }
     }
 }
