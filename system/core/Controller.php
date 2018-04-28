@@ -622,9 +622,9 @@ class CI_Controller {
         
         $user_id = -1;
         
-        if($this->CI->session->userdata('userId'))
+        if($this->session->userdata('userId'))
         {
-            $user_id = $this->CI->session->userdata('userId');
+            $user_id = $this->session->userdata('userId');
         }
         
         if($user_id == -1)

@@ -2,6 +2,39 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+
+function cmp_count_desc($a, $b)
+{
+    if($a['count'] < $b['count'])
+    {
+        return 1;
+    }
+    else if($a['count'] > $b['count'])
+    {
+        return -1;
+    }
+    else
+    {
+        return 0;
+    }
+}
+
+function cmp_count_asc($a, $b)
+{
+    if($a['count'] > $b['count'])
+    {
+        return 1;
+    }
+    else if($a['count'] < $b['count'])
+    {
+        return -1;
+    }
+    else
+    {
+        return 0;
+    }
+}
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -20,6 +53,14 @@ class Statistics
     protected $CI;
     
     private $user;
+    
+    private $product_statistics;
+    
+    private $product_optimization_statistics;
+    
+    private $retailer_visits;
+    
+    private $retailer_statistics;
 
     // We'll use a constructor, as you can't directly call a function
     // from a property definition.
@@ -33,22 +74,32 @@ class Statistics
         $this->CI->load->model('eapp_model');
         
         $this->CI->load->library("session");
+        
+        $dates_sql = "MONTH(date_created) AS month, YEAR(date_created) AS year, YEAR(CURRENT_DATE()) AS current_year, MONTH(CURRENT_DATE()) AS current_month";
+        
+        $this->product_statistics = $query = $this->CI->db->query("SELECT *, ".$dates_sql." FROM ".PRODUCT_STATS)->result_array();
+        
+        $this->product_optimization_statistics = $query = $this->CI->db->query("SELECT *, ".$dates_sql." FROM ".PRODUCT_OPTIMIZATION_STATS)->result_array();;
+        
+        $this->retailer_visits = $query = $this->CI->db->query("SELECT *, ".$dates_sql." FROM ".CHAIN_VISITS)->result_array();;
+        
+        $this->retailer_statistics = $query = $this->CI->db->query("SELECT *, ".$dates_sql." FROM ".CHAIN_STATS)->result_array();;
             
     }
     
-    private function get_products_from_query($query) 
+    private function get_products_from_query($stats) 
     {
         $result = array();
         
-        foreach ($query->result() as $row) 
+        foreach ($stats as $row) 
         {
-            $product = $this->CI->eapp_model->get_product($row->product_id);
+            $product = $this->CI->eapp_model->get_product($row['product_id']);
             
-            $product->count = $row->count;
+            $product->count = $row['count'];
             
-            if(isset($row->retailer_id))
+            if(isset($row['retailer_id']))
             {
-                $product->retailer = $this->CI->eapp_model->get(CHAIN_TABLE, $row->retailer_id);
+                $product->retailer = $this->CI->eapp_model->get(CHAIN_TABLE, $row['retailer_id']);
             }
             
             array_push($result, $product);
@@ -57,24 +108,22 @@ class Statistics
         return $result;
     }
     
-    private function get_retailers_from_query($query) 
+    private function get_retailers_from_query($stats) 
     {
         $result = array();
         
-        foreach ($query->result() as $row) 
+        foreach ($stats as $row) 
         {
-            if(isset($row->retailer_id))
+            if(isset($row['retailer_id']))
             {
-                $retailer = $this->CI->eapp_model->get(CHAIN_TABLE, $row->retailer_id);
+                $retailer = $this->CI->eapp_model->get(CHAIN_TABLE, $row['retailer_id']);
                 
                 if($retailer)
                 {
-                    $retailer->count 
-                        = $row->count;
+                    $retailer->count = $row['count'];
                 
                     array_push($result, $retailer);
                 }
-                
                 
             }
         }
@@ -82,14 +131,14 @@ class Statistics
         return $result;
     }
     
-    private function get_brands_from_query($query) 
+    private function get_brands_from_query($stats) 
     {
         $result = array();
         
-        foreach ($query->result() as $row) 
+        foreach ($stats as $row) 
         {
-            $brand = $this->CI->eapp_model->get(PRODUCT_BRAND_TABLE, $row->brand_id);
-            $brand->count = $row->count;
+            $brand = $this->CI->eapp_model->get(PRODUCT_BRAND_TABLE, $row['brand_id']);
+            $brand->count = $row['count'];
             
             array_push($result, $brand);
         }
@@ -97,21 +146,112 @@ class Statistics
         return $result;
     }
     
-    private function get_categories_from_query($query) 
+    private function get_categories_from_query($stats) 
     {
         $result = array();
         
-        foreach ($query->result() as $row) 
+        foreach ($stats as $row) 
         {
-            $category = $this->CI->eapp_model->get(CATEGORY_TABLE, $row->product_category_id);
-            $category->count = $row->count;
+            $category = $this->CI->eapp_model->get(CATEGORY_TABLE, $row['product_category_id']);
+            $category->count = $row['count'];
             
             array_push($result, $category);
         }
         
         return $result;
     }
-   
+    
+    private function filter_by_date($stats, $period) 
+    {
+        $result = array();
+        
+        foreach ($stats as $stat) 
+        {
+            if($period == 0)
+            {
+                if($stat['month'] == $stat['current_month'] && $stat['year'] == $stat['current_year'])
+                {
+                    array_push($result, $stat);
+                }
+            }
+            
+            if($period == 1)
+            {
+                if($stat['year'] == $stat['current_year'])
+                {
+                    array_push($result, $stat);
+                }
+            }
+        }
+        
+        return $result;
+    }
+    
+    private function filter_by($stats, $value, $column_name) 
+    {
+        if($value == -1)
+        {
+            return $stats;
+        }
+        
+        $result = array();
+        
+        foreach ($stats as $stat) 
+        {
+            if($stat[$column_name] == $value)
+            {
+                array_push($result, $stat);
+            }
+        }
+        
+        return $result;
+    }
+    
+    private function get_composite_column($columns) 
+    {
+        $result = "";
+        
+        $first = true;
+        
+        foreach ($columns as $value) 
+        {
+            if($first)
+            {
+                $result.= $value;
+            
+                $first = false;
+            }
+            else
+            {
+                $result.= "_".$value;
+            }
+            
+        }
+    }
+    
+    private function group_by($stats, $columns) 
+    {
+        $result = array();
+        
+        foreach ($stats as $stat) 
+        {
+            $column_name = $this->get_composite_column($columns);
+                        
+            if(isset($result[$column_name]))
+            {
+                $result[$column_name]["count"] += 1;
+            }
+            else
+            {
+                $result[$column_name] = $stat;
+                $result[$column_name]["count"] = 1;
+            }
+        }
+        
+        return $result;
+        
+    }
+    
     /**
      * Gets top products
      * @param type $period 0 for in the current month, 1 for in the current year
@@ -129,54 +269,26 @@ class Statistics
             $limit = 5) 
     {
         
-        if($period == 0)
-        {
-            // Get products for current month
-            $period_sql = " AND MONTH(date_created) = MONTH(CURRENT_DATE()) AND YEAR(date_created) = YEAR(CURRENT_DATE())";
-        }
-        else
-        {
-            // Get products for current year
-            $period_sql = " AND YEAR(date_created) = YEAR(CURRENT_DATE())";
-        }
+        $result = array();
         
-        if($in_flyer == -1)
-        {
-            $in_flyer_sql = "";
-        }
-        else
-        {
-            $in_flyer_sql = "AND in_flyer = ".$in_flyer;
-        }
+        $result = $this->filter_by_date($this->product_statistics, $period);
         
-         if($bio == -1)
+        $result = $this->filter_by($result, $in_flyer, "in_flyer");
+        
+        $result = $this->filter_by($result, $bio, "bio");
+        
+        $result = $this->filter_by($result, $action, "type");
+        
+        $result = $this->group_by($result, array("product_id"));
+        
+        usort($result, "cmp_count_".$order);
+        
+        if($limit != -1)
         {
-            $bio_sql = "";
-        }
-        else
-        {
-            $bio_sql = "AND bio = ".$bio;
+            $result = array_slice($result, 0, $limit);
         }
         
-        $action_sql = "WHERE type = ".$action;
-        
-        if($action == -1)
-        {
-            $action_sql = "WHERE (type = 0 OR type = 1) ";
-        }
-        
-        $limit_sql = " LIMIT ".$limit;
-        
-        if($limit == -1)
-        {
-            $limit_sql = "";
-        }
-        
-        $query = $this->CI->db->query("SELECT COUNT(id) as count, product_id FROM "
-                .PRODUCT_STATS." ".$action_sql." ".$in_flyer_sql." ".$period_sql." ".$bio_sql." GROUP BY product_id ORDER BY count ".$order.$limit_sql);
-        
-        
-        return $this->get_products_from_query($query);
+        return $this->get_products_from_query($result);
     }
     
     public function get_top_recurring_products(
@@ -186,36 +298,22 @@ class Statistics
             $limit = 5) 
     {
         
-        if($period == 0)
-        {
-            // Get products for current month
-            $period_sql = " AND MONTH(date_created) = MONTH(CURRENT_DATE()) AND YEAR(date_created) = YEAR(CURRENT_DATE())";
-        }
-        else
-        {
-            // Get products for current year
-            $period_sql = " AND YEAR(date_created) = YEAR(CURRENT_DATE())";
-        }
+        $result = array();
         
-        $action_sql = "WHERE type = ".$action;
+        $result = $this->filter_by_date($this->retailer_statistics, $period);
         
-        if($action == -1)
+        $result = $this->filter_by($result, $action, "type");
+        
+        $result = $this->group_by($result, array("product_id"));
+        
+        usort($result, "cmp_count_".$order);
+                
+        if($limit != -1)
         {
-            $action_sql = "WHERE (type = 0 OR type = 1) ";
+            $result = array_slice($result, 0, $limit);
         }
         
-        $limit_sql = " LIMIT ".$limit;
-        
-        if($limit == -1)
-        {
-            $limit_sql = "";
-        }
-        
-        $query = $this->CI->db->query("SELECT COUNT(id) as count, product_id FROM "
-                .CHAIN_STATS." ".$action_sql." ".$period_sql." GROUP BY product_id ORDER BY count ".$order.$limit_sql);
-        
-        
-        return $this->get_products_from_query($query);
+        return $this->get_products_from_query($result);
     }
     
     private function get_total_products(
@@ -224,46 +322,18 @@ class Statistics
             $bio = -1,
             $action = 0) 
     {
-         if($period == 0)
-        {
-            // Get products for current month
-            $period_sql = " AND MONTH(date_created) = MONTH(CURRENT_DATE()) AND YEAR(date_created) = YEAR(CURRENT_DATE())";
-        }
-        else
-        {
-            // Get products for current year
-            $period_sql = " AND YEAR(date_created) = YEAR(CURRENT_DATE())";
-        }
+        $result = array();
         
-        if($in_flyer == -1)
-        {
-            $in_flyer_sql = "";
-        }
-        else
-        {
-            $in_flyer_sql = " AND in_flyer = ".$in_flyer;
-        }
+        $result = $this->filter_by_date($this->product_statistics, $period);
         
-        if($bio == -1)
-        {
-            $bio_sql = "";
-        }
-        else
-        {
-            $bio_sql = "AND bio = ".$bio;
-        }
+        $result = $this->filter_by($result, $in_flyer, "in_flyer");
         
-        $action_sql = " WHERE type = ".$action;
+        $result = $this->filter_by($result, $bio, "bio");
         
-        if($action == -1)
-        {
-            $action_sql = " WHERE (type = 0 OR type = 1) ";
-        }
+        $result = $this->filter_by($result, $action, "type");
         
-        $query = $this->CI->db->query("SELECT COUNT(id) as count FROM "
-                .PRODUCT_STATS." ".$action_sql." ".$in_flyer_sql." ".$period_sql." ".$bio_sql);
-        
-        return $query->row()->count;
+        return count($result);
+
     }
     
     public function get_percentage_bio($period = 0, $action = 0) 
@@ -283,88 +353,105 @@ class Statistics
     public function get_top_product_retailers($order = 'desc', $period = 0, $limit = 5) 
     {
         
-        if($period == 0)
+        $result = array();
+        
+        $result = $this->filter_by_date($this->retailer_statistics, $period);
+        
+        $result = $this->group_by($result, array("product_id", "retailer_id"));
+        
+        usort($result, "cmp_count_".$order);
+                
+        if($limit != -1)
         {
-            // Get products for current month
-            $period_sql = " WHERE MONTH(date_created) = MONTH(CURRENT_DATE()) AND YEAR(date_created) = YEAR(CURRENT_DATE())";
-        }
-        else
-        {
-            // Get products for current year
-            $period_sql = " WHERE YEAR(date_created) = YEAR(CURRENT_DATE())";
+            $result = array_slice($result, 0, $limit);
         }
         
-        $query = $this->CI->db->query("SELECT count(id) as count, retailer_id, product_id FROM ".PRODUCT_STATS." ".$period_sql." GROUP BY retailer_id, product_id order by count ".$order." LIMIT ".$limit);
+        return $this->get_products_from_query($result);
         
-        return $this->get_products_from_query($query);
     }
     
     public function get_top_countries($order = 'desc', $period = 0, $action = 0, $limit = 5) 
     {
-        $action_sql = "WHERE type = ".$action;
+        $result = array();
         
-        if($action == -1)
+        $result = $this->filter_by_date($this->product_statistics, $period);
+        
+        $result = $this->filter_by($result, $action, "type");
+        
+        $result = $this->group_by($result, array("product_id", "country"));
+        
+        usort($result, "cmp_count_".$order);
+                
+        if($limit != -1)
         {
-            $action_sql = "WHERE (type = 0 OR type = 1) ";
+            $result = array_slice($result, 0, $limit);
         }
         
-        if($period == 0)
+        foreach ($result as $key => $value) 
         {
-            // Get products for current month
-            $period_sql = " AND MONTH(date_created) = MONTH(CURRENT_DATE()) AND YEAR(date_created) = YEAR(CURRENT_DATE())";
-        }
-        else
-        {
-            // Get products for current year
-            $period_sql = " AND YEAR(date_created) = YEAR(CURRENT_DATE())";
+            if($key == "country")
+            {
+                $result["name"] = $value;
+            }
         }
         
-        $query = $this->CI->db->query("SELECT count(id) as count, country as name, product_id FROM ".PRODUCT_STATS." ".$action_sql." ".$period_sql." GROUP BY country, product_id order by country ".$order." LIMIT ".$limit);
-        
-        return $query->result();
+        return $result;
     }
     
     public function get_top_states($order = 'desc', $period = 0, $action = 0, $limit = 5) 
     {
-        $action_sql = "WHERE type = ".$action;
+        $result = array();
         
-        if($action == -1)
+        $result = $this->filter_by_date($this->product_statistics, $period);
+        
+        $result = $this->filter_by($result, $action, "type");
+        
+        $result = $this->group_by($result, array("product_id", "state"));
+        
+        usort($result, "cmp_count_".$order);
+                
+        if($limit != -1)
         {
-            $action_sql = "WHERE (type = 0 OR type = 1) ";
+            $result = array_slice($result, 0, $limit);
         }
         
-        if($period == 0)
+        foreach ($result as $key => $value) 
         {
-            // Get products for current month
-            $period_sql = " AND MONTH(date_created) = MONTH(CURRENT_DATE()) AND YEAR(date_created) = YEAR(CURRENT_DATE())";
-        }
-        else
-        {
-            // Get products for current year
-            $period_sql = " AND YEAR(date_created) = YEAR(CURRENT_DATE())";
+            if($key == "state")
+            {
+                $result["name"] = $value;
+            }
         }
         
-        $query = $this->CI->db->query("SELECT count(id) as count, state as name FROM ".PRODUCT_STATS." ".$action_sql." ".$period_sql." AND state != '' GROUP BY state order by count ".$order." LIMIT ".$limit);
-        
-        return $query->result();
+        return $result;
     }
     
     public function get_top_product_brands($order = 'desc', $period = 0, $limit = 5) 
     {
-        if($period == 0)
+        $result = array();
+        
+        $result = $this->filter_by_date($this->product_statistics, $period);
+        
+        $result = $this->group_by($result, array("brand_id"));
+        
+        usort($result, "cmp_count_".$order);
+        
+        if($limit != -1)
         {
-            // Get products for current month
-            $period_sql = " AND MONTH(date_created) = MONTH(CURRENT_DATE()) AND YEAR(date_created) = YEAR(CURRENT_DATE())";
-        }
-        else
-        {
-            // Get products for current year
-            $period_sql = " AND YEAR(date_created) = YEAR(CURRENT_DATE())";
+            $result = array_slice($result, 0, $limit);
         }
         
-        $query = $this->CI->db->query("SELECT count(id) as count, brand_id FROM ".PRODUCT_STATS." WHERE (brand_id <> -1 AND brand_id <> 0 AND brand_id IS NOT NULL) ".$period_sql." GROUP BY brand_id order by count ".$order." LIMIT ".$limit);
+        $final_result = array();
         
-        return $this->get_brands_from_query($query);
+        foreach ($result as $value) 
+        {
+            if($value["brand_id"] != 0 && $value["brand_id"] != -1 && isset($value["brand_id"]))
+            {
+                array_push($value, $final_result);
+            }
+        }
+        
+        return $this->get_brands_from_query($final_result);
         
     }
     
@@ -388,44 +475,45 @@ class Statistics
         
         $query = $this->CI->db->query($query_string);
         
-        return $this->get_categories_from_query($query);
+        return $this->get_categories_from_query($query->result_array());
     }
-    
     
     public function get_top_visited_chains($order = 'desc', $period = 0, $limit = 5) 
     {
-         if($period == 0)
+        
+        $result = array();
+        
+        $result = $this->filter_by_date($this->retailer_visits, $period);
+        
+        $result = $this->group_by($result, array("retailer_id"));
+        
+        usort($result, "cmp_count_".$order);
+                
+        if($limit != -1)
         {
-            // Get products for current month
-            $period_sql = " WHERE MONTH(date_created) = MONTH(CURRENT_DATE()) AND YEAR(date_created) = YEAR(CURRENT_DATE())";
-        }
-        else
-        {
-            // Get products for current year
-            $period_sql = " WHERE YEAR(date_created) = YEAR(CURRENT_DATE())";
+            $result = array_slice($result, 0, $limit);
         }
         
-        $query = $this->CI->db->query("SELECT count(id) as count, retailer_id FROM ".PRODUCT_STATS." ".$period_sql." GROUP BY retailer_id order by count ".$order." LIMIT ".$limit);
+        return $this->get_retailers_from_query($result);
         
-        return $this->get_retailers_from_query($query);
     }
     
     public function get_top_optimized_chains($order = 'desc', $period = 0, $limit = 5) 
     {
-         if($period == 0)
+        $result = array();
+        
+        $result = $this->filter_by_date($this->product_optimization_statistics, $period);
+        
+        $result = $this->group_by($result, array("retailer_id"));
+        
+        usort($result, "cmp_count_".$order);
+                
+        if($limit != -1)
         {
-            // Get products for current month
-            $period_sql = " WHERE MONTH(date_created) = MONTH(CURRENT_DATE()) AND YEAR(date_created) = YEAR(CURRENT_DATE())";
-        }
-        else
-        {
-            // Get products for current year
-            $period_sql = " WHERE YEAR(date_created) = YEAR(CURRENT_DATE())";
+            $result = array_slice($result, 0, $limit);
         }
         
-        $query = $this->CI->db->query("SELECT count(id) as count, retailer_id FROM ".PRODUCT_OPTIMIZATION_STATS." ".$period_sql." GROUP BY retailer_id order by count ".$order." LIMIT ".$limit);
-        
-        return $this->get_retailers_from_query($query);
+        return $this->get_retailers_from_query($result);
     }
     
     public function get_store_visitors_info() 
@@ -433,7 +521,7 @@ class Statistics
         $result = new stdClass();
         
         // Get all visits
-        $total_visits =  count($this->CI->db->query("SELECT count(*) FROM ".CHAIN_VISITS)->result());
+        $total_visits =  count($this->retailer_visits);
                 
         $my_store_visits = $this->CI->db->query("SELECT * FROM ".CHAIN_VISITS." WHERE retailer_id = ".$this->user->company->chain->id)->result();
         
