@@ -10,17 +10,21 @@ angular.module('eappApp').component("topProducts",
         {
             $scope.products = ctrl.data;
             $scope.caption = ctrl.caption;
+            
+            if(angular.isNullOrUndefined(ctrl.countCaption))
+            {
+                ctrl.countCaption = "Vues: ";
+            }
+            
+            $scope.countCaption = ctrl.countCaption;
         };
         
-        ctrl.$onChanges = function(changeObj)
-        {
-            
-        };
         
     },
     bindings : 
     {
         data : '=',
-        caption : '@'
+        caption : '@',
+        countCaption : '@'
     }
 });

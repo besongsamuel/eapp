@@ -92,6 +92,8 @@ class Account extends CI_Controller
             $stats->get_product_visitors_info = $this->statistics->get_product_visitors_info(1);
             
             $stats->get_store_userlist_info = $this->statistics->get_store_userlist_info();
+            
+            $stats->top_optimized_chains = $this->statistics->get_top_optimized_chains();
         }
                 
         echo json_encode($stats);

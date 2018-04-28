@@ -20,6 +20,7 @@ class Cart extends CI_Controller {
         parent::__construct();
         $this->load->library('cart');
         $this->load->library('geo');
+        $this->load->library('statistics', array('user' => $this->user));
     }
     
     public function get_latest_products() 

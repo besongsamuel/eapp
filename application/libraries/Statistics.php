@@ -67,7 +67,15 @@ class Statistics
             {
                 $retailer = $this->CI->eapp_model->get(CHAIN_TABLE, $row->retailer_id);
                 
-                array_push($result, $retailer);
+                if($retailer)
+                {
+                    $retailer->count 
+                        = $row->count;
+                
+                    array_push($result, $retailer);
+                }
+                
+                
             }
         }
         
@@ -402,6 +410,24 @@ class Statistics
         return $this->get_retailers_from_query($query);
     }
     
+    public function get_top_optimized_chains($order = 'desc', $period = 0, $limit = 5) 
+    {
+         if($period == 0)
+        {
+            // Get products for current month
+            $period_sql = " WHERE MONTH(date_created) = MONTH(CURRENT_DATE()) AND YEAR(date_created) = YEAR(CURRENT_DATE())";
+        }
+        else
+        {
+            // Get products for current year
+            $period_sql = " WHERE YEAR(date_created) = YEAR(CURRENT_DATE())";
+        }
+        
+        $query = $this->CI->db->query("SELECT count(id) as count, retailer_id FROM ".PRODUCT_OPTIMIZATION_STATS." ".$period_sql." GROUP BY retailer_id order by count ".$order." LIMIT ".$limit);
+        
+        return $this->get_retailers_from_query($query);
+    }
+    
     public function get_store_visitors_info() 
     {
         $result = new stdClass();
@@ -513,7 +539,7 @@ class Statistics
 
         }
     }
-    
+        
     public function record_product_optimization_stat($store_product) 
     {
         $today = date("Y-m-d");

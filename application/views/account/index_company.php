@@ -439,11 +439,13 @@ $(document).ready(function()
                                         <top-products 
                                             ng-if="stats.top_viewed_product_states && stats.top_viewed_product_states.length > 0" 
                                             data="stats.top_viewed_product_states" 
+                                            count-caption="Visites :"
                                             caption="Origine des produits visités par les utilisateurs"></top-products>
 
                                         <top-products 
                                             ng-if="stats.top_cart_product_states && stats.top_cart_product_states.length > 0" 
                                             data="stats.top_cart_product_states" 
+                                            count-caption="Nombre de fois ajoutées au panier :"
                                             caption="Origine des produits ajoutés au panier par les utilisateurs"></top-products>
 
                                         <span class="col-sm-12">{{stats.get_percentage_bio_added_to_cart}} % de produits  bio sont ajoutées au panier</span>
@@ -492,47 +494,45 @@ $(document).ready(function()
                                         <top-products 
                                         ng-if="stats.get_top_recurring_products && stats.get_top_recurring_products.length > 0" 
                                         data="stats.get_top_recurring_products" 
+                                        count-caption="Nombre de fois en circulaire :"
                                         caption="Les 5 produits qui reviennent le plus souvent en circulaire"></top-products>
 
                                         <top-products 
                                         ng-if="stats.top_listed_products && stats.top_listed_products.length > 0" 
                                         data="stats.top_listed_products" 
+                                        count-caption="Nombre d'utilisateurs avec produit dans leur liste :"
                                         caption="Quels sont les 5 produits qui reviennent le plus souvent dans la liste d'épicerie des utilisateurs"></top-products>
 
                                         <top-products 
                                         ng-if="stats.top_viewed_products && stats.top_viewed_products.length > 0" 
                                         data="stats.top_viewed_products" 
+                                        count-caption="Visites :"
                                         caption="Les 5 produits les plus visités par les utilisateurs"></top-products>
 
                                         <top-products 
                                         ng-if="stats.top_searched_products && stats.top_searched_products.length > 0" 
                                         data="stats.top_searched_products" 
+                                        count-caption="Nombre de fois recherché :"
                                         caption="Les 5 produits les plus recherchés par les utilisateurs"></top-products>
 
                                         <top-products 
                                         ng-if="stats.top_product_categories && stats.top_product_categories.length > 0" 
                                         data="stats.top_product_categories" 
+                                        count-caption="Visites :"
                                         caption="La catégorie de produits la plus visitée par les utilisateurs"></top-products>
 
                                         <top-products 
                                         ng-if="stats.top_cart_products && stats.top_cart_products.length > 0" 
                                         data="stats.top_cart_products" 
+                                        count-caption="Nombre de fois ajoutées au panier :"
                                         caption="Les 5 produits les plus ajoutés au panier par les utilisateurs"></top-products>
 
                                         <top-products 
                                         ng-if="stats.top_product_brands && stats.top_product_brands.length > 0" 
                                         data="stats.top_product_brands" 
+                                        count-caption="Visites :"
                                         caption="Les 5 marques les plus ajoutées au panier par les utilisateurs"></top-products>
 
-                                        <top-products 
-                                        ng-if="stats.top_product_brands && stats.top_product_brands.length > 0" 
-                                        data="stats.top_product_brands" 
-                                        caption="Les 5 marques les plus ajoutées au panier par les utilisateurs"></top-products>
-
-                                        <top-products 
-                                        ng-if="stats.top_product_brands && stats.top_cart_product_states.length > 0" 
-                                        data="stats.top_cart_product_states" 
-                                        caption="Origine des produits ajoutés au panier par les utilisateurs"></top-products>
                                     </div>
                                 </div>
                             </div>
@@ -562,7 +562,17 @@ $(document).ready(function()
                                         <top-products 
                                         ng-if="stats.get_top_visited_chains && stats.get_top_visited_chains.length > 0" 
                                         data="stats.get_top_visited_chains" 
+                                        count-caption="Visites :"
                                         caption="Les magasins les plus visitées"></top-products>
+                                        
+                                        
+                                        <top-products 
+                                        ng-if="stats.top_optimized_chains && stats.top_optimized_chains.length > 0" 
+                                        data="stats.get_top_visited_chains" 
+                                        count-caption="Produits optimisées :"
+                                        caption="Les magasins les plus optimisées"></top-products>
+                                        
+                                        
                                     
                                     </div>
                                 
