@@ -73,6 +73,8 @@ class Account_model extends CI_Model
             // Get company
             $user_account->company = $this->get_specific(COMPANY_TABLE, array("user_account_id" => $account_id));
             
+            $user_account->company->subscription = $this->get_specific(COMPANY_SUBSCRIPTIONS_TABLE, array("subscription" => $user_account->subscription));
+            
             // Get the chain of the company
             $user_account->company->chain = $this->get_specific(CHAIN_TABLE, array("company_id" => $user_account->company->id));
             

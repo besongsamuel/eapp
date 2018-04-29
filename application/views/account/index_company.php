@@ -106,6 +106,11 @@ $(document).ready(function()
 
                             <legend>RENSEIGNEMENTS D'ENTREPRISE</legend>
                             
+                            <div layout='row'>
+                                <b class="subscription-header">Votre Forfait : &nbsp;&nbsp;&nbsp;<span class='md-warn-color'>  {{loggedUser.company.subscription.name}}</span> &nbsp;|&nbsp; <a href>Changer</a></b>
+                            </div>
+                            
+                            
                             <image-upload image="storeLogo" caption="Ajouter logo" id="store-product-image" on-file-removed="onFileRemoved()" on-file-selected="imageChanged(file)"></image-upload>
 
                             <!-- NEQ -->
@@ -407,17 +412,13 @@ $(document).ready(function()
                 
                 <div ng-controller="CompanyStatsController as ctrl">
                     
-                    <div layout="row" layout-align='center center' layout-padding>
-                        <div class='col-sm-12'>
-                            
-                            <md-radio-group ng-change="ctrl.periodChanged()" layout="row" layout-align='center center' ng-model="period" >
+                    <div layout="row" layout-align='center center'>
+                        <md-radio-group ng-change="ctrl.periodChanged()" ng-model="period" >
 
-                                <md-radio-button flex='10' value="1" class="md-primary">Année</md-radio-button>
-                                <md-radio-button flex='10' value="0" class="md-primary"> Mois </md-radio-button>
+                            <md-radio-button value="1" class="md-primary">Année</md-radio-button>
+                            <md-radio-button value="0" class="md-primary"> Mois </md-radio-button>
 
-                            </md-radio-group>
-                            
-                        </div>
+                        </md-radio-group>
                     </div>
                     
                     <div layout='row' layout-align='center center'>

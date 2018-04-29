@@ -1393,3 +1393,14 @@ md-list-item .md-avatar, md-list-item .md-list-item-inner .md-avatar
     z-index: 10000 !important;
 }
 
+.md-warn-color
+{
+    color : rgb(255, 87, 34);
+}
+
+.subscription-header
+{
+    font-weight: 400; 
+    font-size: 18px;
+}
+
