@@ -107,7 +107,7 @@ $(document).ready(function()
                             <legend>RENSEIGNEMENTS D'ENTREPRISE</legend>
                             
                             <div layout='row'>
-                                <b class="subscription-header">Votre Forfait : &nbsp;&nbsp;&nbsp;<span class='md-warn-color'>  {{loggedUser.company.subscription.name}}</span> &nbsp;|&nbsp; <a href>Changer</a></b>
+                                <b class="subscription-header">Votre Forfait : &nbsp;&nbsp;&nbsp;<span class='md-warn-color'>  {{loggedUser.company.subscription.name}}</span> &nbsp;|&nbsp; <a href='<?php echo base_url("account/select_subscription"); ?>'>Changer</a></b>
                             </div>
                             
                             

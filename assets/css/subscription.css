@@ -1,0 +1,59 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 29-Apr-2018, 7:35:10 PM
+    Author     : besongsamuel
+*/
+
+.subacription-table { border-collapse:collapse; table-layout:fixed; width:100%; }
+
+th { background:#F5F5F5; display:none; }
+td, th {
+  height:53px
+}
+td,th { border:1px solid #DDD; padding:10px; empty-cells:show; }
+td,th {
+  text-align:left;
+}
+td+td, th+th {
+  text-align:center;
+  display:none;
+}
+
+.bg-purple {
+  border-top:3px solid #A32362;
+}
+.bg-blue {
+  border-top:3px solid #0097CF;
+}
+.sep {
+  background:#F5F5F5;
+  font-weight:bold;
+}
+.txt-l { font-size:28px; font-weight:bold; }
+.txt-top { position:relative; top:-9px; left:-2px; }
+.tick { font-size:18px; color:#2CA01C; }
+.tickred { font-size:18px; color:#e82309; }
+.mask {
+  border:0;
+  background:none;
+}
+
+@media (min-width: 640px) {
+  .subacription-ul {
+    display:none;
+  }
+  td,th {
+    display:table-cell !important;
+  }
+  td,th {
+    width: 330px;
+  
+  }
+  td+td, th+th {
+    width: auto;
+  }
+}

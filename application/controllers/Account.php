@@ -190,6 +190,20 @@ class Account extends CI_Controller
         $this->parser->parse('eapp_template', $this->data);
     }
     
+    public function select_subscription() 
+    {
+        if($this->user && $this->user->company)
+        {
+            $this->data['script'] = $this->load->view('account/scripts/select_subscription', $this->data, TRUE);
+            $this->data['body'] = $this->load->view('account/select_subscription', $this->data, TRUE);
+            $this->parser->parse('eapp_template', $this->data);
+        }
+        else
+        {
+            header('Location: '.  site_url('/account'));
+        }
+    }
+    
     public function password_forgotten() 
     {
         $this->data['script'] = $this->load->view('account/scripts/password_forgotten', $this->data, TRUE);
