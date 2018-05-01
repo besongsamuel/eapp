@@ -10,7 +10,6 @@ class Account extends CI_Controller
         parent::__construct();
         $this->load->library('form_validation');
         $this->load->library('geo');
-        $this->load->library('statistics', array('user' => $this->user));
 
     }
     
