@@ -574,7 +574,7 @@ class CI_Controller {
                 'ADDRESS'   => $this->user->profile->address
             ];
         
-        if($this->user->company)
+        if(isset($this->user->company))
         {
             $mergeFields['CMPYNAME'] = $this->user->company->name;
             $mergeFields['NEQ'] = $this->user->company->neq;
