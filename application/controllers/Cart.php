@@ -234,7 +234,7 @@ class Cart extends CI_Controller {
         // Get the cart items
         $cart_items = json_decode($this->get_cached_cart_contents());
         
-        $search_all = $this->input->post("searchAll") == "true" ? true : false;
+        $search_all = json_decode($this->input->post("searchAll"));
         $view_optimized_list = $this->input->post("viewOptimizedList") == "true" ? true : false;
         
         $coords = array("longitude" => $this->input->post("longitude"), "latitude" => $this->input->post("latitude"));

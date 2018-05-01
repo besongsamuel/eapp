@@ -474,7 +474,7 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
         // user's latitude
         formData.append("latitude", $rootScope.latitude);
         
-        formData.append("searchAll", !$rootScope.cartSettings.searchMyList);
+        formData.append("searchAll", JSON.stringify(!$rootScope.cartSettings.searchMyList));
         formData.append("resultsFilter", JSON.stringify($scope.resultFilter));
         formData.append("viewOptimizedList", $rootScope.cartSettings.optimizedCart);
         
