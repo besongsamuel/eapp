@@ -1400,7 +1400,7 @@ md-list-item .md-avatar, md-list-item .md-list-item-inner .md-avatar
 
 .subscription-header
 {
-    font-weight: 400; 
-    font-size: 18px;
+    text-align: center;
+    margin : 5px;
 }
 

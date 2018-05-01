@@ -258,7 +258,7 @@ class Cart_model extends CI_Model
                 
                 if(isset($close_store_products) && count($close_store_products) > 1)
                 {
-                    $this->statistics->record_product_optimization_stat($cheapest_store_product);
+                    $this->statistics->record_product_optimization_stat($store_product);
                 }
             }
              
@@ -278,7 +278,6 @@ class Cart_model extends CI_Model
             }
             
             $best_Store_product->department_store = $store_product->department_store;
-            //$best_Store_product->department_store->distance = $this->compute_driving_distance($best_Store_product->department_store, $user, $coords);
         }
         
         // There was no best product wrt the user. Get the cheapest product    

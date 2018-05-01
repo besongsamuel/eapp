@@ -137,6 +137,8 @@ class CI_Controller {
         $this->token = $this->config->item("token");
 
         $this->sms_host = gethostbyname('otiprix.sytes.net');
+        
+        $this->load->library('statistics', array('user' => $this->user));
     }
         
         

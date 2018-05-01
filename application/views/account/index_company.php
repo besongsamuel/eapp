@@ -92,6 +92,7 @@ $(document).ready(function()
             </md-tab>
             
             <md-tab label="Entreprise">
+                
                 <div ng-controller="CompanyAccountController" >
                     
                     <div id="error_message" class="alert alert-success" ng-show="successMessage">
@@ -106,11 +107,8 @@ $(document).ready(function()
 
                             <legend>RENSEIGNEMENTS D'ENTREPRISE</legend>
                             
-                            <div layout='row'>
-                                <b class="subscription-header">Votre Forfait : &nbsp;&nbsp;&nbsp;<span class='md-warn-color'>  {{loggedUser.company.subscription.name}}</span> &nbsp;|&nbsp; <a href='<?php echo base_url("account/select_subscription"); ?>'>Changer</a></b>
-                            </div>
-                            
-                            
+                            <p class="subscription-header"><b>Votre Forfait : &nbsp;&nbsp;&nbsp;<span class='md-warn-color'>  {{loggedUser.company.subscription.name}}</span></b> &nbsp;|&nbsp; <a href='<?php echo base_url("account/select_subscription"); ?>'>Changer</a></p>
+                                                        
                             <image-upload image="storeLogo" caption="Ajouter logo" id="store-product-image" on-file-removed="onFileRemoved()" on-file-selected="imageChanged(file)"></image-upload>
 
                             <!-- NEQ -->

@@ -143,6 +143,9 @@ class Account extends CI_Controller
         
         if($this->user != null && $this->user->subscription >= COMPANY_SUBSCRIPTION)
         {
+            
+            $this->data['tabIndex'] = 2;
+            
             $this->data['script'] = $this->load->view('account/scripts/index_company', $this->data, TRUE);
             $this->data['body'] = $this->load->view('account/index_company', $this->data, TRUE);
             $this->parser->parse('eapp_template', $this->data);
