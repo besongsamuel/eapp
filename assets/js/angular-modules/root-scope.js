@@ -253,7 +253,25 @@ $(document).ready(function()
                 return 4;
             }
         };
-		
+	
+        
+        rootScope.getOptimizationDistance = function()
+        {
+            if(rootScope.isUserLogged)
+            {
+                return parseInt(rootScope.loggedUser.profile.optimization_distance);
+            }
+            else if(window.localStorage.getItem('optimization_distance'))
+            {
+                return parseInt(window.localStorage.getItem('optimization_distance'));
+            }
+            else
+            {
+                // return a default distance
+                return 4;
+            }
+        };
+        
         rootScope.productInCart = function(product_id)
         {
             for(var key in rootScope.cart)

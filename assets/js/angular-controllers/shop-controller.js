@@ -95,7 +95,7 @@ angular.module('eappApp').controller('ShopController', ["$scope", "$q", "$http",
             $scope.gridView = false;
         }
         
-        $scope.distance = $rootScope.getCartDistance();
+        $scope.distance = $rootScope.getOptimizationDistance();
                 
     };
 
@@ -417,14 +417,14 @@ angular.module('eappApp').controller('ShopController', ["$scope", "$q", "$http",
     {
         if($scope.isUserLogged)
         {
-            var changePromise = eapp.changeDistance('cart_distance', newDistance);
+            var changePromise = eapp.changeDistance('optimization_distance', newDistance);
 
             changePromise.then(function(response)
             {
                 if(response.data)
                 {
                     // Update Logged User
-                    $scope.loggedUser = response.data;
+                    $rootScope.loggedUser = response.data;
                     $scope.getProducts();
                 }
             });
@@ -432,7 +432,7 @@ angular.module('eappApp').controller('ShopController', ["$scope", "$q", "$http",
         else
         {
             // Change in the session
-            window.localStorage.setItem('cart_distance', newDistance);
+            window.localStorage.setItem('optimization_distance', newDistance);
             $scope.getProducts();
         }
 

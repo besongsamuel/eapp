@@ -1887,7 +1887,7 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
                 if(response.data)
                 {
                     // Update Logged User
-                    $scope.loggedUser = response.data;
+                    $rootScope.loggedUser = response.data;
                     $scope.optimization_preference_changed();
                 }
             });

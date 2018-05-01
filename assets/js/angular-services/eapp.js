@@ -227,7 +227,7 @@ angular.module('eappApp').factory('eapp', ['$http','$rootScope', '$mdDialog', fu
         formData.append("longitude", $rootScope.longitude);
         // user's latitude
         formData.append("latitude", $rootScope.latitude);
-        formData.append("distance", $rootScope.getCartDistance());
+        formData.append("distance", $rootScope.getOptimizationDistance());
         
         return $http.post(eappService.getSiteUrl().concat("/shop/get_store_products"), formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}});
 
