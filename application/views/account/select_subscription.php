@@ -193,7 +193,12 @@ and open the template in the editor.
             </tr>
                 <tr><td class="mask"></td>
                 <td><md-button class='md-raised md-primary md-hue-2' ng-click="ctrl.selectSubscription(1)">Souscrire</md-button></td>
-                <td><md-button class='md-raised md-primary' ng-click="ctrl.selectSubscription(2)">Souscrire</md-button></td>
+                <td>
+                    <form action="<?php echo site_url("company/paypal_payment") ?>" method="POST">
+                        <input type="hidden" name="id" value="2" />
+                        <md-button type='submit' class='md-raised md-primary'>Souscrire</md-button>
+                    </form>
+                </td>
                 <td><md-button class='md-raised md-warn' ng-click="ctrl.selectSubscription(3)">Souscrire</md-button></td>
             </tr> 
         </tbody>
