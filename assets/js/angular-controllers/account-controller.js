@@ -22,9 +22,7 @@ angular.module('eappApp').controller('AccountController', ["$scope", "$http", "$
     $scope.false = false;
     
     $scope.true = true;
-    
-    $scope.selectedAccountTab = 3;
-    
+        
     $scope.enterVerificationNumber = true;
     
     $scope.message = null;
@@ -44,7 +42,7 @@ angular.module('eappApp').controller('AccountController', ["$scope", "$http", "$
         {
             window.location.href = $scope.site_url.concat("/account/login");
         }
-        
+
         $scope.load_icons();
         
         var securityQuestionsPromise = eapp.getSecurityQuestions();
@@ -251,7 +249,8 @@ angular.module('eappApp').controller('AccountController', ["$scope", "$http", "$
                                                 
                         $scope.creatingAccount = false;
                         
-                        window.location =  $scope.site_url.concat("/account");
+                        // redirect to subscription selection page
+                        window.location =  $scope.site_url.concat("/account/select_subscription");
                         
                     }
 

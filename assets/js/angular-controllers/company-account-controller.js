@@ -17,6 +17,17 @@ angular.module('eappApp').controller('CompanyAccountController', function($scope
                 
         $scope.image_name = $scope.loggedUser.company.chain.image;
         $scope.storeLogo = $scope.base_url.concat("/assets/img/stores/").concat($scope.loggedUser.company.chain.image);
+        
+        if(sessionStorage.getItem("subscriptionChanged"))
+        {
+            if(JSON.parse(sessionStorage.getItem("subscriptionChanged")))
+            {
+                // Set message
+                $scope.successMessage = "L'abonnement à votre compte a été modifié avec succès.";
+            }
+            
+            sessionStorage.removeItem("subscriptionChanged");
+        }
     };
     
     $scope.imageChanged= function(image)

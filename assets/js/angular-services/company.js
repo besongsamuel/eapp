@@ -131,9 +131,18 @@ angular.module('eappApp').factory("$company", function($rootScope, $http)
                 $rootScope.site_url.concat("/account/get_stats"), 
                 formData, 
                 { transformRequest: angular.identity, headers: {'Content-Type': undefined}}).then(success, onError);
+        },
+        selectSubscription : function(selectedSubscription, success)
+        {
+            var formData = new FormData();
+        
+            formData.append("subscription", selectedSubscription);
+                        
+            return $http.post(
+                $rootScope.site_url.concat("/company/select_subscription"), 
+                formData, 
+                { transformRequest: angular.identity, headers: {'Content-Type': undefined}}).then(success, onError);
         }
-        
-        
     };
     
     return service;

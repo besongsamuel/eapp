@@ -45,6 +45,18 @@ class Company extends CI_Controller
         echo json_encode($result);
     }
     
+    /**
+     * Whenever the account is modified, it is no longer new
+     * @param type $val
+     */
+    private function toggle_is_new($val) 
+    {
+        if($this->user->company)
+        {
+            $this->company_model->create(COMPANY_TABLE, array("id" => $this->user->company->id, "is_new" => $val));
+        }
+    }
+    
     public function add_store_product() 
     {
         if($this->user != null && $this->user->subscription >= COMPANY_SUBSCRIPTION && $this->user->company->is_valid)
@@ -52,6 +64,11 @@ class Company extends CI_Controller
             $products_count = $this->company_model->get_company_products_count($this->user->company->chain->id);
             
             $res = $this->company_model->get_where(COMPANY_SUBSCRIPTIONS_TABLE, "*", array("subscription" => $this->user->subscription));
+            
+            if($this->user->company->is_new)
+            {
+                $this->toggle_is_new(0);
+            }
             
             $company_subscription = $res[0];
             
@@ -280,6 +297,11 @@ class Company extends CI_Controller
         
         if($this->user->subscription >= COMPANY_SUBSCRIPTION)
         {
+            if($this->user->company->is_new)
+            {
+                $this->toggle_is_new(0);
+            }
+            
             $fileName = uniqid();
         
             // Initialize the Upload Library
@@ -305,7 +327,6 @@ class Company extends CI_Controller
                 echo json_encode($this->upload->display_errors());
             }
         }
-        
         
     }
     
@@ -466,6 +487,8 @@ class Company extends CI_Controller
             
             $company['id'] = $this->user->company->id;
             
+            $company['is_new'] = 0;
+            
             $this->company_model->create(COMPANY_TABLE, $company);
         }
     }
@@ -566,6 +589,46 @@ class Company extends CI_Controller
            // Response from PayPal
         }
         
+    }
+    
+    public function select_subscription() 
+    {
+        $subscription = (int)$this->input->post("subscription");
+        
+        if($this->user && $this->user->subscription >= COMPANY_SUBSCRIPTION)
+        {
+            if($this->user->company->is_new)
+            {
+                $this->toggle_is_new(0);
+            }
+            
+            $result = array("success" => true);
+            
+            switch ($subscription) 
+            {
+                case 0:
+                    // This is free, switch the user to the free account
+                    // Update the user' subscription. 
+                    
+                    if($this->user->subscription > COMPANY_SUBSCRIPTION)
+                    {
+                        // Remove recurring payments
+                    }
+                    
+                    $this->company_model->create(USER_ACCOUNT_TABLE, array("subscription" => 10, "id" => $this->user->id));
+                    
+                    break;
+                case 1:
+                    break;
+                case 2:
+                    break;
+
+                default:
+                    break;
+            }
+            
+            echo json_encode($result);
+        }
     }
 
     

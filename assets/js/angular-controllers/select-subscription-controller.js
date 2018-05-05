@@ -4,20 +4,27 @@
  * and open the template in the editor.
  */
 
-angular.module("eappApp").controller("SubscriptonController", ["$rootScope", "$scope", function($rootScope, $scope) 
+angular.module("eappApp").controller("SubscriptonController", ["$scope", "$company", function($scope, $company) 
 {
     
     var ctrl = this;
     
     ctrl.selectSubscription = function(type)
     {
-        if(type == 3)
-        {
-            var href = "https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=67YAR9BVCRBHN";
-            
-            var win = window.open(href, '_blank');
-            win.focus();
-        }
+        
+        $company.selectSubscription(type, function(response)
+        {   
+            if(response.data.success)
+            {
+                
+                // Add message
+                sessionStorage.setItem("subscriptionChanged", JSON.stringify(true));
+                
+                // Redirect to the company account page
+                window.location =  $scope.site_url.concat("/account/index/2");
+            }
+        });
+        
     };
     
     angular.element(document).ready(function()

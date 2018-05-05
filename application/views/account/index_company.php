@@ -96,7 +96,7 @@ $(document).ready(function()
                 <div ng-controller="CompanyAccountController" >
                     
                     <div id="error_message" class="alert alert-success" ng-show="successMessage">
-                        <p>{{successMessage}}</p>
+                        <p style="text-align: center;">{{successMessage}}</p>
                         <span></span>
                     </div>
                     

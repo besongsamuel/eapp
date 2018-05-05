@@ -68,11 +68,6 @@ angular.module("eappApp").controller("UploadController", ["$rootScope", "$scope"
             
             $scope.uploading = false;
         }
-        
-        
-        
-        
-        
     });
     
     $scope.selectFile = function()
