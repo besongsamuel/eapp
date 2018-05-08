@@ -22,7 +22,7 @@
             <form name="loginForm" class="form-horizontal" role="form" ng-submit="login()" novalidate>
 
                 <md-input-container class="md-block col-md-12" flex-gt-sm>
-                    <label>Email</label>
+                    <label class="md-no-float">Email</label>
                     <md-icon class="md-primary"><i class="material-icons">email</i></md-icon>
                     <input required name="email" ng-model="user.email" />
                     <div ng-messages="loginForm.email.$error">
@@ -30,7 +30,7 @@
                     </div>
                 </md-input-container>
 
-                <md-input-container class="md-block col-md-12" flex-gt-sm md-no-float>
+                <md-input-container class="md-block col-md-12">
                     <label class="md-no-float">Mot de passe</label>
                     <md-icon class="md-primary"><i class="material-icons">lock</i></md-icon>
                     <input style="border-left : none; border-right : none;border-top : none;" type="password" required name="password" ng-model="user.password" />

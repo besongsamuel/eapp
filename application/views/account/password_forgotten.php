@@ -7,7 +7,7 @@ To change this template file, choose Tools | Templates
 and open the template in the editor.
 -->
 
-<div id="admin-container" class="container otiprix-section" ng-controller="PasswordForgottenController" ng-cloak>
+<div id="admin-container" class="container mainbox" ng-controller="PasswordForgottenController" ng-cloak>
     
    <div id="loginbox" class="col-md-8 col-md-offset-2 col-sm-12">
        
@@ -17,10 +17,12 @@ and open the template in the editor.
         
         <div class="panel panel-info" >
           
-            <div class="panel-heading">
-               <div class="panel-title">Mot de passe oublié</div>
-            </div>
-          
+            <md-toolbar class="md-primary">
+                <div>
+                    <h2 class="md-toolbar-tools">Mot de passe oublié</h2>
+                </div>
+            </md-toolbar>
+            
             <div class="panel-body">
             
                 <div class="alert alert-danger col-sm-12" ng-show="passwordForgottenErrorMessage">

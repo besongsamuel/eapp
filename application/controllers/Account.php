@@ -261,35 +261,15 @@ class Account extends CI_Controller
             {
                 return FALSE;
             }
-            
-            $message = 
-                '<table width="100%" style="padding: 5px; margin-left: 5px; margin-right: 5px;">
-                    <tbody>
-                        <tr><td width="100%" height="18;"><p style="font-size: 12px; color : #1abc9c; text-align: center;">L’ÉPICERIE AU PETIT PRIX</p></td></tr>
-                        <tr><td width="100%" height="32"></td></tr>
-                        <tr><td><p><b>Bonjour, <span style="color: #1abc9c;">'.$user_profile->lastname.', '.$user_profile->firstname.'</span></b></p></td></tr>
-                        <tr><td width="100%" height="8"></td></tr>
-                        <tr><td><p>Vous avez récemment demandé à réinitialiser votre mot de passe pour votre compte <a href="http://www.otiprix.com">OtiPrix.</a> Utilisez le bouton ci-dessous pour le réinitialiser. Cette réinitialisation de mot de passe n\'est valide que pour les 24h suivantes.</p></td></tr>
-                        <tr><td width="100%" height="8"></td></tr>
-                        <tr>
-                            <td width="100%" style="text-align: center;">
-                                <a href="'.$reset_url.'">
-                                    <input type="button" value="Réinitialisez votre mot de passe" style="height: 44px; width : 300px; color: #fff; background-color: #1abc9c; font-size: 14px;" />
-                                </a>
-                            </td>
-                        </tr>
-                        <tr><td width="100%" height="32"></td></tr>
-                        <tr><td><p>Si vous n\'avez pas demandé de réinitialisation de mot de passe, ignorez cet e-mail ou contactez l\'assistance si vous avez des questions.</p></td></tr>
-                        <tr><td width="100%" height="32"></td></tr>
-                        <tr><td><p>Merci,</p></td></tr>
-                        <tr><td><p>Equipe Otiprix</p></td></tr>
-                        <tr><td width="100%" height="32"></td></tr>
-                    </tbody>
-                </table>';
         
-            $message .= $this->get_otiprix_mail_footer($email);
+            $message = file_get_contents(base_url('assets/templates/mail/welcome_company.html'));
+            $message = str_replace("*|FNAME|*", $this->user->profile->firstname, $message);
+            $message = str_replace("*|LNAME|*", $this->user->profile->lastname, $message);
+            $message = str_replace("*|URL|*", $reset_url, $message);
+            $message = str_replace("*|MC:SUBJECT|*", $mail_subject, $message);
 
-            mail($email, $mail_subject, $message, $this->get_otiprix_header());
+            mail($this->user->email, $mail_subject, $message, $this->get_otiprix_header());
+
         }
     }
     
@@ -549,7 +529,7 @@ class Account extends CI_Controller
                     
                     $this->add_user_to_mailchimp('09a06e4d7e');
                     
-                    //$this->send_registration_message();
+                    $this->send_registration_message();
                     
                     $data['user'] = $this->user;
                 }
@@ -571,30 +551,15 @@ class Account extends CI_Controller
         
     private function send_registration_message() 
     {
-        
         $mail_subject = 'Bienvenue a Otiprix';
 
-        $login_link = site_url("/account/login");
-        
-        $message =  
-                '<table width="100%" style="padding: 2%; margin-left: 2%; margin-right: 2%;">
-                    <tbody>
-                        <tr><td width="100%" height="18;"><p style="font-size: 12px; color : #1abc9c; text-align: center;">L\’ÉPICERIE AU PETIT PRIX</p></td></tr>
-                        <tr><td width="100%" height="32"></td></tr>
-                        <tr><td><h1>Bienvenue,</h1></td></tr>
-                        <tr><td><p><b>et merci, <span style="color: #1abc9c;">'.$this->user->profile->lastname.' '.$this->user->profile->firstname.'</span></b></p></td></tr>
-                        <tr><td width="100%" height="8"></td></tr>
-                        <tr><td><p>Merci pour la confiance accordée à <a href="http://www.otiprix.com">OtiPrix.</a> Cet email confirme la création de votre compte associé à votre adresse courriel : <span style="color: #1abc9c;">'.$this->user->email.'.</span></p></td></tr>
-                        <tr><td><p>N’attendez pas, <a href="'.$login_link.'">connectez-vous</a>, personnalisez votre compte et commencez à explorer. Vous trouverez en un seul clic les vrais rabais dans les grandes surfaces et dans tous les petits magasins proches de vous. Faites votre liste d’épicerie et réduisez votre facture d’épicerie en un temps record grâce à <a href="http://www.otiprix.com">OtiPrix.</a> N’attendez plus, commencez dès aujourd\'hui ici.</p></td></tr>
-                        <tr><td><p>Pour toute assistance ou commentaires, écrivez-nous à l’adresse ci-dessous et nous vous mettrons sur la bonne voie.</p></td></tr>
-                        <tr><td width="100%" height="32"></td></tr>
-                        <tr><td><p>Merci de ne pas répondre à ce message : nous ne traitons pas les mails envoyés à cette adresse.</p></td></tr>
-                        <tr><td width="100%" height="32"></td></tr>
-                    </tbody>
-                </table>';
-        
-        $message .= $this->get_otiprix_mail_footer($this->user->email);
-        
+        $message = file_get_contents(base_url('assets/templates/mail/welcome_user.html'));
+        $message = str_replace("*|FNAME|*", $this->user->profile->firstname, $message);
+        $message = str_replace("*|LNAME|*", $this->user->profile->lastname, $message);
+        $message = str_replace("*|EMAIL|*", $this->user->email, $message);
+        $message = str_replace("*|ACCNUM|*", $this->user->account_number, $message);
+        $message = str_replace("*|MC:SUBJECT|*", $mail_subject, $message);
+                
         mail($this->user->email, $mail_subject, $message, $this->get_otiprix_header());
     }
     

@@ -443,35 +443,17 @@ class Company extends CI_Controller
     
     private function send_registration_message() 
     {
+        $mail_subject = 'Bienvenue à Otiprix';
         
-        $mail_subject = 'Bienvenue a Otiprix';
-
-        $login_link = site_url("/account/login");
-        
-        $message =  
-                '<table width="100%" style="padding: 2%; margin-left: 2%; margin-right: 2%;">
-                    <tbody>
-                        <tr><td width="100%" height="18;"><p style="font-size: 12px; color : #1abc9c; text-align: center;">L\’ÉPICERIE AU PETIT PRIX</p></td></tr>
-                        <tr><td width="100%" height="32"></td></tr>
-                        <tr><td><h1>Bienvenue,</h1></td></tr>
-                        <tr><td><p><b>et merci, <span style="color: #1abc9c;">'.$this->user->profile->lastname.' '.$this->user->profile->firstname.'</span></b></p></td></tr>
-                        <tr><td width="100%" height="8"></td></tr>
-                        <tr><td><p>C\'est officiel. Vous êtes un client OtiPrix. Merci pour la confiance accordée à OtiPrix.com. Cet email confirme la création de votre compte associé à votre adresse courriel: <span style="color: #1abc9c;">'.$this->user->email.'</span></p></td></tr>
-                        <tr><td><p>N’attendez pas, <a href="'.$login_link.'">connectez-vous</a>, personnalisez votre compte et commencez à explorer. Vous trouverez des conseils pour faciliter votre mise en route, des offres spéciales et bien plus. Commencez ensuite à afficher vos produits sur OtiPrix.com afin de présenter vos meilleurs rabais aux consommateurs. Pour toute assistance, appelez le numéro indiqué ci-dessous et nous vous mettrons sur la bonne voie.</p></td></tr>
-                        <tr><td width="100%" height="32"></td></tr>
-                        <tr><td><p>Pour toute assistance ou commentaires, écrivez-nous à l’adresse ci-dessous et nous vous mettrons sur la bonne voie.</p></td></tr>
-                        <tr><td width="100%" height="32"></td></tr>
-                        <tr><td width="100%" height="32"></td></tr>
-                        <tr><td><p>Merci de ne pas répondre à ce message : nous ne traitons pas les mails envoyés à cette adresse.</p></td></tr>
-                        <tr><td width="100%" height="32"></td></tr>
-                        <tr><td width="100%" height="32"></td></tr>
-                        <tr><td width="100%" height="32"></td></tr>
-                    </tbody>
-                </table>';
-        
-        $message .= $this->get_otiprix_mail_footer($this->user->email);
-        
+        $message = file_get_contents(base_url('assets/templates/mail/welcome_company.html'));
+        $message = str_replace("*|FNAME|*", $this->user->profile->firstname, $message);
+        $message = str_replace("*|LNAME|*", $this->user->profile->lastname, $message);
+        $message = str_replace("*|EMAIL|*", $this->user->email, $message);
+        $message = str_replace("*|ACCNUM|*", $this->user->account_number, $message);
+        $message = str_replace("*|MC:SUBJECT|*", $mail_subject, $message);
+                
         mail($this->user->email, $mail_subject, $message, $this->get_otiprix_header());
+        
     }
     
     public function edit_company() 
