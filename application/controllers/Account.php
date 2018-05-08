@@ -529,8 +529,6 @@ class Account extends CI_Controller
                     
                     $this->add_user_to_mailchimp('09a06e4d7e');
                     
-                    $this->send_registration_message();
-                    
                     $data['user'] = $this->user;
                 }
                 else
@@ -548,21 +546,7 @@ class Account extends CI_Controller
         
         echo json_encode($data);
     }
-        
-    private function send_registration_message() 
-    {
-        $mail_subject = 'Bienvenue a Otiprix';
-
-        $message = file_get_contents(base_url('assets/templates/mail/welcome_user.html'));
-        $message = str_replace("*|FNAME|*", $this->user->profile->firstname, $message);
-        $message = str_replace("*|LNAME|*", $this->user->profile->lastname, $message);
-        $message = str_replace("*|EMAIL|*", $this->user->email, $message);
-        $message = str_replace("*|ACCNUM|*", $this->user->account_number, $message);
-        $message = str_replace("*|MC:SUBJECT|*", $mail_subject, $message);
-                
-        mail($this->user->email, $mail_subject, $message, $this->get_otiprix_header());
-    }
-    
+            
     public function save_profile() 
     {
         $result = array("success" => false);
