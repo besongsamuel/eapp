@@ -595,6 +595,54 @@ class Company extends CI_Controller
             echo json_encode($result);
         }
     }
+    
+    public function submit_payment() 
+    {
+        $nonce = json_decode($this->input->post('nonce'));
+        
+        $subscription = $this->input->post('subscription');
+        
+        $selected_subscription = $this->company_model->get_specific(COMPANY_SUBSCRIPTIONS_TABLE, array("subscription" => $subscription));
+        
+        if($selected_subscription && $selected_subscription->price > 0)
+        {
+            $result = $this->gateway->transaction()->sale([
+                'amount' => $selected_subscription->price,
+                'paymentMethodNonce' => $nonce,
+                'options' => [ 'submitForSettlement' => True ]
+            ]);
+            
+            // Update the user' current subscription
+            if($result->success)
+            {
+                $this->company_model->create(USER_ACCOUNT_TABLE, array("id" => $this->user->id, "subscription" => $selected_subscription->subscription));
+                
+                echo json_encode($result->transaction);
+            }
+        }
+        
+        
+    }
+    
+    public function get_client_token() 
+    {
+        if($this->user)
+        {
+            $token = $this->user->payment_token;
+            
+            if(!isset($token))
+            {
+                // Create a new token for the user
+                $clientToken = $this->gateway->clientToken()->generate();
+                // Save the new token to the user
+                $this->account_model->create(USER_ACCOUNT_TABLE, array("id" => $this->user->id, "payment_token" => $clientToken));
+                
+                $token = $clientToken;
+            }
+            
+            echo $token;
+        }
+    }
 
     
 }

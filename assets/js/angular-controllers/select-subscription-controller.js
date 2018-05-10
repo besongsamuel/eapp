@@ -32,7 +32,45 @@ angular.module("eappApp").controller("SubscriptonController", ["$scope", "$compa
         
         (function()
         {
+            var button = document.querySelector('#submit-button');
+
+            $company.getClientToken(function(response)
+            {
+                braintree.dropin.create({
+                    authorization: response.data,
+                    container: '#dropin-container'
+                  }, function (createErr, instance) 
+                  {
+
+                      button.addEventListener('click', function () {
+                      instance.requestPaymentMethod(function (err, payload) 
+                      {
+                          // Submit payload.nonce to your server
+                          $company.submitPayment(payload.nonce, 11, function(){});
+                      });
+                    });
+                  });
+            });
             
+            var button2 = document.querySelector('#submit-button2');
+            
+            $company.getClientToken(function(response)
+            {
+                braintree.dropin.create({
+                    authorization: response.data,
+                    container: '#dropin-container2'
+                  }, function (createErr, instance) 
+                  {
+
+                      button2.addEventListener('click', function () {
+                      instance.requestPaymentMethod(function (err, payload) 
+                      {
+                          // Submit payload.nonce to your server
+                          $company.submitPayment(payload.nonce, 12, function(){});
+                      });
+                    });
+                  });
+            });
         })();
         
     });

@@ -142,6 +142,23 @@ angular.module('eappApp').factory("$company", function($rootScope, $http)
                 $rootScope.site_url.concat("/company/select_subscription"), 
                 formData, 
                 { transformRequest: angular.identity, headers: {'Content-Type': undefined}}).then(success, onError);
+        },
+        submitPayment : function(nonce, subscription, success)
+        {
+            var formData = new FormData();
+        
+            formData.append("nonce", JSON.stringify(nonce));
+            
+            formData.append("subscription", subscription);
+                        
+            return $http.post(
+                $rootScope.site_url.concat("/company/submit_payment"), 
+                formData, 
+                { transformRequest: angular.identity, headers: {'Content-Type': undefined}}).then(success, onError);
+        },
+        getClientToken : function(success)
+        {
+            $http.post($rootScope.site_url.concat("/company/get_client_token"), null).then(success, onError);
         }
     };
     

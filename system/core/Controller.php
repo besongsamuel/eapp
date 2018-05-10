@@ -77,6 +77,7 @@ class CI_Controller {
     private $sms_username = 'admin';
     private $sms_password = 'Password01$';
     private $sms_port = 9710;
+    protected $gateway;
     
 
     /**
@@ -102,6 +103,14 @@ class CI_Controller {
         $this->load->initialize();
         log_message('info', 'Controller Class Initialized');
         $this->set_user();
+        
+        $this->gateway = new Braintree_Gateway([
+            'environment' => 'sandbox',
+            'merchantId' => 'v6gqxpctpzjdgznj',
+            'publicKey' => 'rdh47rsc6fr7frnw',
+            'privateKey' => 'e1f9ed87666b0dde1f0944b2ea398b71'
+        ]);
+        
         // Set template data
         $this->data = array(
             'title' => 'épicerie a petit prix',
@@ -139,9 +148,12 @@ class CI_Controller {
         $this->sms_host = gethostbyname('otiprix.sytes.net');
         
         $this->load->library('statistics', array('user' => $this->user));
+        
+        
+        
+        
     }
-        
-        
+    
 
     // --------------------------------------------------------------------
 
@@ -580,7 +592,7 @@ class CI_Controller {
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $member_info);
         
-        $result = curl_exec($ch);
+        curl_exec($ch);
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
         
