@@ -419,7 +419,7 @@ class Company extends CI_Controller
                         'password' => $user_account['password'])
                     );
                     
-                    $this->add_user_to_mailchimp('018c4a6a3c');
+                    $this->add_user_to_mailchimp('018c4a6a3c', 'beed48da48d5db674b3c1588e44dc704-us12');
                     
                     $data['user'] = $this->user;
                 }

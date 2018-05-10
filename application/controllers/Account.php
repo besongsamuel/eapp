@@ -230,12 +230,16 @@ class Account extends CI_Controller
         {
             $result["success"] = true;
             $result["message"] = "Email envoyé avec success.";
+            
             // Create a password reset token
             $reset_token = $this->GUID();
             // Assign reset token to the user account
             $this->account_model->create(USER_ACCOUNT_TABLE, array("id" => $account->id, "reset_token" => $reset_token));
             // send the reset email
-            $this->send_password_reset_email($reset_token, $email);
+            $this->send_password_reset_email($this->config->item('users_list_id'), 
+                    $this->config->item('mailchimp_api_key'), 
+                    $email, 
+                    $reset_token);
         }
         else
         {
@@ -245,31 +249,25 @@ class Account extends CI_Controller
         echo json_encode($result);
     }
     
-    public function send_password_reset_email($reset_token, $email) 
+    protected function send_password_reset_email($listID, $apiKey, $email, $reset_token)
     {
-        $mail_subject = 'Réinitialisation de mot de passe';
-        
-        $reset_url = html_entity_decode(site_url('/account/reset_password?reset_token=').$reset_token);
         
         $user_account = $this->account_model->get_specific(USER_ACCOUNT_TABLE, array("email" => $email));
         
         if($user_account)
         {
-            $user_profile = $this->account_model->get_specific(USER_PROFILE_TABLE, array("user_account_id" => $user_account->id));
+            $reset_url = html_entity_decode(site_url('/account/reset_password?reset_token=').$reset_token);
             
-            if(!isset($user_profile))
-            {
-                return FALSE;
-            }
-        
-            $message = file_get_contents(base_url('assets/templates/mail/welcome_company.html'));
-            $message = str_replace("*|FNAME|*", $this->user->profile->firstname, $message);
-            $message = str_replace("*|LNAME|*", $this->user->profile->lastname, $message);
-            $message = str_replace("*|URL|*", $reset_url, $message);
-            $message = str_replace("*|MC:SUBJECT|*", $mail_subject, $message);
+            $mergeFields  = ['RESREQ' => 1, 'RESURL' => $reset_url];
 
-            mail($this->user->email, $mail_subject, $message, $this->get_otiprix_header());
+            // member information
+            $json = json_encode([
+                'email_address' => $email,
+                'status' => 'subscribed',
+                'merge_fields'  => $mergeFields
+            ]);
 
+            $this->update_mailchimp_user($listID, $apiKey, $json, $email);
         }
     }
     
@@ -526,8 +524,8 @@ class Account extends CI_Controller
                         'email'=>$user_account['email'],
                         'password' => $user_account['password'])
                     );
-                    
-                    $this->add_user_to_mailchimp('09a06e4d7e');
+                    // MailChimp API credentials
+                    $this->add_user_to_mailchimp('09a06e4d7e', '961e0c1d85899e91b991b8032258b983-us12');
                     
                     $data['user'] = $this->user;
                 }

@@ -554,19 +554,51 @@ class CI_Controller {
         return $data;
     }
     
-    protected function add_user_to_mailchimp($listID)
+    /**
+     * This method updates/adds a given mailchimp user in a list
+     * @param type $listID The id of the list
+     * @param type $apiKey The mailchimp api key
+     * @param type $member_info JSON Member info to add or update
+     * @param type $email The email of the user
+     * @return boolean returns true or false
+     */
+    protected function update_mailchimp_user($listID, $apiKey, $member_info, $email) 
     {
-        // MailChimp API credentials
-        $apiKey = 'f20c5391b20bb4ba2a0ef0c69c700712-us12';
-        
-        // MailChimp API URL
-        $memberID = md5(strtolower($this->user->email));
+        $memberID = md5(strtolower($email));
         
         $dataCenter = substr($apiKey,strpos($apiKey,'-')+1);
         
         $url = 'https://' . $dataCenter . '.api.mailchimp.com/3.0/lists/' . $listID . '/members/' . $memberID;
         
+        // send a HTTP POST request with curl
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_USERPWD, 'user:' . $apiKey);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $member_info);
         
+        $result = curl_exec($ch);
+        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+        
+        // store the status message based on response code
+        if ($httpCode == 200) 
+        {
+            return TRUE;
+        } 
+        else 
+        {
+            
+            return FALSE;
+        }
+    }
+    
+    protected function add_user_to_mailchimp($listID, $apiKey)
+    {
+        // MailChimp API URL
         $mergeFields  = [
                 'FNAME'     => $this->user->profile->firstname,
                 'LNAME'     => $this->user->profile->lastname,
@@ -587,35 +619,8 @@ class CI_Controller {
             'merge_fields'  => $mergeFields
         ]);
         
-        // send a HTTP POST request with curl
-        $ch = curl_init($url);
-        curl_setopt($ch, CURLOPT_USERPWD, 'user:' . $apiKey);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_TIMEOUT, 10);
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $json);
+        $this->update_mailchimp_user($listID, $apiKey, $json, $this->user->email);
         
-        $result = curl_exec($ch);
-        
-        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        curl_close($ch);
-        
-        // store the status message based on response code
-        if ($httpCode == 200) {
-            $_SESSION['msg'] = '<p style="color: #34A853">You have successfully subscribed to CodexWorld.</p>';
-        } else {
-            switch ($httpCode) {
-                case 214:
-                    $msg = 'You are already subscribed.';
-                    break;
-                default:
-                    $msg = 'Some problem occurred, please try again.';
-                    break;
-            }
-            $_SESSION['msg'] = '<p style="color: #EA4335">'.$msg.'</p>';
-        }
     }
     
     protected function record_retailer_visit($id, $distance, $postcode)
