@@ -46,7 +46,10 @@ angular.module("eappApp").controller("SubscriptonController", ["$scope", "$compa
                       instance.requestPaymentMethod(function (err, payload) 
                       {
                           // Submit payload.nonce to your server
-                          $company.submitPayment(payload.nonce, 11, function(){});
+                          $company.submitPayment(payload.nonce, 11, function()
+                          {
+                              window.location =  $scope.site_url.concat("/account/index/2");
+                          });
                       });
                     });
                   });
@@ -66,7 +69,10 @@ angular.module("eappApp").controller("SubscriptonController", ["$scope", "$compa
                       instance.requestPaymentMethod(function (err, payload) 
                       {
                           // Submit payload.nonce to your server
-                          $company.submitPayment(payload.nonce, 12, function(){});
+                          $company.submitPayment(payload.nonce, 12, function()
+                          {
+                              window.location =  $scope.site_url.concat("/account/index/2");
+                          });
                       });
                     });
                   });
