@@ -149,8 +149,7 @@ class CI_Controller {
         
         $this->load->library('statistics', array('user' => $this->user));
         
-        
-        
+        $this->lang->load('template', 'french');
         
     }
     
@@ -565,7 +564,7 @@ class CI_Controller {
         
         return $data;
     }
-    
+        
     /**
      * This method updates/adds a given mailchimp user in a list
      * @param type $listID The id of the list
@@ -592,7 +591,7 @@ class CI_Controller {
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $member_info);
         
-        curl_exec($ch);
+        $res = curl_exec($ch);
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
         

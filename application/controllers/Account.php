@@ -213,6 +213,97 @@ class Account extends CI_Controller
         $this->parser->parse('eapp_template', $this->data);
     }
     
+    public function send_activation_email() 
+    {
+        if($this->user && $this->user->is_active == 0)
+        {
+            // Create an activation token
+            $activation_token = $this->GUID();
+            // Add tokens to the database
+            // Generate token used to validate account
+            $token = array
+            (
+                "user_account_id" => $this->user->id,
+                "type" => 0
+            );
+
+            // delete any existing token
+            $this->account_model->delete(TOKENS_TABLE, $token);  
+            $token["token"] = $activation_token;
+            $this->account_model->create(TOKENS_TABLE, $token);
+            // Create activation email
+            $activation_url = html_entity_decode(site_url('/account/activate_account?token=').$activation_token);
+            // Create Merge Fields
+            $mergeFields  = 
+            [
+                'URL' => $activation_url, 
+                'REQ' => 1,
+                'FNAME' => $this->user->profile->firstname,
+                'LNAME' => $this->user->profile->lastname
+            ];
+            
+            //  member information
+            $json = json_encode([
+                'email_address' => $this->user->email,
+                'status' => 'subscribed',
+                'merge_fields'  => $mergeFields
+            ]);
+            
+            $this->update_mailchimp_user($this->config->item('activation_email_list_id'), 
+                    $this->config->item('mailchimp_api_key'), $json, $this->user->email);
+            
+        }
+    }
+    
+    public function activate_account() 
+    {
+        // Get the token 
+        $token = $this->input->get("token");
+        
+        if($token)
+        {
+            // Check if the token exists in the database
+            $user_token = $this->account_model->get_specific(TOKENS_TABLE, array("token" => $token));
+            
+            // Token Exists
+            if($user_token)
+            {
+                // Delete token
+                $this->account_model->delete(TOKENS_TABLE, array("token" =>$token));
+                
+                // activate user
+                $this->account_model->create(USER_ACCOUNT_TABLE, array("id" => $user_token->user_account_id, "is_active" => 1));
+                
+                // If the user is not logged, log the user
+                if(!$this->user)
+                {
+                    // Get the user data
+                    $user = $this->account_model->get(USER_ACCOUNT_TABLE, $user_token->user_account_id);
+                    $this->login_user(array("email" => $user->email, "password" => $user->password));
+                }
+                // Refresh user
+                $this->set_user();
+                $this->data['user'] = addslashes(json_encode($this->user));
+                // Go to home page
+                $this->data['script'] = $this->load->view('home/scripts/index', '', TRUE);
+                $this->data['latestProducts'] = $this->home_model->get_store_products_limit(25, 0)["products"];
+                $this->data['body'] = $this->load->view('home/index', $this->data, TRUE);
+                $this->data['activated'] = 1;
+                $this->parser->parse('eapp_template', $this->data);
+            }
+            else
+            {
+                // Goto the home page
+                header('Location: '.  site_url('/home'));
+            }
+        }
+        else
+        {
+            // Goto the home page
+            header('Location: '.  site_url('/home'));
+        }
+    }
+    
     public function send_password_reset() 
     {
         
@@ -524,8 +615,14 @@ class Account extends CI_Controller
                         'email'=>$user_account['email'],
                         'password' => $user_account['password'])
                     );
+                    
                     // MailChimp API credentials
-                    $this->add_user_to_mailchimp('09a06e4d7e', '961e0c1d85899e91b991b8032258b983-us12');
+                    $this->add_user_to_mailchimp($this->config->item('users_list_id'), $this->config->item('mailchimp_api_key'));
+                    // Add User to the activation email list
+                    $this->add_user_to_mailchimp($this->config->item('activation_email_list_id'), $this->config->item('mailchimp_api_key'));
+                    
+                    // Send activation mail
+                    send_activation_email();
                     
                     $data['user'] = $this->user;
                 }

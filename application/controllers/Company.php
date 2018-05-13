@@ -419,7 +419,9 @@ class Company extends CI_Controller
                         'password' => $user_account['password'])
                     );
                     
-                    $this->add_user_to_mailchimp('018c4a6a3c', 'beed48da48d5db674b3c1588e44dc704-us12');
+                    $this->add_user_to_mailchimp($this->config->item('company_list_id'), $this->config->item('mailchimp_api_key'));
+                    // Add User to the activation email list
+                    $this->add_user_to_mailchimp($this->config->item('activation_email_list_id'), $this->config->item('mailchimp_api_key'));
                     
                     $data['user'] = $this->user;
                 }

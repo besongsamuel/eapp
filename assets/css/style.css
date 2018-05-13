@@ -1405,3 +1405,18 @@ md-list-item .md-avatar, md-list-item .md-list-item-inner .md-avatar
     margin : 5px;
 }
 
+.otiprix-activate-account
+{
+    top : 110px; 
+    left: 0px; 
+    position: fixed; 
+    z-index: 1; 
+    width: 100%; 
+    text-align: center;
+}
+
+.otiprix-activate-account a
+{
+    color : #666 !important;
+}
+

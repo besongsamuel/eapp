@@ -536,3 +536,5 @@ $config['token'] = '';
 
 $config['mailchimp_api_key'] = 'd76180b8ecd0de8f555bb50a6db57b57-us12';
 $config['users_list_id'] = '09a06e4d7e';
+$config['company_list_id'] = '09a06e4d7e';
+$config['activation_email_list_id'] = '7b9e512faa';

@@ -684,6 +684,11 @@ angular.module('eappApp').factory('eapp', ['$http','$rootScope', '$mdDialog', fu
         
         
     };
+    
+    eappService.sendActivationEmail = function()
+    {
+        return $http.post(eappService.getSiteUrl().concat("account/send_activation_email"), null);
+    };
 
     return eappService;
 }]);

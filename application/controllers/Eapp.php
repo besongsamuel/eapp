@@ -11,6 +11,11 @@ class Eapp extends CI_Controller
         $this->load->model('eapp_model');
     }
     
+    public function get_application_data() 
+    {
+        echo json_encode(null);
+    }
+    
     public function site_url() 
     {
         echo json_encode(site_url());

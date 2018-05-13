@@ -138,6 +138,8 @@ defined('CHAIN_VISITS')                 OR define('CHAIN_VISITS', 'otiprix_chain
 defined('NEWSLETTER_SUBSCRIPTIONS')     OR define('NEWSLETTER_SUBSCRIPTIONS', 'otiprix_newsletter_subscriptions');
 defined('COMPANY_TABLE')                OR define('COMPANY_TABLE', 'eapp_company');
 defined('COMPANY_SUBSCRIPTIONS_TABLE')  OR define('COMPANY_SUBSCRIPTIONS_TABLE', 'eapp_company_subscriptions');
+defined('TOKENS_TABLE')                 OR define('TOKENS_TABLE', 'eapp_tokens');
+
 
 
 
