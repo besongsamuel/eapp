@@ -357,7 +357,7 @@ class Account extends CI_Controller
             $mail = str_replace("[IMAGE_TWITTER]", base_url("/assets/img/icons/if_twitter_circle_gray_107135.png"), $mail);
             $mail = str_replace("[UNSUBSCRIBE_URL]", $this->get_unsubscribe_url(), $mail);
 
-            mail($this->user->email, $subject, $mail, $this->get_otiprix_header());
+            mail($email, $subject, $mail, $this->get_otiprix_header());
             
         }
     }
