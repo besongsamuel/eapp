@@ -688,7 +688,7 @@ class Account extends CI_Controller
         
         // images
         $mail = str_replace("[LOGO_IMAGE]", base_url("/assets/img/logo.png"), $mail);
-        $mail = str_replace("[PROMO_1]", base_url("/assets/img/step-2"), $mail);
+        $mail = str_replace("[PROMO_1]", base_url("/assets/img/step-2.jpg"), $mail);
         $mail = str_replace("[PROMO_2]", base_url("/assets/img/list-calculator.jpg"), $mail);
         // image icons
         $mail = str_replace("[IMAGE_FACEBOOK]", base_url("/assets/img/icons/if_facebook_circle_gray_107140.png"), $mail);
