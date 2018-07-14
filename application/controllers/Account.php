@@ -213,7 +213,7 @@ class Account extends CI_Controller
         $this->parser->parse('eapp_template', $this->data);
     }
     
-    public function send_activation_email() 
+    private function get_activation_url() 
     {
         if($this->user && $this->user->is_active == 0)
         {
@@ -233,23 +233,49 @@ class Account extends CI_Controller
             $this->account_model->create(TOKENS_TABLE, $token);
             // Create activation email
             $activation_url = html_entity_decode(site_url('/account/activate_account?token=').$activation_token);
+            
+            return $activation_url;
+        }
+        
+        return null;
+    }
+    
+    private function get_unsubscribe_url() 
+    {
+        if($this->user)
+        {
+            $subscription = $this->account_model->get_specific(NEWSLETTER_SUBSCRIPTIONS, array("email" => $this->user->email));
+        
+            if(isset($subscription) && $subscription->type == 1)
+            {
+                // Create activation email
+                $unsubscribe_url = html_entity_decode(site_url('/account/unsubscribe?token=').$subscription->unsubscribe_token);;
+            }
+            
+            return $unsubscribe_url;
+        }
+        
+        return null;
+    }
+    
+    public function send_activation_email() 
+    {
+        if($this->user && $this->user->is_active == 0)
+        {
             // Create Merge Fields
             $mergeFields  = 
             [
-                'URL' => $activation_url, 
-                'REQ' => 1,
-                'FNAME' => $this->user->profile->firstname,
-                'LNAME' => $this->user->profile->lastname
+                'ACTURL' => $this->get_activation_url(), 
+                'ACTREQ' => 1
             ];
             
             //  member information
             $json = json_encode([
                 'email_address' => $this->user->email,
-                'status' => 'subscribed',
                 'merge_fields'  => $mergeFields
             ]);
             
-            $this->update_mailchimp_user($this->config->item('activation_email_list_id'), 
+            $this->update_mailchimp_user($this->config->item('users_list_id'), 
                     $this->config->item('mailchimp_api_key'), $json, $this->user->email);
             
         }
@@ -349,12 +375,11 @@ class Account extends CI_Controller
         {
             $reset_url = html_entity_decode(site_url('/account/reset_password?reset_token=').$reset_token);
             
-            $mergeFields  = ['RESREQ' => 1, 'RESURL' => $reset_url];
+            $mergeFields  = ['RESPASSREQ' => 1, 'RESPASSURL' => $reset_url];
 
             // member information
             $json = json_encode([
                 'email_address' => $email,
-                'status' => 'subscribed',
                 'merge_fields'  => $mergeFields
             ]);
 
@@ -609,22 +634,22 @@ class Account extends CI_Controller
                     
                     $insert = $this->account_model->create(USER_PROFILE_TABLE, $user_profile);
                     $this->session->set_userdata('success_msg', 'Your registration was successfully. Please login to your account.');
-                    $data["success"] = true;
                     
                     $this->login_user(array(
                         'email'=>$user_account['email'],
                         'password' => $user_account['password'])
                     );
                     
-                    // MailChimp API credentials
-                    $this->add_user_to_mailchimp($this->config->item('users_list_id'), $this->config->item('mailchimp_api_key'));
-                    // Add User to the activation email list
-                    $this->add_user_to_mailchimp($this->config->item('activation_email_list_id'), $this->config->item('mailchimp_api_key'));
+                    $this->subscribe_logged_user();
                     
-                    // Send activation mail
-                    send_activation_email();
+                    $this->send_registration_email();
+                    
+                    // MailChimp API credentials
+                    //$this->add_user_to_mailchimp($this->config->item('users_list_id'), $this->config->item('mailchimp_api_key'), $this->get_activation_url());
                     
                     $data['user'] = $this->user;
+                    
+                    $data["success"] = true;
                 }
                 else
                 {
@@ -640,6 +665,37 @@ class Account extends CI_Controller
         }
         
         echo json_encode($data);
+    }
+    
+    public function send_registration_email() 
+    {
+        $subject = "Bienvenue à Otiprix";
+        
+        $email_path = ASSETS_DIR_PATH."templates/mail/welcome_user.html";
+        
+        // get the contents of the file. 
+        $mail = file_get_contents($email_path);
+        
+        // do the proper replacements of the tags
+        $mail = str_replace("[TITLE]", "Bienvenue à Otiprix", $mail);
+        $mail = str_replace("[LASTNAME]", $this->user->profile->firstname, $mail);
+        $mail = str_replace("[FIRSTNAME]", $this->user->profile->lastname, $mail);
+        $mail = str_replace("[EMAIL]", $this->user->email, $mail);
+        $mail = str_replace("[ACTIVATE_URL]", $this->get_activation_url(), $mail);
+        $mail = str_replace("[LOGIN_URL]", site_url("account/login"), $mail);
+        $mail = str_replace("[OTIPRIX_URL]", site_url(), $mail);
+        
+        // images
+        $mail = str_replace("[LOGO_IMAGE]", base_url("/img/logo.png"), $mail);
+        $mail = str_replace("[PROMO_1]", base_url("/img/step-2"), $mail);
+        $mail = str_replace("[PROMO_2]", base_url("/img/list-calculator.jpg"), $mail);
+        // image icons
+        $mail = str_replace("[IMAGE_FACEBOOK]", base_url("/img/icons/if_facebook_circle_gray_107140.png"), $mail);
+        $mail = str_replace("[IMAGE_YOUTUBE]", base_url("/img/icons/if_youtube_circle_gray_107133.png"), $mail);
+        $mail = str_replace("[IMAGE_TWITTER]", base_url("/img/icons/if_twitter_circle_gray_107135.png"), $mail);
+        $mail = str_replace("[UNSUBSCRIBE_URL]", $this->get_unsubscribe_url(), $mail);
+                
+        mail($this->user->email, $subject, $mail, $this->get_otiprix_header());
     }
             
     public function save_profile() 

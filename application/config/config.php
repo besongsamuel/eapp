@@ -534,7 +534,7 @@ $config['proxy_ips'] = '';
 $config['sid'] = '';
 $config['token'] = '';
 
-$config['mailchimp_api_key'] = 'u';
+$config['mailchimp_api_key'] = '';
 $config['users_list_id'] = '';
 $config['company_list_id'] = '';
 $config['activation_email_list_id'] = '';

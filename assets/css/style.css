@@ -995,7 +995,7 @@ div.cart-collaterals ul.products li.product:hover .add_to_cart_button{background
 
 .mainbox
 {
-    padding-top: 150px;
+    padding-top: 170px;
     padding-bottom: 50px;
 }
 
@@ -1410,7 +1410,7 @@ md-list-item .md-avatar, md-list-item .md-list-item-inner .md-avatar
     top : 110px; 
     left: 0px; 
     position: fixed; 
-    z-index: 1; 
+    z-index: 20; 
     width: 100%; 
     text-align: center;
 }

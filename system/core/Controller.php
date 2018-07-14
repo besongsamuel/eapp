@@ -607,7 +607,7 @@ class CI_Controller {
         }
     }
     
-    protected function add_user_to_mailchimp($listID, $apiKey)
+    protected function add_user_to_mailchimp($listID, $apiKey, $activation_url = null)
     {
         // MailChimp API URL
         $mergeFields  = [
@@ -621,6 +621,12 @@ class CI_Controller {
         {
             $mergeFields['CMPYNAME'] = $this->user->company->name;
             $mergeFields['NEQ'] = $this->user->company->neq;
+        }
+        
+        if($activation_url != null)
+        {
+            $mergeFields["ACTREQ"] = 1;
+            $mergeFields["ACTURL"] = $activation_url;
         }
         
         // member information
@@ -745,6 +751,47 @@ class CI_Controller {
                 $this->cart_model->create(PRODUCT_STATS, $data);
             }            
         }
+    }
+    
+    public function subscribe_logged_user() 
+    {
+        $this->load->helper('email');
+        
+        $result = array();
+        
+        $email = $this->user->email;
+        
+        // Check if the email exists in our database
+        $subscription = $this->account_model->get_specific(NEWSLETTER_SUBSCRIPTIONS, array("email" => $email));
+        
+        if(isset($subscription) && $subscription->type == 1)
+        {
+            return FALSE;
+        }
+        else
+        {
+            
+            if (valid_email($email))
+            {
+                $data = array("email" => $email, "type" => 1, "unsubscribe_token" => $this->GUID());
+            
+                if(isset($subscription))
+                {
+                    $data["id"] = $subscription->id;
+                }
+
+                $this->account_model->create(NEWSLETTER_SUBSCRIPTIONS, $data);
+
+                return TRUE;
+            }
+            else
+            {
+                return FALSE;
+            }
+            
+        }
+        
+        echo json_encode($result);
     }
 
 }
