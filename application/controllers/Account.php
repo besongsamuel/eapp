@@ -316,10 +316,7 @@ class Account extends CI_Controller
             // Assign reset token to the user account
             $this->account_model->create(USER_ACCOUNT_TABLE, array("id" => $account->id, "reset_token" => $reset_token));
             // send the reset email
-            $this->send_password_reset_email($this->config->item('users_list_id'), 
-                    $this->config->item('mailchimp_api_key'), 
-                    $email, 
-                    $reset_token);
+            $this->send_password_reset_email($email, $reset_token);
         }
         else
         {
@@ -329,24 +326,39 @@ class Account extends CI_Controller
         echo json_encode($result);
     }
     
-    protected function send_password_reset_email($listID, $apiKey, $email, $reset_token)
+    private function send_password_reset_email($email, $reset_token)
     {
-        
         $user_account = $this->account_model->get_specific(USER_ACCOUNT_TABLE, array("email" => $email));
         
         if($user_account)
         {
             $reset_url = html_entity_decode(site_url('/account/reset_password?reset_token=').$reset_token);
             
-            $mergeFields  = ['RESPASSREQ' => 1, 'RESPASSURL' => $reset_url];
+            $subject = "Réinitialisation de mot de passe";
+        
+            $email_path = ASSETS_DIR_PATH."templates/mail/reset_password.html";
 
-            // member information
-            $json = json_encode([
-                'email_address' => $email,
-                'merge_fields'  => $mergeFields
-            ]);
+            // get the contents of the file. 
+            $mail = file_get_contents($email_path);
 
-            $this->update_mailchimp_user($listID, $apiKey, $json, $email);
+            // do the proper replacements of the tags
+            $mail = str_replace("[TITLE]", "Réinitialisation de mot de passe", $mail);
+            $mail = str_replace("[LASTNAME]", $this->user->profile->firstname, $mail);
+            $mail = str_replace("[FIRSTNAME]", $this->user->profile->lastname, $mail);
+            $mail = str_replace("[PASSWORD_RESET_URL]", $reset_url, $mail);
+            $mail = str_replace("[OTIPRIX_ADDRESS]", "550 Avenue Saint-Dominique, Saint-Hyacinthe, J2S 5M6", $mail);
+
+            // images
+            $mail = str_replace("[LOGO_IMAGE]", base_url("/assets/img/logo.png"), $mail);
+
+            // image icons
+            $mail = str_replace("[IMAGE_FACEBOOK]", base_url("/assets/img/icons/if_facebook_circle_gray_107140.png"), $mail);
+            $mail = str_replace("[IMAGE_YOUTUBE]", base_url("/assets/img/icons/if_youtube_circle_gray_107133.png"), $mail);
+            $mail = str_replace("[IMAGE_TWITTER]", base_url("/assets/img/icons/if_twitter_circle_gray_107135.png"), $mail);
+            $mail = str_replace("[UNSUBSCRIBE_URL]", $this->get_unsubscribe_url(), $mail);
+
+            mail($this->user->email, $subject, $mail, $this->get_otiprix_header());
+            
         }
     }
     
