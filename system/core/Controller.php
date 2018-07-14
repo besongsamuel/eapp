@@ -753,6 +753,51 @@ class CI_Controller {
         }
     }
     
+    protected function get_unsubscribe_url() 
+    {
+        if($this->user)
+        {
+            $subscription = $this->account_model->get_specific(NEWSLETTER_SUBSCRIPTIONS, array("email" => $this->user->email));
+        
+            if(isset($subscription) && $subscription->type == 1)
+            {
+                // Create activation email
+                $unsubscribe_url = html_entity_decode(site_url('/account/unsubscribe?token=').$subscription->unsubscribe_token);;
+            }
+            
+            return $unsubscribe_url;
+        }
+        
+        return null;
+    }
+    
+    protected function get_activation_url() 
+    {
+        if($this->user && $this->user->is_active == 0)
+        {
+            // Create an activation token
+            $activation_token = $this->GUID();
+            // Add tokens to the database
+            // Generate token used to validate account
+            $token = array
+            (
+                "user_account_id" => $this->user->id,
+                "type" => 0
+            );
+
+            // delete any existing token
+            $this->account_model->delete(TOKENS_TABLE, $token);  
+            $token["token"] = $activation_token;
+            $this->account_model->create(TOKENS_TABLE, $token);
+            // Create activation email
+            $activation_url = html_entity_decode(site_url('/account/activate_account?token=').$activation_token);
+            
+            return $activation_url;
+        }
+        
+        return null;
+    }
+    
     public function subscribe_logged_user() 
     {
         $this->load->helper('email');

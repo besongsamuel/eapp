@@ -419,9 +419,13 @@ class Company extends CI_Controller
                         'password' => $user_account['password'])
                     );
                     
-                    $this->add_user_to_mailchimp($this->config->item('company_list_id'), $this->config->item('mailchimp_api_key'));
+                    $this->subscribe_logged_user();
+                    
+                    $this->send_registration_email();
+                    
+                    // $this->add_user_to_mailchimp($this->config->item('company_list_id'), $this->config->item('mailchimp_api_key'));
                     // Add User to the activation email list
-                    $this->add_user_to_mailchimp($this->config->item('activation_email_list_id'), $this->config->item('mailchimp_api_key'));
+                    // $this->add_user_to_mailchimp($this->config->item('activation_email_list_id'), $this->config->item('mailchimp_api_key'));
                     
                     $data['user'] = $this->user;
                 }
@@ -439,6 +443,37 @@ class Company extends CI_Controller
         }
         
         echo json_encode($data);
+    }
+    
+    public function send_registration_email() 
+    {
+        $subject = "Bienvenue à Otiprix";
+        
+        $email_path = ASSETS_DIR_PATH."templates/mail/welcome_company.html";
+        
+        // get the contents of the file. 
+        $mail = file_get_contents($email_path);
+        
+        // do the proper replacements of the tags
+        $mail = str_replace("[TITLE]", "Bienvenue à Otiprix", $mail);
+        $mail = str_replace("[COMPANY_NAME]", $this->user->company->name, $mail);
+        $mail = str_replace("[EMAIL]", $this->user->email, $mail);
+        $mail = str_replace("[ACTIVATE_URL]", $this->get_activation_url(), $mail);
+        $mail = str_replace("[LOGIN_URL]", site_url("account/login"), $mail);
+        $mail = str_replace("[OTIPRIX_URL]", site_url(), $mail);
+        $mail = str_replace("[OTIPRIX_ADDRESS]", "550 Avenue Saint-Dominique, Saint-Hyacinthe, J2S 5M6", $mail);
+        
+        // images
+        $mail = str_replace("[LOGO_IMAGE]", base_url("/assets/img/logo.png"), $mail);
+        $mail = str_replace("[PROMO_1]", base_url("/assets/img/step-2.jpg"), $mail);
+        $mail = str_replace("[PROMO_2]", base_url("/assets/img/list-calculator.jpg"), $mail);
+        // image icons
+        $mail = str_replace("[IMAGE_FACEBOOK]", base_url("/assets/img/icons/if_facebook_circle_gray_107140.png"), $mail);
+        $mail = str_replace("[IMAGE_YOUTUBE]", base_url("/assets/img/icons/if_youtube_circle_gray_107133.png"), $mail);
+        $mail = str_replace("[IMAGE_TWITTER]", base_url("/assets/img/icons/if_twitter_circle_gray_107135.png"), $mail);
+        $mail = str_replace("[UNSUBSCRIBE_URL]", $this->get_unsubscribe_url(), $mail);
+                
+        mail($this->user->email, $subject, $mail, $this->get_otiprix_header());
     }
         
     public function edit_company() 

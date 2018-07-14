@@ -213,71 +213,34 @@ class Account extends CI_Controller
         $this->parser->parse('eapp_template', $this->data);
     }
     
-    private function get_activation_url() 
-    {
-        if($this->user && $this->user->is_active == 0)
-        {
-            // Create an activation token
-            $activation_token = $this->GUID();
-            // Add tokens to the database
-            // Generate token used to validate account
-            $token = array
-            (
-                "user_account_id" => $this->user->id,
-                "type" => 0
-            );
-
-            // delete any existing token
-            $this->account_model->delete(TOKENS_TABLE, $token);  
-            $token["token"] = $activation_token;
-            $this->account_model->create(TOKENS_TABLE, $token);
-            // Create activation email
-            $activation_url = html_entity_decode(site_url('/account/activate_account?token=').$activation_token);
-            
-            return $activation_url;
-        }
-        
-        return null;
-    }
-    
-    private function get_unsubscribe_url() 
-    {
-        if($this->user)
-        {
-            $subscription = $this->account_model->get_specific(NEWSLETTER_SUBSCRIPTIONS, array("email" => $this->user->email));
-        
-            if(isset($subscription) && $subscription->type == 1)
-            {
-                // Create activation email
-                $unsubscribe_url = html_entity_decode(site_url('/account/unsubscribe?token=').$subscription->unsubscribe_token);;
-            }
-            
-            return $unsubscribe_url;
-        }
-        
-        return null;
-    }
-    
     public function send_activation_email() 
     {
         if($this->user && $this->user->is_active == 0)
         {
-            // Create Merge Fields
-            $mergeFields  = 
-            [
-                'ACTURL' => $this->get_activation_url(), 
-                'ACTREQ' => 1
-            ];
+            $subject = "Activez votre compte";
+        
+            $email_path = ASSETS_DIR_PATH."templates/mail/activate_email.html";
+
+            // get the contents of the file. 
+            $mail = file_get_contents($email_path);
+
+            // do the proper replacements of the tags
+            $mail = str_replace("[TITLE]", "Activez votre compte", $mail);
+            $mail = str_replace("[LASTNAME]", $this->user->profile->firstname, $mail);
+            $mail = str_replace("[FIRSTNAME]", $this->user->profile->lastname, $mail);
+            $mail = str_replace("[ACTIVATE_URL]", $this->get_activation_url(), $mail);
+            $mail = str_replace("[OTIPRIX_ADDRESS]", "550 Avenue Saint-Dominique, Saint-Hyacinthe, J2S 5M6", $mail);
+
+            // images
+            $mail = str_replace("[LOGO_IMAGE]", base_url("/assets/img/logo.png"), $mail);
             
-            //  member information
-            $json = json_encode([
-                'email_address' => $this->user->email,
-                'merge_fields'  => $mergeFields
-            ]);
-            
-            $this->update_mailchimp_user($this->config->item('users_list_id'), 
-                    $this->config->item('mailchimp_api_key'), $json, $this->user->email);
-            
+            // image icons
+            $mail = str_replace("[IMAGE_FACEBOOK]", base_url("/assets/img/icons/if_facebook_circle_gray_107140.png"), $mail);
+            $mail = str_replace("[IMAGE_YOUTUBE]", base_url("/assets/img/icons/if_youtube_circle_gray_107133.png"), $mail);
+            $mail = str_replace("[IMAGE_TWITTER]", base_url("/assets/img/icons/if_twitter_circle_gray_107135.png"), $mail);
+            $mail = str_replace("[UNSUBSCRIBE_URL]", $this->get_unsubscribe_url(), $mail);
+
+            mail($this->user->email, $subject, $mail, $this->get_otiprix_header());
         }
     }
     
