@@ -273,10 +273,20 @@ class Account extends CI_Controller
                 // Refresh user
                 $this->set_user();
                 $this->data['user'] = addslashes(json_encode($this->user));
-                // Go to home page
-                $this->data['script'] = $this->load->view('home/scripts/index', '', TRUE);
-                $this->data['latestProducts'] = $this->home_model->get_store_products_limit(25, 0)["products"];
-                $this->data['body'] = $this->load->view('home/index', $this->data, TRUE);
+                
+                if($this->user != null && $this->user->subscription >= COMPANY_SUBSCRIPTION)
+                {
+                    $this->data['tabIndex'] = 3;
+                    $this->data['script'] = $this->load->view('account/scripts/index_company', $this->data, TRUE);
+                    $this->data['body'] = $this->load->view('account/index_company', $this->data, TRUE);
+                }
+                else
+                {
+                    $this->data['script'] = $this->load->view('account/scripts/index', $this->data, TRUE);
+                    $this->data['body'] = $this->load->view('account/index', $this->data, TRUE);
+                }
+                
+                
                 $this->data['activated'] = 1;
                 $this->parser->parse('eapp_template', $this->data);
             }
