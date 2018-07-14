@@ -26,6 +26,18 @@ $(document).ready(function()
         </div>
     </div> <!-- End Page title area -->
     
+    <div class="otiprix-activate-account" ng-controller="ActivateAccountController as ctrl" ng-cloak>
+        <div class="alert alert-danger" ng-if="!accountActivated">
+            <?php echo $this->lang->line('activate_account'); ?>
+            <?php echo $this->lang->line('or'); ?>
+            <a href ng-click="ctrl.ResendActivationEmail($event)"><?php echo $this->lang->line('send_activation_email'); ?></a>
+        </div>
+
+        <div class="alert alert-success" ng-show="<?php echo isset($activated) ? "true" :"false" ?>">
+            <?php echo $this->lang->line('account_activated'); ?>
+        </div>
+    </div>
+    
     <div style="text-align: center;" ng-controller="AccountController">
         <div ng-show="isNewAccount" class="alert alert-success" role="alert">      
             Votre compte a été créé avec succès. Commencez par ajouter des sucursales à votre compte d'entreprise.
