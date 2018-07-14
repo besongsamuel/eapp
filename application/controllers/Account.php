@@ -343,8 +343,7 @@ class Account extends CI_Controller
 
             // do the proper replacements of the tags
             $mail = str_replace("[TITLE]", "Réinitialisation de mot de passe", $mail);
-            $mail = str_replace("[LASTNAME]", $this->user->profile->firstname, $mail);
-            $mail = str_replace("[FIRSTNAME]", $this->user->profile->lastname, $mail);
+            $mail = str_replace("[EMAIL]", $email, $mail);
             $mail = str_replace("[PASSWORD_RESET_URL]", $reset_url, $mail);
             $mail = str_replace("[OTIPRIX_ADDRESS]", "550 Avenue Saint-Dominique, Saint-Hyacinthe, J2S 5M6", $mail);
 
