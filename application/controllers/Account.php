@@ -684,15 +684,16 @@ class Account extends CI_Controller
         $mail = str_replace("[ACTIVATE_URL]", $this->get_activation_url(), $mail);
         $mail = str_replace("[LOGIN_URL]", site_url("account/login"), $mail);
         $mail = str_replace("[OTIPRIX_URL]", site_url(), $mail);
+        $mail = str_replace("[OTIPRIX_ADDRESS]", "550 Avenue Saint-Dominique, Saint-Hyacinthe, J2S 5M6", $mail);
         
         // images
-        $mail = str_replace("[LOGO_IMAGE]", base_url("/img/logo.png"), $mail);
-        $mail = str_replace("[PROMO_1]", base_url("/img/step-2"), $mail);
-        $mail = str_replace("[PROMO_2]", base_url("/img/list-calculator.jpg"), $mail);
+        $mail = str_replace("[LOGO_IMAGE]", base_url("/assets/img/logo.png"), $mail);
+        $mail = str_replace("[PROMO_1]", base_url("/assets/img/step-2"), $mail);
+        $mail = str_replace("[PROMO_2]", base_url("/assets/img/list-calculator.jpg"), $mail);
         // image icons
-        $mail = str_replace("[IMAGE_FACEBOOK]", base_url("/img/icons/if_facebook_circle_gray_107140.png"), $mail);
-        $mail = str_replace("[IMAGE_YOUTUBE]", base_url("/img/icons/if_youtube_circle_gray_107133.png"), $mail);
-        $mail = str_replace("[IMAGE_TWITTER]", base_url("/img/icons/if_twitter_circle_gray_107135.png"), $mail);
+        $mail = str_replace("[IMAGE_FACEBOOK]", base_url("/assets/img/icons/if_facebook_circle_gray_107140.png"), $mail);
+        $mail = str_replace("[IMAGE_YOUTUBE]", base_url("/assets/img/icons/if_youtube_circle_gray_107133.png"), $mail);
+        $mail = str_replace("[IMAGE_TWITTER]", base_url("/assets/img/icons/if_twitter_circle_gray_107135.png"), $mail);
         $mail = str_replace("[UNSUBSCRIBE_URL]", $this->get_unsubscribe_url(), $mail);
                 
         mail($this->user->email, $subject, $mail, $this->get_otiprix_header());
