@@ -25,6 +25,18 @@ $(document).ready(function()
         </div>
     </div> <!-- End Page title area -->
     
+    <div class="otiprix-activate-account" ng-controller="ActivateAccountController as ctrl" ng-cloak>
+        <div class="alert alert-danger" ng-if="!accountActivated">
+            <?php echo $this->lang->line('activate_account'); ?>
+            <?php echo $this->lang->line('or'); ?>
+            <a href ng-click="ctrl.ResendActivationEmail($event)"><?php echo $this->lang->line('send_activation_email'); ?></a>
+        </div>
+
+        <div class="alert alert-success" ng-show="<?php echo isset($activated) ? "true" :"false" ?>">
+            <?php echo $this->lang->line('account_activated'); ?>
+        </div>
+    </div>
+    
     <md-tabs md-dynamic-height md-border-bottom layout-padding md-selected = "<?php echo $tabIndex; ?>">
         
         <div class="container">

@@ -138,17 +138,7 @@
 
         </div>   
   
-        <div class="otiprix-activate-account" ng-controller="ActivateAccountController as ctrl" ng-cloak>
-            <div class="alert alert-danger" ng-if="!accountActivated">
-                <?php echo $this->lang->line('activate_account'); ?>
-                <?php echo $this->lang->line('or'); ?>
-                <a href ng-click="ctrl.ResendActivationEmail($event)"><?php echo $this->lang->line('send_activation_email'); ?></a>
-            </div>
-            
-            <div class="alert alert-success" ng-show="<?php echo isset($activated) ? "true" :"false" ?>">
-                <?php echo $this->lang->line('account_activated'); ?>
-            </div>
-        </div>
+        
 	  
         <!-- End mainmenu area -->
         <div id="main-body">	

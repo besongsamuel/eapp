@@ -1407,9 +1407,6 @@ md-list-item .md-avatar, md-list-item .md-list-item-inner .md-avatar
 
 .otiprix-activate-account
 {
-    top : 110px; 
-    left: 0px; 
-    position: fixed; 
     z-index: 20; 
     width: 100%; 
     text-align: center;
