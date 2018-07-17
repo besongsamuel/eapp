@@ -7,18 +7,22 @@
         <div class="col-sm-4"><p style="text-align : center;"><a href>Offres des circulaires <span class="badge">{{flyer_products_count()}}</span></a><br></p></div>
         <div ng-hide="true" class="col-sm-4"><p style="text-align : center;"><a href>Coupons <span class="badge">{{coupons_count()}}</span></a><br></p></div>
     </div>
-       
+    
+    <div class="row">
+        <p style="text-align: center; color: orangered; ">Veuillez activer votre compte pour commencer à créer des listes.</p>
+    </div>
+    
     <div class="row" style="margin-bottom: 20px;">
         <div class="col-sm-12">
-            <md-button class="md-raised md-warn pull-left" ng-click="deleteList($event)" ng-if="selectedList.id != -1">
+            <md-button class="md-raised md-warn pull-left" ng-click="deleteList($event)" ng-if="selectedList.id != -1"  ng-disabled="loggedUser.is_active == 0">
                 <md-icon style="color: white;"><i class="material-icons">delete</i></md-icon>
                 Supprimer liste
             </md-button>
-            <md-button class="md-raised md-primary pull-left" ng-click="createList($event)">
+            <md-button class="md-raised md-primary pull-left" ng-click="createList($event)" ng-disabled="loggedUser.is_active == 0">
                 <md-icon style="color: white;"><i class="material-icons">create</i></md-icon>
                 Créer une nouvelle liste
             </md-button>
-            <md-button class="md-raised md-primary pull-left" ng-click="renameList($event)" ng-if="selectedList.id != -1">
+            <md-button class="md-raised md-primary pull-left" ng-click="renameList($event)" ng-if="selectedList.id != -1" ng-disabled="loggedUser.is_active == 0">
                 <md-icon style="color: white;"><i class="material-icons">edit</i></md-icon>
                 Renommer liste
             </md-button>
@@ -29,7 +33,7 @@
         <div class="center-div">
             <md-input-container style="width: 300px;">
               <label>Sélectionnez votre liste d'épicerie</label>
-              <md-select ng-model="selectedList.id" ng-change="groceryListChanged()">
+              <md-select ng-model="selectedList.id" ng-change="groceryListChanged()"  ng-disabled="loggedUser.is_active == 0">
                     <md-option ng-repeat="list in loggedUser.grocery_lists track by $index" ng-value="{{list.id}}">
                         {{list.name}}
                     </md-option>
@@ -57,7 +61,7 @@
         </md-autocomplete>
 
         <div class="col-sm-12 col-md-3">
-            <md-button ng-click="addNewProductToList($event)" class="md-raised md-primary pull-right" aria-label="Ajouter">
+            <md-button ng-disabled="loggedUser.is_active == 0" ng-click="addNewProductToList($event)" class="md-raised md-primary pull-right" aria-label="Ajouter">
 
                 <md-icon md-svg-src="{{icons.add | trustUrl}}"></md-icon>
                 Ajouter à votre liste

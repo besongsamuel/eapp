@@ -286,7 +286,6 @@ class Account extends CI_Controller
                     $this->data['body'] = $this->load->view('account/index', $this->data, TRUE);
                 }
                 
-                
                 $this->data['activated'] = 1;
                 $this->parser->parse('eapp_template', $this->data);
             }
@@ -833,7 +832,7 @@ class Account extends CI_Controller
     
     public function delete_grocery_list() 
     {
-        if($this->user != null)
+        if($this->user != null && $this->user->is_active)
         {
             $data = array();
         
@@ -857,7 +856,7 @@ class Account extends CI_Controller
     {
         $result = array();
         
-        if($this->user != null)
+        if($this->user != null && $this->user->is_active)
         {
             $name = $this->input->post('name');
             
