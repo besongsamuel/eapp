@@ -467,12 +467,9 @@ class Account extends CI_Controller
     {
         $result = array("success" => false);
         
-        if($this->user != null)
+        if($this->user != null && $this->user->is_active)
         {
-            
             $selected_retailers = json_decode($this->input->post("selected_retailers"));
-
-            $this->account_model->clear_user_favorite_stores($this->user->id);
 
             $this->account_model->clear_user_favorite_stores($this->user->id);
 
