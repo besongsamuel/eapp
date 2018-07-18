@@ -94,7 +94,7 @@
                     </div>
                 </div>
                 
-            <add-to-list ng-if="root.isUserLogged" style='text-align: center;' class='pull-right' product='product.product' caption="Ajouter à liste" logged-user='root.loggedUser'></add-to-list>
+            <add-to-list ng-if="root.isUserLogged && root.loggedUser.is_active == 1" style='text-align: center;' class='pull-right' product='product.product' caption="Ajouter à liste" logged-user='root.loggedUser'></add-to-list>
                 
             </td>
             
@@ -125,7 +125,7 @@
                 <div class="format">{{product.format}} <span ng-show="product.unit">{{product.unit.name}}</span></div>
                 <p style="font-size: 18px; margin-top: 10px;"><b>{{product.price}} C $</b></p>
                 
-                <div ng-if='root.isUserLogged' class="row" style='text-align: center;'>
+                <div ng-if='root.isUserLogged && root.loggedUser.is_active == 1' class="row" style='text-align: center;'>
                     <add-to-list product='product.product' caption="Ajouter à liste" logged-user='root.loggedUser'></add-to-list>
                 </div>
 
