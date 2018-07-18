@@ -23,6 +23,10 @@
     <div class="col-sm-12 layout-padding">
         <p class="md-otiprix-text" style="text-align: center; margin: 5px;"><b>Vos magasins préférés</b></p>
     </div>
+    
+    <div class="row">
+        <p ng-if="loggedUser.is_active == 0" style="text-align: center; color: orangered; ">Veuillez activer votre compte pour commencer à ajouter vos magasins favoris.</p>
+    </div>
 
     <div class="container">
         <div class="row ">
@@ -31,7 +35,7 @@
                     <img ng-if="favoriteStore.id == -1" style="border : none;" ng-src="{{icons.add_img}}"  />
                     <a href ng-click="goto_retailer(favoriteStore.id)"><img ng-if="favoriteStore.id != -1" ng-src="{{favoriteStore.image}}"  /></a>
                     
-                    <div style="margin-top : 10px; padding-top: 10px">
+                    <div style="margin-top : 10px; padding-top: 10px" ng-if="loggedUser.is_active == 1">
                         <md-divider></md-divider>
                         <div ng-if="favoriteStore.id == -1">
                         <p><a  ng-click="setRetailer($event, $index)" href style="text-align : center;">Ajouter Magasin</a></p>
