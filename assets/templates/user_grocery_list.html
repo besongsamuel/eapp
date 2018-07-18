@@ -8,7 +8,7 @@
         <div ng-hide="true" class="col-sm-4"><p style="text-align : center;"><a href>Coupons <span class="badge">{{coupons_count()}}</span></a><br></p></div>
     </div>
     
-    <div class="row">
+    <div class="row" ng-if="loggedUser.is_active == 0">
         <p style="text-align: center; color: orangered; ">Veuillez activer votre compte pour commencer à créer des listes.</p>
     </div>
     
