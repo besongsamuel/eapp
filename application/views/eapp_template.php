@@ -124,7 +124,7 @@
                                           </a>
                                           <ul class="dropdown-menu">
                                               <li><a  href="<?php echo site_url("account"); ?>"><i class="fa fa-user"></i> Mon compte</a></li>
-                                              <li><a href="<?php echo site_url("account/my_grocery_list"); ?>"><i class="fa fa-heart"></i> Ma liste d'épicerie</a></li>
+                                              <li ng-if="isRegularUser"><a href="<?php echo site_url("account/my_grocery_list"); ?>"><i class="fa fa-heart"></i> Ma liste d'épicerie</a></li>
                                               <li><a href ng-click="logout()">Logout</a></li>
                                           </ul>
                                       </li>
@@ -169,7 +169,7 @@
                             <h2 class="md-title">Navigation de l'utilisateur</h2>
                             <ul>
                                 <li><a href="<?php echo site_url("account"); ?>">Mon compte</a></li>
-                                <li><a href="<?php echo site_url("account/my_grocery_list"); ?>">Ma liste d'epicerie</a></li>
+                                <li ng-if="isRegularUser"><a href="<?php echo site_url("account/my_grocery_list"); ?>">Ma liste d'epicerie</a></li>
                                 <li><a href="<?php echo site_url("blog/press_release"); ?>">Presse</a></li>
                                 <li><a href="#">Contacter nous</a></li>
                                 <li><a href  onclick="window.open('<?php echo base_url("/assets/files/terms_and_conditions.pdf")?>', '_blank', 'fullscreen=yes'); return false;">Terme et conditions</a></li>
@@ -256,6 +256,8 @@
 						
 			
                 rootScope.isUserLogged = rootScope.loggedUser !== null;
+                
+                rootScope.isRegularUser = rootScope.isUserLogged && parseInt(rootScope.loggedUser.subscription) <= 2;
             });
             
             var footerScope = angular.element($("#eapp-footer")).scope();

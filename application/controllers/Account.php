@@ -427,14 +427,20 @@ class Account extends CI_Controller
         $this->load->view('/account/coming-soon', $this->data);
     }
 	
+    /**
+     * Opens the page with the user's grocery lists. 
+     * This feature is only available for regular users. 
+     */
     public function my_grocery_list() 
-    {
-        
+    {        
         if($this->user != null)
         {
-            $this->data['script'] = $this->load->view('account/scripts/my_list', $this->data, TRUE);
-            $this->data['body'] = $this->load->view('account/my_list', $this->data, TRUE);
-            $this->parser->parse('eapp_template', $this->data);
+            if($this->user->subscription < COMPANY_SUBSCRIPTION)
+            {
+                $this->data['script'] = $this->load->view('account/scripts/my_list', $this->data, TRUE);
+                $this->data['body'] = $this->load->view('account/my_list', $this->data, TRUE);
+                $this->parser->parse('eapp_template', $this->data);
+            }
         }
         else
         {

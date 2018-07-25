@@ -588,7 +588,7 @@ $(document).ready(function()
                                         
                                         <top-products 
                                         ng-if="stats.top_optimized_chains && stats.top_optimized_chains.length > 0" 
-                                        data="stats.get_top_visited_chains" 
+                                        data="stats.top_optimized_chains" 
                                         count-caption="Produits optimisées :"
                                         caption="Les magasins les plus optimisées"></top-products>
                                         
