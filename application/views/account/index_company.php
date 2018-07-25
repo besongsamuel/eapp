@@ -538,7 +538,7 @@ $(document).ready(function()
                                         ng-if="stats.top_product_categories && stats.top_product_categories.length > 0" 
                                         data="stats.top_product_categories" 
                                         count-caption="Visites :"
-                                        caption="La catégorie de produits la plus visitée par les utilisateurs"></top-products>
+                                        caption="Les cinq catégories de produits les plus visités par les utilisateurs"></top-products>
 
                                         <top-products 
                                         ng-if="stats.top_cart_products && stats.top_cart_products.length > 0" 
