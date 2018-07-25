@@ -426,7 +426,19 @@ class Statistics
         
         $result = $this->filter_by($result, $action, "type");
         
-        $result = $this->group_by($result, array("product_id", "state"));
+        foreach ($result as $key => $value) 
+        {
+            foreach ($value as $key2 => $value2) 
+            {
+                if($key2 == "state")
+                {
+                    $result[$key]["state"] = !empty($value2) ? $value2 : "Inconnue";
+                    $result[$key]["name"] =  $result[$key]["state"];
+                }
+            }
+        }
+        
+        $result = $this->group_by($result, array("state"));
         
         usort($result, "cmp_count_".$order);
                 
@@ -435,22 +447,18 @@ class Statistics
             $result = array_slice($result, 0, $limit);
         }
         
-        foreach ($result as $key => $value) 
-        {
-            if($key == "state")
-            {
-                $result["name"] = $value;
-            }
-        }
+        
         
         return $result;
     }
     
-    public function get_top_product_brands($order = 'desc', $period = 0, $limit = 5) 
+    public function get_top_product_brands($order = 'desc', $period = 0, $action = 0, $limit = 5) 
     {
         $result = array();
         
         $result = $this->filter_by_date($this->product_statistics, $period);
+        
+        $result = $this->filter_by($result, $action, "type");
         
         $result = $this->group_by($result, array("brand_id"));
         
@@ -468,6 +476,12 @@ class Statistics
             if($value["brand_id"] != 0 && $value["brand_id"] != -1 && isset($value["brand_id"]))
             {
                 array_push($value, $final_result);
+            }
+            else
+            {
+                // Create a stud brand
+                $unknown_brand = array("id" => 0, "name" => "Inconnue");
+                array_push($unknown_brand, $final_result);
             }
         }
         

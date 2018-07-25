@@ -551,6 +551,7 @@ $(document).ready(function()
                                         data="stats.top_product_brands" 
                                         count-caption="Visites :"
                                         caption="Les 5 marques les plus ajoutées au panier par les utilisateurs"></top-products>
+                                        
 
                                     </div>
                                 </div>

@@ -84,7 +84,7 @@ class Account extends CI_Controller
             
             $stats->top_listed_products = $this->statistics->get_top_products($period, $order, -1,  -1, 2, $limit);
             
-            $stats->top_product_brands = $this->statistics->get_top_product_brands($order, $period, $limit);
+            $stats->top_product_brands = $this->statistics->get_top_product_brands($order, $period, 1, $limit);
             
             $stats->get_top_visited_chains = $this->statistics->get_top_visited_chains($order, $period, $limit);
             
