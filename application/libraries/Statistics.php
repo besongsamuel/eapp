@@ -77,13 +77,13 @@ class Statistics
         
         $dates_sql = "MONTH(date_created) AS month, YEAR(date_created) AS year, YEAR(CURRENT_DATE()) AS current_year, MONTH(CURRENT_DATE()) AS current_month";
         
-        $this->product_statistics = $query = $this->CI->db->query("SELECT *, ".$dates_sql." FROM ".PRODUCT_STATS)->result_array();
+        $this->product_statistics = $this->CI->db->query("SELECT *, ".$dates_sql." FROM ".PRODUCT_STATS)->result_array();
         
-        $this->product_optimization_statistics = $query = $this->CI->db->query("SELECT *, ".$dates_sql." FROM ".PRODUCT_OPTIMIZATION_STATS)->result_array();;
+        $this->product_optimization_statistics = $this->CI->db->query("SELECT *, ".$dates_sql." FROM ".PRODUCT_OPTIMIZATION_STATS)->result_array();;
         
-        $this->retailer_visits = $query = $this->CI->db->query("SELECT *, ".$dates_sql." FROM ".CHAIN_VISITS)->result_array();;
+        $this->retailer_visits = $this->CI->db->query("SELECT *, ".$dates_sql." FROM ".CHAIN_VISITS)->result_array();;
         
-        $this->retailer_statistics = $query = $this->CI->db->query("SELECT *, ".$dates_sql." FROM ".CHAIN_STATS)->result_array();;
+        $this->retailer_statistics = $this->CI->db->query("SELECT *, ".$dates_sql." FROM ".CHAIN_STATS)->result_array();;
             
     }
     
@@ -207,7 +207,7 @@ class Statistics
         return $result;
     }
     
-    private function get_composite_column($columns) 
+    private function get_composite_column($columns, $row) 
     {
         $result = "";
         
@@ -217,16 +217,18 @@ class Statistics
         {
             if($first)
             {
-                $result.= $value;
+                $result.= $row[$value];
             
                 $first = false;
             }
             else
             {
-                $result.= "_".$value;
+                $result.= "_".$row[$value];
             }
             
         }
+        
+        return $result;
     }
     
     private function group_by($stats, $columns) 
@@ -235,16 +237,34 @@ class Statistics
         
         foreach ($stats as $stat) 
         {
-            $column_name = $this->get_composite_column($columns);
+            $column_name = $this->get_composite_column($columns, $stat);
                         
             if(isset($result[$column_name]))
             {
-                $result[$column_name]["count"] += 1;
+                if(isset($stat["count"]))
+                {
+                    $result[$column_name]["count"] += (int)$stat["count"];
+                }
+                else
+                {
+                    $result[$column_name]["count"] += 1;
+                }
+                
+                
             }
             else
             {
                 $result[$column_name] = $stat;
-                $result[$column_name]["count"] = 1;
+                
+                if(isset($stat["count"]))
+                {
+                    $result[$column_name]["count"] = (int)$stat["count"];
+                }
+                else
+                {
+                    $result[$column_name]["count"] = 1;
+                }
+                
             }
         }
         
