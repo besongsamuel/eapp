@@ -153,6 +153,7 @@ class Account extends CI_Controller
         {
             $this->data['script'] = $this->load->view('account/scripts/index', $this->data, TRUE);
             $this->data['body'] = $this->load->view('account/index', $this->data, TRUE);
+            
             $this->parser->parse('eapp_template', $this->data);
         }
     }
@@ -282,11 +283,12 @@ class Account extends CI_Controller
                 }
                 else
                 {
+                    $this->data['activated'] = 1;
                     $this->data['script'] = $this->load->view('account/scripts/index', $this->data, TRUE);
                     $this->data['body'] = $this->load->view('account/index', $this->data, TRUE);
                 }
                 
-                $this->data['activated'] = 1;
+                
                 $this->parser->parse('eapp_template', $this->data);
             }
             else
