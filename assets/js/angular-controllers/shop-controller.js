@@ -417,9 +417,12 @@ angular.module('eappApp').controller('ShopController', ["$scope", "$q", "$http",
     {
         if($scope.isUserLogged)
         {
+            // Start Loading
+            $scope.isLoading = true;
+            
             var changePromise = eapp.changeDistance('optimization_distance', newDistance);
 
-            changePromise.then(function(response)
+            changePromise.then(function onFulfilled(response)
             {
                 if(response.data)
                 {
@@ -427,7 +430,11 @@ angular.module('eappApp').controller('ShopController', ["$scope", "$q", "$http",
                     $rootScope.loggedUser = response.data;
                     $scope.getProducts();
                 }
+            }).catch (function(err)
+            {
+                console.log(err);
             });
+
         }
         else
         {
