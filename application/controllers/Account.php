@@ -944,7 +944,7 @@ class Account extends CI_Controller
         {
             $id = $this->input->post('id');
             
-            $this->account_model->delete(CHAIN_STORE_TABLE, array("id" => $id));
+            $this->account_model->delete(CHAIN_STORE_TABLE, array("id" => $id), FALSE);
             
             echo json_encode(true);
         }

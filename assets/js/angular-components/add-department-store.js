@@ -50,10 +50,12 @@ angular.module('eappApp').component("addDepartmentStore",
         {
             $mdDialog.show(
             {
-                clickOutsideToClose: true,
+                clickOutsideToClose: false,
                 controller: function($scope, eapp)
                 {
                     ctrl = this;
+                    
+                    ctrl.departmentStores = [];
 
                     $scope.departmentStore = 
                     {
@@ -72,10 +74,13 @@ angular.module('eappApp').component("addDepartmentStore",
                                 {
                                     $scope.departmentStore.id = response.data.id;
                                     
+                                    let storeAdded = $scope.departmentStore;
+                                    
+                                    ctrl.departmentStores.push(storeAdded);
                                     
                                     if(!addMore)
                                     {
-                                        $mdDialog.hide($scope.departmentStore);
+                                        $mdDialog.hide(ctrl.departmentStores);
                                     }
                                     
                                     
@@ -95,15 +100,28 @@ angular.module('eappApp').component("addDepartmentStore",
 
                         }
                     };
+                    
+                    $scope.close = function()
+                    {
+                        $mdDialog.hide(ctrl.departmentStores);
+                    };
                 },
                 controllerAs: 'ctrl',
-                focusOnOpen: false,
+                focusOnOpen: true,
                 targetEvent: event,
                 templateUrl: 'templates/dialogs/add-department-store-dialog.html'
+                
             })
-            .then(function(response)
+            .then(function(addedDepartmentStores)
             {
-                $scope.departmentStores.push(response);
+                addedDepartmentStores.forEach(function(store)
+                {
+                    $scope.departmentStores.push(store);
+                });
+                
+            }).catch(function(err)
+            {
+                console.log(err);
             });
         };
     },

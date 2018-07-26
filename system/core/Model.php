@@ -1269,7 +1269,7 @@ class CI_Model {
     
     public function delete($table_name, $data)
     {
-        $this->db->where($data);
+        $this->db->where($data, NULL, FALSE);
         $this->db->delete($table_name);
     }
 	

@@ -27,7 +27,7 @@
                     </h4>
                     <p ng-if="ds.email">{{ ds.email }}<span ng-show="ds.phonenumber">, {{ds.phonenumber}}</span></p>
                 </div>
-                <md-icon class="md-secondary md-warn" ng-click="removeDepartmentStore(ds.id)"><i class="material-icons">delete</i></md-icon>
+                <md-icon class="md-secondary md-warn" ng-click="removeDepartmentStore(ds.id, $event)"><i class="material-icons">delete</i></md-icon>
                 
             </md-list-item>
         </md-list>
