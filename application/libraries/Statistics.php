@@ -124,6 +124,10 @@ class Statistics
                 
                     array_push($result, $retailer);
                 }
+                else if((int)$row["count"] == -1)
+                {
+                    array_push($result, $row);
+                }
                 
             }
         }
@@ -306,6 +310,11 @@ class Statistics
         if($limit != -1)
         {
             $result = array_slice($result, 0, $limit);
+            
+            while(count($result) < $limit)
+            {
+                array_push($result, array("product_id" => -1, "count" => -1));
+            }
         }
         
         return $this->get_products_from_query($result);
@@ -331,6 +340,11 @@ class Statistics
         if($limit != -1)
         {
             $result = array_slice($result, 0, $limit);
+            
+            while(count($result) < $limit)
+            {
+                array_push($result, array("product_id" => -1, "count" => -1));
+            }
         }
         
         return $this->get_products_from_query($result);
@@ -526,6 +540,11 @@ class Statistics
         if($limit != -1)
         {
             $result = array_slice($result, 0, $limit);
+            
+            while(count($result) < $limit)
+            {
+                array_push($result, array("count" => -1, "name" => "-", "retailer_id" => -1));
+            }
         }
         
         return $this->get_retailers_from_query($result);
@@ -571,10 +590,17 @@ class Statistics
             }
 
             $result->avg_distance = round((float)($distance_total / count($my_store_visits)), 2);
+        }
+        else
+        {
+            $result->visits = 0;
             
-            return $result;
+            $result->avg_distance = "-";
             
         }
+        
+        return $result;
+        
     }
     
     public function get_store_userlist_info() 
@@ -589,9 +615,13 @@ class Statistics
         if(count($users_with_my_store_as_favorite) > 0)
         {
             $result->users = round((float)(count($users_with_my_store_as_favorite) / $total_users_with_favorite_stores) * 100, 2);
-            
-            return $result;
         }
+        else
+        {
+            $result->users = 0;
+        }
+        
+        return $result;
         
         
     }
@@ -600,9 +630,10 @@ class Statistics
     {
         $result = new stdClass();
         
-        // Get all visits
+        // Get all product visits
         $all_product_stats =  count($this->CI->db->query("SELECT count(*) FROM ".PRODUCT_STATS." WHERE type = ".$action)->result());
         
+        // Get visits to my store
         $store_product_stats = $this->CI->db->query("SELECT * FROM ".PRODUCT_STATS." WHERE retailer_id = ".$this->user->company->chain->id." AND type = ".$action)->result();
         
         if(count($store_product_stats) > 0)
@@ -618,9 +649,15 @@ class Statistics
 
             $result->avg_distance = round((float)($distance_total / count($store_product_stats)), 2);
             
-            return $result;
-            
         }
+        else
+        {
+            $result->visits = 0;
+            
+            $result->avg_distance = "-";
+        }
+        
+        return $result;
         
         
     }

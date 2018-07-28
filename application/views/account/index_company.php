@@ -593,8 +593,6 @@ $(document).ready(function()
                                             count-caption="Produits optimisées :"
                                             caption="Les magasins les plus optimisées"></top-products>
 
-
-
                                         </div>
 
                                     </div>
@@ -654,7 +652,7 @@ $(document).ready(function()
                                             <div ng-if="stats.get_product_visitors_info">
 
                                                 <span class="col-sm-12">
-                                                    {{stats.get_product_visitors_info.visits}}% des utilisateurs ajoutent vos produits au panie et sont à une distance d'environ {{stats.get_product_visitors_info.avg_distance}} km.
+                                                    {{stats.get_product_visitors_info.visits}}% des produits ajoutées au panier sont de votre magasin et sont des utilisateurs à une distance d'environ {{stats.get_product_visitors_info.avg_distance}} km.
                                                 </span>
 
                                                 <div class="col-sm-12">

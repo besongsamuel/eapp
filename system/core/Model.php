@@ -529,6 +529,17 @@ class CI_Model {
         }
         
         $value = $this->get(PRODUCT_TABLE, $product_id, $product_columns);
+        
+        if(!isset($value))
+        {
+            $value = new stdClass();
+            
+            $value->image = "no_image_available.png";
+            $value->subcategory_id = -1;
+            $value->unit_id = -1;
+            $value->name = "-";
+            
+        }
                         
         $store_image_path = ASSETS_DIR_PATH."img/products/".$value->image;
         
