@@ -121,18 +121,11 @@ class Account extends CI_Controller
         
     public function index($index = 3) 
     {
-        $this->data['tabIndex'] = $index; 
-        
         if($this->user)
         {
             if($this->user->subscription < COMPANY_SUBSCRIPTION)
             {
                 $favoriteStores = $this->account_model->get_user_favorite_stores($this->user->id);
-            
-                if(sizeof($favoriteStores) > 0)
-                {
-                    $this->data['tabIndex'] = 0;
-                }
             }
         }
         else
@@ -142,9 +135,6 @@ class Account extends CI_Controller
         
         if($this->user != null && $this->user->subscription >= COMPANY_SUBSCRIPTION)
         {
-            
-            $this->data['tabIndex'] = $index;
-            
             $this->data['script'] = $this->load->view('account/scripts/index_company', $this->data, TRUE);
             $this->data['body'] = $this->load->view('account/index_company', $this->data, TRUE);
             $this->parser->parse('eapp_template', $this->data);
@@ -277,7 +267,6 @@ class Account extends CI_Controller
                 
                 if($this->user != null && $this->user->subscription >= COMPANY_SUBSCRIPTION)
                 {
-                    $this->data['tabIndex'] = 3;
                     $this->data['script'] = $this->load->view('account/scripts/index_company', $this->data, TRUE);
                     $this->data['body'] = $this->load->view('account/index_company', $this->data, TRUE);
                 }
