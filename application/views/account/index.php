@@ -271,10 +271,10 @@ $(document).ready(function()
                         </div> 
 
                         <!-- Verify phone number -->
-                        <div layout-padding>
+                        <div class="container" layout-padding>
 
-                            <div class="col-sm-12"  ng-hide="userPhoneVerified">
-                                <p class="md-otiprix-text message"><b>Vérifier votre numéro de téléphone</b></p>
+                            <div class="row"  ng-hide="userPhoneVerified">
+                                <b><p class="md-otiprix-text message">Vérifier votre numéro de téléphone</p></b>
                             </div>
 
                             <div class="col-sm-12" ng-show="enterVerificationNumber">
@@ -287,23 +287,23 @@ $(document).ready(function()
                                     <strong>Success!</strong> {{validateCodeMessage}}
                                 </div>
 
-                                <div class="col-sm-12"  ng-show="userPhoneVerified">
+                                <div class="row"  ng-show="userPhoneVerified">
                                     <p class="md-otiprix-text message"><b>Verified : {{loggedUserClone.phone}}</b></p>
                                 </div>
-
-                                <p class="message">Veuillez entrer ci-dessous un numéro de téléphone où nous vous enverrons le code de vérification.</p>
-
-                                <md-input-container class="col-sm-12 col-md-6 col-md-offset-3">
-                                    <md-icon class="md-primary"><i class="material-icons">phone</i></md-icon>
-                                    <input class="form-control" style="border-radius: 2px;" type="tel" id="phone">
-                                </md-input-container>
-
-                                <div class="col-sm-12">
-                                    <md-button class="md-primary md-raised col-md-4 col-md-offset-4" ng-click="sendVerificationCode()">
-                                        Valider
-                                    </md-button>
+                                
+                                <div class="row">
+                                    <p class="message">Veuillez entrer ci-dessous un numéro de téléphone où nous vous enverrons le code de vérification.</p>
                                 </div>
 
+                                <div class="row">
+                                    <div class="center-block" style="width: 300px;">
+                                        
+                                        <input class="form-control" style="border-radius: 2px;" type="tel" id="phone">
+                                        <md-button class="md-primary md-raised center-block" ng-click="sendVerificationCode()">
+                                            Valider
+                                        </md-button>
+                                    </div>
+                                </div>
                             </div>
 
                             <div class="col-sm-12" ng-hide="enterVerificationNumber">

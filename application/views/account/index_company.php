@@ -384,15 +384,14 @@ $(document).ready(function()
 
                                 <p class="message">Veuillez entrer ci-dessous un numéro de téléphone où nous vous enverrons le code de vérification.</p>
 
-                                <md-input-container class="col-sm-12 col-md-6 col-md-offset-3">
-                                    <md-icon class="md-primary"><i class="material-icons">phone</i></md-icon>
-                                    <input class="form-control" style="border-radius: 2px;" type="tel" id="phone">
-                                </md-input-container>
-
-                                <div class="col-sm-12">
-                                    <md-button class="md-primary md-raised col-md-4 col-md-offset-4" ng-click="sendVerificationCode()">
-                                        Valider
-                                    </md-button>
+                                <div class="row">
+                                    <div class="center-block" style="width: 300px;">
+                                        
+                                        <input class="form-control" style="border-radius: 2px;" type="tel" id="phone">
+                                        <md-button class="md-primary md-raised center-block" ng-click="sendVerificationCode()">
+                                            Valider
+                                        </md-button>
+                                    </div>
                                 </div>
 
                             </div>
