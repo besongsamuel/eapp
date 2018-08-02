@@ -25,8 +25,6 @@
     <link rel="stylesheet" href="<?php echo base_url("assets/css/responsive.css")?>">
     <!-- Admin CSS -->
     <link rel="stylesheet" href="<?php echo base_url("assets/css/admin.css")?>">
-    <!-- International Phone numbers CSS CSS -->
-    <link rel="stylesheet" href="<?php echo base_url("assets/css/intlTelInput.css")?>">
     
     <!-- Animate CSS -->
     <link rel="stylesheet" href="<?php echo base_url("assets/css/animate.css")?>">

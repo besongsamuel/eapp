@@ -10,7 +10,7 @@
     
     {css}
     
-    <script src="https://code.jquery.com/jquery.min.js"></script>
+    <script src="<?php echo base_url("node_modules/jquery/dist/jquery.min.js")?>"></script>
     	  
   </head>
   

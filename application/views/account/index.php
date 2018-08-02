@@ -1,14 +1,17 @@
 <!DOCTYPE html>
 
+<link rel="stylesheet" href="<?php echo base_url("node_modules/intl-tel-input/build/css/intlTelInput.min.css")?>">
+<link rel="stylesheet" href="<?php echo base_url("assets/css/account.css")?>">
+
 <script>
     
 $(document).ready(function()
 {
-    $("#phone").intlTelInput({utilsScript : "<?php echo base_url("assets/js/utils.js")?>"});
+    $("#phone").intlTelInput({utilsScript : "<?php echo base_url("node_modules/intl-tel-input/build/js/utils.js")?>"});
 });
 </script>
 
-<link rel="stylesheet" href="<?php echo base_url("assets/css/account.css")?>">
+
 
 
 <md-content class="otiprix-section" id="admin-container" ng-cloak>
@@ -296,14 +299,14 @@ $(document).ready(function()
                                 </div>
 
                                 <div class="row">
-                                    <div class="center-block" style="width: 300px;">
-                                        
+                                    <div class="center-block" style="width : 315px;">
                                         <input class="form-control" style="border-radius: 2px;" type="tel" id="phone">
-                                        <md-button class="md-primary md-raised center-block" ng-click="sendVerificationCode()">
+                                        <md-button class="md-primary md-raised" ng-click="sendVerificationCode()">
                                             Valider
                                         </md-button>
                                     </div>
                                 </div>
+                                
                             </div>
 
                             <div class="col-sm-12" ng-hide="enterVerificationNumber">

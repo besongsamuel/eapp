@@ -8,6 +8,8 @@
     "angular-jk-carousel": "^0.5.0",
     "angular-material": "^1.1.6",
     "angular-messages": "^1.6.9",
-    "angular-ui-carousel": "^0.1.10"
+    "angular-ui-carousel": "^0.1.10",
+    "intl-tel-input": "^13.0.2",
+    "jquery": "^3.3.1"
   }
 }

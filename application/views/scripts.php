@@ -29,8 +29,6 @@
     <script src="<?php echo base_url("assets/js/angular-1.6.6/angular-route.min.js")?>"></script>
     <script src="<?php echo CONNECTION_TYPE; ?>://ajax.googleapis.com/ajax/libs/angular_material/1.1.8/angular-material.min.js"></script>
     <script src="<?php echo CONNECTION_TYPE; ?>://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/js/bootstrap-select.min.js"></script>
-    <script src="<?php echo base_url("assets/js/utils.js")?>"></script>
-    <script src="<?php echo base_url("assets/js/intlTelInput.js")?>"></script>
     
     
     <!-- Angular Modules -->

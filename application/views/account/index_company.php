@@ -1,16 +1,16 @@
 <!DOCTYPE html>
 
+<link rel="stylesheet" href="<?php echo base_url("node_modules/intl-tel-input/build/css/intlTelInput.css")?>">
+<link rel="stylesheet" href="<?php echo base_url("assets/css/account.css")?>">
+
 <script>
     
 $(document).ready(function()
 {
-    $("#phone").intlTelInput({utilsScript : "<?php echo base_url("assets/js/utils.js")?>"});
-    
+    $("#phone").intlTelInput({utilsScript : "<?php echo base_url("node_modules/intl-tel-input/build/js/utils.js")?>"});
     $('#OpenImgUpload').click(function(){ $('#fileUploadButton').trigger('click'); });
 });
 </script>
-
-<link rel="stylesheet" href="<?php echo base_url("assets/css/account.css")?>">
 
 <md-content class="otiprix-section" id="admin-container" ng-cloak>
     
@@ -45,6 +45,7 @@ $(document).ready(function()
     </div>
     
     <div ng-controller="TabsController">
+        
         <md-tabs md-stretch-tabs='always' md-dynamic-height md-border-bottom='true' md-swipe-content='true' layout-padding md-selected="selectedTab">
         
             <div class="container">
@@ -362,7 +363,7 @@ $(document).ready(function()
                         </div> 
 
                         <!-- Verify phone number -->
-                        <div layout-padding>
+                        <div>
 
                             <div class="col-sm-12"  ng-hide="userPhoneVerified">
                                 <p class="md-otiprix-text message"><b>Vérifier votre numéro de téléphone</b></p>
@@ -385,10 +386,9 @@ $(document).ready(function()
                                 <p class="message">Veuillez entrer ci-dessous un numéro de téléphone où nous vous enverrons le code de vérification.</p>
 
                                 <div class="row">
-                                    <div class="center-block" style="width: 300px;">
-                                        
+                                    <div class="center-block" style="width : 315px;">
                                         <input class="form-control" style="border-radius: 2px;" type="tel" id="phone">
-                                        <md-button class="md-primary md-raised center-block" ng-click="sendVerificationCode()">
+                                        <md-button class="md-primary md-raised" ng-click="sendVerificationCode()">
                                             Valider
                                         </md-button>
                                     </div>
