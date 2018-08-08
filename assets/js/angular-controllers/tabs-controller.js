@@ -11,6 +11,8 @@ angular.module("eappApp").controller("TabsController", ["$rootScope", "$scope", 
     
     $scope.Init = function()
     {
+        $scope.menuIndex = 4;
+        
         if(window.sessionStorage.getItem("selectedTab"))
         {
             $scope.selectedTab = parseInt(window.sessionStorage.getItem("selectedTab"));
