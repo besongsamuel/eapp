@@ -1,21 +1,22 @@
 
   
   
-<div class="container">
+<div class="row">
 
-    <div class="row">
+    <div class="col-sm-12">
         <md-button class="md-raised md-primary pull-right" ng-click="addStoreBranch($event)">
             Ajouter Sucursale                
         </md-button>
     </div>
     
-    <div class="row">
+    <div class="col-sm-12">
     
         <h2 class="section-title md-otiprix-text">Vos sucursales</h2>
     
-        </md-toolbar>
         <md-list flex ng-if="departmentStores.length > 0">
+            
             <md-list-item class="md-3-line" ng-repeat="ds in departmentStores" ng-click="null">
+                
                 <div class="md-list-item-text" layout="column">
                     <h3>{{ ds.name }}</h3>
                     <h4>
@@ -30,6 +31,7 @@
                 <md-icon class="md-secondary md-warn" ng-click="removeDepartmentStore(ds.id, $event)"><i class="material-icons">delete</i></md-icon>
                 
             </md-list-item>
+            
         </md-list>
     </div>
 
