@@ -66,12 +66,16 @@ $(document).ready(function()
                         <!-- END SIDEBAR USER TITLE -->
                         <!-- SIDEBAR BUTTONS -->
                         <div class="profile-userbuttons">
+                            
                             <md-button class="md-raised md-primary btn" type="submit">
                                 Follow
                             </md-button>
-                            <md-button class="md-raised md-warn btn" type="submit">
-                                Message
-                            </md-button>
+                            <form action="<?php echo site_url("account/select_subscription"); ?>">
+                                <md-button class="md-raised md-warn btn" type="submit">
+                                    Changer Forfait
+                                </md-button>
+                            </form>
+                            
                         </div>
                         <!-- END SIDEBAR BUTTONS -->
                         <!-- SIDEBAR MENU -->
@@ -730,7 +734,7 @@ $(document).ready(function()
                                         </md-input-container>
 
                                         <div class="col-sm-12" style="margin-top : 30px; margin-bottom: 30px;">
-                                            <md-button type="submit" class="pull-right md-primary md-raised">Valider</md-button>
+                                            <md-button type="submit" class="pull-right md-primary md-raised btn">Valider</md-button>
                                         </div>
 
 
