@@ -583,7 +583,7 @@ class Account extends CI_Controller
 		
         if($_SERVER['REQUEST_METHOD'] === 'POST')
         {
-            $this->form_validation->set_rules('email', 'Email', 'callback_email_check');
+            $this->form_validation->set_rules('account[email]', 'Email', 'callback_email_check');
 
             $user_account = $this->input->post('account');
             $user_profile = $this->input->post('profile');
