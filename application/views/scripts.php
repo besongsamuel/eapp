@@ -50,6 +50,7 @@
     
     <!-- Angular Services -->
     <script src="<?php echo base_url("assets/js/angular-services/form.js")?>"></script>
+    <script src="<?php echo base_url("assets/js/angular-services/session-data.js")?>"></script>
     <script src="<?php echo base_url("assets/js/angular-services/company.js")?>"></script>
     <script src="<?php echo base_url("assets/js/angular-services/eapp.js")?>"></script>
     

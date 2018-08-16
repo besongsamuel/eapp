@@ -1,9 +1,9 @@
-angular.module('eappApp').controller('ShopController', ["$scope", "$q", "$http", "$mdDialog", "$rootScope", "eapp", function ($scope, $q, $http, $mdDialog, $rootScope, eapp) 
+angular.module('eappApp').controller('ShopController', ["$scope", "$q", "$mdDialog", "$rootScope", "eapp", "sessionData", function ($scope, $q, $mdDialog, $rootScope, eapp, sessionData) 
 {
     $rootScope.query = 
     {
         filter: '',
-        limit: '20',
+        limit: '100',
         order: 'name',
         page: 1
     };
@@ -17,6 +17,8 @@ angular.module('eappApp').controller('ShopController', ["$scope", "$q", "$http",
     $scope.isInitialized = false;
     
     $scope.root = $rootScope;
+    
+    $scope.sessionData = sessionData.get();
     
     var ctrl = this;
     
@@ -74,25 +76,6 @@ angular.module('eappApp').controller('ShopController', ["$scope", "$q", "$http",
             
             $scope.isInitialized = true;
             
-        }
-        
-        if(window.sessionStorage.getItem("gridView"))
-        {
-            var gv = window.sessionStorage.getItem("gridView").toString();
-            
-            if(!angular.isNullOrUndefined(gv))
-            {
-                $scope.gridView = JSON.parse(gv);
-            }
-            else
-            {
-                $scope.gridView = false;
-                
-            }
-        }
-        else
-        {
-            $scope.gridView = false;
         }
         
         $scope.distance = $rootScope.getOptimizationDistance();
@@ -451,11 +434,11 @@ angular.module('eappApp').controller('ShopController', ["$scope", "$q", "$http",
         window.scrollTo(0, 0);
     });
     
-    $scope.$watch("gridView", function(newValue, oldValue)
+    $scope.$watch("sessionData.gridView", function(newValue)
     {
-        if(!angular.isNullOrUndefined($scope.gridView))
+        if(!angular.isNullOrUndefined(newValue))
         {
-            window.sessionStorage.setItem("gridView", JSON.stringify($scope.gridView));
+            sessionData.set("gridView", newValue);
         }
          
     });

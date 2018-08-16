@@ -11,10 +11,10 @@
         
         <div class="pull-right">
             
-            <md-icon><a  ng-class="gridView ? 'md-warn' : 'md-primary' "href ng-click="gridView = false;"><i class="material-icons">list</i></a></md-icon>
-            <md-icon><a  ng-class="gridView ? 'md-primary' : 'md-warn' " href  ng-click="gridView = true;"><i class="material-icons">grid_on</i></a></md-icon>
-            <div ng-if="gridView == false && products.length > 0">Vue en liste</div>
-            <div ng-if="gridView && products.length > 0">Vue en grille</div>
+            <md-icon><a  ng-class="sessionData.gridView ? 'md-warn' : 'md-primary' "href ng-click="sessionData.gridView = false;"><i class="material-icons">list</i></a></md-icon>
+            <md-icon><a  ng-class="sessionData.gridView ? 'md-primary' : 'md-warn' " href  ng-click="sessionData.gridView = true;"><i class="material-icons">grid_on</i></a></md-icon>
+            <div ng-if="sessionData.gridView == false && products.length > 0">Vue en liste</div>
+            <div ng-if="sessionData.gridView && products.length > 0">Vue en grille</div>
         </div>
     </div>
     
@@ -33,7 +33,7 @@
     
     <p class="md-otiprix-text" style="text-align: center;" ng-show="products.length === 0">Aucun résultat trouvé</p>
     
-    <table md-table ng-model="selected" ng-if="!gridView  && products.length > 0">
+    <table md-table ng-model="selected" ng-if="!sessionData.gridView  && products.length > 0">
         <thead md-head md-order="query.order" md-on-reorder="getProducts">
             <tr md-row>
                 <th md-column></th>
@@ -102,7 +102,7 @@
         </tbody>
     </table>
     
-    <div class="row md-padding" ng-if="gridView && products.length > 0">
+    <div class="row md-padding" ng-if="sessionData.gridView && products.length > 0">
         
         <div class="col-md-3 col-sm-6 md-padding" ng-repeat="product in products">
 
@@ -160,5 +160,5 @@
     
 </md-table-container>
 
-<md-table-pagination md-limit="query.limit" md-limit-options="[20, 40, 100]" md-page="query.page" md-total="{{count}}" md-on-paginate="getProducts" md-page-select></md-table-pagination>
+<md-table-pagination md-limit="query.limit" md-limit-options="[100, 150, 200]" md-page="query.page" md-total="{{count}}" md-on-paginate="getProducts" md-page-select></md-table-pagination>
 
