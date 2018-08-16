@@ -56,16 +56,6 @@ $(document).ready(function()
                             </div>
                         </div>
                         <!-- END SIDEBAR USER TITLE -->
-                        <!-- SIDEBAR BUTTONS -->
-                        <div class="profile-userbuttons">
-                            <md-button class="md-raised md-primary btn" type="submit">
-                                Follow
-                            </md-button>
-                            <md-button class="md-raised md-warn btn" type="submit">
-                                Message
-                            </md-button>
-                        </div>
-                        <!-- END SIDEBAR BUTTONS -->
                         <!-- SIDEBAR MENU -->
                         <div class="profile-usermenu">
                             <ul class="nav">

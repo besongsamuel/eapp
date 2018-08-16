@@ -50,8 +50,8 @@ $(document).ready(function()
             <div class="col-md-3">
                     <div class="profile-sidebar">
                         <!-- SIDEBAR USERPIC -->
-                        <div class="profile-userpic">
-                                        <image-upload image="storeLogo" caption="Ajouter logo" id="store-product-image" on-file-removed="onFileRemoved()" on-file-selected="imageChanged(file)"></image-upload>
+                        <div class="profile-userpic" ng-controller="CompanyAccountController">
+                            <image-upload image="storeLogo" caption="Ajouter logo" id="store-product-image" on-file-removed="onFileRemoved()" on-file-selected="imageChanged(file)"></image-upload>
                         </div>
                         <!-- END SIDEBAR USERPIC -->
                         <!-- SIDEBAR USER TITLE -->
@@ -67,9 +67,7 @@ $(document).ready(function()
                         <!-- SIDEBAR BUTTONS -->
                         <div class="profile-userbuttons">
                             
-                            <md-button class="md-raised md-primary btn" type="submit">
-                                Follow
-                            </md-button>
+                            <p class="subscription-header"><b>Votre Forfait : &nbsp;&nbsp;&nbsp;<span class='md-warn-color'>  {{loggedUser.company.subscription.name}}</span></b>
                             <form action="<?php echo site_url("account/select_subscription"); ?>">
                                 <md-button class="md-raised md-warn btn" type="submit">
                                     Changer Forfait

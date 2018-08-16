@@ -20,6 +20,16 @@ angular.module('eappApp').component("imageUpload",
             ctrl.onFileRemoved({});
         };
         
+        ctrl.$onChanges = function(changesObj)
+        {
+            if(!angular.isNullOrUndefined(changesObj.image.currentValue))
+            {
+                ctrl.image = changesObj.image.currentValue;
+                $('.product-pic').attr('src', changesObj.image.currentValue);
+            }
+
+        };
+        
         ctrl.$onInit = function()
         {
             $scope.hasImage = false;
