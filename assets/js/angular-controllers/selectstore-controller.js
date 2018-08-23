@@ -4,15 +4,23 @@ angular.module('eappApp').controller('SelectStoreController', ["$scope", "$mdDia
     
     $scope.loading = false;
     
+    var ctrl = this;
+        
+    $scope.storeName = "";
+    
     $scope.Init = function()
     {
+        $scope.storeName = "";
+        
         var retailersPromise = eapp.getCloseRetailers($scope.getDistance());
         
         $scope.loading = true;
         
         retailersPromise.then(function(response)
         {
-            $scope.retailers = response.data;
+            $scope.retailers = Object.values(response.data);
+            
+            ctrl.retailers = $scope.retailers;
             
             $scope.loading = false;
         });
@@ -110,6 +118,11 @@ angular.module('eappApp').controller('SelectStoreController', ["$scope", "$mdDia
 	window.sessionStorage.setItem("store_id", store_id); 
         window.sessionStorage.setItem("store_name", store.name); 
 	window.location =  $scope.site_url.concat("/shop");
+    };
+    
+    $scope.search = function()
+    {
+        $scope.retailers = ctrl.retailers.filter(x => x.name.toLowerCase().indexOf($scope.storeName.toLowerCase()) !== -1);
     };
     
     angular.element(document).ready(function()

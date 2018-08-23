@@ -1038,14 +1038,14 @@ class CI_Model {
     
     public function get_distinct_latest_products($filter, $store_id, $category_id, $settingsFilter = null, $viewAll = true, $close_stores = null)
     {
-        $property_id = "product_id";
+        $product_id_column = "product_id";
         
         if($viewAll)
         {
-            $property_id = STORE_PRODUCT_TABLE.".id";
+            $product_id_column = STORE_PRODUCT_TABLE.".id";
         }
         
-        return $this->get_distinct_latest_store_product_property($property_id, $filter, $store_id, $category_id, $settingsFilter, false, $close_stores);
+        return $this->get_distinct_latest_store_product_property($product_id_column, $filter, $store_id, $category_id, $settingsFilter, false, $close_stores);
     }
 	
     private function get_best_latest_store_product($product_id, $filter, $store_id, $category_id, $settingsFilter = null)

@@ -14,12 +14,20 @@
 
         <div class="md-dialog-content">
 
+            <md-input-container class="md-icon-float md-block">
+                <label>Rechercher magasin</label>
+                <md-icon>
+                    <i class="material-icons">search</i>
+                </md-icon>
+                <input ng-model="storeName" ng-change="search()">
+            </md-input-container>
+
             <md-list-item ng-repeat="item in retailers">
                 
                 <div class="image-container-square layout-padding">
                     <img ng-src="{{item.image}}">
                     <span style="text-align : center; color :gray;"><b>{{item.name}}</b></span>
-                    <md-button ng-click="selectStore(item)" class="md-secondary md-raised md-primary">Séléctioner</md-button>
+                    <md-button ng-click="selectStore(item)" class="md-secondary md-raised md-primary btn">Séléctioner</md-button>
                 </div>
                 
 
@@ -28,12 +36,14 @@
             </md-list-item>
 
         </div>
+
         <md-divider></md-divider>
+
     </md-dialog-content>
 
     <md-dialog-actions layout="row">
 
-        <md-button class="md-raised" ng-click="cancel()">
+        <md-button class="md-raised md-primary btn" ng-click="cancel()">
             Fermer
         </md-button>
 

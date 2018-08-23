@@ -109,6 +109,13 @@ angular.module('eappApp').controller('SelectAccountStoreController', ["$scope", 
         
     function DialogController($scope, $mdDialog, retailers, favoriteStores, eapp, storeIndex) 
     {
+        
+        var ctrl = this;
+        
+        $scope.storeName = "";
+        
+        ctrl.retailers = retailers;
+        
         $scope.retailers = retailers;
         
         for(var x in favoriteStores)
@@ -123,6 +130,23 @@ angular.module('eappApp').controller('SelectAccountStoreController', ["$scope", 
                 }
             }
         }
+        
+        ctrl.isFavoriteStore = function(store)
+        {
+            for(var x in favoriteStores)
+            {
+                if(parseInt(favoriteStores[x].id) > -1)
+                {
+
+                    if(parseInt(store.id) === parseInt(favoriteStores[x].id))
+                    {
+                        return true;
+                    }
+                }
+            }
+            
+            return false;
+        };
 
         $scope.hide = function() {
           $mdDialog.hide();
@@ -151,6 +175,11 @@ angular.module('eappApp').controller('SelectAccountStoreController', ["$scope", 
             });
             
             
+        };
+        
+        $scope.search = function()
+        {
+            $scope.retailers = ctrl.retailers.filter(x => x.name.toLowerCase().indexOf($scope.storeName.toLowerCase()) !== -1 && !ctrl.isFavoriteStore(x));
         };
 
     }

@@ -35,6 +35,14 @@
                         <h2 class="md-toolbar-tools">Sélectionnez le magasin pour afficher le contenu du circulaire</h2>
                     </div>
                 </md-toolbar>
+                
+                <md-input-container class="md-icon-float md-block">
+                    <label>Rechercher magasin</label>
+                    <md-icon style="margin-left : -20px;">
+                        <i class="material-icons">search</i>
+                    </md-icon>
+                    <input ng-model="storeName" ng-change="search()">
+                </md-input-container>
 		  
 		<md-content id="retailer-contents" style="padding : 10px;">
                     
