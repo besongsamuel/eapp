@@ -1156,7 +1156,7 @@ div.cart-collaterals ul.products li.product:hover .add_to_cart_button{background
 .item-block
 {
     padding: 2px;
-    background-color : #1abc9c;
+    width: 100%;
 }
 
 

@@ -59,20 +59,20 @@ $(document).ready(function()
                         <!-- SIDEBAR MENU -->
                         <div class="profile-usermenu">
                             <ul class="nav">
-                                <li ng-class="{active : menuIndex == 1}">
-                                    <a ng-click="menuIndex = 1;" href><i class="glyphicon glyphicon-user"></i>informations utilisateur</a>
+                                <li ng-class="{active : sessionData.accountMenuIndex == 1}">
+                                    <a ng-click="sessionData.accountMenuIndex = 1;" href><i class="glyphicon glyphicon-user"></i>informations utilisateur</a>
                                 </li>
-                                <li ng-class="{active : menuIndex == 2}">
-                                    <a ng-click="menuIndex = 2;" href><i class="glyphicon glyphicon-lock"></i>Securité</a>
+                                <li ng-class="{active : sessionData.accountMenuIndex == 2}">
+                                    <a ng-click="sessionData.accountMenuIndex = 2;" href><i class="glyphicon glyphicon-lock"></i>Securité</a>
                                 </li>
-                                <li ng-class="{active : menuIndex == 3}">
-                                    <a ng-click="menuIndex = 3;" href><i class="glyphicon glyphicon-stats"></i>Historique de mes économies</a>
+                                <li ng-class="{active : sessionData.accountMenuIndex == 3}">
+                                    <a ng-click="sessionData.accountMenuIndex = 3;" href><i class="glyphicon glyphicon-stats"></i>Historique de mes économies</a>
                                 </li>
-                                <li ng-class="{active : menuIndex == 4}">
-                                    <a ng-click="menuIndex = 4;" href><i class="glyphicon glyphicon-list"></i>Vos liste d'd'épicerie</a>
+                                <li ng-class="{active : sessionData.accountMenuIndex == 4}">
+                                    <a ng-click="sessionData.accountMenuIndex = 4;" href><i class="glyphicon glyphicon-list"></i>Vos liste d'd'épicerie</a>
                                 </li>
-                                <li ng-class="{active : menuIndex == 5}">
-                                    <a ng-click="menuIndex = 5;" href><i class="glyphicon glyphicon-heart"></i>Magasins préférés</a>
+                                <li ng-class="{active : sessionData.accountMenuIndex == 5}">
+                                    <a ng-click="sessionData.accountMenuIndex = 5;" href><i class="glyphicon glyphicon-heart"></i>Magasins préférés</a>
                                 </li>
                             </ul>
                         </div>
@@ -84,7 +84,7 @@ $(document).ready(function()
                     
                     <div>
                         <!-- Change personal info -->    
-                        <div layout-padding ng-if="menuIndex == 1">
+                        <div layout-padding ng-if="sessionData.accountMenuIndex == 1">
                             <form  ng-controller="AccountController" name="userInfoForm" novalidate ng-submit="updateProfile()">
 
                                 <!-- First name -->
@@ -177,7 +177,7 @@ $(document).ready(function()
                         </div>
 
                         <!-- Security -->
-                        <div ng-if="menuIndex == 2" layout-padding ng-controller="AccountController">
+                        <div ng-if="sessionData.accountMenuIndex == 2" layout-padding ng-controller="AccountController">
 
                             <!-- Change Password -->
                             <div class="row">
@@ -346,7 +346,7 @@ $(document).ready(function()
                         </div>   
                         
                         <!-- History -->
-                        <div ng-if="menuIndex == 3">
+                        <div ng-if="sessionData.accountMenuIndex == 3">
                             <div class="md-padding">
                                 <md-list ng-controller="AccountOptimizationController">
                                     <md-list-item class="md-3-line" ng-repeat="item in optimizations">
@@ -363,12 +363,12 @@ $(document).ready(function()
                         </div>
                         
                         <!-- Grocery List -->
-                        <div ng-if="menuIndex == 4">
+                        <div ng-if="sessionData.accountMenuIndex == 4">
                             <div  ng-controller="UserListController" id="groceryListContainer" ng-include="'<?php echo base_url(); ?>/assets/templates/user_grocery_list.html'"></div>
                         </div>
                         
                         <!-- Favorite stores -->
-                        <div  ng-if="menuIndex == 5">
+                        <div  ng-if="sessionData.accountMenuIndex == 5">
                             <div ng-controller="SelectAccountStoreController" id="select-store-container" ng-include="'<?php echo base_url(); ?>/assets/templates/account-select-favorite-stores.html'"></div>
                         </div>
 

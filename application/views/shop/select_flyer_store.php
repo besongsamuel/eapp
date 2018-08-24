@@ -46,8 +46,8 @@
 		  
 		<md-content id="retailer-contents" style="padding : 10px;">
                     
-                    <div class="form-group-inline" ng-repeat="store in retailers">
-                        <div class="col-md-2 col-md-4" style="padding-top:10px;">
+                    <div class="row">
+                        <div class="col-md-2 col-md-4" style="padding-top:10px;" ng-repeat="store in retailers">
                             <label  class="btn item-block">
                                 <img  ng-click="select_retailer($event, store)" id="{{store.id}}" ng-src="{{store.image}}" alt="{{store.name}}" class="store-block img-check">
                                 <input type="checkbox" name="store_{{store.id}}" value="{{store.id}}" class="hidden" autocomplete="off">

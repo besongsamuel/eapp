@@ -79,23 +79,23 @@ $(document).ready(function()
                         <!-- SIDEBAR MENU -->
                         <div class="profile-usermenu">
                             <ul class="nav">
-                                <li ng-class="{active : menuIndex == 1}">
-                                    <a ng-click="menuIndex = 1;" href><i class="glyphicon glyphicon-user"></i>informations utilisateur</a>
+                                <li ng-class="{active : sessionData.accountMenuIndex == 1}">
+                                    <a ng-click="sessionData.accountMenuIndex = 1;" href><i class="glyphicon glyphicon-user"></i>informations utilisateur</a>
                                 </li>
-                                <li ng-class="{active : menuIndex == 2}">
-                                    <a ng-click="menuIndex = 2;" href><i class="glyphicon glyphicon-lock"></i>Securité</a>
+                                <li ng-class="{active : sessionData.accountMenuIndex == 2}">
+                                    <a ng-click="sessionData.accountMenuIndex = 2;" href><i class="glyphicon glyphicon-lock"></i>Securité</a>
                                 </li>
-                                <li ng-class="{active : menuIndex == 3}">
-                                    <a ng-click="menuIndex = 3;" href><i class="glyphicon glyphicon-stats"></i>Statistiques</a>
+                                <li ng-class="{active : sessionData.accountMenuIndex == 3}">
+                                    <a ng-click="sessionData.accountMenuIndex = 3;" href><i class="glyphicon glyphicon-stats"></i>Statistiques</a>
                                 </li>
-                                <li ng-class="{active : menuIndex == 4}">
-                                    <a ng-click="menuIndex = 4;" href><i class="glyphicon glyphicon-list"></i>Vos Produits</a>
+                                <li ng-class="{active : sessionData.accountMenuIndex == 4}">
+                                    <a ng-click="sessionData.accountMenuIndex = 4;" href><i class="glyphicon glyphicon-list"></i>Vos Produits</a>
                                 </li>
-                                <li ng-class="{active : menuIndex == 5}">
-                                    <a ng-click="menuIndex = 5;" href><i class="glyphicon glyphicon-heart"></i>Vos Sucursales</a>
+                                <li ng-class="{active : sessionData.accountMenuIndex == 5}">
+                                    <a ng-click="sessionData.accountMenuIndex = 5;" href><i class="glyphicon glyphicon-heart"></i>Vos Sucursales</a>
                                 </li>
-                                <li ng-class="{active : menuIndex == 6}">
-                                    <a ng-click="menuIndex = 6;" href><i class="glyphicon glyphicon-heart"></i>Informations Entreprise</a>
+                                <li ng-class="{active : sessionData.accountMenuIndex == 6}">
+                                    <a ng-click="sessionData.accountMenuIndex = 6;" href><i class="glyphicon glyphicon-heart"></i>Informations Entreprise</a>
                                 </li>
                             </ul>
                         </div>
@@ -108,7 +108,7 @@ $(document).ready(function()
                     <div>
                         
                         <!-- Change personal info -->    
-                        <div layout-padding ng-if="menuIndex == 1">
+                        <div layout-padding ng-if="sessionData.accountMenuIndex == 1">
                             <div ng-controller="AccountController">
                                 <div layout-padding>
                                     <form name="userInfoForm" novalidate ng-submit="updateProfile()">
@@ -208,7 +208,7 @@ $(document).ready(function()
                         </div>
 
                         <!-- Security -->
-                        <div ng-if="menuIndex == 2" layout-padding ng-controller="AccountController">
+                        <div ng-if="sessionData.accountMenuIndex == 2" layout-padding ng-controller="AccountController">
 
                             <!-- Change Password -->
                             <div class="row">
@@ -377,7 +377,7 @@ $(document).ready(function()
                         </div>   
                         
                         <!-- Statistics -->
-                        <div ng-if="menuIndex == 3">
+                        <div ng-if="sessionData.accountMenuIndex == 3">
                             
                             <div ng-controller="CompanyStatsController as ctrl">
 
@@ -675,7 +675,7 @@ $(document).ready(function()
                         </div>
                         
                         <!-- Products -->
-                        <div ng-if="menuIndex == 4">
+                        <div ng-if="sessionData.accountMenuIndex == 4">
                             
                             <div ng-controller="UploadController" style="text-align: center;">
                                 
@@ -724,14 +724,14 @@ $(document).ready(function()
                         </div>
                         
                         <!-- Sucursales -->
-                        <div  ng-if="menuIndex == 5">
+                        <div  ng-if="sessionData.accountMenuIndex == 5">
                             <div class="row layout-padding" ng-controller="AccountController">
                                 <add-department-store department-stores='loggedUser.company.chain.department_stores'></add-department-store>
                             </div>
                         </div>
                         
                         <!-- Entreprise -->
-                        <div ng-if="menuIndex == 6">
+                        <div ng-if="sessionData.accountMenuIndex == 6">
                             
                             <div ng-controller="CompanyAccountController" >
 

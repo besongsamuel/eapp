@@ -4,37 +4,30 @@
  * and open the template in the editor.
  */
 
-angular.module("eappApp").controller("TabsController", ["$rootScope", "$scope", function($rootScope, $scope) 
+angular.module("eappApp").controller("TabsController", ["$rootScope", "$scope", "sessionData", function($rootScope, $scope, sessionData) 
 {
-    
-    
-    
     $scope.Init = function()
     {
-        $scope.menuIndex = 4;
+        $scope.sessionData = sessionData.get();
         
-        if(window.sessionStorage.getItem("selectedTab"))
+        if(angular.isNullOrUndefined($scope.sessionData.accountMenuIndex))
         {
-            $scope.selectedTab = parseInt(window.sessionStorage.getItem("selectedTab"));
-        }   
-        else
-        {
-            $scope.selectedTab = 0;
+            $scope.sessionData.accountMenuIndex = 1;
         }
-        
-        $scope.$watch("selectedTab", function(newVal, oldVal, scope)
-        {
-            if(!angular.isNullOrUndefined(newVal))
-            {
-                window.sessionStorage.setItem("selectedTab", newVal);
-            }
-
-        });
     };
     
     angular.element(document).ready(function()
     {
         $scope.Init();
+    });
+    
+    $scope.$watch("sessionData.accountMenuIndex", function(newValue)
+    {
+        if(!angular.isNullOrUndefined(newValue))
+        {
+            sessionData.set("accountMenuIndex", newValue);
+        }
+         
     });
     
 }]);
