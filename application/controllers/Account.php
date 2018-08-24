@@ -30,6 +30,7 @@ class Account extends CI_Controller
         $order = $this->input->post("order");
         $period = $this->input->post("period");
         $limit = $this->input->post("limit");
+        $limit = 3;
         
         
         if(!$this->user)
@@ -45,6 +46,8 @@ class Account extends CI_Controller
        
         $stats->top_product_categories = $this->statistics->get_top_product_categories($order, $period, $limit);
         
+        $stats->least_product_categories = $this->statistics->get_top_product_categories("asc", $period, 1);
+        
         $stats->top_bio_products = $this->statistics->get_top_products($period, $order, -1,  1, -1, $limit);
         
         $stats->top_cart_bio_products = $this->statistics->get_top_products($period, $order, -1,  1, 1, $limit);
@@ -55,6 +58,8 @@ class Account extends CI_Controller
         if($this->user->subscription > COMPANY_SUBSCRIPTION)
         {
             $stats->get_top_recurring_products = $this->statistics->get_top_recurring_products($period, $order, 0, $limit);
+            
+            $stats->least_recurring_products = $this->statistics->get_top_recurring_products($period, "asc", 0, $limit);
             
             $stats->top_product_retailers = $this->statistics->get_top_product_retailers($order, $period, $limit);
             
@@ -69,22 +74,29 @@ class Account extends CI_Controller
             
             $stats->get_store_visitors_info = $this->statistics->get_store_visitors_info();
             
+            $stats->least_viewed_products = $this->statistics->get_top_products($period, "asc", -1,  -1, 0, $limit);
+            
         }
         
         if($this->user->subscription == COMPANY_SUBSCRIPTION + 2)
         {
+            // Get top viewed products
+            $stats->least_searched_products = $this->statistics->get_top_products($period, "asc", -1,  -1, 3, $limit);
+            
             // Get top viewed products
             $stats->top_searched_products = $this->statistics->get_top_products($period, $order, -1,  -1, 3, $limit);
             
             // Get top viewed products
             $stats->top_listed_products = $this->statistics->get_top_products($period, $order, -1,  -1, 2, $limit);
             
+            $stats->least_listed_products = $this->statistics->get_top_products($period, "asc", -1,  -1, 2, $limit);
+            
             // Get top products added to cart by state
             $stats->top_cart_product_states = $this->statistics->get_top_states($order, $period, 1, $limit);
             
-            $stats->top_listed_products = $this->statistics->get_top_products($period, $order, -1,  -1, 2, $limit);
-            
             $stats->top_product_brands = $this->statistics->get_top_product_brands($order, $period, 1, $limit);
+            
+            $stats->least_product_brands = $this->statistics->get_top_product_brands($order, "asc", 1, $limit);
             
             $stats->get_top_visited_chains = $this->statistics->get_top_visited_chains($order, $period, $limit);
             

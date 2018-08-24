@@ -45,6 +45,11 @@ angular.module('eappApp').controller('ShopController', ["$scope", "$q", "$mdDial
     {
         $scope.assets_dir = $scope.base_url.concat("/eapp/assets/");
         
+        if($(window).width() < 500)
+        {
+            $scope.sessionData.gridView = true;
+        }
+        
         //$rootScope.hideSearchArea = true;
         
         if(window.sessionStorage.getItem("searchText"))

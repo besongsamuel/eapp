@@ -469,6 +469,7 @@ $(document).ready(function()
                                             <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
 
                                                 <div class="panel-body">
+                                                    
                                                     <top-products 
                                                     ng-if="stats.get_top_recurring_products && stats.get_top_recurring_products.length > 0" 
                                                     data="stats.get_top_recurring_products" 
@@ -479,7 +480,7 @@ $(document).ready(function()
                                                     ng-if="stats.top_listed_products && stats.top_listed_products.length > 0" 
                                                     data="stats.top_listed_products" 
                                                     count-caption="Nombre d'utilisateurs avec produit dans leur liste :"
-                                                    caption="Quels sont les 5 produits qui reviennent le plus souvent dans la liste d'épicerie des utilisateurs"></top-products>
+                                                    caption="Les 5 produits qui reviennent le plus souvent dans la liste d'épicerie des utilisateurs"></top-products>
 
                                                     <top-products 
                                                     ng-if="stats.top_viewed_products && stats.top_viewed_products.length > 0" 
@@ -510,8 +511,43 @@ $(document).ready(function()
                                                     data="stats.top_product_brands" 
                                                     count-caption="Visites :"
                                                     caption="Les 5 marques les plus ajoutées au panier par les utilisateurs"></top-products>
+                                                    
+                                                    <top-products 
+                                                    ng-if="stats.least_recurring_products && stats.least_recurring_products.length > 0" 
+                                                    data="stats.least_recurring_products" 
+                                                    count-caption="Nombre de fois en circulaire :"
+                                                    caption="Les 5 produits qui reviennent le moins souvent en circulaire"></top-products>
+                                                    
+                                                    <top-products 
+                                                    ng-if="stats.least_listed_products && stats.least_listed_products.length > 0" 
+                                                    data="stats.least_listed_products" 
+                                                    count-caption="Nombre d'utilisateurs avec produit dans leur liste :"
+                                                    caption="Les 5 produits qui reviennent le moins souvent dans la liste d'épicerie des utilisateurs"></top-products>
 
-
+                                                    <top-products 
+                                                    ng-if="stats.least_viewed_products && stats.least_viewed_products.length > 0" 
+                                                    data="stats.least_viewed_products" 
+                                                    count-caption="Visites :"
+                                                    caption="Les 5 produits les moins visités par les utilisateurs"></top-products>
+                                                    
+                                                    <top-products 
+                                                    ng-if="stats.least_searched_products && stats.least_searched_products.length > 0" 
+                                                    data="stats.least_searched_products" 
+                                                    count-caption="Nombre de fois recherché :"
+                                                    caption="Les 5 produits les moins recherchés par les utilisateurs"></top-products>
+                                                    
+                                                    <top-products 
+                                                    ng-if="stats.least_product_categories && stats.least_product_categories.length > 0" 
+                                                    data="stats.least_product_categories" 
+                                                    count-caption="Visites :"
+                                                    caption="La catégorie de produits la moins visitée par les utilisateurs"></top-products>
+                                                    
+                                                    <top-products 
+                                                    ng-if="stats.least_product_brands && stats.least_product_brands.length > 0" 
+                                                    data="stats.least_product_brands" 
+                                                    count-caption="Visites :"
+                                                    caption="Les 5 marques les moins ajoutées au panier par les utilisateurs"></top-products>
+                                                    
                                                 </div>
                                             </div>
                                         </div>
