@@ -123,7 +123,7 @@ body{font-family: "Roboto Condensed",sans-serif;}
     .retailer-img
     {
         width: 40px;
-        right : -9px;
+        right : -15px;
         top:5px;
         position : relative;
     }
@@ -157,4 +157,10 @@ body{font-family: "Roboto Condensed",sans-serif;}
 /*to make seach input more visible */
 .input-search{
     box-shadow: 2px 2px 3px #aaa;
+}
+
+.thumbnail
+{
+    border-color: gray !important;
+    border-width: 2px;
 }
