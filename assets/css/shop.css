@@ -118,11 +118,13 @@ body{font-family: "Roboto Condensed",sans-serif;}
     .image-block
     {
         padding : 2px;
+        height: 156px;
     }
 
     .retailer-img
     {
         width: 40px;
+        height: 28px;
         right : -15px;
         top:5px;
         position : relative;
