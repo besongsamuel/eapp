@@ -17,6 +17,7 @@
     
     <!-- Font Awesome -->
     <link rel="stylesheet" href="<?php echo CONNECTION_TYPE; ?>://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+    
     <link href="<?php echo CONNECTION_TYPE; ?>://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="<?php echo base_url("assets/css/owl.carousel.css")?>">

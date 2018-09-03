@@ -30,7 +30,7 @@ class Account extends CI_Controller
         $order = $this->input->post("order");
         $period = $this->input->post("period");
         $limit = $this->input->post("limit");
-        $limit = 3;
+        $limit = 5;
         
         
         if(!$this->user)
