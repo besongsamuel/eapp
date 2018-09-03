@@ -8,6 +8,8 @@ angular.module('eappApp').controller('SelectStoreController', ["$scope", "$mdDia
         
     $scope.storeName = "";
     
+    $scope.storesAvailable = false;
+    
     $scope.Init = function()
     {
         $scope.storeName = "";
@@ -19,6 +21,8 @@ angular.module('eappApp').controller('SelectStoreController', ["$scope", "$mdDia
         retailersPromise.then(function(response)
         {
             $scope.retailers = Object.values(response.data);
+            
+            $scope.storesAvailable = $scope.retailers.length > 0;
             
             ctrl.retailers = $scope.retailers;
             

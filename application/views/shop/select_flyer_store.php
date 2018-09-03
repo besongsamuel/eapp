@@ -43,6 +43,8 @@
                     </md-icon>
                     <input ng-model="storeName" ng-change="search()">
                 </md-input-container>
+                
+                <p ng-if="!storesAvailable" style="text-align: center;" class="md-warn-color"><b>Il n'y a pas de magasin disponible près de chez vous.</b></p>
 		  
 		<md-content id="retailer-contents" style="padding : 10px;">
                     
