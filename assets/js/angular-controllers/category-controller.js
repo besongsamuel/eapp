@@ -17,6 +17,16 @@ angular.module('eappApp').controller('CategoryController', ["$scope", "$rootScop
             $scope.loading = false;
         });
     };
+    
+    $rootScope.select_category = function($event, category)
+    {
+        $scope.clearSessionItems();
+        var category_id = parseInt(category.id);
+        eapp.recordHit("eapp_product_category ",category_id);
+        window.sessionStorage.setItem("category_id", category_id);    
+        window.sessionStorage.setItem("category_name", category.name);
+        window.location =  $scope.site_url.concat("/shop");
+    };
 
     angular.element(document).ready(function()
     {
