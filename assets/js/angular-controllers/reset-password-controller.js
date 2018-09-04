@@ -1,6 +1,8 @@
 angular.module('eappApp').controller('ResetPasswordController', ["$scope", "$location", "eapp", function ($scope, $location, eapp) 
 {
     
+    var ctrl = this;
+    
     var getUrlParameter = function getUrlParameter(sParam) 
     {
         var sPageURL = decodeURIComponent(window.location.search.substring(1)),
@@ -22,6 +24,22 @@ angular.module('eappApp').controller('ResetPasswordController', ["$scope", "$loc
     
     $scope.resetToken = getUrlParameter('reset_token');
     
+    
+    ctrl.countDown =  function()
+    {
+        if($scope.count > 0)
+        {
+            $scope.count--;
+            
+            $scope.resetPasswordSuccessMessage = "Votre mot de passe a été changé. Vous serez redirigé dans " + ctrl.count + " secondes..."; 
+            
+            setTimeout(ctrl.countDown, 1000);
+        }
+        else
+        {
+            window.location.href = $scope.site_url.concat("/account/login");
+        }
+    };
 
     $scope.resetPassword = function()
     {
@@ -31,6 +49,9 @@ angular.module('eappApp').controller('ResetPasswordController', ["$scope", "$loc
         {
             if(response.data.success)
             {
+                ctrl.count = 5;
+                ctrl.countDown();
+                
                 $scope.confirm_password = '';
                 $scope.password = '';
                 $scope.resetPasswordForm.$setPristine();
