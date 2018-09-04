@@ -29,7 +29,7 @@ angular.module('eappApp').controller('ResetPasswordController', ["$scope", "$loc
     {
         if($scope.count > 0)
         {
-            $scope.count--;
+            ctrl.count--;
             
             $scope.resetPasswordSuccessMessage = "Votre mot de passe a été changé. Vous serez redirigé dans " + ctrl.count + " secondes..."; 
             
