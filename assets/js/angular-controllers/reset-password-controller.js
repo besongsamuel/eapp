@@ -27,7 +27,7 @@ angular.module('eappApp').controller('ResetPasswordController', ["$scope", "$loc
     
     ctrl.countDown =  function()
     {
-        if($scope.count > 0)
+        if(ctrl.count > 0)
         {
             ctrl.count--;
             
