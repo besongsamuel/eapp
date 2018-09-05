@@ -24,14 +24,23 @@ angular.module('eappApp').controller('ResetPasswordController', ["$scope", "$loc
     
     $scope.resetToken = getUrlParameter('reset_token');
     
-    
     ctrl.countDown =  function()
     {
         if(ctrl.count > 0)
         {
-            ctrl.count--;
+            if(ctrl.count < 6)
+            {
+                $scope.$apply(function()
+                {
+                    $scope.resetPasswordSuccessMessage = "Votre mot de passe a été changé. Vous serez redirigé vers a page de connexion dans " + ctrl.count + " secondes..."; 
+                });
+            }
+            else
+            {
+                $scope.resetPasswordSuccessMessage = "Votre mot de passe a été changé. Vous serez redirigé vers a page de connexion dans " + ctrl.count + " secondes..."; 
+            }
             
-            $scope.resetPasswordSuccessMessage = "Votre mot de passe a été changé. Vous serez redirigé dans " + ctrl.count + " secondes..."; 
+            ctrl.count--;
             
             setTimeout(ctrl.countDown, 1000);
         }
@@ -40,7 +49,7 @@ angular.module('eappApp').controller('ResetPasswordController', ["$scope", "$loc
             window.location.href = $scope.site_url.concat("/account/login");
         }
     };
-
+    
     $scope.resetPassword = function()
     {
         var resetPasswordPromise = eapp.resetPassword($scope.password, $scope.resetToken);
@@ -49,7 +58,8 @@ angular.module('eappApp').controller('ResetPasswordController', ["$scope", "$loc
         {
             if(response.data.success)
             {
-                ctrl.count = 5;
+                ctrl.count = 6;
+                                
                 ctrl.countDown();
                 
                 $scope.confirm_password = '';
