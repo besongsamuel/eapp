@@ -12,9 +12,11 @@ angular.module('eappApp').component("imageUpload",
     {
         var ctrl = this;
         
+        
         $scope.removeImage = function()
         {
-            $('.product-pic').attr('src', 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==');
+            ctrl.image = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==';
+            
             $scope.hasImage = false;
             
             ctrl.onFileRemoved({});
@@ -25,29 +27,14 @@ angular.module('eappApp').component("imageUpload",
             if(!angular.isNullOrUndefined(changesObj.image.currentValue))
             {
                 ctrl.image = changesObj.image.currentValue;
-                $('.product-pic').attr('src', changesObj.image.currentValue);
+                $scope.hasImage = ctrl.image != 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==' && ctrl.image != null;
             }
 
         };
         
         ctrl.$onInit = function()
         {
-            $scope.hasImage = false;
-            
-            if($('.product-pic'))
-            {
-                $('.product-pic').on('load', function()
-                {
-                    if($('.product-pic').attr('src') != 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==')
-                    {
-                        $scope.hasImage = true;
-                    }
-                    
-                    $scope.$apply();
-                });
-            }
-            
-            $('.product-pic').attr('src', ctrl.image);
+            $scope.hasImage = ctrl.image != 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==' && ctrl.image != null;
         };
         
         var readURL = function(input) 
@@ -58,7 +45,7 @@ angular.module('eappApp').component("imageUpload",
 
                 reader.onload = function (e) 
                 {
-                    $('.product-pic').attr('src', e.target.result);
+                    ctrl.image = e.target.result;
                 };
 
                 reader.readAsDataURL(input.files[0]);
