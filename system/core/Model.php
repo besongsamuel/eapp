@@ -398,7 +398,6 @@ class CI_Model {
                     {
                         $result_set["state"] = $result_set["country"];
                     }
-
                 }
 
             }
@@ -1161,7 +1160,7 @@ class CI_Model {
         
         // search for the cheapest
         
-        $result_array = $this->db->get(STORE_PRODUCT_TABLE)->array();
+        $result_array = $this->db->get(STORE_PRODUCT_TABLE)->result();
         
         $best_store_product = null;
         
