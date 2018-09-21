@@ -525,5 +525,25 @@ class Eapp extends CI_Controller
     {
         $this->record_retailer_visit($this->input->post('id'), $this->input->post('distance'), $this->input->post('postcode'));
     }
+    
+    public function delete_store_product_image() 
+    {
+        $store_product = $this->eapp_model->getStoreProduct($this->input->post('id'));
+        
+        if($store_product)
+        {
+            if(file_exists($store_product->image))
+            {
+                unlink($store_product->image);
+            }
+            
+            if(file_exists(ASSETS_DIR_PATH.'img/products/'.$store_product->image))
+            {
+                unlink(ASSETS_DIR_PATH.'img/products/'.$store_product->image);
+            }
+            
+            $this->eapp_model->create(STORE_PRODUCT_TABLE, array("id" => $this->input->post('id'), "image" => ""));
+        }
+    }
    
 }

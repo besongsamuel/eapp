@@ -685,6 +685,20 @@ angular.module('eappApp').factory('eapp', ['$http','$rootScope', '$mdDialog', fu
         
     };
     
+    eappService.deleteStoreProductImage = function(id)
+    {
+        var formData = new FormData();
+        formData.append("id", id);
+        
+        return $http.post(
+                eappService.getSiteUrl().concat("/eapp/delete_store_product_image"), 
+                formData, 
+                { 
+                    transformRequest: angular.identity, 
+                    headers: {'Content-Type': undefined}}
+                );  
+    };
+    
     eappService.sendActivationEmail = function()
     {
         return $http.post(eappService.getSiteUrl().concat("account/send_activation_email"), null);

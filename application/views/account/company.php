@@ -44,7 +44,10 @@
                             </div>
                         </md-input-container>
                         
-                        <image-upload caption="Ajouter logo" id="store-product-image" on-file-removed="onFileRemoved()" on-file-selected="imageChanged(file)"></image-upload>
+                        <image-upload 
+                            caption="Ajouter logo" 
+                            on-file-removed="onFileRemoved()" 
+                            on-file-selected="imageChanged(file)"></image-upload>
                         
             
                     </fieldset>

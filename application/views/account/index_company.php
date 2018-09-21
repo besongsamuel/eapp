@@ -51,7 +51,11 @@ $(document).ready(function()
                     <div class="profile-sidebar">
                         <!-- SIDEBAR USERPIC -->
                         <div class="profile-userpic" ng-controller="CompanyAccountController">
-                            <image-upload image="storeLogo" caption="Ajouter logo" id="store-product-image" on-file-removed="onFileRemoved()" on-file-selected="imageChanged(file)"></image-upload>
+                            <image-upload 
+                                image="storeLogo" 
+                                caption="Ajouter logo" 
+                                on-file-removed="onFileRemoved()" 
+                                on-file-selected="imageChanged(file)"></image-upload>
                         </div>
                         <!-- END SIDEBAR USERPIC -->
                         <!-- SIDEBAR USER TITLE -->

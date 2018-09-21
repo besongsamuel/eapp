@@ -4,14 +4,12 @@
  * and open the template in the editor.
  */
 
-
 angular.module('eappApp').component("imageUpload", 
 {
     templateUrl : "templates/components/imageUpload.html",
     controller : function($scope)
     {
         var ctrl = this;
-        
         
         $scope.removeImage = function()
         {
@@ -29,12 +27,48 @@ angular.module('eappApp').component("imageUpload",
                 ctrl.image = changesObj.image.currentValue;
                 $scope.hasImage = ctrl.image != 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==' && ctrl.image != null;
             }
-
         };
+        
+        ctrl.guidGenerator = function() 
+        {
+            var S4 = function() 
+            {
+               return (((1+Math.random())*0x10000)|0).toString(16).substring(1);
+            };
+            return (S4()+S4());
+        };
+        
+        $scope.inputButtonId = ctrl.guidGenerator();
+        
+        $scope.uploadButtonId = ctrl.guidGenerator();
+        
         
         ctrl.$onInit = function()
         {
-            $scope.hasImage = ctrl.image != 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==' && ctrl.image != null;
+            
+            angular.element(document).ready(function()
+            {
+                $scope.hasImage = ctrl.image != 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==' && ctrl.image != null;
+            
+                // The hidden input button
+                var inputButton = $("#" + $scope.inputButtonId);
+
+                // The button used to upload a new image. 
+                // It triggers the click on the hidden file input
+                var uploadButton = $("#" + $scope.uploadButtonId);
+
+                // Whenever the selected file is changed, this is called. 
+                inputButton.on('change', function()
+                {
+                    readURL(this);
+                });
+
+                // Whenever the upload button is clicked.
+                uploadButton.on('click', function() 
+                {
+                   inputButton.click();
+                });
+            });
         };
         
         var readURL = function(input) 
@@ -59,21 +93,12 @@ angular.module('eappApp').component("imageUpload",
             }
         };
     
-        $(".file-upload").on('change', function()
-        {
-            readURL(this);
-        });
-    
-        $(".upload-button").on('click', function() 
-        {
-           $(".file-upload").click();
-        });
+        
     },
     bindings : 
     {
         caption : '@',
         name : '@',
-        id : '@',
         image : '<',
         onFileSelected : '&',
         onFileRemoved : '&'

@@ -16,7 +16,17 @@ angular.module('eappApp').controller('CompanyAccountController', function($scope
         };
                 
         $scope.image_name = $scope.loggedUser.company.chain.image;
-        $scope.storeLogo = $scope.base_url.concat("/assets/img/stores/").concat($scope.loggedUser.company.chain.image);
+        
+        // Get the web path of the store image if it is set. 
+        if(!angular.isNullOrUndefined($scope.loggedUser.company.chain.image) && $scope.loggedUser.company.chain.image != '')
+        {
+            $scope.storeLogo = $scope.base_url.concat("/assets/img/stores/").concat($scope.loggedUser.company.chain.image);   
+        }
+        else
+        {
+            $scope.storeLogo = null;
+        }
+        
         
         if(sessionStorage.getItem("subscriptionChanged"))
         {

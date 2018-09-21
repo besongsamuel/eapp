@@ -77,15 +77,6 @@ function Controller($scope, $rootScope, $mdDialog, $company)
           parent: angular.element(document.body),
           controllerAs: 'ctrl',
           focusOnOpen: false,
-          onComplete : function(scope, element)
-          {
-                if(!angular.isNullOrUndefined(storeProduct.image))
-                {                    
-                    var image = $rootScope.base_url.concat("/assets/img/products/").concat(storeProduct.image);
-                    
-                    $('.product-pic').attr('src', image);
-                }
-          },
           targetEvent: event,
           locals : 
             {
@@ -355,6 +346,7 @@ function AddStoreProductController($scope, $q, $timeout, eapp, $company, $mdDial
     
     $scope.onFileRemoved = function()
     {
+        eapp.deleteStoreProductImage($scope.storeProduct.id);
         $scope.storeProduct.image = '';
     };
     

@@ -499,6 +499,12 @@ class Company extends CI_Controller
     {
         if($this->user && $this->user->subscription >= COMPANY_SUBSCRIPTION)
         {
+            // Get and delete the current image file
+            if(file_exists(ASSETS_DIR_PATH.'img/stores/'.$this->user->company->chain->image_name))
+            {
+                unlink(ASSETS_DIR_PATH.'img/stores/'.$this->user->company->chain->image_name);
+            }
+            
             // Upload the image
             $this->load->helper('file');
             
