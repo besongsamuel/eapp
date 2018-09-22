@@ -526,23 +526,30 @@ class Eapp extends CI_Controller
         $this->record_retailer_visit($this->input->post('id'), $this->input->post('distance'), $this->input->post('postcode'));
     }
     
+    /**
+     * This method deletes a store product image associated with a store product. 
+     * This is for a company account.
+     */
     public function delete_store_product_image() 
     {
-        $store_product = $this->eapp_model->getStoreProduct($this->input->post('id'));
-        
-        if($store_product)
+        if($this->user && $this->user->subscription >= COMPANY_SUBSCRIPTION)
         {
-            if(file_exists($store_product->image))
+            $store_product = $this->eapp_model->getStoreProduct($this->input->post('id'), false, false);
+        
+            if($store_product)
             {
-                unlink($store_product->image);
+                if(file_exists($store_product->image))
+                {
+                    unlink($store_product->image);
+                }
+
+                if(file_exists(ASSETS_DIR_PATH.'img/products/'.$store_product->image))
+                {
+                    unlink(ASSETS_DIR_PATH.'img/products/'.$store_product->image);
+                }
+
+                $this->eapp_model->create(STORE_PRODUCT_TABLE, array("id" => $this->input->post('id'), "image" => ""));
             }
-            
-            if(file_exists(ASSETS_DIR_PATH.'img/products/'.$store_product->image))
-            {
-                unlink(ASSETS_DIR_PATH.'img/products/'.$store_product->image);
-            }
-            
-            $this->eapp_model->create(STORE_PRODUCT_TABLE, array("id" => $this->input->post('id'), "image" => ""));
         }
     }
    

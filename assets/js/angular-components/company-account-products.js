@@ -148,7 +148,7 @@ function getDate(mySQLDate)
     return jsDate;
 }
 
-function AddStoreProductController($scope, $q, $timeout, eapp, $company, $mdDialog, storeProduct)
+function AddStoreProductController($scope, $rootScope, $q, $timeout, eapp, $company, $mdDialog, storeProduct)
 {
     var ctrl = this;
     
@@ -172,6 +172,8 @@ function AddStoreProductController($scope, $q, $timeout, eapp, $company, $mdDial
     
     $scope.buttonCaption = "Ajouter";
     
+    ctrl.imageUploaded = null;
+    
     if(storeProduct)
     {
         $scope.buttonCaption = "Modifier";
@@ -184,6 +186,16 @@ function AddStoreProductController($scope, $q, $timeout, eapp, $company, $mdDial
         $scope.storeProduct.price = parseFloat($scope.storeProduct.price);
         $scope.organic = parseInt($scope.storeProduct.organic) === 1;
         $scope.in_flyer = parseInt($scope.storeProduct.in_flyer) === 1;
+        
+        // Get the web path of the store image if it is set. 
+        if(!angular.isNullOrUndefined($scope.storeProduct.product.image) && $scope.storeProduct.product.image != '')
+        {
+            $scope.selectedImage = $scope.storeProduct.product.image;   
+        }
+        else
+        {
+            $scope.selectedImage = null;
+        }
 
         $scope.edit = true;
     }
@@ -302,7 +314,7 @@ function AddStoreProductController($scope, $q, $timeout, eapp, $company, $mdDial
     
     $scope.imageChanged = function(newImage)
     {
-        $scope.selectedImage = newImage;
+        ctrl.imageUploaded = newImage;
     };
     
     $scope.addStoreProduct = function()
@@ -311,30 +323,28 @@ function AddStoreProductController($scope, $q, $timeout, eapp, $company, $mdDial
         {
             if($scope.brand !== null)
             {
-                $scope.storeProduct.brand_id = $scope.brand.value;
+                $scope.storeProduct.store_product.brand_id = $scope.brand.value;
             }
             else
             {
-                $scope.storeProduct.brand_id = -1;
+                $scope.storeProduct.store_product.brand_id = -1;
             }
             
             if($scope.unit !== null)
             {
-                $scope.storeProduct.unit_id = $scope.unit.value;
+                $scope.storeProduct.store_product.unit_id = $scope.unit.value;
             }
             else
             {
-                $scope.storeProduct.unit_id = -1;
+                $scope.storeProduct.store_product.unit_id = -1;
             }
-            
-            var image = $scope.selectedImage;
                         
-            $scope.storeProduct.period_from = $scope.period_from.toISOString().substring(0, 19).replace('T', ' ');
-            $scope.storeProduct.period_to = $scope.period_to.toISOString().substring(0, 19).replace('T', ' ');
-            $scope.storeProduct.in_flyer = $scope.in_flyer ? 1 : 0;
-            $scope.storeProduct.organic = $scope.organic ? 1 : 0;
+            $scope.storeProduct.store_product.period_from = $scope.period_from.toISOString().substring(0, 19).replace('T', ' ');
+            $scope.storeProduct.store_product.period_to = $scope.period_to.toISOString().substring(0, 19).replace('T', ' ');
+            $scope.storeProduct.store_product.in_flyer = $scope.in_flyer ? 1 : 0;
+            $scope.storeProduct.store_product.organic = $scope.organic ? 1 : 0;
             
-            $company.addStoreProduct($scope.storeProduct, image, addStoreProductSuccess);
+            $company.addStoreProduct($scope.storeProduct.store_product, ctrl.imageUploaded, addStoreProductSuccess);
             
         }
         

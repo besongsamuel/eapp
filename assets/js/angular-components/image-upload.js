@@ -10,10 +10,11 @@ angular.module('eappApp').component("imageUpload",
     controller : function($scope)
     {
         var ctrl = this;
+        const EMPTY_IMAGE = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==';
         
-        $scope.removeImage = function()
+        ctrl.removeImage = function()
         {
-            ctrl.image = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==';
+            ctrl.image = EMPTY_IMAGE;
             
             $scope.hasImage = false;
             
@@ -25,7 +26,7 @@ angular.module('eappApp').component("imageUpload",
             if(!angular.isNullOrUndefined(changesObj.image.currentValue))
             {
                 ctrl.image = changesObj.image.currentValue;
-                $scope.hasImage = ctrl.image != 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==' && ctrl.image != null;
+                $scope.hasImage = ctrl.image != EMPTY_IMAGE && ctrl.image != null;
             }
         };
         
@@ -48,7 +49,7 @@ angular.module('eappApp').component("imageUpload",
             
             angular.element(document).ready(function()
             {
-                $scope.hasImage = ctrl.image != 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==' && ctrl.image != null;
+                $scope.hasImage = ctrl.image != EMPTY_IMAGE && ctrl.image != null;
             
                 // The hidden input button
                 var inputButton = $("#" + $scope.inputButtonId);
@@ -80,20 +81,18 @@ angular.module('eappApp').component("imageUpload",
                 reader.onload = function (e) 
                 {
                     ctrl.image = e.target.result;
+                    
+                    $scope.hasImage = true;
+                
+                    $scope.$apply();
                 };
 
                 reader.readAsDataURL(input.files[0]);
                 
                 ctrl.onFileSelected({ file : input.files[0]});
-                
-                $scope.hasImage = true;
-                
-                $scope.$apply();
                                 
             }
         };
-    
-        
     },
     bindings : 
     {
