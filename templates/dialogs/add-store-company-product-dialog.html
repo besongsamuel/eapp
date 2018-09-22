@@ -9,10 +9,7 @@
 
             <div>
             
-                <image-upload 
-                    caption="Ajouter Image" 
-                    on-file-removed="onFileRemoved()" 
-                    on-file-selected="imageChanged(file)"></image-upload>
+                <image-upload image="selectedImage" caption="Ajouter Image" id="store-product-image" on-file-removed="onFileRemoved()" on-file-selected="imageChanged(file)"></image-upload>
 
                 <div class="row">
                     <div flex-gt-xs style="text-align: center;">
@@ -32,7 +29,7 @@
 
                 <md-input-container class="md-block col-md-12" flex-gt-sm>
                     <label>Nom du produit</label>
-                    <input required name="name" ng-model="storeProduct.store_name" />
+                    <input required name="name" ng-model="sp.store_name" />
                     <div ng-messages="addStoreProductForm.name.$error">
                         <div ng-message="required">Vous devez entrer un nom du produit.</div>
                     </div>
@@ -82,7 +79,7 @@
                 <md-input-container class="md-block col-sm-6">
                     <label>Pays D'origine</label>
                     <input 
-                        ng-model="storeProduct.country"
+                        ng-model="sp.country"
                         name="address"
                     >
                 </md-input-container>
@@ -90,7 +87,7 @@
                 <md-input-container class="md-block col-sm-6">
                     <label>Ville D'origine</label>
                     <input 
-                        ng-model="storeProduct.state"
+                        ng-model="sp.state"
                         name="address"
                     >
                 </md-input-container>
@@ -98,7 +95,7 @@
                 <md-input-container class="md-block col-sm-12 col-md-4">
                     <label>Taille</label>
                     <input 
-                        ng-model="storeProduct.size"
+                        ng-model="sp.size"
                         name="size"
                     >
                 </md-input-container>
@@ -106,7 +103,7 @@
                 <md-input-container class="md-block col-sm-12 col-md-4">
                     <label>Format</label>
                     <input 
-                        ng-model="storeProduct.format"
+                        ng-model="sp.format"
                         name="format"
                         required
                     >
@@ -117,7 +114,7 @@
 
                 <md-input-container class="md-icon-float md-icon-right md-block col-md-4">
                     <label>Prix</label>
-                    <input ng-model="storeProduct.price" name="price" required type="number" step="0.01">
+                    <input ng-model="sp.price" name="price" required type="number" step="0.01">
                     <md-icon class="md-primary"><i class="material-icons">attach_money</i></md-icon>
                     <div ng-messages="addStoreProductForm.price.$error">
                         <div ng-message="required">Vous devez entrer le prix du produit.</div>

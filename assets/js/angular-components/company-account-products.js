@@ -148,7 +148,7 @@ function getDate(mySQLDate)
     return jsDate;
 }
 
-function AddStoreProductController($scope, $rootScope, $q, $timeout, eapp, $company, $mdDialog, storeProduct)
+function AddStoreProductController($scope, $q, $timeout, eapp, $company, $mdDialog, storeProduct)
 {
     var ctrl = this;
     
@@ -163,6 +163,9 @@ function AddStoreProductController($scope, $rootScope, $q, $timeout, eapp, $comp
         
     };
     
+    $scope.sp = storeProduct.store_product;
+
+    
     $scope.hide = function()
     {
         $mdDialog.hide();
@@ -174,18 +177,18 @@ function AddStoreProductController($scope, $rootScope, $q, $timeout, eapp, $comp
     
     ctrl.imageUploaded = null;
     
-    if(storeProduct)
+    if($scope.sp)
     {
         $scope.buttonCaption = "Modifier";
         
         $scope.storeProduct = storeProduct;
         
-        $scope.period_from = getDate(storeProduct.period_from);
-        $scope.period_to = getDate(storeProduct.period_to);
+        $scope.period_from = getDate($scope.sp.period_from);
+        $scope.period_to = getDate($scope.sp.period_to);
         
-        $scope.storeProduct.price = parseFloat($scope.storeProduct.price);
-        $scope.organic = parseInt($scope.storeProduct.organic) === 1;
-        $scope.in_flyer = parseInt($scope.storeProduct.in_flyer) === 1;
+        $scope.sp.price = parseFloat($scope.sp.price);
+        $scope.sp.organic = parseInt($scope.sp.organic) === 1;
+        $scope.sp.in_flyer = parseInt($scope.sp.in_flyer) === 1;
         
         // Get the web path of the store image if it is set. 
         if(!angular.isNullOrUndefined($scope.storeProduct.product.image) && $scope.storeProduct.product.image != '')
@@ -220,7 +223,7 @@ function AddStoreProductController($scope, $rootScope, $q, $timeout, eapp, $comp
         
         if($scope.storeProduct.brand_id)
         {
-            var brand_index = $scope.brands.map(function(e){ return e.value; }).indexOf(storeProduct.brand_id);
+            var brand_index = $scope.brands.map(function(e){ return e.value; }).indexOf($scope.sp.brand_id);
         
             if(brand_index > -1)
             {
@@ -254,7 +257,7 @@ function AddStoreProductController($scope, $rootScope, $q, $timeout, eapp, $comp
         
         if($scope.storeProduct.unit_id)
         {
-            var unit_index = $scope.units.map(function(e){ return e.value; }).indexOf(storeProduct.unit_id);
+            var unit_index = $scope.units.map(function(e){ return e.value; }).indexOf($scope.sp.unit_id);
         
             if(unit_index > -1)
             {
@@ -263,8 +266,6 @@ function AddStoreProductController($scope, $rootScope, $q, $timeout, eapp, $comp
                 ctrl.unitSearchText = $scope.unit.display;
             }
         }
-
-        
 
         $scope.queryUnits = queryUnits;
     });
@@ -323,33 +324,34 @@ function AddStoreProductController($scope, $rootScope, $q, $timeout, eapp, $comp
         {
             if($scope.brand !== null)
             {
-                $scope.storeProduct.store_product.brand_id = $scope.brand.value;
+                $scope.sp.brand_id = $scope.brand.value;
             }
             else
             {
-                $scope.storeProduct.store_product.brand_id = -1;
+                $scope.sp.brand_id = -1;
             }
             
             if($scope.unit !== null)
             {
-                $scope.storeProduct.store_product.unit_id = $scope.unit.value;
+                $scope.sp.unit_id = $scope.unit.value;
             }
             else
             {
-                $scope.storeProduct.store_product.unit_id = -1;
+                $scope.sp.unit_id = -1;
             }
                         
-            $scope.storeProduct.store_product.period_from = $scope.period_from.toISOString().substring(0, 19).replace('T', ' ');
-            $scope.storeProduct.store_product.period_to = $scope.period_to.toISOString().substring(0, 19).replace('T', ' ');
-            $scope.storeProduct.store_product.in_flyer = $scope.in_flyer ? 1 : 0;
-            $scope.storeProduct.store_product.organic = $scope.organic ? 1 : 0;
+            $scope.sp.period_from = $scope.period_from.toISOString().substring(0, 19).replace('T', ' ');
+            $scope.sp.period_to = $scope.period_to.toISOString().substring(0, 19).replace('T', ' ');
+            $scope.sp.in_flyer = $scope.in_flyer ? 1 : 0;
+            $scope.sp.organic = $scope.organic ? 1 : 0;
             
-            $company.addStoreProduct($scope.storeProduct.store_product, ctrl.imageUploaded, addStoreProductSuccess);
+            $company.addStoreProduct($scope.sp, ctrl.imageUploaded, addStoreProductSuccess);
             
         }
         
         function addStoreProductSuccess()
         {
+            $scope.storeProduct.store_product = $scope.sp;
             $mdDialog.hide($scope.storeProduct);
         }
     };
@@ -357,7 +359,7 @@ function AddStoreProductController($scope, $rootScope, $q, $timeout, eapp, $comp
     $scope.onFileRemoved = function()
     {
         eapp.deleteStoreProductImage($scope.storeProduct.id);
-        $scope.storeProduct.image = '';
+        $scope.sp.image = '';
     };
     
     ctrl.addProductBrand = function(brandName)

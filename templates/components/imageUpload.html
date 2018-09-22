@@ -75,7 +75,7 @@ img
         </div>
         <div class="p-image">
             <i ng-attr-id="{{uploadButtonId}}" class="fa fa-camera upload-button" ng-show="!hasImage"></i>
-            <i class="fa fa-close" style="color : red;" ng-click="removeImage()" ng-show="hasImage"></i>
+            <i class="fa fa-close" style="color : red;" ng-click="$ctrl.removeImage()" ng-show="hasImage"></i>
             <input ng-attr-id="{{inputButtonId}}" name="{{$ctrl.name}}" class="file-upload" type="file" accept="image/*"/>
         </div>
     </div>
