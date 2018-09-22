@@ -45,7 +45,7 @@ $(document).ready(function()
         </div>
     </div>
     
-    <div class="container" ng-controller="TabsController">
+    <div ng-controller="TabsController" layout-padding>
         <div class="row profile">
             <div class="col-md-3">
                     <div class="profile-sidebar">
