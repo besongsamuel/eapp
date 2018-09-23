@@ -361,7 +361,7 @@ $(document).ready(function()
             {
                 // Appending dialog to document.body to cover sidenav in docs app
                 var confirm = $mdDialog.prompt()
-                  .title('Veillez entrer votre code postale. ')
+                  .title('Veillez entrer votre code postal. ')
                   .textContent('Ceci vas aider a optimiser les resultats.')
                   .placeholder('Votre Code Postale E.g. H1H 1H1')
                   .ariaLabel('Code Postale')

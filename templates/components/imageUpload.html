@@ -74,11 +74,13 @@ img
             <!-- <i class="fa fa-user fa-5x"></i> -->
         </div>
         <div class="p-image">
-            <i ng-attr-id="{{uploadButtonId}}" class="fa fa-camera upload-button" ng-show="!hasImage"></i>
+            <!-- <i ng-attr-id="{{uploadButtonId}}" class="fa fa-camera upload-button" ng-show="!hasImage"></i> -->
             <i class="fa fa-close" style="color : red;" ng-click="$ctrl.removeImage()" ng-show="hasImage"></i>
             <input ng-attr-id="{{inputButtonId}}" name="{{$ctrl.name}}" class="file-upload" type="file" accept="image/*"/>
         </div>
     </div>
-
-    <p style="text-align : center" class="md-otiprix-text">{{$ctrl.caption}}</p>
+	
+	<center><i ng-attr-id="{{uploadButtonId}}" class="fa fa-camera upload-button md-otiprix-text" ng-show="!hasImage"> {{$ctrl.caption}}</i></center>
+	
+    <!-- <p style="text-align : center" class="md-otiprix-text">{{$ctrl.caption}}</p> -->
 </div>

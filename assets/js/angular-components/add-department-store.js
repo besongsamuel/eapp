@@ -61,7 +61,7 @@ angular.module('eappApp').component("addDepartmentStore",
                     {
                         country : 'Canada',
                         state : 'Quebec',
-                        name : 'Nouveau Sucursale'
+                        name : 'Nouvelle Succursale'
                     };
                     
                     $scope.addStoreBranch = function(addMore)
@@ -89,7 +89,7 @@ angular.module('eappApp').component("addDepartmentStore",
                                     {
                                         country : 'Canada',
                                         state : 'Quebec',
-                                        name : 'Nouveau Sucursale'
+                                        name : 'Nouvelle Succursale'
                                     };
 
                                     $scope.departmentStoreForm.$setPristine();
