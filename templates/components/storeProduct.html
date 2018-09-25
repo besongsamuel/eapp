@@ -10,6 +10,14 @@
     {
         color:red;
     }
+
+    .md-headline
+    {
+        width: 330px;
+        white-space: nowrap; 
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
 </style>
 
 <md-card style="margin-top: 10px; margin-bottom: 10px;">
@@ -30,7 +38,7 @@
     <img ng-src="{{storeProduct.product.image}}" class="md-card-image" alt="storeProduct.product.name">
     <md-card-title>
         <md-card-title-text>
-            <span class="md-headline md-otiprix-text" style="min-height: 64px;">{{storeProduct.name}}</span>
+            <span class="md-headline md-otiprix-text">{{storeProduct.name}}</span>
             <span class="md-subhead"><b>$ CAD {{storeProduct.price}} </b><del><span class="md-subhead">$ CAD {{storeProduct.regular_price}}</span></del></span>
         </md-card-title-text>
     </md-card-title>

@@ -35,7 +35,7 @@
     
    
     
-    <div class="maincontent-area" style="background-color: lavender;">
+    <div class="maincontent-area" style="background-color: #edf0f2;">
         
         <h3 class="section-title md-otiprix-text">Économisez jusqu'a <strong>30%</strong> </br> sur votre facture</h3>
         
