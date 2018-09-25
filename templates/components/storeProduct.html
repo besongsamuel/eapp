@@ -2,8 +2,6 @@
     .md-card-image
     {
         height: 250px;
-        border-bottom: 1px solid rgb(204, 169, 236);
-        padding: 2px; 
     }
 
     del
@@ -18,9 +16,18 @@
         overflow: hidden;
         text-overflow: ellipsis;
     }
+
+    md-card
+    {
+        margin-top: 10px; 
+        margin-bottom: 10px;
+        width: 350px;
+        background-image: linear-gradient(white, lightgray);
+    }
+
 </style>
 
-<md-card style="margin-top: 10px; margin-bottom: 10px;">
+<md-card>
     <md-card-header>
         <md-card-avatar>
             <img class="md-user-avatar" ng-src="{{storeProduct.retailer.image}}"/>
@@ -38,13 +45,12 @@
     <img ng-src="{{storeProduct.product.image}}" class="md-card-image" alt="storeProduct.product.name">
     <md-card-title>
         <md-card-title-text>
-            <span class="md-headline md-otiprix-text">{{storeProduct.name}}</span>
+            <span class="md-headline md-otiprix-text"><a ng-click="root.viewProduct(storeProduct.id, $event)" href>{{storeProduct.name}}</a></span>
             <span class="md-subhead"><b>$ CAD {{storeProduct.price}} </b><del><span class="md-subhead">$ CAD {{storeProduct.regular_price}}</span></del></span>
         </md-card-title-text>
     </md-card-title>
     <md-card-actions layout="row" layout-align="end center">
-        <md-button ng-hide="root.productInCart(storeProduct.product.id)" ng-click="root.add_product_to_cart(storeProduct.product.id, storeProduct.id)" class="md-primary md-raised btn">Ajouter</md-button>
+        <md-button ng-hide="root.productInCart(storeProduct.product.id)" ng-click="root.add_product_to_cart(storeProduct.product.id, storeProduct.id)" class="md-raised btn">Ajouter</md-button>
         <md-button ng-show="root.productInCart(storeProduct.product.id)" ng-click="root.remove_product_from_cart(storeProduct.product.id)" class="md-warn md-raised btn">Retirer</md-button>
-        <md-button ng-click="root.viewProduct(storeProduct.id)" class="md-primary md-raised btn">Détails</md-button>
     </md-card-actions>
 </md-card>

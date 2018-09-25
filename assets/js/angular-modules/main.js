@@ -2,7 +2,7 @@ jQuery(document).ready(function($){
     
     $('.product-carousel').owlCarousel({
         loop:true,
-        nav:true,
+        nav:false,
         autoplay:false,
         autoplayTimeout: 1000,
         autoplayHoverPause:true,
@@ -38,7 +38,7 @@ jQuery(document).ready(function($){
                 items:1
             },
             600:{
-                items:3
+                items:2
             },
             1000:{
                 items:3
