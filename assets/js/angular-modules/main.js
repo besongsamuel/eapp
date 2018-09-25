@@ -3,7 +3,7 @@ jQuery(document).ready(function($){
     $('.product-carousel').owlCarousel({
         loop:true,
         nav:true,
-        autoplay:true,
+        autoplay:false,
         autoplayTimeout: 1000,
         autoplayHoverPause:true,
         margin:0,
@@ -18,10 +18,33 @@ jQuery(document).ready(function($){
                 items:3
             },
             1000:{
-                items:6
+                items:3
             }
         }
-    });  
+    });
+    
+    $('.product-carousel2').owlCarousel({
+        loop:true,
+        nav:true,
+        autoplay:false,
+        autoplayTimeout: 1000,
+        autoplayHoverPause:true,
+        margin:0,
+        responsiveClass:true,
+        navText : ['Précédent', 'Suivant'],
+        
+        responsive:{
+            0:{
+                items:1
+            },
+            600:{
+                items:3
+            },
+            1000:{
+                items:3
+            }
+        }
+    });
         
     $('.brand-list').owlCarousel({
         loop:true,

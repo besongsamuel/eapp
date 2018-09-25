@@ -225,6 +225,7 @@ z-index: 9;
   margin-bottom: 20px;
   margin-top: 50px;
   text-align: center;
+  color: lightcoral !important;
 }
 
 
@@ -306,7 +307,8 @@ z-index: 9;
 .single-product:hover .product-hover:after{left: 0}
 
 
-.product-carousel {
+.product-carousel 
+{
   padding-top: 40px;
 }
 .latest-product .owl-nav {

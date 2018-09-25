@@ -33,9 +33,60 @@
         
     </div>
     
+   
+    
+    <div class="maincontent-area" style="background-color: lavender;">
+        
+        <h3 class="section-title md-otiprix-text">Économisez jusqu'a <strong>30%</strong> </br> sur votre facture</h3>
+        
+        <md-divider></md-divider>
+        
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="latest-product">
+                        <h2 class="section-title md-otiprix-text">Meilleurs articles de la semaine </h2>
+                        
+                        <div class="product-carousel row">
+                            <?php foreach($latestProducts as $product): ?>
+                            
+                            <store-product store-product="<?php echo htmlspecialchars(json_encode($product)); ?>" ></store-product>
+
+                            <?php endforeach; ?>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <md-divider></md-divider>
+    
+    <div class="maincontent-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="latest-product">
+                        <h2 class="section-title md-otiprix-text">Articles d'épicerie les plus consommés</h2>
+                        
+                        <div class="product-carousel row">
+                            <?php foreach(array_reverse($latestProducts) as $product): ?>
+                            
+                            <store-product store-product="<?php echo htmlspecialchars(json_encode($product)); ?>" ></store-product>
+
+                            <?php endforeach; ?>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
     <div  id="section02" class="layout-padding howitworks arrow section-div"  ng-controller="HomeController">
         
-        <h3 class="section-title md-otiprix-text">Économisez jusqu'a <strong>30%</strong> </br> sur votre facture d'épicerie</h3>
+        
         <div class="container">
             
             <div class="row">
@@ -104,40 +155,6 @@
     </div> <!-- End promo area -->
     
     
-    
-    <div class="maincontent-area">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="latest-product" ng-controller="CartController">
-                        <h2 class="section-title md-otiprix-text">Produits en vedette</h2>
-                        
-                        <div class="product-carousel row">
-                            <?php foreach($latestProducts as $product): ?>
-                                <div class="single-product col-md-12 col-sm-12">
-                                    <div class="product-f-image">
-                                        <img ng-src="<?php echo $product->product->image;?>" style="height: 100%;" alt="">
-                                        <div class="product-hover">
-                                            <a href ng-hide="productInCart(<?php echo $product->product_id; ?>)" class="add-to-cart-link" ng-click="add_product_to_cart(<?php echo $product->product_id; ?>, <?php echo $product->id; ?>)"><i class="fa fa-shopping-cart"></i>Ajouter</a>
-                                            <a href ng-show="productInCart(<?php echo $product->product_id; ?>)" class="add-to-cart-link md-warn" ng-click="remove_product_from_cart(<?php echo $product->product_id; ?>)"><i class="fa fa-shopping-cart"></i>Retirer</a>
-                                            <a href ng-click="viewProduct(<?php echo $product->id; ?>)" class="view-details-link"><i class="fa fa-link"></i>Détails</a>
-                                        </div>
-                                    </div>
-
-                                    <h2 style="font-size: 14px; text-align: center;"><a href ng-click="viewProduct(<?php echo $product->id; ?>)"><?php echo $product->product->name; ?></a></h2>
-
-                                    <div class="product-carousel-price" ng-hide="true">
-                                        <ins>CAD <?php echo $product->price; ?></ins><del>CAD <?php echo $product->regular_price; ?></del>
-                                    </div>
-                                </div>
-                            <?php endforeach; ?>
-                            
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div> <!-- End main content area -->
     
 </div>
     

@@ -4,7 +4,7 @@
     <md-toolbar class="md-table-toolbar md-default" ng-hide="selected.length || filter.show">
       <div class="md-toolbar-tools">
         
-        <div flex></div>
+      <div flex></div>
         <md-button class="md-icon-button" ng-click="filter.show = true">
           <md-icon>filter_list</md-icon>
         </md-button>
@@ -39,11 +39,11 @@
       <table md-table md-row-select multiple ng-model="selected" md-progress="promise">
         <thead md-head md-order="query.order" md-on-reorder="getCompanyProducts">
           <tr md-row>
-            <th md-column md-numeric></th>
+            <th md-column></th>
             <th md-column md-order-by="calories.value"><span>Details</span></th>
-            <th md-column md-numeric>Valide de</th>
-            <th md-column md-numeric>Valide jusque</th>
-            <th md-column md-numeric>Actions</th>
+            <th md-column>Valide de</th>
+            <th md-column>Valide jusque</th>
+            <th md-column>Actions</th>
           </tr>
         </thead>
         <tbody md-body>
