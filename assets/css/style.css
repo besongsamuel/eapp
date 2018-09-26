@@ -225,7 +225,6 @@ z-index: 9;
   margin-bottom: 20px;
   margin-top: 50px;
   text-align: center;
-  color: lightcoral !important;
 }
 
 
@@ -1417,5 +1416,10 @@ md-list-item .md-avatar, md-list-item .md-list-item-inner .md-avatar
 .otiprix-activate-account a
 {
     color : #666 !important;
+}
+
+.home-category-title
+{
+    margin-top: 10px;
 }
 
