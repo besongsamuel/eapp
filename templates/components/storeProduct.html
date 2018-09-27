@@ -2,6 +2,7 @@
     .md-card-image
     {
         height: 250px;
+        padding: 5px;
     }
 
     del
@@ -11,7 +12,7 @@
 
     .md-headline
     {
-        width: 330px;
+        width: 300px;
         white-space: nowrap; 
         overflow: hidden;
         text-overflow: ellipsis;
@@ -21,19 +22,25 @@
     {
         margin-top: 10px; 
         margin-bottom: 10px;
-        min-width: 300px;
-        background-image: linear-gradient(white, rgb(224, 217, 207));
+        width: 320px;
+        background-color: rgb(224, 217, 207);
+    }
+
+    .md-title, .md-subhead
+    {
+        margin-left: 10px;
     }
 
 </style>
 
 <md-card>
+    <img ng-src="{{storeProduct.product.image}}" class="md-card-image" alt="storeProduct.product.name">
     <md-card-header>
         <md-card-avatar>
             <img class="md-user-avatar" ng-src="{{storeProduct.retailer.image}}"/>
         </md-card-avatar>
         <md-card-header-text>
-            <span class="md-title md-otiprix-text">{{storeProduct.name}}</span>
+            <b><a href><span class="md-title md-otiprix-text">{{storeProduct.name}}</span></a></b>
             <span class="md-subhead">
                 <span ng-if="storeProduct.format">{{storeProduct.format}} </span>
                 <span ng-if="storeProduct.unit"> {{storeProduct.unit.name}}</span>
@@ -42,8 +49,8 @@
             </span>
         </md-card-header-text>
     </md-card-header>
-    <img ng-src="{{storeProduct.product.image}}" class="md-card-image" alt="storeProduct.product.name">
-
+    
+    <md-divider></md-divider>
     <md-card-actions layout="row" layout-align="end center">
         <md-button ng-hide="root.productInCart(storeProduct.product.id)" ng-click="root.add_product_to_cart(storeProduct.product.id, storeProduct.id)" class="md-raised btn">Ajouter</md-button>
         <md-button ng-show="root.productInCart(storeProduct.product.id)" ng-click="root.remove_product_from_cart(storeProduct.product.id)" class="md-warn md-raised btn">Retirer</md-button>
