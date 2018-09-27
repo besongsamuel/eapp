@@ -2,39 +2,28 @@
 
 <link href="<?php echo base_url("assets/css/home.css"); ?>" rel="stylesheet">
 
+<style>
+    .home-category-title
+    {
+        margin-top: 20px;
+    }
+    
+    .home-category-title b
+    {
+        font-size: 24px;
+    }
+    
+    .home-category-title a
+    {
+        margin-left: 15px;
+        color: rgb(255,87,34);
+        font-weight: 500;
+        font-size: 16px;
+    }
+</style>
+
 <div id="home-container" class="otiprix-section">
 
-    
-    <section class="arrow main-image-area" ng-hide="true" ng-cloak>
-        
-        <div class="otiprix-intro layout-padding">
-            <h2>OTIPRIX</h2>
-            <h3>En quelques clics, économisez sur vos listes d'épicerie</h3>
-        </div>
-        
-        <div style="width: 100%; position: absolute; bottom: 60px; z-index: 5;">
-            <a href="#section02"><span></span></a>
-        </div>
-        
-    </section>
-    
-    <div class="search-area" ng-controller="ShopController" ng-hide="true" ng-cloak>
-        
-        <div class="container layout-padding">
-            <form ng-submit="searchProducts(searchText)">
-                <md-input-container class="md-icon-float md-icon-right md-block">
-                    <label>Rechercher produits</label>
-                    <input style="color: white; text-align: center;" name="searchText" ng-model="searchText" aria-label="Rechercher" />
-                    <md-icon style="color : white;"><i class="material-icons">search</i></md-icon>
-
-                </md-input-container>
-            </form>
-        </div>
-        
-    </div>
-    
-   
-    
     <div class="maincontent-area" style="background-color: #edf0f2;">
         
         <h3 class="section-title md-otiprix-text">Économisez jusqu'a <strong>30%</strong> </br> sur votre facture</h3>

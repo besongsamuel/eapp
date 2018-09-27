@@ -5,9 +5,14 @@
         padding: 5px;
     }
 
+    .rebate-price
+    {
+        color : red;
+    }
+
     del
     {
-        color:red;
+        margin-left: 10px;
     }
 
     .md-headline
@@ -23,7 +28,7 @@
         margin-top: 10px; 
         margin-bottom: 10px;
         width: 320px;
-        background-color: rgb(224, 217, 207);
+        background-color: white;
     }
 
     .md-title, .md-subhead
@@ -44,7 +49,7 @@
             <span class="md-subhead">
                 <span ng-if="storeProduct.format">{{storeProduct.format}} </span>
                 <span ng-if="storeProduct.unit"> {{storeProduct.unit.name}}</span>
-                à CAD {{storeProduct.price}}   
+                à <span class="rebate-price"><b>CAD {{storeProduct.price}}</b></span>   
                 <del><span>$ CAD {{storeProduct.regular_price}}</span></del>
             </span>
         </md-card-header-text>
@@ -52,7 +57,7 @@
     
     <md-divider></md-divider>
     <md-card-actions layout="row" layout-align="end center">
-        <md-button ng-hide="root.productInCart(storeProduct.product.id)" ng-click="root.add_product_to_cart(storeProduct.product.id, storeProduct.id)" class="md-raised btn">Ajouter</md-button>
-        <md-button ng-show="root.productInCart(storeProduct.product.id)" ng-click="root.remove_product_from_cart(storeProduct.product.id)" class="md-warn md-raised btn">Retirer</md-button>
+        <md-button ng-hide="root.productInCart(storeProduct.product.id)" ng-click="root.add_product_to_cart(storeProduct.product.id, storeProduct.id)" class="md-raised md-primary btn">Ajouter</md-button>
+        <md-button ng-show="root.productInCart(storeProduct.product.id)" ng-click="root.remove_product_from_cart(storeProduct.product.id)" class="md-warn md-raised md-primary btn">Retirer</md-button>
     </md-card-actions>
 </md-card>
