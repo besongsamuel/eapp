@@ -20,6 +20,12 @@
         font-weight: 500;
         font-size: 16px;
     }
+    
+    .owl-theme .owl-dots .owl-dot.active span, .owl-theme .owl-dots .owl-dot:hover span 
+    {
+        background: #1abc9c;
+    }
+    
 </style>
 
 <div id="home-container" class="otiprix-section">
