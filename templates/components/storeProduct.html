@@ -1,56 +1,17 @@
-<style>
-    .md-card-image
-    {
-        height: 250px;
-        padding: 5px;
-    }
 
-    .rebate-price
-    {
-        color : red;
-    }
-
-    del
-    {
-        margin-left: 10px;
-    }
-
-    .md-headline
-    {
-        width: 300px;
-        white-space: nowrap; 
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-
-    md-card
-    {
-        margin-top: 10px; 
-        margin-bottom: 10px;
-        width: 320px;
-        background-color: white;
-    }
-
-    .md-title, .md-subhead
-    {
-        margin-left: 10px;
-    }
-
-</style>
-
-<md-card>
-    <img ng-src="{{storeProduct.product.image}}" class="md-card-image" alt="storeProduct.product.name">
+<md-card style="margin-top : 5px; margin-bottom: 5px; background-color : white;">
+    <img ng-src="{{storeProduct.product.image}}" class="md-card-image" alt="storeProduct.product.name" style="height: 250px; padding: 5px;">
     <md-card-header>
         <md-card-avatar>
             <img class="md-user-avatar" ng-src="{{storeProduct.retailer.image}}"/>
         </md-card-avatar>
         <md-card-header-text>
-            <b><a href><span class="md-title md-otiprix-text">{{storeProduct.name}}</span></a></b>
-            <span class="md-subhead">
+            <b><a href><span style="margin-left: 5px;" class="md-title md-otiprix-text">{{storeProduct.name}}</span></a></b>
+            <span class="md-subhead" style="margin-left : 10px; font-size : 12px;">
                 <span ng-if="storeProduct.format">{{storeProduct.format}} </span>
                 <span ng-if="storeProduct.unit"> {{storeProduct.unit.name}}</span>
-                à <span class="rebate-price"><b>CAD {{storeProduct.price}}</b></span>   
-                <del><span>$ CAD {{storeProduct.regular_price}}</span></del>
+                à <span style="color : red;"><b>CAD {{storeProduct.price}}</b></span>   
+                <del style="margin-left: 5px;"><span>$ CAD {{storeProduct.regular_price}}</span></del>
             </span>
         </md-card-header-text>
     </md-card-header>

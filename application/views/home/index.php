@@ -30,55 +30,36 @@
 
 <div id="home-container" class="otiprix-section">
 
-    <div class="maincontent-area" style="background-color: #edf0f2;">
-        
+    <div>
         <h3 class="section-title md-otiprix-text">Économisez jusqu'a <strong>30%</strong> </br> sur votre facture</h3>
-        
-        <md-divider></md-divider>
-        
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="latest-product">
-                        
-                        <p class="home-category-title"><b>Produits populaires</b> <span><a href="<?php echo site_url("shop")?>"> Voir toute les offres</a></span></p>
-                        
-                        <div class="product-carousel row">
-                            <?php foreach($latestProducts as $product): ?>
-                            
-                            <store-product store-product="<?php echo htmlspecialchars(json_encode($product)); ?>" ></store-product>
-
-                            <?php endforeach; ?>
-                            
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
     
     <md-divider></md-divider>
     
-    <div class="maincontent-area">
+    <div class="maincontent-area" ng-controller="CategoryController" style="background-color: #edf0f2;">
+        
         <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="latest-product">
-                        
-                        <p class="home-category-title"><b>Fruits et Légumes</b> <span><a href="<?php echo site_url("shop")?>"> Voir toute les offres</a></span></p>
-                        
-                        <div class="product-carousel row">
-                            <?php foreach(array_reverse($latestProducts) as $product): ?>
-                            
-                            <store-product store-product="<?php echo htmlspecialchars(json_encode($product)); ?>" ></store-product>
+                
+            <?php foreach($categoryProducts as $category_products): ?>
+            
+            <p class="home-category-title"><b><?php echo $category_products["category"]->name; ?></b> <span><a href ng-click="select_json_category($event, '<?php echo htmlspecialchars(json_encode($category_products["category"])); ?>')"> Voir toute les offres</a></span></p>
 
-                            <?php endforeach; ?>
-                            
-                        </div>
-                    </div>
-                </div>
+            <div class="product-carousel row">
+
+                <?php foreach($category_products["products"] as $product): ?>
+
+                <store-product store-product="<?php echo htmlspecialchars(json_encode($product)); ?>" ></store-product>
+
+                <?php endforeach; ?>
+
             </div>
+            
+            <md-divider></md-divider>
+            
+            <?php endforeach; ?>
+            
         </div>
+        
     </div>
     
     <div  id="section02" class="layout-padding howitworks arrow section-div"  ng-controller="HomeController">

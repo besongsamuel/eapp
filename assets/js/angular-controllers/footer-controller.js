@@ -14,6 +14,6 @@ angular.module("eappApp").controller("FooterController", ["$scope", "eapp", func
         {
             eapp.showAlert(ev, response.data.title, response.data.message);
         });
-    }
+    };
 }]);
 

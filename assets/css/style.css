@@ -1417,3 +1417,10 @@ md-list-item .md-avatar, md-list-item .md-list-item-inner .md-avatar
 {
     color : #666 !important;
 }
+
+.truncate 
+{
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

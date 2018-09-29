@@ -138,8 +138,6 @@
 
         </div>   
   
-        
-	  
         <!-- End mainmenu area -->
         <div id="main-body">	
             {body}

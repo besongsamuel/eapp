@@ -27,7 +27,38 @@ class Home extends CI_Controller {
     public function index()
     {
         $this->data['script'] = $this->load->view('home/scripts/index', '', TRUE);
+        
+        $top_categories = $this->home_model->get_mostviewed_categories();
+        
+        $my_location = $this->get_my_location();
+        
+        $category_products = array();
+        
+        foreach ($top_categories as $category) 
+        {
+            $products = $this->shop_model->get_store_products_limit(
+                8, 
+                0, 
+                false, 
+                null, 
+                "price", 
+                null, 
+                $category->id, 
+                null, 
+                false,
+                $my_location,
+                100);
+            
+            $products["category"] = $category;
+            
+            array_push($category_products, $products) ;
+        }
+        
+        $this->data["categoryProducts"] = $category_products;
+        
         $this->data['latestProducts'] = $this->home_model->get_store_products_limit(25, 0)["products"];
+
+        
         $this->data['body'] = $this->load->view('home/index', $this->data, TRUE);
         $this->rememberme->recordOrigPage();
         $this->parser->parse('eapp_template', $this->data);
