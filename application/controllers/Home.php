@@ -39,7 +39,7 @@ class Home extends CI_Controller {
             $products = $this->shop_model->get_store_products_limit(
                 8, 
                 0, 
-                false, 
+                true, 
                 null, 
                 "price", 
                 null, 
