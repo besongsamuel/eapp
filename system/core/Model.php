@@ -279,7 +279,7 @@ class CI_Model {
         if($most_expensive_store_product->compare_unit_price == 0 
                 || $most_expensive_store_product->compareunit_id !=  $store_product->compareunit_id)
         {
-            return $store_product->price;
+            return 0;
         }
         
         
@@ -320,7 +320,7 @@ class CI_Model {
             }
         }
         
-        return $store_product->price;
+        return 0;
     }
 
     public function getStoreProduct($id, $includeRelatedProducts = true, $latestProduct = true, $minified = false) 
