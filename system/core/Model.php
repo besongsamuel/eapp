@@ -271,13 +271,17 @@ class CI_Model {
         return $result;
     }
     
-    private function get_price_from_compare_unit_price($store_product, $compare_unit_price) 
+    private function get_price_from_compare_unit_price($store_product, $most_expensive_store_product) 
     {
-        
-        if($compare_unit_price == 0)
+        // If there is no unit price set
+        // and the compare units of the product and its expensive counterpart
+        // are different, we do nothing
+        if($most_expensive_store_product->compare_unit_price == 0 
+                || $most_expensive_store_product->compareunit_id !=  $store_product->compareunit_id)
         {
             return $store_product->price;
         }
+        
         
         if($this->units == null)
         {
@@ -310,7 +314,7 @@ class CI_Model {
                     && $store_product->compareunit_id == $unit->compareunit_id)
             {
                 
-                $price =  ($compare_unit_price  * $format) * $unit->equivalent;
+                $price =  ($most_expensive_store_product->compare_unit_price  * $format) * $unit->equivalent;
                 
                 return number_format((float)$price, 2, '.', '');
             }
@@ -364,13 +368,13 @@ class CI_Model {
             {
                 $store_product->similar_products = $this->get_related_products($store_product);
                 
-                $most_expensive = (float)$store_product->compare_unit_price;
+                $most_expensive = $store_product;
                 
                 foreach ($store_product->similar_products as $value) 
                 {
-                    if((float)$value->compare_unit_price > $most_expensive)
+                    if((float)$value->compare_unit_price > $most_expensive->compare_unit_price)
                     {
-                        $most_expensive = (float)$value->compare_unit_price;
+                        $most_expensive = $value;
                         
                     }
                 }
