@@ -270,6 +270,54 @@ class CI_Model {
         
         return $result;
     }
+    
+    private function get_price_from_compare_unit_price($store_product, $compare_unit_price) 
+    {
+        
+        if($compare_unit_price == 0)
+        {
+            return $store_product->price;
+        }
+        
+        if($this->units == null)
+        {
+            $this->units = $this->get_all(UNIT_CONVERSION);
+        }
+        
+        if($this->product_unit_conversions == null)
+        {
+            $this->product_unit_conversions = $this->get_all(PRODUCT_UNIT_CONVERSION);
+        }
+        
+        $format = 1;
+                
+        // get format
+        $pieces = explode("x", $store_product->format);
+        
+        foreach ($pieces as $value) 
+        {
+            $format *= (int)$value;
+        }
+        
+        if($format == 0)
+        {
+            $format = 1;
+        }
+        
+        foreach ($this->units as $unit) 
+        {
+            if($store_product->unit_id == $unit->unit_id 
+                    && $store_product->compareunit_id == $unit->compareunit_id)
+            {
+                
+                $price =  ($compare_unit_price  * $format) / $unit->equivalent;
+                
+                return number_format((float)$price, 2, '.', '');
+            }
+        }
+        
+        return $store_product->price;
+    }
 
     public function getStoreProduct($id, $includeRelatedProducts = true, $latestProduct = true, $minified = false) 
     {
@@ -315,6 +363,20 @@ class CI_Model {
             if($store_product->product != null && $includeRelatedProducts)
             {
                 $store_product->similar_products = $this->get_related_products($store_product);
+                
+                $most_expensive = (float)$store_product->compare_unit_price;
+                
+                foreach ($store_product->similar_products as $value) 
+                {
+                    if((float)$value->compare_unit_price > $most_expensive)
+                    {
+                        $most_expensive = (float)$value->compare_unit_price;
+                        
+                    }
+                }
+                
+                $store_product->regular_price = $this->get_price_from_compare_unit_price($store_product, $most_expensive);
+                
             }
             
             // Get the brand from the database
@@ -722,7 +784,7 @@ class CI_Model {
                 
                 if($res)
                 {                    
-                    $store_product = $this->getStoreProduct($res->id, false, true);
+                    $store_product = $this->getStoreProduct($res->id, true, true);
                     $store_product->quantity = 1;
                     $products[$store_product->id] = $store_product;
                     $this->db->reset_query();
