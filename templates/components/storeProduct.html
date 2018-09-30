@@ -11,7 +11,7 @@
                 <span ng-if="storeProduct.format">{{storeProduct.format}} </span>
                 <span ng-if="storeProduct.unit"> {{storeProduct.unit.name}}</span>
                 à <span style="color : red;"><b>CAD {{storeProduct.price}}</b></span>   
-                <del style="margin-left: 5px;"><span>$ CAD {{storeProduct.regular_price}}</span></del>
+                <del ng-if="storeProduct.regular_price > storeProduct.price" style="margin-left: 5px;"><span>$ CAD {{storeProduct.regular_price}}</span></del>
             </span>
         </md-card-header-text>
     </md-card-header>

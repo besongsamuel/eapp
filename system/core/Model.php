@@ -310,9 +310,9 @@ class CI_Model {
                     && $store_product->compareunit_id == $unit->compareunit_id)
             {
                 
-                $price =  ($compare_unit_price  * $format) / $unit->equivalent;
+                $price =  ($compare_unit_price  * $format) * $unit->equivalent;
                 
-                return number_format((float)$price, 2, '.', '');
+                return number_format((float)$price, 1, '.', '');
             }
         }
         
