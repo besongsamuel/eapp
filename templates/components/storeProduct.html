@@ -6,7 +6,7 @@
             <img class="md-user-avatar" ng-src="{{storeProduct.retailer.image}}"/>
         </md-card-avatar>
         <md-card-header-text>
-            <b><a href><span style="margin-left: 5px;" class="md-title md-otiprix-text">{{storeProduct.name}}</span></a></b>
+            <b><a href ng-click="$ctrl.viewProduct(storeProduct.id, $event)"><span style="margin-left: 5px;" class="md-title md-otiprix-text">{{storeProduct.name}}</span></a></b>
             <span class="md-subhead" style="margin-left : 10px; font-size : 12px;">
                 <span ng-if="storeProduct.format">{{storeProduct.format}} </span>
                 <span ng-if="storeProduct.unit"> {{storeProduct.unit.name}}</span>

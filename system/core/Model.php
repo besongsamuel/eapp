@@ -312,7 +312,7 @@ class CI_Model {
                 
                 $price =  ($compare_unit_price  * $format) * $unit->equivalent;
                 
-                return number_format((float)$price, 1, '.', '');
+                return number_format((float)$price, 2, '.', '');
             }
         }
         

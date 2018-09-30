@@ -8,7 +8,7 @@ angular.module('eappApp').component("storeProduct",
     }
 });
 
-function Controller($scope, $rootScope)
+function Controller($scope, $rootScope, eapp)
 {
     var ctrl = this;
     
@@ -17,6 +17,11 @@ function Controller($scope, $rootScope)
     ctrl.$onInit = function()
     {
         $scope.storeProduct = JSON.parse(ctrl.storeProduct);
+    };
+    
+    ctrl.viewProduct = function(product_id, ev)
+    {
+        eapp.viewProduct($scope, product_id, ev);
     };
     
 }
