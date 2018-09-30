@@ -379,7 +379,14 @@ class CI_Model {
                     }
                 }
                 
-                $store_product->regular_price = $this->get_price_from_compare_unit_price($store_product, $most_expensive);
+                if($store_product->id != $most_expensive->id)
+                {
+                     $store_product->regular_price = $this->get_price_from_compare_unit_price($store_product, $most_expensive);
+                }
+                else
+                {
+                     $store_product->regular_price = 0;
+                }
                 
             }
             
