@@ -104,13 +104,6 @@
                 En Circulaire
               </md-checkbox>
             </div>
-            
-            <!-- Section to select if product is present in the flyer -->
-            <div class="row">
-              <md-checkbox name="product[is_popular]" ng-model="store_product.is_popular" aria-label="Produit Populaire">
-                Produit Populaire
-              </md-checkbox>
-            </div>
 
             <div class="row">
 
