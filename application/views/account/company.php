@@ -47,8 +47,8 @@
                         <image-upload 
                             caption="Ajouter logo" 
                             on-file-removed="onFileRemoved()" 
-                            on-file-selected="imageChanged(file)"></image-upload>
-                        
+                            on-file-selected="imageChanged(file)">       
+                        </image-upload>                     
             
                     </fieldset>
                     
@@ -59,7 +59,7 @@
 
                         <!-- First Name -->
                         <md-input-container class="md-block col-md-6" flex-gt-sm>
-                            <label>Prenom</label>
+                            <label>Prénom</label>
                             <md-icon class="md-primary"><i class="material-icons">person</i></md-icon>
                             <input name="firstname" ng-model="profile.firstname" />
                         </md-input-container>
@@ -75,6 +75,7 @@
                         
                         <!-- User Address -->
                         <md-input-container class="col-sm-12">
+                            <!-- <label>Adresse</label> -->
                             <input 
                                 vs-google-autocomplete
                                 vs-autocomplete-validator
@@ -90,24 +91,6 @@
                             >
                         </md-input-container>
                         
-                        <!-- Country -->
-                        <md-input-container class="md-block col-md-6" flex-gt-sm>
-                            <label>Pays</label>
-                            <input required name="country" ng-model="profile.country" />
-                            <div ng-messages="signupForm.country.$error">
-                                <div ng-message="required">Vous devez entrer le pays</div>
-                            </div>
-                        </md-input-container>
-                        
-                        <!-- State -->
-                        <md-input-container class="md-block col-md-6" flex-gt-sm>
-                            <label>État</label>
-                            <input required name="state" ng-model="profile.state" />
-                            <div ng-messages="signupForm.state.$error">
-                                <div ng-message="required">Veillez entrer l'état</div>
-                            </div>
-                        </md-input-container>
-
                         <!-- City -->
                         <md-input-container class="md-block col-md-6" flex-gt-sm>
                             <label>Ville</label>
@@ -117,12 +100,30 @@
                             </div>
                         </md-input-container>
                         
+                        <!-- State -->
+                        <md-input-container class="md-block col-md-6" flex-gt-sm>
+                            <label>Province</label>
+                            <input required name="state" ng-model="profile.state" />
+                            <div ng-messages="signupForm.state.$error">
+                                <div ng-message="required">Veillez entrer la province</div>
+                            </div>
+                        </md-input-container>
+                        
+                        <!-- Country -->
+                        <md-input-container class="md-block col-md-6" flex-gt-sm>
+                            <label>Pays</label>
+                            <input required name="country" ng-model="profile.country" />
+                            <div ng-messages="signupForm.country.$error">
+                                <div ng-message="required">Vous devez entrer le pays</div>
+                            </div>
+                        </md-input-container>
+                        
                         <!-- Postcode -->
                         <md-input-container class="md-block col-md-6" flex-gt-sm>
                             <label>Code Postal</label>
                             <input required name="postcode" ng-model="profile.postcode" />
                             <div ng-messages="signupForm.postcode.$error">
-                                <div ng-message="required">Veillez entrer votre code postale</div>
+                                <div ng-message="required">Veillez entrer votre code postal</div>
                             </div>
                         </md-input-container>
 

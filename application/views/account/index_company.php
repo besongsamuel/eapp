@@ -41,7 +41,7 @@ $(document).ready(function()
     
     <div style="text-align: center;" ng-controller="AccountController">
         <div ng-show="isNewAccount" class="alert alert-success" role="alert">      
-            Votre compte a été créé avec succès. Commencez par ajouter des sucursales à votre compte d'entreprise.
+            Votre compte a été créé avec succès. Commencez par ajouter des succursales à votre compte d'entreprise.
         </div>
     </div>
     
@@ -96,7 +96,7 @@ $(document).ready(function()
                                     <a ng-click="sessionData.accountMenuIndex = 4;" href><i class="glyphicon glyphicon-list"></i>Vos Produits</a>
                                 </li>
                                 <li ng-class="{active : sessionData.accountMenuIndex == 5}">
-                                    <a ng-click="sessionData.accountMenuIndex = 5;" href><i class="glyphicon glyphicon-heart"></i>Vos Sucursales</a>
+                                    <a ng-click="sessionData.accountMenuIndex = 5;" href><i class="glyphicon glyphicon-heart"></i>Vos Succursales</a>
                                 </li>
                                 <li ng-class="{active : sessionData.accountMenuIndex == 6}">
                                     <a ng-click="sessionData.accountMenuIndex = 6;" href><i class="glyphicon glyphicon-heart"></i>Informations Entreprise</a>
@@ -124,7 +124,7 @@ $(document).ready(function()
                                         </md-input-container>
                                             <!-- -->
                                         <md-input-container class="md-block col-md-6 col-sm-12" flex-gt-sm>
-                                            <label>Prenom</label>
+                                            <label>Prénom</label>
                                             <md-icon class="md-primary"><i class="material-icons">person</i></md-icon>
                                             <input name="profile[firstname]" ng-model="loggedUserClone.profile.firstname" />
                                         </md-input-container>
@@ -156,7 +156,26 @@ $(document).ready(function()
                                             >
 
                                         </md-input-container>
+                                        
+                                        <!-- City -->
+                                        <md-input-container class="md-block col-md-6 col-sm-12" flex-gt-sm>
+                                            <label>Ville</label>
+                                            <md-icon class="md-primary"><i class="material-icons">place</i></md-icon>
+                                            <input required name="profile[city]" ng-model="loggedUserClone.profile.city" />
+                                            <div ng-messages="userInfoForm.city.$error">
+                                                <div ng-message="required">Vous devez entrer une ville</div>
+                                            </div>
+                                        </md-input-container>
 
+                                        <!-- State -->
+                                        <md-input-container class="md-block col-md-6" flex-gt-sm>
+                                            <label>Province</label>
+                                            <input required name="state" ng-model="loggedUserClone.profile.state" />
+                                            <div ng-messages="signupForm.state.$error">
+                                                <div ng-message="required">Veillez entrer la province</div>
+                                            </div>
+                                        </md-input-container>
+                                        
                                         <!-- Country -->
                                         <md-input-container class="md-block col-md-6" flex-gt-sm>
                                             <label>Pays</label>
@@ -165,32 +184,14 @@ $(document).ready(function()
                                                 <div ng-message="required">Vous devez entrer le pays</div>
                                             </div>
                                         </md-input-container>
-
-                                        <!-- State -->
-                                        <md-input-container class="md-block col-md-6" flex-gt-sm>
-                                            <label>État</label>
-                                            <input required name="state" ng-model="loggedUserClone.profile.state" />
-                                            <div ng-messages="signupForm.state.$error">
-                                                <div ng-message="required">Veillez entrer l'état</div>
-                                            </div>
-                                        </md-input-container>
-
-                                        <!-- -->
-                                        <md-input-container class="md-block col-md-6 col-sm-12" flex-gt-sm>
-                                            <label>City</label>
-                                            <md-icon class="md-primary"><i class="material-icons">place</i></md-icon>
-                                            <input required name="profile[city]" ng-model="loggedUserClone.profile.city" />
-                                            <div ng-messages="userInfoForm.city.$error">
-                                                <div ng-message="required">Vous devex entrer une ville</div>
-                                            </div>
-                                        </md-input-container>
-
+                                        
+                                        <!-- Postal Code -->
                                         <md-input-container class="md-block col-md-6 col-sm-12" flex-gt-sm>
                                             <label>Code Postal</label>
                                             <md-icon class="md-primary"><i class="material-icons">place</i></md-icon>
                                             <input required name="profile[postcode]" ng-model="loggedUserClone.profile.postcode" />
                                             <div ng-messages="userInfoForm.postcode.$error">
-                                                <div ng-message="required">Veillez entrer votre code postale</div>
+                                                <div ng-message="required">Veillez entrer votre code postal</div>
                                             </div>
                                         </md-input-container>
 
@@ -233,7 +234,7 @@ $(document).ready(function()
                                     </md-input-container>
 
                                     <md-input-container class="md-block col-md-4 col-sm-12" flex-gt-sm>
-                                        <label>Mot de passe</label>
+                                        <label>Nouveau mot de passe</label>
                                         <md-icon class="md-primary"><i class="material-icons">lock</i></md-icon>
                                         <input style="border-left : none; border-right : none;border-top : none;" type="password" required name="password" ng-model="password" equals="{{confirm_password}}" ng-pattern="/^(?=.*?[0-9])(?=.*?[a-z])(?=.*?[A-Z]).{8,}/" />
                                         <div ng-messages="userSecurityForm.password.$error">
@@ -409,7 +410,7 @@ $(document).ready(function()
                                             <div class="panel-heading" role="tab" id="headingOne">
                                                 <h4 class="panel-title">
                                                     <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                                        Statistiques origin
+                                                        Statistiques sur l'origine
                                                     </a>
                                                 </h4>
                                             </div>
@@ -465,7 +466,7 @@ $(document).ready(function()
                                             <div class="panel-heading" role="tab" id="headingTwo">
                                                 <h4 class="panel-title">
                                                     <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-                                                        Statistiques produits
+                                                        Statistiques sur les produits
                                                     </a>
                                                 </h4>
                                             </div>
@@ -727,7 +728,7 @@ $(document).ready(function()
                             <company-products ng-if="loggedUser.company.is_valid == 1"></company-products>                            
                         </div>
                         
-                        <!-- Sucursales -->
+                        <!-- Succursales -->
                         <div  ng-if="sessionData.accountMenuIndex == 5">
                             <div class="row layout-padding" ng-controller="AccountController">
                                 <add-department-store department-stores='loggedUser.company.chain.department_stores'></add-department-store>
@@ -756,7 +757,8 @@ $(document).ready(function()
                                         <!-- NEQ -->
                                         <md-input-container ng-disabled="loggedUser.company.is_valid == 1" class="md-block col-md-12" flex-gt-sm>
                                             <label>NEQ</label>
-                                            <input required name="neq" ng-model="company.neq" />
+                                            <!-- <input required name="neq" ng-model="company.neq" /> -->
+                                            <input ng-disabled="true" required name="neq" ng-model="company.neq" />
                                             <div ng-messages="companyForm.neq.$error">
                                                 <div ng-message="required">Vous devez entrer le NEQ de l'entreprise</div>
                                             </div>
@@ -765,15 +767,16 @@ $(document).ready(function()
                                         <!-- NOM DE L'ENTREPRISE -->
                                         <md-input-container class="md-block col-md-12" flex-gt-sm>
                                             <label>Nom de l'entreprise</label>
-                                            <input required name="company_name" ng-model="company.name" />
+                                            <!-- <input required name="company_name" ng-model="company.name" /> -->
+                                            <input ng-disabled="true" required name="company_name" ng-model="company.name" />
                                             <div ng-messages="companyForm.company_name.$error">
                                                 <div ng-message="required">Vous devez entrer au moins un nom pour l'entreprise</div>
                                             </div>
                                         </md-input-container>
 
-                                        <div class="col-sm-12" style="margin-top : 30px; margin-bottom: 30px;">
+                                        <!-- <div class="col-sm-12" style="margin-top : 30px; margin-bottom: 30px;">
                                             <md-button type="submit" class="pull-right md-primary md-raised btn">Valider</md-button>
-                                        </div>
+                                        </div> -->
 
 
                                     </fieldset>

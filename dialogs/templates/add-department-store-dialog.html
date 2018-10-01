@@ -1,6 +1,6 @@
 <md-dialog>
 
-    <h2 class="section-title md-otiprix-text">Ajouter Sucursale</h2>
+    <h2 class="section-title md-otiprix-text">Ajouter Succursale</h2>
 
     <md-dialog-content class="md-dialog-content">
         
@@ -9,7 +9,7 @@
             <div style="padding : 15px;">
             
                 <md-input-container class="md-block col-md-12" flex-gt-sm>
-                    <label>Nom du détaillant</label>
+                    <label>Nom de la succursale</label>
                     <input required name="name" ng-model="departmentStore.name" />
                     <div ng-messages="departmentStoreForm.name.$error">
                         <div ng-message="required">Vous devez entrer un nom pour le détailant</div>
@@ -33,7 +33,7 @@
                         name="address"
                     >
                     <div ng-messages="departmentStoreForm.address.$error">
-                        <div ng-message="required">Vous entrer l'adresse de la sucursale.</div>
+                        <div ng-message="required">Vous entrer l'adresse de la succursale.</div>
                     </div>
 
                 </md-input-container>
@@ -49,10 +49,10 @@
                 
                 <!-- State -->
                 <md-input-container class="md-block col-md-6" flex-gt-sm>
-                    <label>État</label>
+                    <label>Province</label>
                     <input required name="state" ng-model="departmentStore.state" />
                     <div ng-messages="departmentStoreForm.state.$error">
-                        <div ng-message="required">Veillez entrer l'état</div>
+                        <div ng-message="required">Veillez entrer la province</div>
                     </div>
                 </md-input-container>
                                     
@@ -70,7 +70,7 @@
                     <label>Code Postal</label>
                     <input required name="postcode" ng-model="departmentStore.postcode" placeholder="Code Postale" />
                     <div ng-messages="departmentStoreForm.postcode.$error">
-                        <div ng-message="required">Veillez entrer votre code postale</div>
+                        <div ng-message="required">Veillez entrer votre code postal</div>
                     </div>
                 </md-input-container>
                 

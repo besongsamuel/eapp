@@ -27,7 +27,7 @@
 
                         <!-- -->
                         <md-input-container class="md-block col-md-6" flex-gt-sm>
-                            <label>Prenom</label>
+                            <label>Prénom</label>
                             <md-icon class="md-primary"><i class="material-icons">person</i></md-icon>
                             <input name="firstname" ng-model="user.firstname" />
                         </md-input-container>
@@ -58,6 +58,25 @@
                             >
                         </md-input-container>
                         
+                         <!-- city -->
+                        <md-input-container class="md-block col-md-6" flex-gt-sm>
+                            <label>Ville</label>
+                            <input required name="city" ng-model="user.city" />
+                            <div ng-messages="signupForm.city.$error">
+                                <div ng-message="required">Vous devez entrer une ville</div>
+                            </div>
+                        </md-input-container>
+       
+                        <!-- State -->
+                        <md-input-container class="md-block col-md-6" flex-gt-sm>
+                            <label>Province</label>
+                            <input required name="state" ng-model="user.state" />
+                            <div ng-messages="signupForm.state.$error">
+                                <div ng-message="required">Veillez entrer la province</div>
+                            </div>
+                        </md-input-container>
+
+                        
                         <!-- Country -->
                         <md-input-container class="md-block col-md-6" flex-gt-sm>
                             <label>Pays</label>
@@ -67,29 +86,12 @@
                             </div>
                         </md-input-container>
                         
-                        <!-- State -->
-                        <md-input-container class="md-block col-md-6" flex-gt-sm>
-                            <label>État</label>
-                            <input required name="state" ng-model="user.state" />
-                            <div ng-messages="signupForm.state.$error">
-                                <div ng-message="required">Veillez entrer l'état</div>
-                            </div>
-                        </md-input-container>
-
-                        <!-- -->
-                        <md-input-container class="md-block col-md-6" flex-gt-sm>
-                            <label>Ville</label>
-                            <input required name="city" ng-model="user.city" />
-                            <div ng-messages="signupForm.city.$error">
-                                <div ng-message="required">Vous devex entrer une ville</div>
-                            </div>
-                        </md-input-container>
-                        
+                        <!-- Postal Code -->
                         <md-input-container class="md-block col-md-6" flex-gt-sm>
                             <label>Code Postal</label>
                             <input required name="postcode" ng-model="user.postcode" />
                             <div ng-messages="signupForm.postcode.$error">
-                                <div ng-message="required">Veillez entrer votre code postale</div>
+                                <div ng-message="required">Veillez entrer votre code postal</div>
                             </div>
                         </md-input-container>
 

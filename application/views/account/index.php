@@ -89,7 +89,7 @@ $(document).ready(function()
 
                                 <!-- First name -->
                                 <md-input-container class="md-block col-md-6 col-sm-12" flex-gt-sm>
-                                    <label>Prenom</label>
+                                    <label>Prénom</label>
                                     <md-icon class="md-primary"><i class="material-icons">person</i></md-icon>
                                     <input name="profile[firstname]" ng-model="loggedUserClone.profile.firstname" />
                                 </md-input-container>
@@ -122,8 +122,27 @@ $(document).ready(function()
                                     >
 
                                 </md-input-container>
+                                
+                                <!-- City -->
+                                <md-input-container class="md-block col-md-6 col-sm-12" flex-gt-sm>
+                                    <label>Ville</label>
+                                    <md-icon class="md-primary"><i class="material-icons">place</i></md-icon>
+                                    <input required name="profile[city]" ng-model="loggedUserClone.profile.city" />
+                                    <div ng-messages="userInfoForm.city.$error">
+                                        <div ng-message="required">Vous devez entrer une ville</div>
+                                    </div>
+                                </md-input-container>
 
-                                <!-- Country -->
+                                <!-- State -->
+                                <md-input-container class="md-block col-md-6" flex-gt-sm>
+                                    <label>Province</label>
+                                    <input required name="state" ng-model="loggedUserClone.profile.state" />
+                                    <div ng-messages="signupForm.state.$error">
+                                        <div ng-message="required">Veillez entrer la province</div>
+                                    </div>
+                                </md-input-container>
+                                
+                                 <!-- Country -->
                                 <md-input-container class="md-block col-md-6" flex-gt-sm>
                                     <label>Pays</label>
                                     <input required name="country" ng-model="loggedUserClone.profile.country" />
@@ -132,32 +151,13 @@ $(document).ready(function()
                                     </div>
                                 </md-input-container>
 
-                                <!-- State -->
-                                <md-input-container class="md-block col-md-6" flex-gt-sm>
-                                    <label>État</label>
-                                    <input required name="state" ng-model="loggedUserClone.profile.state" />
-                                    <div ng-messages="signupForm.state.$error">
-                                        <div ng-message="required">Veillez entrer l'état</div>
-                                    </div>
-                                </md-input-container>
-
-                                <!-- City -->
-                                <md-input-container class="md-block col-md-6 col-sm-12" flex-gt-sm>
-                                    <label>City</label>
-                                    <md-icon class="md-primary"><i class="material-icons">place</i></md-icon>
-                                    <input required name="profile[city]" ng-model="loggedUserClone.profile.city" />
-                                    <div ng-messages="userInfoForm.city.$error">
-                                        <div ng-message="required">Vous devex entrer une ville</div>
-                                    </div>
-                                </md-input-container>
-                                
                                 <!-- Postal Code -->
                                 <md-input-container class="md-block col-md-6 col-sm-12" flex-gt-sm>
                                     <label>Code Postal</label>
                                     <md-icon class="md-primary"><i class="material-icons">place</i></md-icon>
                                     <input required name="profile[postcode]" ng-model="loggedUserClone.profile.postcode" />
                                     <div ng-messages="userInfoForm.postcode.$error">
-                                        <div ng-message="required">Veillez entrer votre code postale</div>
+                                        <div ng-message="required">Veillez entrer votre code postal</div>
                                     </div>
                                 </md-input-container>
 
@@ -198,7 +198,7 @@ $(document).ready(function()
                                     </md-input-container>
 
                                     <md-input-container class="md-block col-md-4 col-sm-12" flex-gt-sm>
-                                        <label>Mot de passe</label>
+                                        <label>Nouveau mot de passe</label>
                                         <md-icon class="md-primary"><i class="material-icons">lock</i></md-icon>
                                         <input style="border-left : none; border-right : none;border-top : none;" type="password" required name="password" ng-model="password" equals="{{confirm_password}}" ng-pattern="/^(?=.*?[0-9])(?=.*?[a-z])(?=.*?[A-Z]).{8,}/" />
                                         <div ng-messages="userSecurityForm.password.$error">
