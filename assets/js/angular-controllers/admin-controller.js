@@ -947,7 +947,12 @@ angular.module("eappApp").controller("ViewProductsController", function($scope, 
             $scope.query.page = bookmark;
         }
 
-        $scope.getProducts();
+
+        if(newValue != oldValue)
+        {
+            $scope.getProducts();
+        }
+        
     });
     
     ctrl.Init = function()
@@ -1027,6 +1032,7 @@ angular.module("eappApp").controller("ViewProductsController", function($scope, 
     $scope.directEdit = function(ev, theProduct)
     {
         theProduct.tags = theProduct.tags_array.join();
+        theProduct.is_popular = theProduct.popular ? 1 : 0;
         
         var product = JSON.stringify(theProduct);
         

@@ -2,40 +2,69 @@
 
 <link href="<?php echo base_url("assets/css/home.css"); ?>" rel="stylesheet">
 
+<style>
+    .home-category-title
+    {
+        margin-top: 20px;
+    }
+    
+    .home-category-title b
+    {
+        font-size: 24px;
+    }
+    
+    .home-category-title a
+    {
+        margin-left: 15px;
+        color: rgb(255,87,34);
+        font-weight: 500;
+        font-size: 16px;
+    }
+    
+    .owl-theme .owl-dots .owl-dot.active span, .owl-theme .owl-dots .owl-dot:hover span 
+    {
+        background: #1abc9c;
+    }
+    
+</style>
+
 <div id="home-container" class="otiprix-section">
 
+    <div>
+        <h3 class="section-title md-otiprix-text">Économisez jusqu'a <strong>30%</strong> </br> sur votre facture</h3>
+    </div>
     
-    <section class="arrow main-image-area" ng-hide="true" ng-cloak>
-        
-        <div class="otiprix-intro layout-padding">
-            <h2>OTIPRIX</h2>
-            <h3>En quelques clics, économisez sur vos listes d'épicerie</h3>
-        </div>
-        
-        <div style="width: 100%; position: absolute; bottom: 60px; z-index: 5;">
-            <a href="#section02"><span></span></a>
-        </div>
-        
-    </section>
+    <md-divider></md-divider>
     
-    <div class="search-area" ng-controller="ShopController" ng-hide="true" ng-cloak>
+    <div class="maincontent-area" ng-controller="CategoryController" style="background-color: #edf0f2;">
         
-        <div class="container layout-padding">
-            <form ng-submit="searchProducts(searchText)">
-                <md-input-container class="md-icon-float md-icon-right md-block">
-                    <label>Rechercher produits</label>
-                    <input style="color: white; text-align: center;" name="searchText" ng-model="searchText" aria-label="Rechercher" />
-                    <md-icon style="color : white;"><i class="material-icons">search</i></md-icon>
+        <div class="container">
+                
+            <?php foreach($categoryProducts as $category_products): ?>
+            
+            <p class="home-category-title"><b><?php echo $category_products["category"]->name; ?></b> <span><a href ng-click="select_json_category($event, '<?php echo htmlspecialchars(json_encode($category_products["category"])); ?>')"> Voir toute les offres</a></span></p>
 
-                </md-input-container>
-            </form>
+            <div class="product-carousel row">
+
+                <?php foreach($category_products["products"] as $product): ?>
+
+                <store-product store-product="<?php echo htmlspecialchars(json_encode($product)); ?>" ></store-product>
+
+                <?php endforeach; ?>
+
+            </div>
+            
+            <md-divider></md-divider>
+            
+            <?php endforeach; ?>
+            
         </div>
         
     </div>
     
     <div  id="section02" class="layout-padding howitworks arrow section-div"  ng-controller="HomeController">
         
-        <h3 class="section-title md-otiprix-text">Économisez jusqu'a <strong>30%</strong> </br> sur votre facture d'épicerie</h3>
+        
         <div class="container">
             
             <div class="row">
@@ -104,40 +133,6 @@
     </div> <!-- End promo area -->
     
     
-    
-    <div class="maincontent-area">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="latest-product" ng-controller="CartController">
-                        <h2 class="section-title md-otiprix-text">Produits en vedette</h2>
-                        
-                        <div class="product-carousel row">
-                            <?php foreach($latestProducts as $product): ?>
-                                <div class="single-product col-md-12 col-sm-12">
-                                    <div class="product-f-image">
-                                        <img ng-src="<?php echo $product->product->image;?>" style="height: 100%;" alt="">
-                                        <div class="product-hover">
-                                            <a href ng-hide="productInCart(<?php echo $product->product_id; ?>)" class="add-to-cart-link" ng-click="add_product_to_cart(<?php echo $product->product_id; ?>, <?php echo $product->id; ?>)"><i class="fa fa-shopping-cart"></i>Ajouter</a>
-                                            <a href ng-show="productInCart(<?php echo $product->product_id; ?>)" class="add-to-cart-link md-warn" ng-click="remove_product_from_cart(<?php echo $product->product_id; ?>)"><i class="fa fa-shopping-cart"></i>Retirer</a>
-                                            <a href ng-click="viewProduct(<?php echo $product->id; ?>)" class="view-details-link"><i class="fa fa-link"></i>Détails</a>
-                                        </div>
-                                    </div>
-
-                                    <h2 style="font-size: 14px; text-align: center;"><a href ng-click="viewProduct(<?php echo $product->id; ?>)"><?php echo $product->product->name; ?></a></h2>
-
-                                    <div class="product-carousel-price" ng-hide="true">
-                                        <ins>CAD <?php echo $product->price; ?></ins><del>CAD <?php echo $product->regular_price; ?></del>
-                                    </div>
-                                </div>
-                            <?php endforeach; ?>
-                            
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div> <!-- End main content area -->
     
 </div>
     

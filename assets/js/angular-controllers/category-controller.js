@@ -27,6 +27,11 @@ angular.module('eappApp').controller('CategoryController', ["$scope", "$rootScop
         window.sessionStorage.setItem("category_name", category.name);
         window.location =  $scope.site_url.concat("/shop");
     };
+    
+    $scope.select_json_category = function($event, category)
+    {
+        $rootScope.select_category($event, JSON.parse(category));
+    };
 
     angular.element(document).ready(function()
     {

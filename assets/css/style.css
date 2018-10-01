@@ -306,8 +306,9 @@ z-index: 9;
 .single-product:hover .product-hover:after{left: 0}
 
 
-.product-carousel {
-  padding-top: 40px;
+.product-carousel 
+{
+  padding-top: 10px;
 }
 .latest-product .owl-nav {
   position: absolute;
@@ -1417,3 +1418,9 @@ md-list-item .md-avatar, md-list-item .md-list-item-inner .md-avatar
     color : #666 !important;
 }
 
+.truncate 
+{
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

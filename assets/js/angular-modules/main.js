@@ -2,8 +2,8 @@ jQuery(document).ready(function($){
     
     $('.product-carousel').owlCarousel({
         loop:true,
-        nav:true,
-        autoplay:true,
+        nav:false,
+        autoplay:false,
         autoplayTimeout: 1000,
         autoplayHoverPause:true,
         margin:0,
@@ -18,28 +18,10 @@ jQuery(document).ready(function($){
                 items:3
             },
             1000:{
-                items:6
-            }
-        }
-    });  
-        
-    $('.brand-list').owlCarousel({
-        loop:true,
-        nav:true,
-        margin:20,
-        responsiveClass:true,
-        responsive:{
-            0:{
-                items:1
-            },
-            600:{
                 items:4
-            },
-            1000:{
-                items:6
             }
         }
-    });    
+    });
        
 });
 

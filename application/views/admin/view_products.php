@@ -63,6 +63,7 @@
               <tr md-row>
                 <th md-column><span>Product Name</span></th>
                 <th md-column><span>Tags</span></th>
+                <th md-column><span>Hot Item</span></th>
                 <th md-column>Image</th>
                 <th md-column>Subcategory</th>
                 <th md-column>Unit</th>
@@ -82,6 +83,15 @@
 
                     <td md-cell>
                         <md-chips  ng-model="product.tags_array" md-removable="true"></md-chips>
+                    </td>
+                    
+                    <td md-cell>
+                        <md-checkbox 
+                            ng-model="product.popular" 
+                            ng-init="product.popular = product.is_popular == 1"
+                            ng-change="directEdit($event, product)"
+                            aria-label="Is hot item">
+                        </md-checkbox>
                     </td>
 
                     <td md-cell>

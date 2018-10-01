@@ -74,6 +74,9 @@
                         <p><b><a ng-href="<?php echo site_url("admin/create_store_product?product"); ?>={{store_product.id}}">{{store_product.product.name}}</a></b></p>
                         <p>Size : {{store_product.size}}</p>
                         <p>{{store_product.format}} {{store_product.unit.name}}</p>
+                        <p ng-if='store_product.is_popular == 1'>
+                            <b>Produit Populaire</b>
+                        </p>
                     </td>
 
                     <td md-cell width="30%">

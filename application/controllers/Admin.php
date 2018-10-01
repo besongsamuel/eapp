@@ -244,6 +244,7 @@ class Admin extends CI_Controller
             "unit_id" => $product->unit_id,
             "subcategory_id" => $product->subcategory_id,
             "tags" => $product->tags,
+            "is_popular" => $product->is_popular
         );
         
         // User is editing a product

@@ -42,7 +42,7 @@
 
                                   <span>
                                       <a href="<?php echo site_url("cart"); ?>" class="md-icon-button" aria-label="Cart">
-                                          Voir Panier
+                                          Voir votre liste
                                           <md-icon><i style="color : rgba(0,184,147,0.90);" class="material-icons">shopping_cart</i> </md-icon>
                                           <span class="badge" ng-show="get_cart_item_total() > 0">{{get_cart_item_total()}} | {{get_cart_total_price() | number : 2}} C $</span>
                                       </a>
@@ -98,7 +98,7 @@
                                           </ul>
                                       </li>
                                       <li ng-class="{active : isSearch}"><a href ng-click="gotoShop()">Trouvez un produit</a></li>
-                                      <li ng-hide="true" ng-class="{active : isCart}"><a href="<?php echo site_url("cart"); ?>">Votre panier</a></li>
+                                      <li ng-hide="true" ng-class="{active : isCart}"><a href="<?php echo site_url("cart"); ?>">Votre liste</a></li>
                                       <li ng-hide="true" class=" dropdown"><a href="#" class="dropdown-toggle " data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Blogue<span class="caret"></span></a>
                                           <ul class="dropdown-menu">
                                               <li><a href="<?php echo site_url("blog/press_release"); ?>">Épicerie dans la presse</a></li>
@@ -138,8 +138,6 @@
 
         </div>   
   
-        
-	  
         <!-- End mainmenu area -->
         <div id="main-body">	
             {body}
