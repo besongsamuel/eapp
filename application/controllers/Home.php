@@ -34,6 +34,34 @@ class Home extends CI_Controller {
         
         $category_products = array();
         
+        $popular_products = $this->shop_model->get_store_products_limit(
+                8, 
+                0, 
+                true, 
+                null, 
+                "price", 
+                null, 
+                null, 
+                null, 
+                false,
+                $my_location, // Current user location
+                100, // Search distance in KM 
+                1 // Popular
+                );
+        
+        if(sizeof($popular_products["products"]) > 0)
+        {
+            $category = new stdClass();
+            
+            $category->id = -1;
+            
+            $category->name = "Produits Populaire";
+            
+            $popular_products["category"] = $category;
+            
+            array_push($category_products, $popular_products);
+        }
+        
         foreach ($top_categories as $category) 
         {
             $products = $this->shop_model->get_store_products_limit(
@@ -51,7 +79,7 @@ class Home extends CI_Controller {
             
             $products["category"] = $category;
             
-            array_push($category_products, $products) ;
+            array_push($category_products, $products);
         }
         
         $this->data["categoryProducts"] = $category_products;

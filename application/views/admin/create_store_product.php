@@ -94,14 +94,21 @@
             <!-- Section to select if product is organic -->        
             <div class="row">
               <md-checkbox name="product[organic]" ng-model="store_product.organic" aria-label="Organic">
-                Organic
+                Bio
               </md-checkbox>
             </div>
 
             <!-- Section to select if product is present in the flyer -->
             <div class="row">
               <md-checkbox name="product[in_flyer]" ng-model="store_product.in_flyer" aria-label="In Flyer">
-                In Flyer
+                En Circulaire
+              </md-checkbox>
+            </div>
+            
+            <!-- Section to select if product is present in the flyer -->
+            <div class="row">
+              <md-checkbox name="product[is_popular]" ng-model="store_product.is_popular" aria-label="Produit Populaire">
+                Produit Populaire
               </md-checkbox>
             </div>
 
