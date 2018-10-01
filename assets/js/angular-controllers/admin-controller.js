@@ -124,6 +124,7 @@ angular.module("eappApp").controller('AdminController', ["$scope", "Form", "$htt
                 $scope.store_product.regular_price = parseFloat($scope.store_product.regular_price);
                 $scope.store_product.organic = parseInt($scope.store_product.organic) === 0 ? false : true;
                 $scope.store_product.in_flyer = parseInt($scope.store_product.in_flyer) === 0 ? false : true;
+                $scope.store_product.is_popular = parseInt($scope.store_product.is_popular) === 0 ? false : true;
                 
                 $scope.onProductSelected($scope.store_product.product);
             });
@@ -477,6 +478,7 @@ angular.module("eappApp").controller('AdminController', ["$scope", "Form", "$htt
         // Manually add organic and in flyer form fields
         formData.append("product[organic]", $scope.store_product.organic ? 1 : 0);
         formData.append("product[in_flyer]", $scope.store_product.in_flyer ? 1 : 0);
+        formData.append("product[is_popular]", $scope.store_product.is_popular ? 1 : 0);
         formData.append("product[country]", $scope.store_product.country);
         formData.append("product[state]", $scope.store_product.state);
         formData.append("product[id]", $scope.store_product.id);
@@ -506,6 +508,7 @@ angular.module("eappApp").controller('AdminController', ["$scope", "Form", "$htt
 	    {
 		organic : 0,
 		in_flyer : 0,
+                is_popular : 0,
 		format : "1x1",
                 country : 'Canada',
                 state : 'Quebec',
