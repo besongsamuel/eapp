@@ -41,12 +41,11 @@ class Home extends CI_Controller {
                 null, 
                 "price", 
                 null, 
-                null, 
+                -1, // Popular category 
                 null, 
                 false,
                 $my_location, // Current user location
-                100, // Search distance in KM 
-                1 // Popular
+                100 // Search distance in KM 
                 );
         
         if(sizeof($popular_products["products"]) > 0)

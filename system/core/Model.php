@@ -743,6 +743,11 @@ class CI_Model {
             $popular_products = true;
         }
         
+        if($distance == 0)
+        {
+            $distance = 100;
+        }
+        
         $result = array();
         
         $close_stores = $this->get_close_stores($my_location, $distance);
@@ -756,7 +761,7 @@ class CI_Model {
         // Get the store product object
         if($latest_products)
         {
-            $result = $this->get_latest_products($filter, $store_id, $category_id, $settingsFilter, $viewAll, $close_stores, $popular_products);
+            $result = $this->get_latest_products($filter, $store_id, $category_id, $settingsFilter, $viewAll, $close_stores);
         }
         else
         {
@@ -772,17 +777,16 @@ class CI_Model {
             $category_id = null, 
             $settingsFilter = null, 
             $viewAll = false, 
-            $close_stores = null,
-            $is_popular = 0)
+            $close_stores = null)
     {
         $result = array();
         
         $products = array();
         
         // Get products that satisfy conditions
-        $product_ids = $this->get_distinct_latest_products($filter, $store_id, $category_id, $settingsFilter, $viewAll, $close_stores, $is_popular);
+        $product_ids = $this->get_distinct_latest_products($filter, $store_id, $category_id, $settingsFilter, $viewAll, $close_stores);
 		
-        $non_limited_product_ids = $this->get_distinct_latest_products($filter, $store_id, $category_id, $settingsFilter, $viewAll, $close_stores, $is_popular);
+        $non_limited_product_ids = $this->get_distinct_latest_products($filter, $store_id, $category_id, $settingsFilter, $viewAll, $close_stores);
         $result["count"] = sizeof($non_limited_product_ids);
         
         // Get cheapest store product for each product
@@ -1015,12 +1019,7 @@ class CI_Model {
             $this->db->where(array("retailer_id" => $store_id));
         }
     }
-    
-    private function add_is_popular_filter($is_popular) 
-    {
-        $this->db->where(array("is_popular" => $is_popular));
-    }
-    
+        
     private function add_specific_category_filter($category_id) 
     {
         if($category_id != null)
@@ -1052,7 +1051,7 @@ class CI_Model {
         }
     }
     
-    public function get_distinct_latest_store_product_property($property_name, $filter, $store_id, $category_id, $settingsFilter = null, $assoc = false, $close_stores = null, $is_popular = 0) 
+    public function get_distinct_latest_store_product_property($property_name, $filter, $store_id, $category_id, $settingsFilter = null, $assoc = false, $close_stores = null) 
     {
         $this->db->join(PRODUCT_TABLE, $this->store_product_product_join);
         $this->db->join(SUB_CATEGORY_TABLE, $this->store_product_subcategory_join, "left outer");
@@ -1066,8 +1065,6 @@ class CI_Model {
         $this->add_specific_category_filter($category_id);
         
         $this->add_settings_filter($settingsFilter);
-        
-        $this->add_is_popular_filter($is_popular);
         
         $product_ids = $this->get_distinct(STORE_PRODUCT_TABLE, $property_name, $this->latest_products_condition, $assoc);
        
@@ -1130,7 +1127,7 @@ class CI_Model {
         }
     }
     
-    public function get_distinct_latest_products($filter, $store_id, $category_id, $settingsFilter = null, $viewAll = true, $close_stores = null, $is_popular = 0)
+    public function get_distinct_latest_products($filter, $store_id, $category_id, $settingsFilter = null, $viewAll = true, $close_stores = null)
     {
         $product_id_column = "product_id";
         
@@ -1139,7 +1136,7 @@ class CI_Model {
             $product_id_column = STORE_PRODUCT_TABLE.".id";
         }
         
-        return $this->get_distinct_latest_store_product_property($product_id_column, $filter, $store_id, $category_id, $settingsFilter, false, $close_stores, $is_popular);
+        return $this->get_distinct_latest_store_product_property($product_id_column, $filter, $store_id, $category_id, $settingsFilter, false, $close_stores);
     }
 	
     private function get_best_latest_store_product($product_id, $filter, $store_id, $category_id, $settingsFilter = null)
