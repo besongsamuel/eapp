@@ -4,6 +4,8 @@ angular.module('eappApp').controller('CategoryController', ["$scope", "$rootScop
     
     $scope.loading = false;
     
+    $scope.root = $rootScope;
+    
     $scope.Init = function()
     {
         var categoriesPromise = eapp.getCategories();

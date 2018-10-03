@@ -974,6 +974,11 @@ angular.module("eappApp").controller("ViewProductsController", function($scope, 
             
             $scope.products = array;
             
+            $scope.products.map(x => 
+            {
+                x.popular = x.is_popular == 1;
+            });
+            
             $scope.subcategories = response.data.subcategories;
             
             $scope.units = response.data.units;
