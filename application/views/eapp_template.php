@@ -88,8 +88,8 @@
                                           </ul>
                                       </li>
 
-                                      <li ng-class="{active : isHome}"><a href="<?php echo site_url("home"); ?>" class=""><md-icon style="color : white"><i class="material-icons">home</i> </md-icon></a></li>
-                                      <li class=" dropdown" ng-class="{active : isMainMenu}">
+                                      <li ng-class="{active : isHome}" class="main-menu-list-item"><a href="<?php echo site_url("home"); ?>" class=""><md-icon style="color : white"><i class="material-icons">home</i> </md-icon></a></li>
+                                      <li class="main-menu-list-item" class=" dropdown" ng-class="{active : isMainMenu}">
                                           <a href="#" class="dropdown-toggle " data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Réduisez vos dépenses<span class="caret"></span></a>
                                           <ul class="dropdown-menu">
                                               <li><a href="<?php echo site_url("account/my_grocery_list"); ?>">Votre liste d'épicerie</a></li>
@@ -97,9 +97,7 @@
                                               <li><a href="<?php echo site_url("shop/categories"); ?>">Les catégories de produits</a></li>
                                           </ul>
                                       </li>
-                                      <li ng-class="{active : isSearch}"><a href ng-click="gotoShop()">Trouvez un produit</a></li>
-                                      <li ng-hide="true" ng-class="{active : isCart}"><a href="<?php echo site_url("cart"); ?>">Votre liste</a></li>
-                                      <li ng-hide="true" class=" dropdown"><a href="#" class="dropdown-toggle " data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Blogue<span class="caret"></span></a>
+                                      <li ng-class="{active : isSearch}" class="main-menu-list-item"><a href ng-click="gotoShop()">Trouvez un produit</a></li>
                                           <ul class="dropdown-menu">
                                               <li><a href="<?php echo site_url("blog/press_release"); ?>">Épicerie dans la presse</a></li>
                                               <li><a href="<?php echo site_url("blog/stats"); ?>">STAT</a></li>
@@ -108,14 +106,14 @@
                                               <li><a href="<?php echo site_url("home/about_us"); ?>">À propos</a></li>
                                           </ul>
                                       </li>
-                                      <li ng-class="{active : isContact}"><a  href="<?php echo site_url("home/contact"); ?>">Contact</a></li>
-                                      <li ng-class="{active : isAboutUs}"><a  href="<?php echo site_url("home/about"); ?>">À propos</a></li>
+                                      <li ng-class="{active : isContact}" class="main-menu-list-item"><a  href="<?php echo site_url("home/contact"); ?>">Contact</a></li>
+                                      <li ng-class="{active : isAboutUs}" class="main-menu-list-item"><a  href="<?php echo site_url("home/about"); ?>">À propos</a></li>
                                   </ul>
 
                                   <ul class="nav navbar-nav pull-right"  ng-controller="AccountController">
-                                      <li ng-hide="isUserLogged"><a href="<?php echo site_url("account/login"); ?>"><i class="fa fa-user"></i>    S'identifier</a></li>
-                                      <li ng-hide="isUserLogged"><a href="<?php echo site_url("account/register"); ?>"><i class="fa fa-user"></i>    Créer un compte</a></li>
-                                      <li ng-show="isUserLogged" class=" dropdown">
+                                      <li ng-class="{active : isLogin}" class="main-menu-list-item" ng-hide="isUserLogged"><a href="<?php echo site_url("account/login"); ?>"><i class="fa fa-user"></i>    S'identifier</a></li>
+                                      <li ng-class="{active : isRegister}" class="main-menu-list-item" ng-hide="isUserLogged"><a href="<?php echo site_url("account/register"); ?>"><i class="fa fa-user"></i>    Créer un compte</a></li>
+                                      <li ng-class="{active : isAccount}" class="main-menu-list-item" ng-show="isUserLogged" class=" dropdown">
                                           <a href="#" class="dropdown-toggle active" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                                               Bonjour 
                                               <span ng-if="!loggedUser.company"><span ng-show="loggedUser.profile.firstname">{{loggedUser.profile.firstname}},</span> {{loggedUser.profile.lastname}}</span>

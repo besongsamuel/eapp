@@ -5,7 +5,7 @@
  */
 
 
-angular.module('eappApp').controller('AccountController', ["$scope", "$http", "$mdToast", "eapp", "$company", "$rootScope", "$mdDialog", "$timeout", function($scope, $http, $mdToast, eapp, $company, $rootScope, $mdDialog, $timeout) 
+angular.module('eappApp').controller('AccountController', ["$scope", "$http", "$mdToast", "eapp", "$company", "$rootScope", "$mdDialog", "$timeout", "$location", function($scope, $http, $mdToast, eapp, $company, $rootScope, $mdDialog, $timeout, $location) 
 {   
     "use strict";
     
@@ -30,6 +30,23 @@ angular.module('eappApp').controller('AccountController', ["$scope", "$http", "$
     $scope.confirm_password = null;
     
     $scope.userPhoneVerified = false;
+    
+    var currentUrl = $location.absUrl();
+    
+    if(currentUrl.toString().indexOf("/account") !== -1)
+    {
+        $rootScope.isAccount = true;
+    }
+    
+    if(currentUrl.toString().indexOf("/account/login") !== -1)
+    {
+        $rootScope.isLogin = true;
+    }
+    
+    if(currentUrl.toString().indexOf("/account/register") !== -1)
+    {
+        $rootScope.isRegister = true;
+    }
     
     $scope.$watch('loggedUserClone', function(oldValue, newVale)
     {

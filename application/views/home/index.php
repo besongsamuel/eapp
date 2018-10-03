@@ -28,7 +28,7 @@
     
 </style>
 
-<div id="home-container" class="otiprix-section" ng-controller="ShopController">
+<div id="home-container" class="otiprix-section" ng-controller="ShopController as ctrl">
 
     <div>
         <h3 class="section-title md-otiprix-text">Économisez jusqu'a <strong>30%</strong> </br> sur votre facture</h3>
@@ -36,13 +36,13 @@
     
     <md-divider></md-divider>
     
-    <div class="maincontent-area" ng-controller="CategoryController" style="background-color: #edf0f2;">
+    <div class="maincontent-area" style="background-color: #edf0f2;">
         
         <div class="container">
                 
             <?php foreach($categoryProducts as $category_products): ?>
             
-            <p class="home-category-title"><b><?php echo $category_products["category"]->name; ?></b> <span><a href ng-click="select_json_category($event, '<?php echo htmlspecialchars(json_encode($category_products["category"])); ?>')"> Voir toute les offres</a></span></p>
+            <p class="home-category-title"><b><?php echo $category_products["category"]->name; ?></b> <span><a href ng-click="ctrl.select_json_category($event, '<?php echo htmlspecialchars(json_encode($category_products["category"])); ?>')"> Voir toute les offres</a></span></p>
 
             <div class="product-carousel row">
 

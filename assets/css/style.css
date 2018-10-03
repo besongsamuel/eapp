@@ -1424,3 +1424,8 @@ md-list-item .md-avatar, md-list-item .md-list-item-inner .md-avatar
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+#navbar .main-menu-list-item
+{
+    height: 57px;
+}
