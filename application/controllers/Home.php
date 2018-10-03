@@ -35,7 +35,7 @@ class Home extends CI_Controller {
         $category_products = array();
         
         $popular_products = $this->shop_model->get_store_products_limit(
-                8, 
+                20, 
                 0, 
                 true, 
                 null, 
