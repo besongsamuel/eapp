@@ -36,7 +36,7 @@
     
     <md-divider></md-divider>
     
-    <div class="maincontent-area" style="background-color: #edf0f2;">
+    <div class="maincontent-area" style="background-color: #C0C0C0;">
         
         <div class="container">
                 
