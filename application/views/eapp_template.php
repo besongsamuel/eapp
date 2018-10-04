@@ -77,7 +77,7 @@
                               <div id="navbar" class="navbar-collapse collapse pull-right">
 
                                   <ul class="menu nav navbar-nav"  ng-controller="MenuController">
-                                      <li class=" dropdown" ng-show="loggedUser.subscription > 0">
+                                      <li class=" dropdown" ng-show="loggedUser.subscription == 2">
                                           <a href="#" class="dropdown-toggle " data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Admin<span class="caret"></span></a>
                                           <ul class="dropdown-menu">
                                               <li ng-show="loggedUser.subscription == 2"><a  href="<?php echo addslashes(site_url("admin/uploads")); ?>">Uploads</a></li>
@@ -110,7 +110,7 @@
                                       <li ng-class="{active : isAboutUs}" class="main-menu-list-item"><a  href="<?php echo site_url("home/about"); ?>">À propos</a></li>
                                   </ul>
 
-                                  <ul class="nav navbar-nav pull-right"  ng-controller="AccountController">
+                                  <ul class="menu nav navbar-nav pull-right"  ng-controller="AccountController">
                                       <li ng-class="{active : isLogin}" class="main-menu-list-item" ng-hide="isUserLogged"><a href="<?php echo site_url("account/login"); ?>"><i class="fa fa-user"></i>    S'identifier</a></li>
                                       <li ng-class="{active : isRegister}" class="main-menu-list-item" ng-hide="isUserLogged"><a href="<?php echo site_url("account/register"); ?>"><i class="fa fa-user"></i>    Créer un compte</a></li>
                                       <li ng-class="{active : isAccount}" class="main-menu-list-item" ng-show="isUserLogged" class=" dropdown">

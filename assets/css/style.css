@@ -1204,24 +1204,45 @@ div.cart-collaterals ul.products li.product:hover .add_to_cart_button{background
 
 .navbar, .dropdown-menu
 {
-    background:rgba(0,184,147,0.90);
+    background:#1abc9c;
     color : #fff;
     border: none;
 }
 
-.nav>li>a, .dropdown-menu>li>a:focus, .dropdown-menu>li>a:hover, .dropdown-menu>li>a, .dropdown-menu>li{
+.nav>li>a, 
+.dropdown-menu>li>a:focus, 
+.dropdown-menu>li>a:hover, 
+.dropdown-menu>li>a
+{
   border-bottom: 3px solid transparent;
 }
-.nav>li>a:focus, .nav>li>a:hover,.nav .open>a, .nav .open>a:focus, .nav .open>a:hover, .dropdown-menu>li>a:focus, .dropdown-menu>li>a:hover{
+.nav>li>a:focus, 
+.nav>li>a:hover,
+.nav .open>a, 
+.nav .open>a:focus, 
+.nav .open>a:hover, 
+.dropdown-menu>li>a:focus, 
+.dropdown-menu>li>a:hover{
   border-bottom: 3px solid transparent;
   background: none;
 }
-.navbar a, .dropdown-menu>li>a, .dropdown-menu>li>a:focus, .dropdown-menu>li>a:hover, .navbar-toggle{
+.navbar a, 
+.dropdown-menu>li>a, 
+.dropdown-menu>li>a:focus, 
+.dropdown-menu>li>a:hover, 
+.navbar-toggle{
  color: #fff;
 }
-.dropdown-menu{
-      -webkit-box-shadow: none;
+
+.dropdown-menu
+{
+    -webkit-box-shadow: none;
     box-shadow:none;
+}
+
+.nav .open
+{
+    border-bottom: White 3px solid;
 }
 
 .menu li:hover:nth-child(8n+1), .nav li.active:nth-child(8n+1){
@@ -1260,7 +1281,7 @@ div.cart-collaterals ul.products li.product:hover .add_to_cart_button{background
 
 .eapp-logo
 {
-    width : 70px;
+    width : 80px;
     opacity: 1;
     filter: alpha(opacity=100);
 }
