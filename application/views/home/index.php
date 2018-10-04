@@ -28,9 +28,9 @@
     
 </style>
 
-<div id="home-container" class="otiprix-section" ng-controller="ShopController as ctrl">
+<div id="home-container" class="otiprix-section bgpatttern" ng-controller="ShopController as ctrl">
 
-    <div>
+    <div >
         <h3 class="section-title md-otiprix-text">Économisez jusqu'a <strong>30%</strong> </br> sur votre facture</h3>
     </div>
     
