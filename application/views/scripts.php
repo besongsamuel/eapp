@@ -43,10 +43,7 @@
     <!-- Angular Directives -->
     <script src="<?php echo base_url("assets/js/angular-directives/current-address.js")?>"></script>
     <script src="<?php echo base_url("assets/js/angular-directives/equals.js")?>"></script>
-    
-    <!-- Angular Directives -->
-    <script src="<?php echo base_url("assets/js/angular-components/store-product.js")?>"></script>
-            
+                
     <!-- Angular Filters -->
     <script src="<?php echo base_url("assets/js/angular-filters/trust-url.js")?>"></script>
     <script src="<?php echo base_url("assets/js/angular-filters/title-case.js")?>"></script>

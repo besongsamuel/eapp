@@ -1,25 +1,43 @@
+<div style="margin: 5px; background-color : white; box-shadow: 0 1px 3px 0 rgba(0,0,0,.2), 0 1px 1px 0 rgba(0,0,0,.14), 0 2px 1px -1px rgba(0,0,0,.12);">
+    <div style="height: 250px; display: block; margin : auto; text-align: center;">
+        <img ng-src="{{storeProduct.product.image}}" alt="storeProduct.product.name" style="max-height: 250px; max-width: 100%; padding: 5px;">
+    </div>
+    <md-divider></md-divider>
 
-<md-card style="margin-top : 5px; margin-bottom: 5px; background-color : white;">
-    <img ng-src="{{storeProduct.product.image}}" class="md-card-image" alt="storeProduct.product.name" style="height: 250px; padding: 5px;">
-    <md-card-header style="margin-bottom : 12px;">
-        <md-card-avatar>
-            <img class="md-user-avatar" ng-src="{{storeProduct.retailer.image}}"/>
-        </md-card-avatar>
-        <md-card-header-text style="white-space: nowrap; overflow: hidden; text-overflow:ellipsis;">
-            <b><a href ng-click="$ctrl.viewProduct(storeProduct.id, $event)"><span style="margin-left: 5px;" class="md-title md-otiprix-text">{{storeProduct.name}}</span></a></b>
-            <span class="md-subhead" style="margin-left : 5px; font-size : 12px;">
+    <div style="display: flex; ">
+        <div>
+            <img class="md-user-avatar" style="margin : 2px; width: 40px;" ng-src="{{storeProduct.retailer.image}}"/>
+        </div>
+        <div style="font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow:ellipsis;">
+
+            <b><a href ng-click="$ctrl.viewProduct(storeProduct.id, $event)"><span style="margin-left: 5px;" class="md-otiprix-text">{{storeProduct.name}}</span></a></b>
+            <br>   
+            <span style="margin-left : 5px; font-size : 12px;">
                 <span ng-if="storeProduct.format">{{storeProduct.format}} </span>
                 <span ng-if="storeProduct.unit"> {{storeProduct.unit.name}}</span>
                 <br>
-                <span style="color : red;"><b>CAD {{storeProduct.price}}</b></span>   
-                <del ng-if="storeProduct.regular_price > storeProduct.price" style="margin-left: 5px; font-size: 10px;"><b>$ CAD {{storeProduct.regular_price}}</b></del>
+                <span style="margin-left : 5px; font-size : 12px;">
+                    <span style="color : red;"><b>CAD {{storeProduct.price * storeProduct.quantity}}</b></span>   
+                    <del ng-if="storeProduct.regular_price > storeProduct.price" style="margin-left: 5px; font-size: 10px;"><b>$ CAD {{storeProduct.regular_price * storeProduct.quantity}}</b></del>
+                </span>
             </span>
-        </md-card-header-text>
-    </md-card-header>
+
+            
+        </div>
+    </div>
     
+    
+    <quantity-input quantity="storeProduct.quantity" ></quantity-input>
+
+    <div ng-if='root.isUserLogged && root.loggedUser.is_active == 1' class="row" style='text-align: center;'>
+        <add-to-list product='storeProduct.product' caption="Ajouter à liste" logged-user='root.loggedUser'></add-to-list>
+    </div>
+
     <md-divider></md-divider>
-    <md-card-actions layout="row" layout-align="end center">
-        <md-button ng-hide="root.productInCart(storeProduct.product.id)" ng-click="root.add_product_to_cart(storeProduct.product.id, storeProduct.id)" class="md-raised md-primary btn">Ajouter</md-button>
-        <md-button ng-show="root.productInCart(storeProduct.product.id)" ng-click="root.remove_product_from_cart(storeProduct.product.id)" class="md-warn md-raised md-primary btn">Retirer</md-button>
-    </md-card-actions>
-</md-card>
+    <div class="row" style="padding: 2px; margin: 0px;">
+        <md-button ng-hide="root.productInCart(storeProduct.product.id)" ng-click="root.add_product_to_cart(storeProduct.product.id, storeProduct.id)" class="md-raised md-primary btn pull-right">Ajouter</md-button>
+        <md-button ng-show="root.productInCart(storeProduct.product.id)" ng-click="root.remove_product_from_cart(storeProduct.product.id)" class="md-warn md-raised md-primary btn pull-right">Retirer</md-button>
+    </div>
+</div>
+
+

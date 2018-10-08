@@ -9,7 +9,7 @@ angular.module('eappApp').factory('sessionData', function()
     
     var sessionData = 
     {
-        gridView : false,
+        gridView : true,
         accountMenuIndex : 1
     };
     

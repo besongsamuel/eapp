@@ -4,7 +4,8 @@ angular.module('eappApp').component("storeProduct",
     controller : Controller,
     bindings : 
     {
-        storeProduct : '@'
+        jsonStoreProduct : '@',
+        storeProduct : '<'
     }
 });
 
@@ -16,7 +17,16 @@ function Controller($scope, $rootScope, eapp)
     
     ctrl.$onInit = function()
     {
-        $scope.storeProduct = JSON.parse(ctrl.storeProduct);
+        if(!angular.isNullOrUndefined(ctrl.jsonStoreProduct))
+        {
+            $scope.storeProduct = JSON.parse(ctrl.jsonStoreProduct);
+        }
+        
+        if(!angular.isNullOrUndefined(ctrl.storeProduct))
+        {
+            $scope.storeProduct = ctrl.storeProduct;
+        }
+        
     };
     
     ctrl.viewProduct = function(product_id, ev)
