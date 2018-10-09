@@ -724,8 +724,9 @@ $(document).ready(function()
                             </div>
 
                             <md-divider></md-divider>
-
-                            <company-products ng-if="loggedUser.company.is_valid == 1"></company-products>                            
+                            
+                            <company-products ng-if="loggedUser.company.is_valid == 1"></company-products>  
+                                                      
                         </div>
                         
                         <!-- Succursales -->

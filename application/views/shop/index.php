@@ -39,7 +39,15 @@
             <current-address></current-address>
             
             <div class="col-md-2">
-                <result-filter ng-if="productsReady" distance="distance" on-distance-changed="changeDistance(distance)" view-config="viewConfig" on-refresh="refresh(viewConfig)" ready="productsReady" result-set="filterSettings" on-settings-changed="settingsChanged(item)" ></result-filter>
+                <result-filter 
+                    ng-if="productsReady" 
+                    distance="distance" 
+                    on-distance-changed="changeDistance(distance)" 
+                    view-config="viewConfig" 
+                    on-refresh="refresh(viewConfig)" 
+                    ready="productsReady" 
+                    result-set="filterSettings" 
+                    on-settings-changed="settingsChanged(item)" ></result-filter>
             </div>
             
             <div class="col-md-10">
