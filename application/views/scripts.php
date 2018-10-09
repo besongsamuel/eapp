@@ -12,12 +12,11 @@
     
     <script src="<?php echo CONNECTION_TYPE; ?>://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     <script src="<?php echo base_url("assets/js/bootstrap-slider.min.js")?>"></script>
-    <script src="<?php echo base_url("assets/js/owl.carousel.min.js")?>"></script>
     <script src="<?php echo base_url("assets/js/jquery.sticky.js")?>"></script>
     <script src="<?php echo base_url("assets/js/jquery.easing.1.3.min.js")?>"></script>
     <script src="<?php echo base_url("assets/js/bootstrap-filestyle.js")?>"></script>
     <script src="<?php echo base_url("assets/js/html2canvas.js")?>"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
+    <script type="text/javascript" src="<?php echo base_url("node_modules/chart.js/dist/Chart.min.js")?>"></script>
     
     
     <!-- Angular Material requires Angular.js Libraries -->
@@ -38,6 +37,7 @@
     <script src="<?php echo base_url("assets/js/angular-modules/md-country-select.js")?>"></script>
     <script src="<?php echo base_url("assets/js/angular-modules/md-data-table.js")?>"></script>
     <script src="<?php echo base_url("assets/js/angular-modules/angular-country-state.js")?>"></script>
+    <script type="text/javascript" src="<?php echo base_url("node_modules/angular-ui-carousel/dist/ui-carousel.min.js")?>"></script>
     <script src="<?php echo base_url("assets/js/angular-modules/main.js")?>"></script>
     
     <!-- Angular Directives -->

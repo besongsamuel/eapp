@@ -415,17 +415,17 @@ $(document).ready(function()
                                                 </h4>
                                             </div>
 
-                                            <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                                            <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
 
                                                 <div class="panel-body">
 
-                                                    <top-products 
+                                                    <top-products  class="col-sm-12 col-md-6"
                                                         ng-if="stats.top_viewed_product_states && stats.top_viewed_product_states.length > 0" 
                                                         data="stats.top_viewed_product_states" 
                                                         count-caption="Visites :"
                                                         caption="Origine des produits visités par les utilisateurs"></top-products>
 
-                                                    <top-products 
+                                                    <top-products  class="col-sm-12 col-md-6"
                                                         ng-if="stats.top_cart_product_states && stats.top_cart_product_states.length > 0" 
                                                         data="stats.top_cart_product_states" 
                                                         count-caption="Nombre de fois ajoutées au panier :"
@@ -471,88 +471,34 @@ $(document).ready(function()
                                                 </h4>
                                             </div>
 
-                                            <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                                            <div id="collapseTwo" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingTwo">
 
-                                                <div class="panel-body">
-                                                    
-                                                    <top-products 
-                                                    ng-if="stats.get_top_recurring_products && stats.get_top_recurring_products.length > 0" 
-                                                    data="stats.get_top_recurring_products" 
-                                                    count-caption="Nombre de fois en circulaire :"
-                                                    caption="Les 5 produits qui reviennent le plus souvent en circulaire"></top-products>
+                                                <div class="panel-body container">
+                                                    <div class="row">
+                                                        <ui-carousel 
+                                                            slides="productStats"
+                                                            dots="true">
 
-                                                    <top-products 
-                                                    ng-if="stats.top_listed_products && stats.top_listed_products.length > 0" 
-                                                    data="stats.top_listed_products" 
-                                                    count-caption="Nombre d'utilisateurs avec produit dans leur liste :"
-                                                    caption="Les 5 produits qui reviennent le plus souvent dans la liste d'épicerie des utilisateurs"></top-products>
-
-                                                    <top-products 
-                                                    ng-if="stats.top_viewed_products && stats.top_viewed_products.length > 0" 
-                                                    data="stats.top_viewed_products" 
-                                                    count-caption="Visites :"
-                                                    caption="Les 5 produits les plus visités par les utilisateurs"></top-products>
-
-                                                    <top-products 
-                                                    ng-if="stats.top_searched_products && stats.top_searched_products.length > 0" 
-                                                    data="stats.top_searched_products" 
-                                                    count-caption="Nombre de fois recherché :"
-                                                    caption="Les 5 produits les plus recherchés par les utilisateurs"></top-products>
-
-                                                    <top-products 
-                                                    ng-if="stats.top_product_categories && stats.top_product_categories.length > 0" 
-                                                    data="stats.top_product_categories" 
-                                                    count-caption="Visites :"
-                                                    caption="Les cinq catégories de produits les plus visités par les utilisateurs"></top-products>
-
-                                                    <top-products 
-                                                    ng-if="stats.top_cart_products && stats.top_cart_products.length > 0" 
-                                                    data="stats.top_cart_products" 
-                                                    count-caption="Nombre de fois ajoutées au panier :"
-                                                    caption="Les 5 produits les plus ajoutés au panier par les utilisateurs"></top-products>
-
-                                                    <top-products 
-                                                    ng-if="stats.top_product_brands && stats.top_product_brands.length > 0" 
-                                                    data="stats.top_product_brands" 
-                                                    count-caption="Visites :"
-                                                    caption="Les 5 marques les plus ajoutées au panier par les utilisateurs"></top-products>
-                                                    
-                                                    <top-products 
-                                                    ng-if="stats.least_recurring_products && stats.least_recurring_products.length > 0" 
-                                                    data="stats.least_recurring_products" 
-                                                    count-caption="Nombre de fois en circulaire :"
-                                                    caption="Les 5 produits qui reviennent le moins souvent en circulaire"></top-products>
-                                                    
-                                                    <top-products 
-                                                    ng-if="stats.least_listed_products && stats.least_listed_products.length > 0" 
-                                                    data="stats.least_listed_products" 
-                                                    count-caption="Nombre d'utilisateurs avec produit dans leur liste :"
-                                                    caption="Les 5 produits qui reviennent le moins souvent dans la liste d'épicerie des utilisateurs"></top-products>
-
-                                                    <top-products 
-                                                    ng-if="stats.least_viewed_products && stats.least_viewed_products.length > 0" 
-                                                    data="stats.least_viewed_products" 
-                                                    count-caption="Visites :"
-                                                    caption="Les 5 produits les moins visités par les utilisateurs"></top-products>
-                                                    
-                                                    <top-products 
-                                                    ng-if="stats.least_searched_products && stats.least_searched_products.length > 0" 
-                                                    data="stats.least_searched_products" 
-                                                    count-caption="Nombre de fois recherché :"
-                                                    caption="Les 5 produits les moins recherchés par les utilisateurs"></top-products>
-                                                    
-                                                    <top-products 
-                                                    ng-if="stats.least_product_categories && stats.least_product_categories.length > 0" 
-                                                    data="stats.least_product_categories" 
-                                                    count-caption="Visites :"
-                                                    caption="La catégorie de produits la moins visitée par les utilisateurs"></top-products>
-                                                    
-                                                    <top-products 
-                                                    ng-if="stats.least_product_brands && stats.least_product_brands.length > 0" 
-                                                    data="stats.least_product_brands" 
-                                                    count-caption="Visites :"
-                                                    caption="Les 5 marques les moins ajoutées au panier par les utilisateurs"></top-products>
-                                                    
+                                                            <carousel-item>
+                                                                <div class="container">
+                                                                    <div class="row">
+                                                                        
+                                                                        <div style="margin: auto;">
+                                                                            <top-products
+                                                                                data="item.data" 
+                                                                                slides-to-show="1"
+                                                                                slides-to-scroll="1"
+                                                                                caption2="item.caption">
+                                                                            </top-products>
+                                                                        </div>
+                                                                        
+                                                                        
+                                                                    </div>
+                                                                </div>
+                                                            </carousel-item>
+                                                            
+                                                        </ui-carousel>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -579,14 +525,14 @@ $(document).ready(function()
 
                                                     </div>
 
-                                                    <top-products 
+                                                    <top-products  class="col-sm-12 col-md-6"
                                                     ng-if="stats.get_top_visited_chains && stats.get_top_visited_chains.length > 0" 
                                                     data="stats.get_top_visited_chains" 
                                                     count-caption="Visites :"
                                                     caption="Les magasins les plus visitées"></top-products>
 
 
-                                                    <top-products 
+                                                    <top-products  class="col-sm-12 col-md-6"
                                                     ng-if="stats.top_optimized_chains && stats.top_optimized_chains.length > 0" 
                                                     data="stats.top_optimized_chains" 
                                                     count-caption="Produits optimisées :"

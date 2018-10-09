@@ -9,6 +9,7 @@
     "angular-material": "^1.1.6",
     "angular-messages": "^1.6.9",
     "angular-ui-carousel": "^0.1.10",
+    "chart.js": "^2.7.2",
     "intl-tel-input": "^13.0.2",
     "jquery": "^3.3.1",
     "owl.carousel": "^2.3.4",

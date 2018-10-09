@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-
+<link rel="stylesheet" href="<?php echo base_url("assets/css/owl.carousel.css")?>">
+<link rel="stylesheet" href="<?php echo base_url("assets/css/owl.theme.default.min.css")?>">
 <link href="<?php echo base_url("assets/css/home.css"); ?>" rel="stylesheet">
 
 <style>
@@ -135,5 +136,34 @@
     
     
 </div>
+ 
+<script>
     
+jQuery(document).ready(function($){
+    
+    $('.product-carousel').owlCarousel({
+        loop:true,
+        nav:false,
+        autoplay:false,
+        autoplayTimeout: 1000,
+        autoplayHoverPause:true,
+        margin:0,
+        responsiveClass:true,
+        navText : ['Précédent', 'Suivant'],
+        
+        responsive:{
+            0:{
+                items:1
+            },
+            600:{
+                items:2
+            },
+            1000:{
+                items:4
+            }
+        }
+    });
+       
+});
 
+</script>

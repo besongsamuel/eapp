@@ -1,29 +1,4 @@
-jQuery(document).ready(function($){
-    
-    $('.product-carousel').owlCarousel({
-        loop:true,
-        nav:false,
-        autoplay:false,
-        autoplayTimeout: 1000,
-        autoplayHoverPause:true,
-        margin:0,
-        responsiveClass:true,
-        navText : ['Précédent', 'Suivant'],
-        
-        responsive:{
-            0:{
-                items:1
-            },
-            600:{
-                items:2
-            },
-            1000:{
-                items:4
-            }
-        }
-    });
-       
-});
+
 
 function convert_to_string_date(date)
 {
@@ -47,7 +22,7 @@ angular.getSearchParam = function(name, url)
 };
 
 // Define the `eapp Application` module
-var eappApp = angular.module('eappApp', ['ngMaterial', 'vsGoogleAutocomplete', 'md.data.table', 'lfNgMdFileInput', 'ngMessages', 'ngSanitize', 'mdCountrySelect', 'ngRoute', 'ngAnimate', 'angularCountryState']);
+var eappApp = angular.module('eappApp', ['ngMaterial', 'vsGoogleAutocomplete', 'md.data.table', 'ui.carousel', 'lfNgMdFileInput', 'ngMessages', 'ngSanitize', 'mdCountrySelect', 'ngRoute', 'ngAnimate', 'angularCountryState']);
 
 eappApp.config(function($mdThemingProvider)
 {

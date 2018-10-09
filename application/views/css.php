@@ -20,8 +20,6 @@
     
     <link href="<?php echo CONNECTION_TYPE; ?>://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="<?php echo base_url("assets/css/owl.carousel.css")?>">
-    <link rel="stylesheet" href="<?php echo base_url("assets/css/owl.theme.default.min.css")?>">
     <link rel="stylesheet" href="<?php echo base_url("assets/css/style.css")?>">
     <link rel="stylesheet" href="<?php echo base_url("assets/css/responsive.css")?>">
     <!-- Admin CSS -->
@@ -33,4 +31,5 @@
     <link rel="stylesheet" href="<?php echo CONNECTION_TYPE; ?>://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/css/bootstrap-select.min.css">
     <!-- MD Table CSS -->
     <link rel="stylesheet" href="<?php echo base_url("assets/css/md-data-table.css")?>">
+    <link rel="stylesheet" href="<?php echo base_url("node_modules/angular-ui-carousel/dist/ui-carousel.min.css")?>">
 
