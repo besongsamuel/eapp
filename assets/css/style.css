@@ -1162,15 +1162,20 @@ div.cart-collaterals ul.products li.product:hover .add_to_cart_button{background
 
 
 /* Gray Scale */
-.category-block {
+.box-item 
+{
     -webkit-filter: grayscale(100%);
     filter: grayscale(100%);
     -webkit-transition: .3s ease-in-out;
     transition: .3s ease-in-out;
+    padding: 4px;
+    height: 160px;
     width: 100%;
-    height: 180px;
+    display: block;
+    margin : auto;
 }
-.category-block:hover {
+.box-item:hover 
+{
     -webkit-filter: grayscale(0);
     filter: grayscale(0);
 }
@@ -1454,4 +1459,16 @@ md-list-item .md-avatar, md-list-item .md-list-item-inner .md-avatar
 
 .bgpatttern {
     background: url(images/pattern.png) repeat center center;
+}
+
+.border-shadow
+{
+    box-shadow: 0 1px 3px 0 rgba(0,0,0,.2), 0 1px 1px 0 rgba(0,0,0,.14), 0 2px 1px -1px rgba(0,0,0,.12);
+}
+
+.truncate-text
+{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }

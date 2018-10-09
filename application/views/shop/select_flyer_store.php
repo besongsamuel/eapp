@@ -46,18 +46,12 @@
                 
                 <p ng-if="!storesAvailable" style="text-align: center;" class="md-warn-color"><b>Il n'y a pas de magasin disponible près de chez vous.</b></p>
 		  
-		<md-content id="retailer-contents" style="padding : 10px;">
-                    
-                    <div class="row">
-                        <div class="col-md-2 col-md-4" style="padding-top:10px;" ng-repeat="store in retailers">
-                            <label  class="btn item-block">
-                                <img  ng-click="select_retailer($event, store)" id="{{store.id}}" ng-src="{{store.image}}" alt="{{store.name}}" class="store-block img-check">
-                                <input type="checkbox" name="store_{{store.id}}" value="{{store.id}}" class="hidden" autocomplete="off">
-                            </label>
-                        </div>
+                <div style="margin-top: 10px;">
+                    <div class="row" style="padding : 10px;">
+                        <box-item item='store' on-item-clicked='select_retailer($event, store)' ng-repeat="store in retailers" ></box-item>
                     </div>
-                    
-                </md-content>
+                </div>
+
 	    </div>
          </div> 
     </div>
