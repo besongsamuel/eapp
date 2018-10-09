@@ -23,15 +23,14 @@
                     <del ng-if="storeProduct.regular_price > storeProduct.price" style="margin-left: 5px; font-size: 10px;"><b>$ CAD {{storeProduct.regular_price * storeProduct.quantity}}</b></del>
                 </span>
             </span>
-
             
         </div>
     </div>
     
     
-    <quantity-input quantity="storeProduct.quantity" ></quantity-input>
+    <quantity-input ng-if="$ctrl.fullDisplay" quantity="storeProduct.quantity" ></quantity-input>
 
-    <div ng-if='root.isUserLogged && root.loggedUser.is_active == 1' class="row" style='text-align: center;'>
+    <div ng-if='root.isUserLogged && root.loggedUser.is_active == 1 && $ctrl.fullDisplay' class="row" style='text-align: center;'>
         <add-to-list product='storeProduct.product' caption="Ajouter à liste" logged-user='root.loggedUser'></add-to-list>
     </div>
 

@@ -48,7 +48,7 @@
 
                 <?php foreach($category_products["products"] as $product): ?>
 
-                <store-product json-store-product="<?php echo htmlspecialchars(json_encode($product)); ?>" ></store-product>
+                <store-product full-display="false" json-store-product="<?php echo htmlspecialchars(json_encode($product)); ?>" ></store-product>
 
                 <?php endforeach; ?>
 

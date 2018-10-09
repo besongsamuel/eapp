@@ -5,7 +5,8 @@ angular.module('eappApp').component("storeProduct",
     bindings : 
     {
         jsonStoreProduct : '@',
-        storeProduct : '<'
+        storeProduct : '<',
+        fullDisplay : '<'
     }
 });
 

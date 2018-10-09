@@ -104,9 +104,9 @@
     
     <div class="row md-padding" ng-if="sessionData.gridView && products.length > 0">
         
-        <div class="col-md-4 col-sm-6 md-padding" ng-repeat="product in products">
+        <div class="col-md-4 col-sm-6 col-lg-3 md-padding" ng-repeat="product in products">
 
-            <store-product store-product="product" ></store-product>
+            <store-product store-product="product" full-display="true" ></store-product>
             
         </div>
     </div>
