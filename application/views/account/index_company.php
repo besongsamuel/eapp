@@ -482,7 +482,6 @@ $(document).ready(function()
                                                             <carousel-item>
                                                                 <div class="container">
                                                                     <div class="row">
-                                                                        
                                                                         <div style="margin: auto;">
                                                                             <top-products
                                                                                 data="item.data" 
@@ -491,8 +490,6 @@ $(document).ready(function()
                                                                                 caption2="item.caption">
                                                                             </top-products>
                                                                         </div>
-                                                                        
-                                                                        
                                                                     </div>
                                                                 </div>
                                                             </carousel-item>

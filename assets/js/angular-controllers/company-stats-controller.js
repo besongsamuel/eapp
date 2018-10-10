@@ -91,11 +91,8 @@ angular.module('eappApp').controller('CompanyStatsController', function($scope, 
             {
                 data : $scope.stats.least_product_categories,
                 caption : "La catégorie de produits la moins visitée par les utilisateurs"
-            },
-            {
-                data : $scope.stats.least_product_brands,
-                caption : "Les 5 marques les moins ajoutées au panier par les utilisateurs"
             }
+            
         ];
         
         
