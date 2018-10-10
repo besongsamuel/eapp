@@ -473,23 +473,22 @@ $(document).ready(function()
 
                                             <div id="collapseTwo" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingTwo">
 
-                                                <div class="panel-body container">
-                                                    <div class="row">
+                                                <div class="panel-body">
+                                                    <div class="row" layout-padding>
                                                         <ui-carousel 
                                                             slides="productStats"
                                                             dots="true">
 
                                                             <carousel-item>
-                                                                <div class="container">
-                                                                    <div class="row">
-                                                                        <div style="margin: auto;">
-                                                                            <top-products
-                                                                                data="item.data" 
-                                                                                slides-to-show="1"
-                                                                                slides-to-scroll="1"
-                                                                                caption2="item.caption">
-                                                                            </top-products>
-                                                                        </div>
+                                                                <div class="row">
+                                                                    <div style="margin: auto;">
+                                                                        <top-products
+                                                                            data="item.data" 
+                                                                            slides-to-show="1"
+                                                                            slides-to-scroll="1"
+                                                                            initial-slide="1"
+                                                                            caption2="item.caption">
+                                                                        </top-products>
                                                                     </div>
                                                                 </div>
                                                             </carousel-item>
