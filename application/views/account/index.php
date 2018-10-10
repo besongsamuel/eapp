@@ -40,7 +40,7 @@ $(document).ready(function()
     <div class="container" ng-controller="TabsController">
         <div class="row profile">
             <div class="col-md-3">
-                    <div class="profile-sidebar">
+                    <div class="profile-sidebar  border-shadow">
                         <!-- SIDEBAR USERPIC -->
                         <div class="profile-userpic">
                             <img src="<?php echo base_url("/assets/img/icons8-customer-80.png"); ?>" class="img-responsive" alt="">
@@ -79,8 +79,8 @@ $(document).ready(function()
 				<!-- END MENU -->
                     </div>
 		</div>
-            <div class="col-md-9">
-                <div class="profile-content">
+            <div class="col-md-9 profile-content border-shadow">
+                <div class="">
                     
                     <div>
                         <!-- Change personal info -->    

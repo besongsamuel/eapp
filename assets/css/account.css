@@ -169,7 +169,6 @@ Licensed under MIT
 
 /* Profile Content */
 .profile-content {
-  padding: 20px;
-  background: #fff;
-  min-height: 460px;
+  padding: 10px 5px 10px 5px;
+  background: #fff;  
 }
