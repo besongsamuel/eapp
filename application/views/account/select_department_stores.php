@@ -7,7 +7,7 @@
         <add-department-store department-stores='loggedUser.company.chain.department_stores'></add-department-store>
         
         <div class="col-sm-12">
-            <p class="md-otiprix-text" style="text-align: center">Vous pouvez ajouter ajouter les détailents à n'importe quelle moment à partir de votre compte</p>
+            <p otiprix-text style="text-align: center">Vous pouvez ajouter ajouter les détailents à n'importe quelle moment à partir de votre compte</p>
         </div>
         
         <div class="col-sm-12">

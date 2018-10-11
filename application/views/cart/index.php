@@ -44,7 +44,7 @@
                     
                     <md-progress-linear md-mode="indeterminate" ng-show="promise.$$state.status === 0"></md-progress-linear>
                     
-                    <p ng-hide="results_available" class="md-otiprix-text" style="text-align: center; margin-bottom: 50px; margin-top: 20px;"><b>Votre panier est vide.</b></p>
+                    <p ng-hide="results_available" otiprix-text style="text-align: center; margin-bottom: 50px; margin-top: 20px;"><b>Votre panier est vide.</b></p>
                     
                     <div id="cart-optimization-container" class="layout-padding" ng-show="cartSettings.cartView">
                         <div ng-repeat="departmentStore in departmenStores">

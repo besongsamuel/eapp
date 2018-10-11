@@ -69,7 +69,7 @@ $(document).ready(function()
                                     <a ng-click="sessionData.accountMenuIndex = 3;" href><i class="glyphicon glyphicon-stats"></i>Historique de mes économies</a>
                                 </li>
                                 <li ng-class="{active : sessionData.accountMenuIndex == 4}">
-                                    <a ng-click="sessionData.accountMenuIndex = 4;" href><i class="glyphicon glyphicon-list"></i>Vos liste d'd'épicerie</a>
+                                    <a ng-click="sessionData.accountMenuIndex = 4;" href><i class="glyphicon glyphicon-list"></i>Vos liste 'd'épicerie</a>
                                 </li>
                                 <li ng-class="{active : sessionData.accountMenuIndex == 5}">
                                     <a ng-click="sessionData.accountMenuIndex = 5;" href><i class="glyphicon glyphicon-heart"></i>Magasins préférés</a>
@@ -83,8 +83,13 @@ $(document).ready(function()
                 <div class="">
                     
                     <div>
+                        
+                        
                         <!-- Change personal info -->    
                         <div layout-padding ng-if="sessionData.accountMenuIndex == 1">
+                            
+                            <h2 otiprix-title>Informations Utilisateur</h2>
+                            
                             <form  ng-controller="AccountController" name="userInfoForm" novalidate ng-submit="updateProfile()">
 
                                 <!-- First name -->
@@ -182,9 +187,7 @@ $(document).ready(function()
                             <!-- Change Password -->
                             <div class="row">
                                 
-                                <div class="col-sm-12">
-                                    <p class="md-otiprix-text" style="text-align: center; margin: 5px;"><b>Changer votre mot de passe</b></p>
-                                </div>
+                                <h2 otiprix-title>Changer votre mot de passe</h2>
 
                                 <form name="userSecurityForm" novalidate ng-submit="changePassword()">
 
@@ -241,10 +244,10 @@ $(document).ready(function()
                             <!-- Change security question -->
                             <div class="row">
                                 
-                                <div ng-if="menuIndex == 2" layout-padding>
+                                <div ng-if="sessionData.accountMenuIndex == 2" layout-padding>
 
                                     <div class="col-sm-12">
-                                        <p class="md-otiprix-text" style="text-align: center; margin: 5px;"><b>Changer la réponse et la question de sécurité</b></p>
+                                        <p otiprix-text style="text-align: center; margin: 5px;"><b>Changer la réponse et la question de sécurité</b></p>
                                     </div>
 
                                     <form name="securityQuestionForm" ng-submit="changeSecurityQuestion()" novalidate>
@@ -291,7 +294,7 @@ $(document).ready(function()
                                 <div ng-if="menuIndex == 2" layout-padding>
 
                                     <div class="row"  ng-hide="userPhoneVerified">
-                                        <b><p class="md-otiprix-text message">Vérifier votre numéro de téléphone</p></b>
+                                        <b><p otiprix-text class="message">Vérifier votre numéro de téléphone</p></b>
                                     </div>
 
                                     <div class="col-sm-12" ng-show="enterVerificationNumber">
@@ -305,7 +308,7 @@ $(document).ready(function()
                                         </div>
 
                                         <div class="row"  ng-show="userPhoneVerified">
-                                            <p class="md-otiprix-text message"><b>Verified : {{loggedUserClone.phone}}</b></p>
+                                            <p otiprix-text class="message"><b>Verified : {{loggedUserClone.phone}}</b></p>
                                         </div>
 
                                         <div class="row">
@@ -347,11 +350,14 @@ $(document).ready(function()
                         
                         <!-- History -->
                         <div ng-if="sessionData.accountMenuIndex == 3">
+                            
+                            <h2 otiprix-title>Historique de mes économies</h2>
+                            
                             <div class="md-padding">
                                 <md-list ng-controller="AccountOptimizationController">
                                     <md-list-item class="md-3-line" ng-repeat="item in optimizations">
                                       <div class="md-list-item-text"  style="margin-bottom: 10px;">
-                                        <h3 class="md-otiprix-text"><b>{{item.label}}</b></h3>
+                                        <h3 otiprix-text><b>{{item.label}}</b></h3>
                                         <h4>Économies moyen : <b style="color : red;"><span ng-show="item.value != '-'">$ CAD</span> {{item.value}}</b></h4>
                                         <p>Nombre moyen de produits par panier : <b>{{item.count}}</b></p>
                                       </div>
@@ -364,6 +370,7 @@ $(document).ready(function()
                         
                         <!-- Grocery List -->
                         <div ng-if="sessionData.accountMenuIndex == 4">
+                            <h2 otiprix-title>Vos liste d'épicerie</h2>
                             <div  ng-controller="UserListController" id="groceryListContainer" ng-include="'<?php echo base_url(); ?>/assets/templates/user_grocery_list.html'"></div>
                         </div>
                         

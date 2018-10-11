@@ -29,7 +29,7 @@ and open the template in the editor.
                 </div>
                 
                 <div ng-hide="subscribed">
-                    <p class="md-otiprix-text" style="text-align: center; margin-bottom: 30px;">Êtes-vous sûr de vouloir vous désabonner {{userEmail}} de Otiprix?. </p>
+                    <p otiprix-text style="text-align: center; margin-bottom: 30px;">Êtes-vous sûr de vouloir vous désabonner {{userEmail}} de Otiprix?. </p>
                 
                     <div class="col-sm-12 col-md-12">
 

@@ -5,7 +5,7 @@
     
     <div>
         
-        <h2 class="section-title md-otiprix-text">Sélectionnez le type de compte</h2>
+        <h2 otiprix-title>Sélectionnez le type de compte</h2>
         
         <div layout="row" layout-xs="column" style="margin-bottom: 150px; margin-top: 50px;">
             
@@ -17,7 +17,7 @@
                     </div>
                 </a>
 
-                <h3 class="md-otiprix-text" style="text-align: center"> Compte Consommateur</h3>
+                <h3 otiprix-text style="text-align: center"> Compte Consommateur</h3>
 
             </div>
 
@@ -29,7 +29,7 @@
                     </div>
                 </a>
 
-                <h3 class="md-otiprix-text" style="text-align: center"> Compte Entreprise</h3>
+                <h3 otiprix-text style="text-align: center"> Compte Entreprise</h3>
 
             </div>
 

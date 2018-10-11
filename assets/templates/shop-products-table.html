@@ -31,7 +31,7 @@
     
 
     
-    <p class="md-otiprix-text" style="text-align: center;" ng-show="products.length === 0">Aucun résultat trouvé</p>
+    <p otiprix-text style="text-align: center;" ng-show="products.length === 0">Aucun résultat trouvé</p>
     
     <table md-table ng-model="selected" ng-if="!sessionData.gridView  && products.length > 0">
         <thead md-head md-order="query.order" md-on-reorder="getProducts">

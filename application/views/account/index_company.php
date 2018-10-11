@@ -111,6 +111,9 @@ $(document).ready(function()
                 <!-- Change personal info -->    
                 <div layout-padding ng-if="sessionData.accountMenuIndex == 1">
                     <div ng-controller="AccountController">
+                        
+                        <h2 otiprix-title>informations utilisateur</h2>
+                        
                         <form name="userInfoForm" novalidate ng-submit="updateProfile()">
 
                             <md-input-container class="md-block col-md-12 col-sm-12" flex-gt-sm>
@@ -213,9 +216,7 @@ $(document).ready(function()
                     <!-- Change Password -->
                     <div class="row">
 
-                        <div class="col-sm-12">
-                            <p class="md-otiprix-text" style="text-align: center; margin: 5px;"><b>Changer votre mot de passe</b></p>
-                        </div>
+                        <h2 otiprix-title>Changer votre mot de passe</h2>
 
                         <form name="userSecurityForm" novalidate ng-submit="changePassword()">
 
@@ -274,10 +275,8 @@ $(document).ready(function()
 
                         <div ng-if="menuIndex == 2" layout-padding>
 
-                            <div class="col-sm-12">
-                                <p class="md-otiprix-text" style="text-align: center; margin: 5px;"><b>Changer la réponse et la question de sécurité</b></p>
-                            </div>
-
+                            <h2 otiprix-title>Changer la réponse et la question de sécurité</h2>
+                            
                             <form name="securityQuestionForm" ng-submit="changeSecurityQuestion()" novalidate>
 
                                 <div>
@@ -322,8 +321,9 @@ $(document).ready(function()
                         <div ng-if="menuIndex == 2" layout-padding>
 
                             <div class="row"  ng-hide="userPhoneVerified">
-                                <b><p class="md-otiprix-text message">Vérifier votre numéro de téléphone</p></b>
+                                <b><p otiprix-text class="message">Vérifier votre numéro de téléphone</p></b>
                             </div>
+                            
 
                             <div class="col-sm-12" ng-show="enterVerificationNumber">
 
@@ -336,7 +336,7 @@ $(document).ready(function()
                                 </div>
 
                                 <div class="row"  ng-show="userPhoneVerified">
-                                    <p class="md-otiprix-text message"><b>Verified : {{loggedUserClone.phone}}</b></p>
+                                    <p otiprix-text class="message"><b>Verified : {{loggedUserClone.phone}}</b></p>
                                 </div>
 
                                 <div class="row">
@@ -379,6 +379,9 @@ $(document).ready(function()
                 <!-- Statistics -->
                 <div ng-if="sessionData.accountMenuIndex == 3">
 
+                    
+                    <h2 otiprix-title>Statistiques</h2>
+                    
                     <div ng-controller="CompanyStatsController as ctrl">
 
                         <div layout="row" layout-align='center center'>
@@ -635,7 +638,7 @@ $(document).ready(function()
                                    Télécharger fichier des produits Otiprix
                                 </md-button>
                             </div>
-                            <p class="md-otiprix-text" style="text-align: center">Téléchargez ce document pour faciliter le téléversement de produits sur Otiprix</p>
+                            <p otiprix-text style="text-align: center">Téléchargez ce document pour faciliter le téléversement de produits sur Otiprix</p>
                         </div>
                     </form>
 
@@ -647,7 +650,7 @@ $(document).ready(function()
                                Téléverser vos produits
                             </md-button>
                         </div>
-                        <p class="md-otiprix-text" style="text-align: center">Téléversez le fichier de produits</p>
+                        <p otiprix-text style="text-align: center">Téléversez le fichier de produits</p>
                         <form id="uploadForm" method="post" action="<?php site_url('company/upload_products'); ?>" >
                             <input type="file" name="products" id="fileUploadInput" style="display:none"/> 
                         </form>
@@ -670,6 +673,8 @@ $(document).ready(function()
                 <div ng-if="sessionData.accountMenuIndex == 6">
 
                     <div ng-controller="CompanyAccountController" >
+                        
+                        <h2 otiprix-title>Informations Entreprise</h2>
 
                         <div id="error_message" class="alert alert-success" ng-show="successMessage">
                             <p style="text-align: center;">{{successMessage}}</p>
@@ -678,39 +683,27 @@ $(document).ready(function()
 
                         <form class="companyForm" novalidate ng-submit="editCompany()" class="layout-padding">
 
-                            <!-- COMPANY INFORMATION -->
-                            <fieldset style="margin: 10px;">
+                            <p class="subscription-header"><b>Votre Forfait : &nbsp;&nbsp;&nbsp;<span class='md-warn-color'>  {{loggedUser.company.subscription.name}}</span></b> &nbsp;|&nbsp; <a href='<?php echo site_url("account/select_subscription"); ?>'>Changer</a></p>
 
-                                <legend>RENSEIGNEMENTS D'ENTREPRISE</legend>
+                            <!-- NEQ -->
+                            <md-input-container ng-disabled="loggedUser.company.is_valid == 1" class="md-block col-md-12" flex-gt-sm>
+                                <label>NEQ</label>
+                                <!-- <input required name="neq" ng-model="company.neq" /> -->
+                                <input ng-disabled="true" required name="neq" ng-model="company.neq" />
+                                <div ng-messages="companyForm.neq.$error">
+                                    <div ng-message="required">Vous devez entrer le NEQ de l'entreprise</div>
+                                </div>
+                            </md-input-container>
 
-                                <p class="subscription-header"><b>Votre Forfait : &nbsp;&nbsp;&nbsp;<span class='md-warn-color'>  {{loggedUser.company.subscription.name}}</span></b> &nbsp;|&nbsp; <a href='<?php echo site_url("account/select_subscription"); ?>'>Changer</a></p>
-
-                                <!-- NEQ -->
-                                <md-input-container ng-disabled="loggedUser.company.is_valid == 1" class="md-block col-md-12" flex-gt-sm>
-                                    <label>NEQ</label>
-                                    <!-- <input required name="neq" ng-model="company.neq" /> -->
-                                    <input ng-disabled="true" required name="neq" ng-model="company.neq" />
-                                    <div ng-messages="companyForm.neq.$error">
-                                        <div ng-message="required">Vous devez entrer le NEQ de l'entreprise</div>
-                                    </div>
-                                </md-input-container>
-
-                                <!-- NOM DE L'ENTREPRISE -->
-                                <md-input-container class="md-block col-md-12" flex-gt-sm>
-                                    <label>Nom de l'entreprise</label>
-                                    <!-- <input required name="company_name" ng-model="company.name" /> -->
-                                    <input ng-disabled="true" required name="company_name" ng-model="company.name" />
-                                    <div ng-messages="companyForm.company_name.$error">
-                                        <div ng-message="required">Vous devez entrer au moins un nom pour l'entreprise</div>
-                                    </div>
-                                </md-input-container>
-
-                                <!-- <div class="col-sm-12" style="margin-top : 30px; margin-bottom: 30px;">
-                                    <md-button type="submit" class="pull-right md-primary md-raised btn">Valider</md-button>
-                                </div> -->
-
-
-                            </fieldset>
+                            <!-- NOM DE L'ENTREPRISE -->
+                            <md-input-container class="md-block col-md-12" flex-gt-sm>
+                                <label>Nom de l'entreprise</label>
+                                <!-- <input required name="company_name" ng-model="company.name" /> -->
+                                <input ng-disabled="true" required name="company_name" ng-model="company.name" />
+                                <div ng-messages="companyForm.company_name.$error">
+                                    <div ng-message="required">Vous devez entrer au moins un nom pour l'entreprise</div>
+                                </div>
+                            </md-input-container>
 
                         </form>
                     </div>                            

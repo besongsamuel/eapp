@@ -54,10 +54,46 @@ eappApp.config(function($mdThemingProvider)
     
 });
 
-// configure our routes
-eappApp.config(function($routeProvider) 
+eappApp.directive('otiprixTitle', function()
 {
-   
+    function link(scope, element)
+    {
+        var el = angular.element(element);
+        
+        el.css(
+                {
+                    "color" : "#1abc9c",
+                    "font-family": "Raleway,sans-serif",
+                    "font-size": "50px",
+                    "font-weight": "100",
+                    "margin-bottom": "20px",
+                    "margin-top": "50px",
+                    "text-align": "center"
+                });
+                
+
+    };
+    
+    return  {
+        link : link
+    };
+});
+
+eappApp.directive('otiprixText', function()
+{
+    function link(scope, element)
+    {
+        var el = angular.element(element);
+        
+        el.css(
+                {
+                    "color" : "#1abc9c"
+                });
+    };
+    
+    return  {
+        link : link
+    };
 });
 
 
