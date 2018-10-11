@@ -26,10 +26,10 @@
 
                       <div class="col-sm-6">
                           <div class="pull-left header-social">
-                              <a href="https://www.facebook.com/otiprix.otiprix.1" target="_blank"><i style="color: #1abc9c;" class="fa fa-facebook"></i></a>
-                              <a href="https://twitter.com/otiprix" target="_blank"><i style="color: #1abc9c;" class="fa fa-twitter"></i></a>
-                              <a href="https://www.youtube.com/channel/UCbwxS8s1WKYgGCRzd9vIl5A" target="_blank"><i style="color: #1abc9c;" class="fa fa-youtube"></i></a>
-                              <a ng-hide="true" href="https://www.instagram.com/otiprix/" target="_blank"><i style="color: #1abc9c;" class="fa fa-instagram"></i></a>
+                              <a href="https://www.facebook.com/otiprix.otiprix.1" target="_blank"><i otiprix-text class="fa fa-facebook"></i></a>
+                              <a href="https://twitter.com/otiprix" target="_blank"><i otiprix-text class="fa fa-twitter"></i></a>
+                              <a href="https://www.youtube.com/channel/UCbwxS8s1WKYgGCRzd9vIl5A" target="_blank"><i otiprix-text class="fa fa-youtube"></i></a>
+                              <a ng-hide="true" href="https://www.instagram.com/otiprix/" target="_blank"><i otiprix-text class="fa fa-instagram"></i></a>
                               <a ng-hide="true" href="https://plus.google.com/u/0/117638375580963001925" target="_blank"><i class="md-primary" class="fa fa-google-plus"></i></a>
                           </div>
                       </div>
