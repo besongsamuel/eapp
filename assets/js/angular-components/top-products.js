@@ -104,7 +104,7 @@ angular.module('eappApp').component("topProducts",
                 },
                 options: 
                 {
-                    responsive : false
+                    responsive : true
                 }
             };
             

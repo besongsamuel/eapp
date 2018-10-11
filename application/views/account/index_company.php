@@ -469,28 +469,20 @@ $(document).ready(function()
                                     <div id="collapseTwo" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingTwo">
 
                                         <div class="panel-body">
-                                            <div class="row" layout-padding>
-                                                <ui-carousel
-                                                    layout-padding
-                                                    slides="productStats"
-                                                    dots="true">
+                                            <ui-carousel
+                                                slides-to-show="2"
+                                                slides-to-scroll="2"
+                                                slides="productStats"
+                                                  initial-slide="1"
+                                                dots="true">
 
-                                                    <carousel-item>
-                                                        <div class="row">
-                                                            <div style="margin: auto;">
-                                                                <top-products
-                                                                    data="item.data" 
-                                                                    slides-to-show="1"
-                                                                    slides-to-scroll="1"
-                                                                    initial-slide="1"
-                                                                    caption2="item.caption">
-                                                                </top-products>
-                                                            </div>
-                                                        </div>
-                                                    </carousel-item>
-
-                                                </ui-carousel>
-                                            </div>
+                                                <carousel-item>
+                                                    <top-products
+                                                       data="item.data" 
+                                                       caption2="item.caption">
+                                                   </top-products>
+                                                </carousel-item>
+                                            </ui-carousel>
                                         </div>
                                     </div>
                                 </div>
