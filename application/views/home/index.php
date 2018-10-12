@@ -29,9 +29,9 @@
     
 </style>
 
-    <div id="home-container" class="otiprix-section bgpatttern" ng-controller="ShopController as ctrl" ng-cloak>
+    <div id="home-container" class="otiprix-section bgpatttern" ng-controller="ShopController as ctrl">
 
-        <div >
+        <div ng-cloak>
             <h3 otiprix-title>Économisez jusqu'a <strong>30%</strong> </br> sur votre facture</h3>
         </div>
 
@@ -101,7 +101,7 @@
         
     <md-divider></md-divider>
     
-    <div class="promo-area bgpatttern" ng-controller="HomeController" ng-hide="true" ng-cloak>
+    <div class="promo-area bgpatttern" ng-controller="HomeController" ng-hide="true">
         <div class="container">
             <div class="row">
                 <div class="col-md-4 col-sm-8">
