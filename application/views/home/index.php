@@ -82,6 +82,16 @@
                         </div>
 
                     </div> 
+                    
+                    <p style="text-align : center;">
+                        <a href="<?php echo site_url("shop/categories"); ?>">
+                            <md-button class="md-raised md-warn" style="z-index : 10;">
+                                <b>Voir Plus</b>
+                            </md-button>
+                        </a>
+                    </p>
+                    
+                    
                 </div>
               
             </div>
