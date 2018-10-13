@@ -243,6 +243,15 @@ class Eapp extends CI_Controller
     
     public function get_categories() 
     {
+        
+        $offset = $this->input->post("offset");
+        
+        $limit = (int)$this->input->post("limit") == -1 ? 1000 : (int)$this->input->post("limit");
+        
+        $this->db->limit($limit, $offset);
+        
+        $this->db->order_by("hits", "DESC");
+        
         $categories = $this->admin_model->get_all(CATEGORY_TABLE);
         
         foreach ($categories as $key => $value) 

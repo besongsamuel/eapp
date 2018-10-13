@@ -54,7 +54,7 @@ class Home extends CI_Controller {
             
             $category->id = -1;
             
-            $category->name = "Produits Populaire";
+            $category->name = "Produits populaires";
             
             $popular_products["category"] = $category;
             

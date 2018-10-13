@@ -6,6 +6,8 @@ angular.module('eappApp').controller('CategoryController', ["$scope", "$rootScop
     
     $scope.root = $rootScope;
     
+    var ctrl = this;
+    
     $scope.Init = function()
     {
         var categoriesPromise = eapp.getCategories();
@@ -15,6 +17,20 @@ angular.module('eappApp').controller('CategoryController', ["$scope", "$rootScop
         categoriesPromise.then(function(response)
         {
             $scope.categories = response.data;
+            
+            $scope.loading = false;
+        });
+    };
+    
+    ctrl.getHomeCategories = function()
+    {
+        var categoriesPromise = eapp.getCategories(5, 8);
+        
+        $scope.loading = true;
+        
+        categoriesPromise.then(function(response)
+        {
+            $scope.homePageCategories = response.data;
             
             $scope.loading = false;
         });

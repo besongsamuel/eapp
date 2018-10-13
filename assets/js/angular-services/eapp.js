@@ -297,9 +297,12 @@ angular.module('eappApp').factory('eapp', ['$http','$rootScope', '$mdDialog', fu
         return $http.post(eappService.getSiteUrl().concat("eapp/change_distance"), formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}});
     };
     
-    eappService.getCategories = function()
+    eappService.getCategories = function(offset = 0, limit = -1)
     {
-        return $http.post(eappService.getSiteUrl().concat("eapp/get_categories"), null);  
+        var formData = new FormData();
+        formData.append("offset", offset);
+        formData.append("limit", limit);
+        return $http.post(eappService.getSiteUrl().concat("eapp/get_categories"), formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}});
     };
     
     eappService.getSubCategories = function()

@@ -40,12 +40,12 @@
         <div class="maincontent-area" style="background-color: #C0C0C0;">
 
             <div class="container">
+                
+                <?php foreach(array_slice($categoryProducts, 0, 3) as $category_products): ?>
 
-                <?php foreach($categoryProducts as $category_products): ?>
+                <p class="home-category-title"><b><?php echo $category_products["category"]->name; ?></b> <span><a href ng-click="ctrl.select_json_category($event, '<?php echo htmlspecialchars(json_encode($category_products["category"])); ?>')"> Voir toutes les offres</a></span></p>
 
-                <p class="home-category-title"><b><?php echo $category_products["category"]->name; ?></b> <span><a href ng-click="ctrl.select_json_category($event, '<?php echo htmlspecialchars(json_encode($category_products["category"])); ?>')"> Voir toute les offres</a></span></p>
-
-                <div class="product-carousel row">
+                <div class="product-carousel row" style="margin : auto;">
 
                     <?php foreach($category_products["products"] as $product): ?>
 
@@ -56,12 +56,63 @@
                 </div>
 
                 <md-divider></md-divider>
+                
+                <?php endforeach; ?>
+
+            </div>
+            
+            <div layout-padding style="background-color : white;" ng-cloak>
+                
+                <h2 otiprix-title>Autre Catégories</h2>
+                
+                <div class="container" ng-controller="CategoryController as ctrl" ng-cloak>    
+
+                    <div layout="row" layout-sm="column" layout-align="space-around">
+                        <md-progress-circular ng-disabled="!loading" class="md-hue-2" md-diameter="30px" md-mode="indeterminate" ng-show="loading"></md-progress-circular>
+                    </div>
+
+                    <div class="container" style="margin-bottom : 30px;" ng-init="ctrl.getHomeCategories()">
+
+                        <div style="margin-top: 10px;">
+                            <div class="row" style="padding : 10px;">
+
+                                <box-item item='category' on-item-clicked='select_category($event, category)' ng-repeat="category in homePageCategories" ></box-item>
+
+                            </div>
+                        </div>
+
+                    </div> 
+                </div>
+              
+            </div>
+                
+            <md-divider></md-divider>
+            
+            <div class="container">
+                
+                <?php foreach(array_slice($categoryProducts, 3, 3) as $category_products): ?>
+
+                    <p class="home-category-title"><b><?php echo $category_products["category"]->name; ?></b> <span><a href ng-click="ctrl.select_json_category($event, '<?php echo htmlspecialchars(json_encode($category_products["category"])); ?>')"> Voir toutes les offres</a></span></p>
+
+                    <div class="product-carousel row" style="margin : auto;">
+
+                        <?php foreach($category_products["products"] as $product): ?>
+
+                        <store-product full-display="false" json-store-product="<?php echo htmlspecialchars(json_encode($product)); ?>" ></store-product>
+
+                        <?php endforeach; ?>
+
+                    </div>
+
+                    <md-divider></md-divider>
 
                 <?php endforeach; ?>
 
             </div>
 
         </div>
+        
+        
 
         <div  id="section02" class="layout-padding howitworks arrow section-div"  ng-controller="HomeController">
 
