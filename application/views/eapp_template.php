@@ -63,7 +63,7 @@
 
         <div id="mainmenu-area" class="mainmenu-area" class="navbar-wrapper" ng-cloak>
                   <div>
-                      <nav class="navbar navbar-fixed-top" style="top : 50px;">
+                      <nav otiprix-background class="navbar navbar-fixed-top" style="top : 50px;">
                           <div class="navbar-padding">
                               <div class="navbar-header">
                                   <button type="button" class="navbar-toggle collapsed pull-right" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -79,7 +79,7 @@
                                   <ul class="menu nav navbar-nav"  ng-controller="MenuController">
                                       <li class=" dropdown" ng-show="loggedUser.subscription == 2">
                                           <a href="#" class="dropdown-toggle " data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Admin<span class="caret"></span></a>
-                                          <ul class="dropdown-menu">
+                                          <ul class="dropdown-menu" otiprix-background>
                                               <li ng-show="loggedUser.subscription == 2"><a  href="<?php echo addslashes(site_url("admin/uploads")); ?>">Uploads</a></li>
                                               <li><a href="<?php echo addslashes(site_url("admin/create_store_product")); ?>">Create Product</a></li>
                                               <li><a href="<?php echo addslashes(site_url("admin/store_products")); ?>">View Store Products</a></li>
@@ -91,14 +91,14 @@
                                       <li ng-class="{active : isHome}" class="main-menu-list-item"><a href="<?php echo site_url("home"); ?>" class=""><md-icon style="color : white"><i class="material-icons">home</i> </md-icon></a></li>
                                       <li class="main-menu-list-item" class=" dropdown" ng-class="{active : isMainMenu}">
                                           <a href="#" class="dropdown-toggle " data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Réduisez vos dépenses<span class="caret"></span></a>
-                                          <ul class="dropdown-menu">
+                                          <ul class="dropdown-menu" otiprix-background>
                                               <li><a href="<?php echo site_url("account/my_grocery_list"); ?>">Votre liste d'épicerie</a></li>
                                               <li><a href="<?php echo site_url("shop/select_flyer_store"); ?>">Les circulaires des magasins</a></li>
                                               <li><a href="<?php echo site_url("shop/categories"); ?>">Les catégories de produits</a></li>
                                           </ul>
                                       </li>
                                       <li ng-class="{active : isSearch}" class="main-menu-list-item"><a href ng-click="gotoShop()">Trouvez un produit</a></li>
-                                          <ul class="dropdown-menu">
+                                          <ul class="dropdown-menu" otiprix-background>
                                               <li><a href="<?php echo site_url("blog/press_release"); ?>">Épicerie dans la presse</a></li>
                                               <li><a href="<?php echo site_url("blog/stats"); ?>">STAT</a></li>
                                               <li><a href="<?php echo site_url("blog/videos"); ?>">Vidéo</a></li>
@@ -120,7 +120,7 @@
                                               <span ng-if="loggedUser.company">{{loggedUser.company.name}}</span>
                                               <span class="caret"></span>
                                           </a>
-                                          <ul class="dropdown-menu">
+                                          <ul class="dropdown-menu" otiprix-background>
                                               <li><a  href="<?php echo site_url("account"); ?>"><i class="fa fa-user"></i> Mon compte</a></li>
                                               <li ng-if="isRegularUser"><a href="<?php echo site_url("account/my_grocery_list"); ?>"><i class="fa fa-heart"></i> Ma liste d'épicerie</a></li>
                                               <li><a href ng-click="logout()">Logout</a></li>

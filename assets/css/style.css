@@ -1210,8 +1210,6 @@ div.cart-collaterals ul.products li.product:hover .add_to_cart_button{background
 .navbar, .dropdown-menu
 {
     background:#1abc9c;
-    color : #fff;
-    border: none;
 }
 
 .nav>li>a, 
