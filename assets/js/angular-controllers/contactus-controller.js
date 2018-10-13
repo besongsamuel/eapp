@@ -6,11 +6,11 @@
 
 angular.module("eappApp").controller("ContactUsController", ["$rootScope", "$scope", "eapp", "$http", function($rootScope, $scope, eapp, $http) 
 {
-    $scope.officeLongitude = -72.9508469;
-    $scope.officeLatitude = 45.6231815;
-    $scope.officeStreet = "550 Avenue Saint-Dominique";
-    $scope.officeCity = "Saint-Hyacinthe";
-    $scope.officePostcode = "J2S 5M6";
+    $scope.officeLongitude = -75.697530;
+    $scope.officeLatitude = 45.495940;
+    $scope.officeStreet = "76 Rue Jean-Perrin";
+    $scope.officeCity = "Gatineau, QC";
+    $scope.officePostcode = "J8V 2R2";
     $scope.officeContact = "infos@otiprix.com";
     
     $scope.Init = function()
