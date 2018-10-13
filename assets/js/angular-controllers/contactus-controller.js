@@ -23,7 +23,7 @@ angular.module("eappApp").controller("ContactUsController", ["$rootScope", "$sco
     $scope.InitializeMap = function()
     {
         var locations = [
-        ['<div class="infobox"><h3 class="title"><a href="about-1.html">Notre Bureau</a></h3><span>550 Avenue Saint-Dominique, </span><br>Saint-Hyacinthe, J2S 5M6</span><br>  </p></div></div></div>', 45.6231815, -72.9508469, 2]
+        ['<div class="infobox"><h3 class="title"><a href="about-1.html">Notre Bureau</a></h3><span>76 Rue Jean-Perrin, </span><br>Gatineau, J8V 2R2</span><br>  </p></div></div></div>', 45.495940, -75.697530, 2]
         ];
         
         // Create the map
