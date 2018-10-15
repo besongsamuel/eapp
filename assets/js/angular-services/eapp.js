@@ -472,6 +472,7 @@ angular.module('eappApp').factory('eapp', ['$http','$rootScope', '$mdDialog', fu
     
     eappService.viewProduct = function($scope, product_id, ev)
     {
+        let quantity = $scope.storeProduct.quantity;
         // Get the latest products
         var promise = eappService.getProduct(product_id);
     
@@ -480,6 +481,8 @@ angular.module('eappApp').factory('eapp', ['$http','$rootScope', '$mdDialog', fu
             eappService.recordProductStat(product_id, STAT_TYPE_CLICK);
             
             $scope.storeProduct = response.data;
+            
+            $scope.storeProduct.quantity = quantity;
             
             $scope.scrollTop = $(document).scrollTop();
             

@@ -30,7 +30,7 @@ class Cart extends CI_Controller {
     
     public function get_product($store_product_id) 
     {
-        echo json_encode($this->cart_model->getStoreProduct($store_product_id, true, false));
+        echo json_encode($this->cart_model->getStoreProduct($store_product_id, true, true));
     }
     
     /**
