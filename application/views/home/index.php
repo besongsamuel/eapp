@@ -61,7 +61,7 @@
 
             </div>
             
-            <div layout-padding style="background-color : white;" ng-cloak>
+            <div class="parallax-background" layout-padding style="background-color : white;" ng-cloak>
                 
                 <h2 otiprix-title>Autre Catégories</h2>
                 

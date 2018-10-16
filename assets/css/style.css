@@ -28,14 +28,19 @@ h6 {
 }
 
 
-html
-{
-    background-color: white;
-}
 
 body 
 { 
     font-family: 'Roboto', 'Helvetica Neue', sans-serif; 
+}
+
+.parallax-background
+{
+    background-image: url("../../assets/img/supermarket.jpg");
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 
 .md-dialog-container
