@@ -1189,6 +1189,18 @@ div.cart-collaterals ul.products li.product:hover .add_to_cart_button{background
     -webkit-transition: .3s ease-in-out;
     transition: .3s ease-in-out;
 }
+
+.opacity-effect 
+{
+    opacity: 1;
+    -webkit-transition: .3s ease-in-out;
+    transition: .3s ease-in-out;
+}
+.opacity-effect:hover 
+{
+    opacity: .5;
+}
+
 /* LOGIN CSS END */
 
 
