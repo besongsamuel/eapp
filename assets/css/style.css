@@ -1169,20 +1169,25 @@ div.cart-collaterals ul.products li.product:hover .add_to_cart_button{background
 /* Gray Scale */
 .box-item 
 {
-    -webkit-filter: grayscale(100%);
-    filter: grayscale(100%);
-    -webkit-transition: .3s ease-in-out;
-    transition: .3s ease-in-out;
+    
     padding: 4px;
     height: 160px;
     width: 100%;
     display: block;
     margin : auto;
 }
-.box-item:hover 
+.image-hover-effect:hover 
 {
     -webkit-filter: grayscale(0);
     filter: grayscale(0);
+}
+
+.image-hover-effect
+{
+    -webkit-filter: grayscale(100%);
+    filter: grayscale(100%);
+    -webkit-transition: .3s ease-in-out;
+    transition: .3s ease-in-out;
 }
 /* LOGIN CSS END */
 

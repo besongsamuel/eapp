@@ -9,7 +9,7 @@
 angular.module('eappApp').component("boxItem", 
 {
     templateUrl : "templates/components/boxItem.html",
-    controller : function()
+    controller : function($scope)
     {
         var ctrl = this;
         
@@ -18,10 +18,16 @@ angular.module('eappApp').component("boxItem",
             ctrl.onItemClicked({event : ev, item : ctrl.item});
         };
         
+        ctrl.$onInit = function()
+        {
+            $scope.hoverEffect = ctrl.hoverEffect;
+        };
+        
     },
     bindings : 
     {
         onItemClicked : '&',
-        item : '<'
+        item : '<',
+        hoverEffect : '<'
     }
 });

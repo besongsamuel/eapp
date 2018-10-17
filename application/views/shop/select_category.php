@@ -37,7 +37,7 @@
                 <div style="margin-top: 10px;">
                     <div class="row" style="padding : 10px;">
                         
-                        <box-item item='category' on-item-clicked='select_category($event, category)' ng-repeat="category in categories" ></box-item>
+                        <box-item hover-effect="true" item='category' on-item-clicked='select_category($event, category)' ng-repeat="category in categories" ></box-item>
                         
                     </div>
                 </div>
