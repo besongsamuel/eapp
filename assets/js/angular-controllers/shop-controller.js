@@ -383,6 +383,12 @@ angular.module('eappApp').controller('ShopController', ["$scope", "$q", "$mdDial
         $rootScope.select_category($event, JSON.parse(category));
     };
     
+    $scope.viewChanged = function(gridView)
+    {
+        profileData.set('gridView', gridView);
+        $scope.profileData = profileData;
+    };
+    
     $scope.$watch("query.page", function(newValue, oldValue)
     {
         window.scrollTo(0, 0);

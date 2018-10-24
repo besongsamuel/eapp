@@ -46,7 +46,7 @@
                     
                     <p ng-hide="results_available" otiprix-text style="text-align: center; margin-bottom: 50px; margin-top: 20px;"><b>Votre panier est vide.</b></p>
                     
-                    <div id="cart-optimization-container" class="layout-padding" ng-show="profileData.get().cartView">
+                    <div id="cart-optimization-container" class="layout-padding" ng-show="profileData.instance.cartView">
                         <div ng-repeat="departmentStore in departmenStores">
 
                             <div class="row layout-padding">
@@ -92,7 +92,7 @@
                         </div>
                     </div>
                     
-                    <div class="layout-padding" ng-hide="profileData.get().cartView">
+                    <div class="layout-padding" ng-hide="profileData.instance.cartView">
                         
                         <div ng-show="results_available">
                             
