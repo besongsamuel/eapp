@@ -561,5 +561,40 @@ class Eapp extends CI_Controller
             }
         }
     }
+    
+    public function get_profile_data() 
+    {
+        if($this->user != null)
+        {
+            $profile = $this->eapp_model->get(USER_PROFILE_TABLE, $this->user->profile->id);
+            
+            if($profile)
+            {
+                echo $profile->profile_value;
+                return;
+            }
+        }
+        
+        echo "";
+    }
+    
+    public function set_profile_data() 
+    {
+        if($this->user != null)
+        {
+            $this->eapp_model->create(USER_PROFILE_TABLE, array("id" => $this->user->profile->id, 
+                "profile_value" => $this->input->post("value")));
+            
+        }
+    }
+    
+    public function clear_profile_data() 
+    {
+        if($this->user != null)
+        {
+            $this->eapp_model->create(USER_PROFILE_TABLE, array("id" => $this->user->profile->id, 
+                "profile_value" => ""));
+        }
+    }
    
 }

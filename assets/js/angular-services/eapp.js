@@ -8,7 +8,7 @@ const STAT_TYPE_CLICK = 0;
 
 
 // Create eapp service to get and update our data
-angular.module('eappApp').factory('eapp', ['$http','$rootScope', '$mdDialog', function($http, $rootScope, $mdDialog)
+angular.module('eappApp').factory('eapp', ['$http','$rootScope', '$mdDialog', 'profileData', function($http, $rootScope, $mdDialog, profileData)
 {
     var eappService = {};
     
@@ -156,7 +156,7 @@ angular.module('eappApp').factory('eapp', ['$http','$rootScope', '$mdDialog', fu
         return $http.post(eappService.getSiteUrl().concat("cart/get_latest_products"), null);
     };
     
-    eappService.getCategoryProducts = function(id, query, resultsFilter, viewConfig)
+    eappService.getCategoryProducts = function(id, query, resultsFilter)
     {
         var formData = new FormData();
         formData.append("page", query.page);
@@ -167,7 +167,7 @@ angular.module('eappApp').factory('eapp', ['$http','$rootScope', '$mdDialog', fu
         formData.append("longitude", $rootScope.longitude);
         // user's latitude
         formData.append("latitude", $rootScope.latitude);
-        formData.append("viewConfig", JSON.stringify(viewConfig));
+        formData.append("profileData", JSON.stringify(profileData.get()));
         
         if(!angular.isNullOrUndefined(resultsFilter))
         {
@@ -186,14 +186,14 @@ angular.module('eappApp').factory('eapp', ['$http','$rootScope', '$mdDialog', fu
 
     };
     
-    eappService.getFlyerProducts = function(id, query, resultsFilter, viewConfig)
+    eappService.getFlyerProducts = function(id, query, resultsFilter)
     {
         var formData = new FormData();
         formData.append("page", query.page);
         formData.append("limit", query.limit);
         formData.append("filter", query.filter);
         formData.append("order", query.order);
-        formData.append("viewConfig", JSON.stringify(viewConfig));
+        formData.append("profileData", JSON.stringify(profileData.get()));
         // User's longitude
         formData.append("longitude", $rootScope.longitude);
         // user's latitude
@@ -214,14 +214,14 @@ angular.module('eappApp').factory('eapp', ['$http','$rootScope', '$mdDialog', fu
 
     };
     
-    eappService.getStoreProducts = function(query, resultsFilter, viewConfig)
+    eappService.getStoreProducts = function(query, resultsFilter)
     {
         var formData = new FormData();
         formData.append("page", query.page);
         formData.append("limit", query.limit);
         formData.append("filter", query.filter);
         formData.append("order", query.order);
-        formData.append("viewConfig", JSON.stringify(viewConfig));
+        formData.append("profileData", JSON.stringify(profileData.get()));
         formData.append("resultsFilter", JSON.stringify(resultsFilter));
         // User's longitude
         formData.append("longitude", $rootScope.longitude);

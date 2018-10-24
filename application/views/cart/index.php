@@ -29,7 +29,7 @@
                     ng-if="ready" 
                     distance="default_distance" 
                     on-distance-changed="changeCartDistance(distance)" 
-                    view-config="root.cartSettings" on-refresh="refresh(viewConfig)" 
+                    on-refresh="refresh(viewConfig)" 
                     ready="ready" 
                     is-user-logged="isUserLogged"
                     result-set="cartFilterSettings" 
@@ -46,7 +46,7 @@
                     
                     <p ng-hide="results_available" otiprix-text style="text-align: center; margin-bottom: 50px; margin-top: 20px;"><b>Votre panier est vide.</b></p>
                     
-                    <div id="cart-optimization-container" class="layout-padding" ng-show="cartSettings.cartView">
+                    <div id="cart-optimization-container" class="layout-padding" ng-show="profileData.get().cartView">
                         <div ng-repeat="departmentStore in departmenStores">
 
                             <div class="row layout-padding">
@@ -80,7 +80,7 @@
 
                                         <md-divider ng-if="$first"></md-divider>
 
-                                        <cart-list-item iscartview='cartSettings.cartView' item='item' on-delete='removeFromCart(id)' on-update='productChanged(sp)' on-update-quantity='updateCartQuantity(quantity, id)'></cart-list-item>
+                                        <cart-list-item item='item' on-delete='removeFromCart(id)' on-update='productChanged(sp)' on-update-quantity='updateCartQuantity(quantity, id)'></cart-list-item>
 
                                         <md-divider ng-if="!$last"></md-divider>
 
@@ -92,7 +92,7 @@
                         </div>
                     </div>
                     
-                    <div class="layout-padding" ng-hide="cartSettings.cartView">
+                    <div class="layout-padding" ng-hide="profileData.get().cartView">
                         
                         <div ng-show="results_available">
                             
@@ -118,13 +118,11 @@
 
                                                       <md-divider ng-if="$first"></md-divider>
 
-                                                          <cart-list-item iscartview='cartSettings.cartView' item='item' on-delete='removeFromCart(id)' on-update='productChanged(sp)' on-update-quantity='updateCartQuantity(quantity, id)'></cart-list-item>
+                                                          <cart-list-item item='item' on-delete='removeFromCart(id)' on-update='productChanged(sp)' on-update-quantity='updateCartQuantity(quantity, id)'></cart-list-item>
 
                                                       <md-divider ng-if="!$last"></md-divider>
 
                                                   </div>
-
-
                                               </div>
                                           </div>
 
@@ -132,7 +130,7 @@
                                           <div class="md-warn"><a class="md-warn" href  data-toggle="collapse" data-target="#products_{{store.id}}">Voir produits indisponibles</a> <span class="badge">{{store.missing_products.length}}</div>
                                           <div id="products_{{store.id}}" class="collapse">
                                               <div ng-repeat="missingItem in store.missing_products" class="noright">
-                                                  <cart-list-item iscartview='cartSettings.cartView' view-retailer-image='true' item='missingItem' on-delete='removeFromCart(id)' on-update='productChanged(sp)' on-update-quantity='updateCartQuantity(quantity, id)'></cart-list-item>
+                                                  <cart-list-item view-retailer-image='true' item='missingItem' on-delete='removeFromCart(id)' on-update='productChanged(sp)' on-update-quantity='updateCartQuantity(quantity, id)'></cart-list-item>
                                               </div>
                                           </div>
 

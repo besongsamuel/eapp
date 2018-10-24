@@ -16,13 +16,12 @@ angular.module('eappApp').component("resultFilter",
         ready : '=',
         type : '@',
         onRefresh : '&',
-        viewConfig : '=',
         onDistanceChanged : '&',
         isUserLogged : '<'
     }
 });
 
-function ResultFilterController($scope)
+function ResultFilterController($scope, profileData)
 {
     var ctrl = this;
     
@@ -36,8 +35,8 @@ function ResultFilterController($scope)
     {
         ctrl.settings = ctrl.resultSet;
         $scope.settings = ctrl.resultSet;
+        $scope.viewConfig = profileData.get();
         $scope.distance = ctrl.distance;
-        $scope.viewConfig = ctrl.viewConfig;
         $scope.isUserLogged = ctrl.isUserLogged;
                 
         if(ctrl.type === 'CART')

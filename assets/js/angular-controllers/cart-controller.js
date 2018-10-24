@@ -11,7 +11,6 @@ angular.module('eappApp').component('cartListItem', {
     bindings: 
     {
         item: '<',
-        iscartview : '<',
         onDelete: '&',
         onUpdate: '&',
         onUpdateQuantity: '&',
@@ -19,7 +18,7 @@ angular.module('eappApp').component('cartListItem', {
     }
 });
 
-function CartListItemController($scope, $rootScope, eapp, $mdDialog)
+function CartListItemController($scope, $rootScope, eapp, $mdDialog, profileData)
 {
     var ctrl = this;
     
@@ -27,6 +26,8 @@ function CartListItemController($scope, $rootScope, eapp, $mdDialog)
     
     ctrl.$onInit = function()
     {
+        ctrl.iscartview = profileData.get().cartView;
+        
         ctrl.isUserLogged = $rootScope.isUserLogged;
         
         ctrl.errorMargin = 10;
@@ -298,7 +299,7 @@ function CartListItemController($scope, $rootScope, eapp, $mdDialog)
     };
 }
 
-angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "$http", "$mdDialog","eapp", function($scope, $rootScope, $http, $mdDialog, eapp) 
+angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "$http", "$mdDialog","eapp","profileData", function($scope, $rootScope, $http, $mdDialog, eapp, profileData) 
 {
     var ctrl = this;
     
@@ -336,6 +337,8 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
     
     $scope.productCategories = [];
     
+    $scope.profileData = profileData;
+    
     $scope.$watch('min_price_optimization', function()
     {
         $scope.show_min_price_optimization = $scope.min_price_optimization > 0 && $scope.price_optimization > 0 && ($scope.price_optimization - $scope.min_price_optimization) > 0.1;
@@ -352,23 +355,11 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
      */
     $scope.Init = function()
     {       
-        $scope.default_distance = $scope.getDistance();
+        $scope.profileData =  profileData.get();
+
+        $scope.default_distance = profileData.get().cartDistance;
         
-        if(window.sessionStorage.getItem('cartSettings'))
-        {
-            $rootScope.cartSettings = JSON.parse(window.sessionStorage.getItem('cartSettings').toString());
-            
-            if(!$scope.isUserLogged)
-            {
-                $rootScope.cartSettings.searchMyList = false;
-            }
-        }
-        else
-        {
-            $rootScope.cartSettings = { cartView : true, optimizedCart : false, searchMyList : false };
-        }
-        
-        window.sessionStorage.removeItem("cartFilterSettings");
+        profileData.set("cartFilterSettings", null);
         
         $scope.update_cart_list();
         
@@ -422,19 +413,7 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
     
     $scope.getDistance = function()
     {
-        if($scope.isUserLogged)
-        {
-            return parseInt($scope.loggedUser.profile.cart_distance);
-        }
-        else if(window.localStorage.getItem('cart_distance'))
-        {
-            return parseInt(window.localStorage.getItem('cart_distance'));
-        }
-        else
-        {
-            // return a default distance
-            return 4;
-        }
+        return profileData.get().cartDistance;
     };
     
     /**
@@ -449,34 +428,23 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
         
         $scope.ready = false;
         
-        if(window.sessionStorage.getItem("cartFilterSettings"))
+        if(profileData.instance.cartFilterSettings)
         {
-            var settings = window.sessionStorage.getItem("cartFilterSettings");
-            
-            if(!angular.isNullOrUndefined(settings))
-            {
-                $scope.cartFilterSettings = JSON.parse(settings.toString());
-                
-                $scope.createResultsFilter();
-            
-                $scope.ready = true;
-            }
-            else
-            {
-                window.sessionStorage.removeItem("cartFilterSettings");                
-            }
+            $scope.cartFilterSettings = profileData.instance.cartFilterSettings;
+            $scope.createResultsFilter();
+            $scope.ready = true;
         }
         	
         var formData = new FormData();
-        formData.append("distance", $scope.getDistance());
+        formData.append("distance", profileData.get().cartDistance);
         // User's longitude
         formData.append("longitude", $rootScope.longitude);
         // user's latitude
         formData.append("latitude", $rootScope.latitude);
         
-        formData.append("searchAll", JSON.stringify(!$rootScope.cartSettings.searchMyList));
+        formData.append("searchAll", JSON.stringify(!profileData.get().searchMyList));
         formData.append("resultsFilter", JSON.stringify($scope.resultFilter));
-        formData.append("viewOptimizedList", $rootScope.cartSettings.optimizedCart);
+        formData.append("viewOptimizedList", profileData.get().optimizedCart);
         
         // Send request to server to get optimized list 	
         $scope.promise = 
@@ -486,7 +454,7 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
             {
                 $scope.cartFilterSettings = response.data.cartFilterSettings;
                 
-                window.sessionStorage.setItem("cartFilterSettings", JSON.stringify($scope.cartFilterSettings));
+                profileData.set("cartFilterSettings", response.data.cartFilterSettings);
                 
                 $rootScope.cart = [];
                 
@@ -510,7 +478,7 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
                 $scope.results_available = !angular.isNullOrUndefined($scope.cart) && $scope.cart.length > 0;
                 
                 
-                if($rootScope.cartSettings.cartView)
+                if(profileData.get().cartView)
                 {
                     $rootScope.sortCart();
                 
@@ -912,96 +880,91 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
         var longitude = $scope.isUserLogged ? $scope.loggedUser.profile.longitude : $scope.longitude;
         var latitude = $scope.isUserLogged ? $scope.loggedUser.profile.latitude : $scope.latitude;
         
-        var count = 0;
+        var tmpOrigins = [];
+        var tmpDestinations = [];
+        var storeIndex = 0;
         
-        var nextBatchIndex = 0;
+        var userLocation = new google.maps.LatLng(parseFloat(latitude), parseFloat(longitude));
         
+        // Group the destinations and origins into groups of 5 each
         for(var i in $scope.departmenStores)
         {
-            if(i < ctrl.lastBatchIndex)
-            {
-                // Already got the distance and time information for this department store. 
-                // We skip it
-                continue;
-            }
-                        
-            if(count < ctrl.BATCH_SIZE)
-            {
-                var department_store = $scope.departmenStores[i];
-                origins.push(new google.maps.LatLng(parseFloat(latitude), parseFloat(longitude)));
-                destinations.push(new google.maps.LatLng(parseFloat(department_store.latitude), parseFloat(department_store.longitude)));
-                count++;
-            }
+            var department_store = $scope.departmenStores[i];
+            tmpOrigins.push(userLocation);
+            tmpDestinations.push(new google.maps.LatLng(parseFloat(department_store.latitude), parseFloat(department_store.longitude)));
+            storeIndex++;
             
-            
-            if(count === ctrl.BATCH_SIZE)
+            // 5 stores where added
+            if(storeIndex > 0 && parseInt(storeIndex % ctrl.BATCH_SIZE) === 0)
             {
-                nextBatchIndex = parseInt(i) + parseInt(1);
-                break;
-            }
-            
-            if(count !== ctrl.BATCH_SIZE)
-            {
-                nextBatchIndex = $scope.departmenStores.length;
+                storeIndex = 0;
+                origins.push(tmpOrigins);
+                destinations.push(tmpDestinations);
+                tmpOrigins = [];
+                tmpDestinations = [];
             }
         }
         
-        // No more batches are available
-        if(count === 0)
+        if(tmpOrigins.length > 0)
         {
-            $rootScope.totalPriceAvailableProducts = $scope.getCartTotalPrice(true);
-            $rootScope.totalPriceUnavailableProducts = $scope.getCartTotalPrice(false);
-            ctrl.lastBatchIndex = 0;
-            return;
+            origins.push(tmpOrigins);
+            destinations.push(tmpDestinations);
         }
         
-        var service = new google.maps.DistanceMatrixService();
-        service.getDistanceMatrix(
+        for(var i in origins)
         {
-            origins: origins,
-            destinations: destinations,
-            travelMode: mode,
-            avoidHighways: false,
-            avoidTolls: false
-        }, function(response, status)
-        {
-            if(response === null || typeof response === "undefined")
+            let arrayIndex = i * ctrl.BATCH_SIZE;
+            
+            var service = new google.maps.DistanceMatrixService();
+            
+            service.getDistanceMatrix(
             {
-                return;
-            }
-
-            $scope.$apply(function()
+                origins: origins[i],
+                destinations: destinations[i],
+                travelMode: mode,
+                avoidHighways: false,
+                avoidTolls: false
+            }, function(response, status)
             {
-                
-                for(var x in response.rows)
+                if(response === null || typeof response === "undefined")
                 {
-                    if(typeof response.rows[x].elements[0].status !== 'undefined' && response.rows[x].elements[0].status === "ZERO_RESULTS")
-                    {
-                        continue;
-                    }
-                    else
-                    {
-                        if(!angular.isNullOrUndefined(response.rows[0].elements[x].distance))
-                        {
-                            var index = parseInt(ctrl.lastBatchIndex) + parseInt(x);
-                            
-                            $scope.departmenStores[index].distance = response.rows[0].elements[x].distance.value;
-                            $scope.departmenStores[index].distanceText = response.rows[0].elements[x].distance.text;
-                            $scope.departmenStores[index].timeText = response.rows[0].elements[x].duration.text;
-                            $scope.departmenStores[index].fullName = $scope.departmenStores[index].address + ', ' + 
-                                    $scope.departmenStores[index].city + ', ' + 
-                                    $scope.departmenStores[index].state + ', ' + 
-                                    $scope.departmenStores[index].postcode;
-                        }
-                        
-                    }
+                    return;
                 }
-                
-                ctrl.lastBatchIndex = nextBatchIndex;
-                $scope.getDepartmentStoreInfo();
-                
+
+                $scope.$apply(function()
+                {
+
+                    for(var x in response.rows)
+                    {
+                        if(typeof response.rows[x].elements[0].status !== 'undefined' && response.rows[x].elements[0].status === "ZERO_RESULTS")
+                        {
+                            continue;
+                        }
+                        else
+                        {
+                            if(!angular.isNullOrUndefined(response.rows[0].elements[x].distance))
+                            {
+                                var index = arrayIndex + parseInt(x);
+
+                                $scope.departmenStores[index].distance = response.rows[0].elements[x].distance.value;
+                                $scope.departmenStores[index].distanceText = response.rows[0].elements[x].distance.text;
+                                $scope.departmenStores[index].timeText = response.rows[0].elements[x].duration.text;
+                                $scope.departmenStores[index].fullName = $scope.departmenStores[index].address + ', ' + 
+                                $scope.departmenStores[index].city + ', ' + 
+                                $scope.departmenStores[index].state + ', ' + 
+                                $scope.departmenStores[index].postcode;
+                            }
+
+                        }
+                    }
+                    
+                    $rootScope.totalPriceAvailableProducts = $scope.getCartTotalPrice(true);
+                    $rootScope.totalPriceUnavailableProducts = $scope.getCartTotalPrice(false);
+
+                });
             });
-        });
+        }
+        
 	  
     };
     
@@ -1013,7 +976,7 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
     {
         var total = 0;
 
-        if($rootScope.cartSettings.cartView)
+        if(profileData.get().cartView)
         {
             for(var key in $scope.departmenStores)
             {
@@ -1073,57 +1036,84 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
         
         var longitude = $scope.isUserLogged ? $scope.loggedUser.profile.longitude : $scope.longitude;
         var latitude = $scope.isUserLogged ? $scope.loggedUser.profile.latitude : $scope.latitude;
-
-        for(var i in $scope.stores.slice(0, 5))
+        var storeIndex = 0;
+        var tmpOrigins = [];
+        var tmpDestinations = [];
+        // The origin is always the same
+        var userLocation = new google.maps.LatLng(parseFloat(latitude), parseFloat(longitude));
+        
+        // Group the destinations and origins into groups of 5 each
+        for(var i in $scope.stores)
         {
             var department_store = $scope.stores[i].department_store;
-            origins.push(new google.maps.LatLng(parseFloat(latitude), parseFloat(longitude)));
-            destinations.push(new google.maps.LatLng(parseFloat(department_store.latitude), parseFloat(department_store.longitude)));
+            tmpOrigins.push(userLocation);
+            tmpDestinations.push(new google.maps.LatLng(parseFloat(department_store.latitude), parseFloat(department_store.longitude)));
+            storeIndex++;
+            
+            // 5 stores where added
+            if(storeIndex > 0 && parseInt(storeIndex % 5) === 0)
+            {
+                storeIndex = 0;
+                origins.push(tmpOrigins);
+                destinations.push(tmpDestinations);
+                tmpOrigins = [];
+                tmpDestinations = [];
+            }
         }
         
-        var service = new google.maps.DistanceMatrixService();
-        service.getDistanceMatrix(
+        if(tmpOrigins.length > 0)
         {
-                origins: origins,
-                destinations: destinations,
-                travelMode: mode,
-                avoidHighways: false,
-                avoidTolls: false
-        }, function(response, status)
+            origins.push(tmpOrigins);
+            destinations.push(tmpDestinations);
+        }
+        
+        
+        for(var i in origins)
         {
-            if(response === null || typeof response === "undefined")
+            let arrayIndex = i * 5;
+            
+            var service = new google.maps.DistanceMatrixService();
+            
+            service.getDistanceMatrix(
             {
-                return;
-            }
-
-            $scope.$apply(function()
+                    origins: origins[i],
+                    destinations: destinations[i],
+                    travelMode: mode,
+                    avoidHighways: false,
+                    avoidTolls: false
+            }, function(response, status)
             {
-                for(var x in response.rows)
+                if(response === null || typeof response === "undefined")
                 {
-                    if(typeof response.rows[x].elements[0].status !== 'undefined' 
-                            && (response.rows[x].elements[0].status === "ZERO_RESULTS" || response.rows[0].elements[x].status === "ZERO_RESULTS"))
-                    {
-                        continue;
-                    }
-                    else
-                    {
-                        $scope.stores[x].department_store.distance = response.rows[0].elements[x].distance.value;
-                        $scope.stores[x].department_store.distanceText = response.rows[0].elements[x].distance.text;
-                        $scope.stores[x].department_store.time = response.rows[0].elements[x].duration.value;
-                        $scope.stores[x].department_store.timeText = response.rows[0].elements[x].duration.text;
-                        $scope.stores[x].department_store.fullName = response.destinationAddresses[x];
-                    }
-                    $rootScope.totalPriceAvailableProducts = $scope.getCartTotalPrice(true);
-                    $rootScope.totalPriceUnavailableProducts = $scope.getCartTotalPrice(false);
+                    return;
                 }
-            });
 
-        });
-	  
+                $scope.$apply(function()
+                {
+                    for(var x in response.rows)
+                    {
+                        if(typeof response.rows[x].elements[0].status !== 'undefined' 
+                                && (response.rows[x].elements[0].status === "ZERO_RESULTS" || response.rows[0].elements[x].status === "ZERO_RESULTS"))
+                        {
+                            continue;
+                        }
+                        else
+                        {
+                            $scope.stores[arrayIndex + parseInt(x)].department_store.distance = response.rows[0].elements[x].distance.value;
+                            $scope.stores[arrayIndex + parseInt(x)].department_store.distanceText = response.rows[0].elements[x].distance.text;
+                            $scope.stores[arrayIndex + parseInt(x)].department_store.time = response.rows[0].elements[x].duration.value;
+                            $scope.stores[arrayIndex + parseInt(x)].department_store.timeText = response.rows[0].elements[x].duration.text;
+                            $scope.stores[arrayIndex + parseInt(x)].department_store.fullName = response.destinationAddresses[x];
+                        }
+                        $rootScope.totalPriceAvailableProducts = $scope.getCartTotalPrice(true);
+                        $rootScope.totalPriceUnavailableProducts = $scope.getCartTotalPrice(false);
+                    }
+                });
+
+            });
+        }
     };
 	
-    
-    
     $scope.InitMap = function(ev, departmentStore)
     {
         
@@ -1190,7 +1180,7 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
     {
         var item = null;
         
-        if($rootScope.cartSettings.cartView)
+        if(profileData.get().cartView)
         {
             for(var i in $rootScope.cart)
             {
@@ -1268,7 +1258,7 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
 
             $scope.update_price_optimization();
             // If the user changed a product, he is no longer viewing an optimized store. 
-            $rootScope.cartSettings.optimizedCart = false;
+            profileData.set("optimizedCart", false);
         });
         
         
@@ -1651,7 +1641,7 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
     {
         $scope.productCategories = [];
         
-        if(!$rootScope.cartSettings.cartView)
+        if(!profileData.get().cartView)
         {
             for(var x in $rootScope.selectedStore.store_products)
             {
@@ -1995,7 +1985,7 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
     {
         $scope.updateItemChanged(item);
         
-        window.sessionStorage.setItem("cartFilterSettings", JSON.stringify($scope.cartFilterSettings));
+        profileData.set("cartFilterSettings", $scope.cartFilterSettings);
         
         // Get store filter
         $scope.createResultsFilter();
@@ -2006,11 +1996,8 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
     
     $scope.refresh = function(cartSettings)
     {
-        $scope.cartSettings = cartSettings;
-        	
-	// Save the new configuration for the current session    
-	window.sessionStorage.setItem("cartSettings", JSON.stringify($scope.cartSettings));
-	    
+        profileData.reset(cartSettings);
+        
         $scope.update_cart_list();
     };
     

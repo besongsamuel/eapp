@@ -1,4 +1,4 @@
-angular.module('eappApp').controller('ShopController', ["$scope", "$q", "$mdDialog", "$rootScope", "eapp", "sessionData", function ($scope, $q, $mdDialog, $rootScope, eapp, sessionData) 
+angular.module('eappApp').controller('ShopController', ["$scope", "$q", "$mdDialog", "$rootScope", "eapp", "profileData", function ($scope, $q, $mdDialog, $rootScope, eapp, profileData) 
 {
     $rootScope.query = 
     {
@@ -17,18 +17,14 @@ angular.module('eappApp').controller('ShopController', ["$scope", "$q", "$mdDial
     $scope.isInitialized = false;
     
     $scope.root = $rootScope;
-    
-    $scope.sessionData = sessionData.get();
-    
+        
     var ctrl = this;
     
     /**
      * This variable is true when a store is selected. 
      */
     $scope.isStoreSelected = false;
-    
-    $scope.viewConfig = { viewAll : true };
-   
+       
     $scope.productsReady = false;
     
     angular.element(document).ready(function()
@@ -47,10 +43,8 @@ angular.module('eappApp').controller('ShopController', ["$scope", "$q", "$mdDial
         
         if($(window).width() < 500)
         {
-            $scope.sessionData.gridView = true;
+            profileData.get().gridView = true;
         }
-        
-        //$rootScope.hideSearchArea = true;
         
         if(window.sessionStorage.getItem("searchText"))
         {
@@ -78,12 +72,10 @@ angular.module('eappApp').controller('ShopController', ["$scope", "$q", "$mdDial
             }
             
             $rootScope.isSearch = true;
-            
             $scope.isInitialized = true;
-            
         }
         
-        $scope.distance = $rootScope.getOptimizationDistance();
+        $scope.distance =  profileData.get().optimizationDistance;
                 
     };
 
@@ -150,59 +142,31 @@ angular.module('eappApp').controller('ShopController', ["$scope", "$q", "$mdDial
             return;
         }
                 
-        if(window.sessionStorage.getItem("filterSettings"))
+        if(profileData.get().filterSettings)
         {
-            var settings = window.sessionStorage.getItem("filterSettings");
-            
-            if(!angular.isNullOrUndefined(settings))
-            {
-                $scope.filterSettings = JSON.parse(settings.toString());
-            
-                // Get the filter from the current settings and checks if a store is selected
-                $scope.createResultsFilter();
-            
-                $scope.productsReady = true;
-            }
-            else
-            {
-                window.sessionStorage.removeItem("filterSettings");
-            }
+            $scope.filterSettings = profileData.get().filterSettings;
+            // Get the filter from the current settings and checks if a store is selected
+            $scope.createResultsFilter();
+            $scope.productsReady = true;
         }
-	    
-	if(window.sessionStorage.getItem("viewConfig"))
-        {
-            var config = window.sessionStorage.getItem("viewConfig");
             
-            if(!angular.isNullOrUndefined(config))
-            {
-                $scope.viewConfig = JSON.parse(config.toString());
-                
-                if($scope.viewConfig.viewAll)
-                {
-                    $scope.isStoreSelected = true;
-                }
-            }
-            else
-            {
-                window.sessionStorage.removeItem("viewConfig");
-            }
-        }
-        
+        $scope.isStoreSelected = profileData.get().viewAll;
+            
         var q = $q.defer();
         
         $scope.isStoreSelected = $scope.IsStoreSelected();
         
         if(!angular.isNullOrUndefined($scope.store_id))
         {
-            $scope.promise = eapp.getFlyerProducts($scope.store_id, $scope.query, $scope.resultFilter, $scope.viewConfig);
+            $scope.promise = eapp.getFlyerProducts($scope.store_id, $scope.query, $scope.resultFilter);
         }
         else if(!angular.isNullOrUndefined($scope.category_id))
         {
-            $scope.promise = eapp.getCategoryProducts($scope.category_id, $scope.query, $scope.resultFilter, $scope.viewConfig);
+            $scope.promise = eapp.getCategoryProducts($scope.category_id, $scope.query, $scope.resultFilter);
         }
         else
         {
-            $scope.promise = eapp.getStoreProducts($scope.query, $scope.resultFilter, $scope.viewConfig);
+            $scope.promise = eapp.getStoreProducts($scope.query, $scope.resultFilter);
         }
       
         $scope.promise.then(function(response)
@@ -218,8 +182,8 @@ angular.module('eappApp').controller('ShopController', ["$scope", "$q", "$mdDial
             $scope.products = array;
             
             $scope.filterSettings = response.data.settings;
-
-            window.sessionStorage.setItem("filterSettings", JSON.stringify($scope.filterSettings));
+            
+            profileData.set("filterSettings", response.data.settings);
             
             $scope.hasResults = array.length > 0;
             
@@ -254,7 +218,7 @@ angular.module('eappApp').controller('ShopController', ["$scope", "$q", "$mdDial
             }
         }
         
-        if($scope.viewConfig.viewAll)
+        if(profileData.get().viewAll)
         {
             return true;
         }
@@ -289,9 +253,9 @@ angular.module('eappApp').controller('ShopController', ["$scope", "$q", "$mdDial
     
     $scope.refresh = function(viewConfig)
     {
-        $scope.viewConfig = viewConfig;
+        profileData.set('viewAll', viewConfig.viewAll);
         
-        if($scope.viewConfig.viewAll)
+        if(profileData.get().viewAll)
         {
             $scope.isStoreSelected = true;
         }
@@ -299,9 +263,6 @@ angular.module('eappApp').controller('ShopController', ["$scope", "$q", "$mdDial
         {
             $scope.isStoreSelected = $scope.IsStoreSelected();
         }
-	
-	// Save the new configuration for the current session    
-	window.sessionStorage.setItem("viewConfig", JSON.stringify($scope.viewConfig));
 	    
         $scope.getProducts();
     };
@@ -332,7 +293,7 @@ angular.module('eappApp').controller('ShopController', ["$scope", "$q", "$mdDial
     {
         $scope.updateItemChanged(item);
         
-        window.sessionStorage.setItem("filterSettings", JSON.stringify($scope.filterSettings));
+        profileData.set("filterSettings", $scope.filterSettings);
         
         // Get store filter
         $scope.createResultsFilter();
@@ -403,35 +364,8 @@ angular.module('eappApp').controller('ShopController', ["$scope", "$q", "$mdDial
     
     $scope.changeDistance = function(newDistance)
     {
-        if($scope.isUserLogged)
-        {
-            // Start Loading
-            $scope.isLoading = true;
-            
-            var changePromise = eapp.changeDistance('optimization_distance', newDistance);
-
-            changePromise.then(function onFulfilled(response)
-            {
-                if(response.data)
-                {
-                    // Update Logged User
-                    $rootScope.loggedUser = response.data;
-                    $scope.getProducts();
-                }
-            }).catch (function(err)
-            {
-                console.log(err);
-            });
-
-        }
-        else
-        {
-            // Change in the session
-            window.localStorage.setItem('optimization_distance', newDistance);
-            $scope.getProducts();
-        }
-
-        $mdDialog.cancel();
+        profileData.set("optimizationDistance", newDistance);
+        $scope.getProducts();
     };
     
     ctrl.select_category = function($event, category)
@@ -453,15 +387,4 @@ angular.module('eappApp').controller('ShopController', ["$scope", "$q", "$mdDial
     {
         window.scrollTo(0, 0);
     });
-    
-    $scope.$watch("sessionData.gridView", function(newValue)
-    {
-        if(!angular.isNullOrUndefined(newValue))
-        {
-            sessionData.set("gridView", newValue);
-        }
-         
-    });
-    
-  
 }]);
