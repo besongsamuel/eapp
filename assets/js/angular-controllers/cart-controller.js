@@ -1867,28 +1867,7 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
     
     $scope.changeCartDistance = function(newDistance)
     {
-        if($scope.isUserLogged)
-        {
-            var changePromise = eapp.changeDistance('cart_distance', newDistance);
-
-            changePromise.then(function(response)
-            {
-                if(response.data)
-                {
-                    // Update Logged User
-                    $rootScope.loggedUser = response.data;
-                    $scope.optimization_preference_changed();
-                }
-            });
-        }
-        else
-        {
-            // Change in the session
-            window.localStorage.setItem('cart_distance', newDistance);
-            $scope.optimization_preference_changed();
-        }
-
-        $mdDialog.cancel();
+        profileData.instance.set("cartDistance", newDistance);
     };
     
     function ChangeDistanceController($scope, $mdDialog) 
