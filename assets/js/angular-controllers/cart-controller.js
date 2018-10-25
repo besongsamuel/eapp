@@ -355,7 +355,6 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
      */
     $scope.Init = function()
     {       
-        $scope.profileData =  profileData.get();
 
         $scope.default_distance = profileData.get().cartDistance;
         
@@ -2020,7 +2019,12 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
             {
                 $rootScope.isCart = true;
                 
-                $scope.Init();
+                angular.element(document).ready(function()
+                {
+                    $scope.Init();
+                });
+                
+                
             }
         }
         
