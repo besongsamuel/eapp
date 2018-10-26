@@ -299,7 +299,7 @@ function CartListItemController($scope, $rootScope, eapp, $mdDialog, profileData
     };
 }
 
-angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "$http", "$mdDialog","eapp","profileData", function($scope, $rootScope, $http, $mdDialog, eapp, profileData) 
+angular.module("eappApp").controller("CartController", ["appService", "$scope","$rootScope", "$http", "$mdDialog","eapp","profileData", function(appService, $scope, $rootScope, $http, $mdDialog, eapp, profileData) 
 {
     var ctrl = this;
     
@@ -337,7 +337,7 @@ angular.module("eappApp").controller("CartController", ["$scope","$rootScope", "
     
     $scope.productCategories = [];
     
-    $scope.profileData = profileData;
+    $rootScope.profileData = profileData;
     
     $scope.$watch('min_price_optimization', function()
     {

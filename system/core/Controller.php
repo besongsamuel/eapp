@@ -113,7 +113,7 @@ class CI_Controller {
         
         // Set template data
         $this->data = array(
-            'title' => 'épicerie a petit prix',
+            'title' => 'Épicerie a petit prix',
             'header_my_account' => 'My Account',
             'header_my_list' => 'My Shopping List',
             'header_my_cart' => 'My Cart',
@@ -166,8 +166,8 @@ class CI_Controller {
     {
         return self::$instance;
     }
-
-    public function get_cached_cart_contents()
+    
+    public function get_cart() 
     {
         $cart = array();
 
@@ -214,6 +214,13 @@ class CI_Controller {
 
             array_push($cart, $cart_item);
         }
+        
+        return $cart;
+    }
+
+    public function get_cached_cart_contents()
+    {
+        $cart = $this->get_cart();
 
         if(sizeof($cart) > 0)
         {
@@ -253,8 +260,6 @@ class CI_Controller {
 
     }
     
-    
-        
     public function send_verification_code($phone_number)
     {
 

@@ -4,42 +4,82 @@
  * and open the template in the editor.
  */
 
-angular.module("eappApp").controller("MenuController", ["$rootScope", "$http", "$mdDialog", "eapp", function($rootScope, $http, $mdDialog, eapp) 
+angular.module("eappApp").controller("MenuController", function($scope, eapp, appService, cart) 
 {
-    
-    $rootScope.isHome = false;
-    
-    // This variable prevents us from getting the cart contents twice.
-    $rootScope.cartReady = false;
-	
-    $rootScope.remove_product_from_cart = function(product_id)
+    appService.ready.then(function()
     {
-        var removePromise = eapp.removeFromCart($rootScope.getRowID(product_id));
-
-        removePromise.then(function(response)
+        $scope.selectedMenu = 0;
+        
+        switch(appService.controller.toString())
         {
-            if(Boolean(response.data.success))
-            {
-                $rootScope.removeItemFromCart(product_id);
-            }
-        });
-
+            case "home":
+                switch(appService.method.toString())
+                {
+                    case "contact":
+                        $scope.selectedMenu = 3;
+                        break;
+                    case "about":
+                        $scope.selectedMenu = 4;
+                        break;
+                    default:
+                        $scope.selectedMenu = 0;
+                        break;
+                    
+                }
+                break;
+            case "account":
+                
+                switch(appService.method.toString())
+                {
+                    case "my_grocery_list":
+                        $scope.selectedMenu = 1;
+                        break;
+                    case "login":
+                        $scope.selectedMenu = 5;
+                        break;
+                    case "register":
+                        $scope.selectedMenu = 6;
+                        break;
+                    default:
+                        $scope.selectedMenu = 5;
+                        break;
+                    
+                }
+                
+                break;
+            case "shop":
+                switch(appService.method.toString())
+                {
+                    case "select_flyer_store":
+                        $scope.selectedMenu = 1;
+                        break;
+                    case "categories":
+                        $scope.selectedMenu = 1;
+                        break;
+                    default:
+                        $scope.selectedMenu = 2;
+                    
+                }
+                break;
+            case "admin":
+                $scope.selectedMenu = 100;
+                break;
+            default:
+                $scope.selectedMenu = 0;
+                break;
+        }
+        
+    });
+	
+    $scope.getTotalItemsInCart = function()
+    {
+        return cart.getTotalItemsInCart();
     };
     
-    angular.element(document).ready(function()
+    $scope.getCartPrice = function()
     {
-        var cartPromise = eapp.getCart();
+        return cart.getCartPrice();
+    };
     
-        cartPromise.then(function(cartResponse)
-        {
-            // Get the cart data when the menu is loaded
-            $rootScope.cart = cartResponse.data;
-            
-            $rootScope.cartReady = true;
-            
-        });
-    });
-
-	
-}]);
+});
 

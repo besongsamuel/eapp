@@ -10,12 +10,19 @@ angular.module('eappApp').component("storeProduct",
     }
 });
 
-function Controller($scope, $rootScope, eapp)
+function Controller($scope, appService, eapp, cart)
 {
     var ctrl = this;
     
-    $scope.root = $rootScope;
-    
+    appService.ready.then(function()
+    {
+        $scope.isUserLogged = appService.isUserLogged;
+        
+        $scope.isUserActive =  appService.isUserLogged ? parseInt(appService.loggedUser.is_active) === 1 : false;
+        
+        $scope.loggedUser = appService.loggedUser;
+    });
+        
     ctrl.$onInit = function()
     {
         if(!angular.isNullOrUndefined(ctrl.jsonStoreProduct))
@@ -33,6 +40,22 @@ function Controller($scope, $rootScope, eapp)
     ctrl.viewProduct = function(product_id, ev)
     {
         eapp.viewProduct($scope, product_id, ev);
+    };
+    
+    $scope.productInCart = function(product_id)
+    {
+        return cart.productInCart(product_id);
+    };
+    
+    $scope.addProductToCart = function(product_id, store_product_id = -1, product_quantity = 1)
+    {
+        cart.addProductToCart(product_id, store_product_id, product_quantity);
+    };
+    
+    $scope.removeProductFromCart = function(product_id)
+    {
+        cart.removeProductFromCart(product_id);
+
     };
     
 }

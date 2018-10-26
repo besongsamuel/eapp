@@ -8,6 +8,29 @@ and open the template in the editor.
     Author     : besongsamuel
 */
 
+.home-category-title
+{
+    margin-top: 20px;
+}
+
+.home-category-title b
+{
+    font-size: 24px;
+}
+
+.home-category-title a
+{
+    margin-left: 15px;
+    color: rgb(255,87,34);
+    font-weight: 500;
+    font-size: 16px;
+}
+
+.owl-theme .owl-dots .owl-dot.active span, .owl-theme .owl-dots .owl-dot:hover span 
+{
+    background: #1abc9c;
+}
+
 section {
   position: relative;
   width: 100%;

@@ -4,40 +4,58 @@
  * and open the template in the editor.
  */
 
-angular.module("eappApp").controller("HomeController", ["$rootScope", "$scope", "eapp", function($rootScope, $scope, eapp) 
+angular.module("eappApp").controller("HomeController", ["appService", "$scope", "eapp", function(appService, $scope, eapp) 
 {
+    var ctrl = this;
     
     angular.element(document).ready(function()
     {
-        $rootScope.isHome = true;
-    
-        $rootScope.hideSearchArea = true;
+         $('.product-carousel').owlCarousel({
+            loop:true,
+            nav:false,
+            autoplay:false,
+            autoplayTimeout: 1000,
+            autoplayHoverPause:true,
+            margin:0,
+            responsiveClass:true,
+            navText : ['Précédent', 'Suivant'],
 
-        $scope.yes = true;
-        
-        $scope.no = false;
-        
-        $scope.caption_01 = "Recherchez et ajouter un ou plusieurs produits à votre liste d’épicerie en passant par les circulaires ou les différentes catégories de produits";
-        $scope.caption_02 = "En un seul clic, Otiprix recherche les meilleurs prix pour chaque produit de votre liste dans tous les magasins";
-        $scope.caption_03 = "Otiprix vous fournit votre liste avec les magasins qui offrent les meilleurs prix. Vous pouvez imprimer cette liste, l’envoyé par SMS ou par courriel.";
-        
-        var getLatestProductsPromise = eapp.getLatestProducts();
-
-        getLatestProductsPromise.then(function(response)
-        {
-            var array = $.map(response.data, function(value, index) {
-                return [value];
-            });
-
-            $scope.latestProducts = array;
+            responsive:{
+                0:{
+                    items:1
+                },
+                600:{
+                    items:2
+                },
+                1000:{
+                    items:4
+                }
+            }
         });
     });
     
-    $scope.searchProducts = function(searchText)
+    ctrl.selectCategory = function(category)
     {
-        $scope.clearSessionItems();
-        window.sessionStorage.setItem("searchText", searchText);
-        window.location.href =  $scope.site_url.concat("/shop");
+        appService.selectCategory(JSON.parse(category));
+    };
+    
+    ctrl.getHomeCategories = function()
+    {
+        var categoriesPromise = eapp.getCategories(5, 8);
+        
+        $scope.loading = true;
+        
+        categoriesPromise.then(function(response)
+        {
+            $scope.homePageCategories = response.data;
+            
+            $scope.loading = false;
+        });
+    };
+    
+    ctrl.gotoShop = function()
+    {
+        appService.gotoShop();
     };
     
 }]);

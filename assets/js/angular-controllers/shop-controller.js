@@ -1,4 +1,4 @@
-angular.module('eappApp').controller('ShopController', ["$scope", "$q", "$mdDialog", "$rootScope", "eapp", "profileData", function ($scope, $q, $mdDialog, $rootScope, eapp, profileData) 
+angular.module('eappApp').controller('ShopController', ["$scope", "$q", "appService", "$rootScope", "eapp", "profileData", function ($scope, $q, appService, $rootScope, eapp, profileData) 
 {
     $rootScope.query = 
     {
@@ -370,17 +370,12 @@ angular.module('eappApp').controller('ShopController', ["$scope", "$q", "$mdDial
     
     ctrl.select_category = function($event, category)
     {
-        $scope.clearSessionItems();
-        var category_id = parseInt(category.id);
-        eapp.recordHit("eapp_product_category ",category_id);
-        window.sessionStorage.setItem("category_id", category_id);    
-        window.sessionStorage.setItem("category_name", category.name);
-        window.location =  $scope.site_url.concat("/shop");
+        appService.selectCategory(category);
     };
     
     ctrl.select_json_category = function($event, category)
     {
-        $rootScope.select_category($event, JSON.parse(category));
+        ctrl.select_category($event, JSON.parse(category));
     };
     
     $scope.viewChanged = function(gridView)

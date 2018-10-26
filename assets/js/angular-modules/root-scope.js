@@ -2,7 +2,7 @@ $(document).ready(function()
 {
     var rootScope = angular.element($("html")).scope();
     
-    rootScope.$apply(function()
+    rootScope.$apply(function(profileData)
     {
         rootScope.is_loading = false;
         rootScope.valid = true;
@@ -45,30 +45,6 @@ $(document).ready(function()
 
         rootScope.travel_distance = 0;
         
-        rootScope.$watch('cartSettings.cartView', function(newVal, oldVal)
-        {
-            if(!angular.isNullOrUndefined(rootScope.cartSettings))
-            {
-                window.sessionStorage.setItem('cartSettings', JSON.stringify(rootScope.cartSettings));
-            }
-        });
-        
-        rootScope.$watch('cartSettings.searchMyList', function(newVal, oldVal)
-        {
-            if(!angular.isNullOrUndefined(rootScope.cartSettings))
-            {
-                window.sessionStorage.setItem('cartSettings', JSON.stringify(rootScope.cartSettings));
-            }
-        });
-        
-        rootScope.$watch('cartSettings.optimizedCart', function(newVal, oldVal)
-        {
-            if(!angular.isNullOrUndefined(rootScope.cartSettings))
-            {
-                window.sessionStorage.setItem('cartSettings', JSON.stringify(rootScope.cartSettings));
-            }
-        });
-               
         /**
          * The store selected in the cart
          */
@@ -96,7 +72,7 @@ $(document).ready(function()
             {
                 //$rootScope.store_products[index].store_products
                 total += 
-                        !rootScope.cartSettings.cartView ? 
+                        !profileData.cartSettings.cartView ? 
                         rootScope.cart[key].store_products[store_index].price * rootScope.cart[key].quantity : 
                         rootScope.cart[key].store_product.price * rootScope.cart[key].quantity;
             }
@@ -112,7 +88,7 @@ $(document).ready(function()
     {
         var total = 0;
 
-        if((!angular.isNullOrUndefined(rootScope.cartSettings) && rootScope.cartSettings.cartView) || rootScope.controller !== 'cart')
+        if((!angular.isNullOrUndefined(rootScope.profileData.instance.cartSettings) && rootScope.profileData.instance.cartSettings.cartView) || rootScope.controller !== 'cart')
         {
             for(var key in rootScope.cart)
             {

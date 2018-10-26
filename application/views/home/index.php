@@ -3,33 +3,10 @@
 <link rel="stylesheet" href="<?php echo base_url("assets/css/owl.theme.default.min.css")?>">
 <link href="<?php echo base_url("assets/css/home.css"); ?>" rel="stylesheet">
 
-<style>
-    .home-category-title
-    {
-        margin-top: 20px;
-    }
-    
-    .home-category-title b
-    {
-        font-size: 24px;
-    }
-    
-    .home-category-title a
-    {
-        margin-left: 15px;
-        color: rgb(255,87,34);
-        font-weight: 500;
-        font-size: 16px;
-    }
-    
-    .owl-theme .owl-dots .owl-dot.active span, .owl-theme .owl-dots .owl-dot:hover span 
-    {
-        background: #1abc9c;
-    }
-    
-</style>
 
-    <div id="home-container" class="otiprix-section parallax-background" ng-controller="ShopController as ctrl">
+<div ng-controller="HomeController as hmCtrl">
+    
+    <div id="home-container" class="otiprix-section parallax-background">
 
         <div ng-cloak>
             <h3 otiprix-title>Économisez jusqu'a <strong>30%</strong> </br> sur votre facture</h3>
@@ -44,7 +21,7 @@
                 
                     <?php foreach(array_slice($categoryProducts, 0, 3) as $category_products): ?>
 
-                    <p class="home-category-title"><b><?php echo $category_products["category"]->name; ?></b> <span><a href ng-click="ctrl.select_json_category($event, '<?php echo htmlspecialchars(json_encode($category_products["category"])); ?>')"> Voir toutes les offres</a></span></p>
+                    <p class="home-category-title"><b><?php echo $category_products["category"]->name; ?></b> <span><a href ng-click="hmCtrl.selectCategory('<?php echo htmlspecialchars(json_encode($category_products["category"])); ?>')"> Voir toutes les offres</a></span></p>
 
                     <div class="product-carousel row" style="margin : auto;">
 
@@ -106,7 +83,7 @@
 
                     <?php foreach(array_slice($categoryProducts, 3, 3) as $category_products): ?>
 
-                        <p class="home-category-title"><b><?php echo $category_products["category"]->name; ?></b> <span><a href ng-click="ctrl.select_json_category($event, '<?php echo htmlspecialchars(json_encode($category_products["category"])); ?>')"> Voir toutes les offres</a></span></p>
+                        <p class="home-category-title"><b><?php echo $category_products["category"]->name; ?></b> <span><a href ng-click="hmCtrl.selectCategory($event, '<?php echo htmlspecialchars(json_encode($category_products["category"])); ?>')"> Voir toutes les offres</a></span></p>
 
                         <div class="product-carousel row" style="margin : auto;">
 
@@ -127,11 +104,8 @@
             </div>
 
         </div>
-        
-        
 
-        <div  id="section02" class="layout-padding howitworks arrow section-div"  ng-controller="HomeController">
-
+        <div class="layout-padding howitworks arrow section-div">
 
             <div class="container">
 
@@ -168,69 +142,4 @@
         
     <md-divider></md-divider>
     
-    <div class="promo-area bgpatttern" ng-controller="HomeController" ng-hide="true">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-4 col-sm-8">
-                    <div class="single-promo">
-                        <a href="<?php echo site_url("account/my_grocery_list"); ?>"><img class="img-circle" width="100px;" height="100px;" src="<?php echo base_url("/assets/img/grocerylist.png"); ?>"></a>
-                        <h4 otiprix-text>Votre liste d'épicerie</h4>
-<!--                        <i class="fa fa-heart"></i>-->
-                        <p class="md-gray-text">Utilisez les circulaires pour créer votre panier d'épicerie et économisez sur les dépenses.</p>
-                    </div>
-                </div>
-                <div class="col-md-4 col-sm-8">
-                    <div class="single-promo">
-                        <a href="<?php echo site_url("shop/select_flyer_store"); ?>"><img class="img-circle" width="100px;" height="100px;" src="<?php echo base_url("/assets/img/flyers.jpg"); ?>"></a>
-<!--                        <i class="fa fa-unlock"></i>-->
-                        <h4 otiprix-text>Les circulaires</h4>
-                        <p class="md-gray-text">Sélectionnez le magasin pour afficher le contenu de la circulaire. </p>
-                    </div>
-                </div>
-                <div class="col-md-4 col-sm-8">
-                    <div class="single-promo">
-                        <a href="<?php echo site_url("shop/categories"); ?>"><img class="img-circle" width="100px;" height="100px;" src="<?php echo base_url("/assets/img/categories.png"); ?>"></a>
-                        <h4 otiprix-text>Les catégories de produits</h4>
-<!--                        <i class="fa fa-calendar"></i>-->
-                        <p class="md-gray-text">Utilisez les catégories de produits pour créer votre panier d'épicerie et économiser sur les dépenses.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <md-divider></md-divider>
-    </div> <!-- End promo area -->
-    
-    
-    
 </div>
- 
-<script>
-    
-jQuery(document).ready(function($){
-    
-    $('.product-carousel').owlCarousel({
-        loop:true,
-        nav:false,
-        autoplay:false,
-        autoplayTimeout: 1000,
-        autoplayHoverPause:true,
-        margin:0,
-        responsiveClass:true,
-        navText : ['Précédent', 'Suivant'],
-        
-        responsive:{
-            0:{
-                items:1
-            },
-            600:{
-                items:2
-            },
-            1000:{
-                items:4
-            }
-        }
-    });
-       
-});
-
-</script>

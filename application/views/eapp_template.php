@@ -16,7 +16,7 @@
   
     <body class="md-body-1">
      
-        <div class="otiprix-header">
+        <div class="otiprix-header" ng-controller="MenuController">
 
             <div class="top-header" ng-cloak>
 
@@ -36,21 +36,16 @@
 
                       <div class="col-sm-6">
 
-                          <div ng-controller="AccountController">
-
+                          <div>
                               <div class="pull-right">
-
                                   <span>
                                       <a href="<?php echo site_url("cart"); ?>" class="md-icon-button" aria-label="Cart">
                                           Voir votre liste
-                                          <md-icon><i style="color : rgba(0,184,147,0.90);" class="material-icons">shopping_cart</i> </md-icon>
-                                          <span class="badge" ng-show="get_cart_item_total() > 0">{{get_cart_item_total()}} | {{get_cart_total_price() | number : 2}} C $</span>
+                                          <md-icon><i otiprix-text class="material-icons">shopping_cart</i></md-icon>
+                                          <span class="badge" ng-show="getTotalItemsInCart() > 0">{{getTotalItemsInCart()}} | {{getCartPrice() | number : 2}} C $</span>
                                       </a>
                                   </span>
-
                               </div>
-
-
                           </div>
 
                       </div>
@@ -61,78 +56,78 @@
 
           </div>
 
-        <div id="mainmenu-area" class="mainmenu-area" class="navbar-wrapper" ng-cloak>
-                  <div>
-                      <nav otiprix-background class="navbar navbar-fixed-top" style="top : 50px;">
-                          <div class="navbar-padding">
-                              <div class="navbar-header">
-                                  <button type="button" class="navbar-toggle collapsed pull-right" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                                  <span class="sr-only">Toggle navigation</span>
-                                  <span class="icon-bar"></span>
-                                  <span class="icon-bar"></span>
-                                  <span class="icon-bar"></span>
-                                  </button>
-                                  <a class="navbar-brand" href="<?php echo site_url("home"); ?>"><img src="<?php echo base_url("assets/img/logo.png"); ?>" class="eapp-logo" /></a>
+            <div id="mainmenu-area" class="mainmenu-area" class="navbar-wrapper" ng-cloak>
+                      <div>
+                          <nav otiprix-background class="navbar navbar-fixed-top" style="top : 50px;">
+                              <div class="navbar-padding">
+                                  <div class="navbar-header">
+                                      <button type="button" class="navbar-toggle collapsed pull-right" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                                      <span class="sr-only">Toggle navigation</span>
+                                      <span class="icon-bar"></span>
+                                      <span class="icon-bar"></span>
+                                      <span class="icon-bar"></span>
+                                      </button>
+                                      <a class="navbar-brand" href="<?php echo site_url("home"); ?>"><img src="<?php echo base_url("assets/img/logo.png"); ?>" class="eapp-logo" /></a>
+                                  </div>
+                                  <div id="navbar" class="navbar-collapse collapse pull-right">
+
+                                      <ul class="menu nav navbar-nav"  ng-controller="MenuController">
+                                          <li ng-class="{active : selectedMenu == 100}" class=" dropdown" ng-show="loggedUser.subscription == 2">
+                                              <a href="#" class="dropdown-toggle " data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Admin<span class="caret"></span></a>
+                                              <ul class="dropdown-menu" otiprix-background>
+                                                  <li ng-show="loggedUser.subscription == 2"><a  href="<?php echo addslashes(site_url("admin/uploads")); ?>">Uploads</a></li>
+                                                  <li><a href="<?php echo addslashes(site_url("admin/create_store_product")); ?>">Create Product</a></li>
+                                                  <li><a href="<?php echo addslashes(site_url("admin/store_products")); ?>">View Store Products</a></li>
+                                                  <li><a href="<?php echo addslashes(site_url("admin/view_products")); ?>">View Otiprix Products</a></li>
+                                                  <li><a href="<?php echo addslashes(site_url("admin/view_subcategories")); ?>">View Sub Categories</a></li>
+                                              </ul>
+                                          </li>
+
+                                          <li ng-class="{active : selectedMenu == 0}" class="main-menu-list-item"><a href="<?php echo site_url("home"); ?>" class=""><md-icon style="color : white"><i class="material-icons">home</i> </md-icon></a></li>
+                                          <li class="main-menu-list-item" class=" dropdown" ng-class="{active : selectedMenu == 1}">
+                                              <a href="#" class="dropdown-toggle " data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Réduisez vos dépenses<span class="caret"></span></a>
+                                              <ul class="dropdown-menu" otiprix-background>
+                                                  <li><a href="<?php echo site_url("account/my_grocery_list"); ?>">Votre liste d'épicerie</a></li>
+                                                  <li><a href="<?php echo site_url("shop/select_flyer_store"); ?>">Les circulaires des magasins</a></li>
+                                                  <li><a href="<?php echo site_url("shop/categories"); ?>">Les catégories de produits</a></li>
+                                              </ul>
+                                          </li>
+                                          <li ng-class="{active : selectedMenu == 2}" class="main-menu-list-item"><a href ng-click="gotoShop()">Trouvez un produit</a></li>
+                                              <ul class="dropdown-menu" otiprix-background>
+                                                  <li><a href="<?php echo site_url("blog/press_release"); ?>">Épicerie dans la presse</a></li>
+                                                  <li><a href="<?php echo site_url("blog/stats"); ?>">STAT</a></li>
+                                                  <li><a href="<?php echo site_url("blog/videos"); ?>">Vidéo</a></li>
+                                                  <!--<li><a href="<?php echo site_url("home/store_policy"); ?>">Politiques des magasins</a></li>-->
+                                                  <li><a href="<?php echo site_url("home/about_us"); ?>">À propos</a></li>
+                                              </ul>
+                                          </li>
+                                          <li ng-class="{active : selectedMenu == 3}" class="main-menu-list-item"><a  href="<?php echo site_url("home/contact"); ?>">Contact</a></li>
+                                          <li ng-class="{active : selectedMenu == 4}" class="main-menu-list-item"><a  href="<?php echo site_url("home/about"); ?>">À propos</a></li>
+                                      </ul>
+
+                                      <ul class="menu nav navbar-nav pull-right"  ng-controller="AccountController">
+                                          <li ng-class="{active : selectedMenu == 5}" class="main-menu-list-item" ng-hide="isUserLogged"><a href="<?php echo site_url("account/login"); ?>"><i class="fa fa-user"></i>    S'identifier</a></li>
+                                          <li ng-class="{active : selectedMenu == 6}" class="main-menu-list-item" ng-hide="isUserLogged"><a href="<?php echo site_url("account/register"); ?>"><i class="fa fa-user"></i>    Créer un compte</a></li>
+                                          <li ng-class="{active : selectedMenu == 5}" class="main-menu-list-item" ng-show="isUserLogged" class=" dropdown">
+                                              <a href="#" class="dropdown-toggle active" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                                  Bonjour 
+                                                  <span ng-if="!loggedUser.company"><span ng-show="loggedUser.profile.firstname">{{loggedUser.profile.firstname}},</span> {{loggedUser.profile.lastname}}</span>
+                                                  <span ng-if="loggedUser.company">{{loggedUser.company.name}}</span>
+                                                  <span class="caret"></span>
+                                              </a>
+                                              <ul class="dropdown-menu" otiprix-background>
+                                                  <li><a  href="<?php echo site_url("account"); ?>"><i class="fa fa-user"></i> Mon compte</a></li>
+                                                  <li ng-if="isRegularUser"><a href="<?php echo site_url("account/my_grocery_list"); ?>"><i class="fa fa-heart"></i> Ma liste d'épicerie</a></li>
+                                                  <li><a href ng-click="logout()">Logout</a></li>
+                                              </ul>
+                                          </li>
+                                      </ul>
+
+                                  </div>
                               </div>
-                              <div id="navbar" class="navbar-collapse collapse pull-right">
-
-                                  <ul class="menu nav navbar-nav"  ng-controller="MenuController">
-                                      <li class=" dropdown" ng-show="loggedUser.subscription == 2">
-                                          <a href="#" class="dropdown-toggle " data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Admin<span class="caret"></span></a>
-                                          <ul class="dropdown-menu" otiprix-background>
-                                              <li ng-show="loggedUser.subscription == 2"><a  href="<?php echo addslashes(site_url("admin/uploads")); ?>">Uploads</a></li>
-                                              <li><a href="<?php echo addslashes(site_url("admin/create_store_product")); ?>">Create Product</a></li>
-                                              <li><a href="<?php echo addslashes(site_url("admin/store_products")); ?>">View Store Products</a></li>
-                                              <li><a href="<?php echo addslashes(site_url("admin/view_products")); ?>">View Otiprix Products</a></li>
-                                              <li><a href="<?php echo addslashes(site_url("admin/view_subcategories")); ?>">View Sub Categories</a></li>
-                                          </ul>
-                                      </li>
-
-                                      <li ng-class="{active : isHome}" class="main-menu-list-item"><a href="<?php echo site_url("home"); ?>" class=""><md-icon style="color : white"><i class="material-icons">home</i> </md-icon></a></li>
-                                      <li class="main-menu-list-item" class=" dropdown" ng-class="{active : isMainMenu}">
-                                          <a href="#" class="dropdown-toggle " data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Réduisez vos dépenses<span class="caret"></span></a>
-                                          <ul class="dropdown-menu" otiprix-background>
-                                              <li><a href="<?php echo site_url("account/my_grocery_list"); ?>">Votre liste d'épicerie</a></li>
-                                              <li><a href="<?php echo site_url("shop/select_flyer_store"); ?>">Les circulaires des magasins</a></li>
-                                              <li><a href="<?php echo site_url("shop/categories"); ?>">Les catégories de produits</a></li>
-                                          </ul>
-                                      </li>
-                                      <li ng-class="{active : isSearch}" class="main-menu-list-item"><a href ng-click="gotoShop()">Trouvez un produit</a></li>
-                                          <ul class="dropdown-menu" otiprix-background>
-                                              <li><a href="<?php echo site_url("blog/press_release"); ?>">Épicerie dans la presse</a></li>
-                                              <li><a href="<?php echo site_url("blog/stats"); ?>">STAT</a></li>
-                                              <li><a href="<?php echo site_url("blog/videos"); ?>">Vidéo</a></li>
-                                              <!--<li><a href="<?php echo site_url("home/store_policy"); ?>">Politiques des magasins</a></li>-->
-                                              <li><a href="<?php echo site_url("home/about_us"); ?>">À propos</a></li>
-                                          </ul>
-                                      </li>
-                                      <li ng-class="{active : isContact}" class="main-menu-list-item"><a  href="<?php echo site_url("home/contact"); ?>">Contact</a></li>
-                                      <li ng-class="{active : isAboutUs}" class="main-menu-list-item"><a  href="<?php echo site_url("home/about"); ?>">À propos</a></li>
-                                  </ul>
-
-                                  <ul class="menu nav navbar-nav pull-right"  ng-controller="AccountController">
-                                      <li ng-class="{active : isLogin}" class="main-menu-list-item" ng-hide="isUserLogged"><a href="<?php echo site_url("account/login"); ?>"><i class="fa fa-user"></i>    S'identifier</a></li>
-                                      <li ng-class="{active : isRegister}" class="main-menu-list-item" ng-hide="isUserLogged"><a href="<?php echo site_url("account/register"); ?>"><i class="fa fa-user"></i>    Créer un compte</a></li>
-                                      <li ng-class="{active : isAccount}" class="main-menu-list-item" ng-show="isUserLogged" class=" dropdown">
-                                          <a href="#" class="dropdown-toggle active" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                                              Bonjour 
-                                              <span ng-if="!loggedUser.company"><span ng-show="loggedUser.profile.firstname">{{loggedUser.profile.firstname}},</span> {{loggedUser.profile.lastname}}</span>
-                                              <span ng-if="loggedUser.company">{{loggedUser.company.name}}</span>
-                                              <span class="caret"></span>
-                                          </a>
-                                          <ul class="dropdown-menu" otiprix-background>
-                                              <li><a  href="<?php echo site_url("account"); ?>"><i class="fa fa-user"></i> Mon compte</a></li>
-                                              <li ng-if="isRegularUser"><a href="<?php echo site_url("account/my_grocery_list"); ?>"><i class="fa fa-heart"></i> Ma liste d'épicerie</a></li>
-                                              <li><a href ng-click="logout()">Logout</a></li>
-                                          </ul>
-                                      </li>
-                                  </ul>
-
-                              </div>
-                          </div>
-                      </nav>
+                          </nav>
+                  </div>
               </div>
-          </div>
 
         </div>   
   
@@ -267,5 +262,8 @@
 	  
     <!-- Rootscope Script -->
     <script src="<?php echo base_url("assets/js/angular-modules/root-scope.js")?>"></script> 
+    <script src="<?php echo base_url("assets/js/angular-services/application-service.js")?>"></script> 
+    <script src="<?php echo base_url("assets/js/angular-services/cart-service.js")?>"></script> 
+
   
 </html>

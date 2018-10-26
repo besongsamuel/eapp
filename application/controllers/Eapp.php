@@ -13,7 +13,19 @@ class Eapp extends CI_Controller
     
     public function get_application_data() 
     {
-        echo json_encode(null);
+        // Set template data
+        $data = array(
+            'base_url' => base_url(),
+            'site_url' => site_url(),
+            'redirectToLogin' => false,
+            'controller' => $this->router->fetch_class(),
+            'method' => $this->router->fetch_method(),
+            'user' => $this->user,
+            'cart' => $this->get_cart()
+        );
+        
+        
+        echo json_encode($data);
     }
     
     public function site_url() 

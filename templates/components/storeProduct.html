@@ -27,17 +27,16 @@
         </div>
     </div>
     
-    
     <quantity-input ng-if="$ctrl.fullDisplay" quantity="storeProduct.quantity" ></quantity-input>
 
-    <div ng-if='root.isUserLogged && root.loggedUser.is_active == 1 && $ctrl.fullDisplay' class="row" style='text-align: center;'>
-        <add-to-list product='storeProduct.product' caption="Ajouter à liste" logged-user='root.loggedUser'></add-to-list>
+    <div ng-if='isUserLogged && isUserActive && $ctrl.fullDisplay' class="row" style='text-align: center;'>
+        <add-to-list product='storeProduct.product' caption="Ajouter à liste" logged-user='loggedUser'></add-to-list>
     </div>
 
     <md-divider></md-divider>
     <div class="row" style="padding: 2px; margin: 0px;">
-        <md-button ng-hide="root.productInCart(storeProduct.product.id)" ng-click="root.add_product_to_cart(storeProduct.product.id, storeProduct.id, storeProduct.quantity)" class="md-raised md-primary btn pull-right">Ajouter</md-button>
-        <md-button ng-show="root.productInCart(storeProduct.product.id)" ng-click="root.remove_product_from_cart(storeProduct.product.id)" class="md-warn md-raised md-primary btn pull-right">Retirer</md-button>
+        <md-button ng-hide="productInCart(storeProduct.product.id)" ng-click="addProductToCart(storeProduct.product.id, storeProduct.id, storeProduct.quantity)" class="md-raised md-primary btn pull-right">Ajouter</md-button>
+        <md-button ng-show="productInCart(storeProduct.product.id)" ng-click="removeProductFromCart(storeProduct.product.id)" class="md-warn md-raised md-primary btn pull-right">Retirer</md-button>
     </div>
 </div>
 
