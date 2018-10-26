@@ -29,12 +29,10 @@
                     ng-if="ready" 
                     distance="default_distance" 
                     on-distance-changed="changeCartDistance(distance)" 
-                    on-refresh="refresh(viewConfig)" 
+                    on-refresh="refresh(userProfileData)" 
                     ready="ready" 
-                    is-user-logged="isUserLogged"
                     result-set="cartFilterSettings" 
                     on-settings-changed="settingsChanged(item)" >
-                        
                 </result-filter>
             </div>
             

@@ -186,6 +186,11 @@ angular.module('eappApp').factory('eapp', ['$http','$rootScope', '$mdDialog', 'p
 
     };
     
+    eappService.getMostViewedCategories = function()
+    {
+        return $http.post(eappService.getSiteUrl().concat("/eapp/get_most_viewed_categories"), null, { transformRequest: angular.identity, headers: {'Content-Type': undefined}});
+    };
+    
     eappService.getFlyerProducts = function(id, query, resultsFilter)
     {
         var formData = new FormData();
@@ -708,6 +713,20 @@ angular.module('eappApp').factory('eapp', ['$http','$rootScope', '$mdDialog', 'p
     eappService.sendActivationEmail = function()
     {
         return $http.post(eappService.getSiteUrl().concat("account/send_activation_email"), null);
+    };
+    
+    eappService.createConfirmDialog = function(ev, contentText) 
+    {
+        // Appending dialog to document.body to cover sidenav in docs app
+        var confirm = $mdDialog.confirm()
+              .title('Êtes-vous sûr?')
+              .textContent(contentText)
+              .ariaLabel('Êtes-vous sûr?')
+              .targetEvent(ev)
+              .ok('Oui')
+              .cancel('Non');
+      
+        return confirm;
     };
 
     return eappService;

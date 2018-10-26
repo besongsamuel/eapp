@@ -250,13 +250,6 @@
                 
                 rootScope.isRegularUser = rootScope.isUserLogged && parseInt(rootScope.loggedUser.subscription) <= 2;
             });
-            
-            var footerScope = angular.element($("#eapp-footer")).scope();
-            
-            footerScope.$apply(function()
-            {
-                footerScope.categories = JSON.parse('<?php echo $mostviewed_categories; ?>');
-            });
         });
     </script>
 	  

@@ -9,7 +9,7 @@ angular.module('eappApp').component('companyProducts',
     }
 });
 
-function Controller($scope, $rootScope, $mdDialog, $company)
+function Controller($scope, eapp, $mdDialog, $company)
 {
     'use strict';
     
@@ -93,7 +93,7 @@ function Controller($scope, $rootScope, $mdDialog, $company)
 
     $scope.delete = function (event) 
     {
-        var confirmDialog = $rootScope.createConfirmDIalog (event, "Êtes-vous sûr de vouloir supprimer ces produits?");
+        var confirmDialog = eapp.createConfirmDialog (event, "Êtes-vous sûr de vouloir supprimer ces produits?");
         
         $mdDialog.show(confirmDialog).then(function() 
         {

@@ -282,6 +282,11 @@ class Eapp extends CI_Controller
         
     }
     
+    public function get_most_viewed_categories() 
+    {
+        echo json_encode($this->eapp_model->get_mostviewed_categories());
+    }
+    
     public function get_subcategories() 
     {
         $subcategories = $this->admin_model->get_all(SUB_CATEGORY_TABLE);

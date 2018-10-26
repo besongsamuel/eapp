@@ -44,7 +44,7 @@ angular.module('eappApp').controller('SelectAccountStoreController', ["$scope", 
     
     $scope.removeRetailer = function(ev, index)
     {
-        var confirmDialog = $rootScope.createConfirmDIalog(ev, "Êtes-vous sûr de vouloir supprimer le magasin?");
+        var confirmDialog = eapp.createConfirmDialog(ev, "Êtes-vous sûr de vouloir supprimer le magasin?");
         
         $mdDialog.show(confirmDialog).then(function() 
         {

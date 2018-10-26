@@ -13,7 +13,7 @@
             
             <md-icon><a  ng-class="profileData.instance.gridView ? 'md-warn' : 'md-primary'" href ng-click="viewChanged(false)"><i class="material-icons">list</i></a></md-icon>
             <md-icon><a  ng-class="profileData.instance.gridView ? 'md-primary' : 'md-warn'" href  ng-click="viewChanged(true);"><i class="material-icons">grid_on</i></a></md-icon>
-            <div ng-if="profileData.instance.gridView == false && products.length > 0">Vue en liste</div>
+            <div ng-if="!profileData.instance.gridView && products.length > 0">Vue en liste</div>
             <div ng-if="profileData.instance.gridView && products.length > 0">Vue en grille</div>
         </div>
     </div>
@@ -27,9 +27,6 @@
 
         </form>
     </div>
-    
-    
-
     
     <p otiprix-text style="text-align: center;" ng-show="products.length === 0">Aucun résultat trouvé</p>
     
@@ -56,7 +53,7 @@
                     
                     <div class="image-container">
                         <a href ng-click="viewProduct(product.id, $event)">
-                            <img alt=""  ng-src="{{product.product.image}}">
+                            <img alt="" ng-src="{{product.product.image}}">
                         </a>
                     </div>
                 </div>
@@ -80,21 +77,21 @@
                 
                 <div class="row">
                     <div class="center-div">
-                        <md-button class="md-primary md-raised pull-right" ng-hide="productInCart(product.product.id)"  ng-click="add_product_to_cart(product.product_id, isStoreSelected ? product.id : -1, product.quantity)">
+                        <md-button class="md-primary md-raised pull-right" ng-hide="productInCart(product.product.id)"  ng-click="addProductToCart(product.product_id, isStoreSelected ? product.id : -1, product.quantity)">
                             <md-icon>
                                 <i style="color : white;" class="material-icons">add_shopping_cart</i>
                             </md-icon>
                             Ajouter
                         </md-button>
 
-                        <md-button class="md-warn md-raised pull-right" ng-show="productInCart(product.product.id)" ng-click="remove_product_from_cart(product.product_id)">
+                        <md-button class="md-warn md-raised pull-right" ng-show="productInCart(product.product.id)" ng-click="removeProductFromCart(product.product_id)">
                             <md-icon><i class="material-icons">remove_shopping_cart</i></md-icon>
                             Retirer
                         </md-button>
                     </div>
                 </div>
                 
-            <add-to-list ng-if="root.isUserLogged && root.loggedUser.is_active == 1" style='text-align: center;' class='pull-right' product='product.product' caption="Ajouter à liste" logged-user='root.loggedUser'></add-to-list>
+            <add-to-list ng-if="isUserActive" style='text-align: center;' class='pull-right' product='product.product' caption="Ajouter à liste" logged-user='loggedUser'></add-to-list>
                 
             </td>
             

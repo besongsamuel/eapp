@@ -20,7 +20,7 @@ angular.module('eappApp').component("addDepartmentStore",
         
         $scope.removeDepartmentStore = function(id, $event)
         {
-            var confirmDialog = $rootScope.createConfirmDIalog ($event, "Êtes-vous sûr de vouloir supprimer cette sucursalle de votre liste??");
+            var confirmDialog = eapp.createConfirmDialog ($event, "Êtes-vous sûr de vouloir supprimer cette sucursalle de votre liste??");
             
             $mdDialog.show(confirmDialog).then(function()
             {

@@ -79,19 +79,7 @@ angular.module('eappApp').controller('AccountController', ["$scope", "$http", "$
         
     };
     
-    $rootScope.createConfirmDIalog = function(ev, contentText) 
-    {
-        // Appending dialog to document.body to cover sidenav in docs app
-        var confirm = $mdDialog.confirm()
-              .title('Êtes-vous sûr?')
-              .textContent(contentText)
-              .ariaLabel('Êtes-vous sûr?')
-              .targetEvent(ev)
-              .ok('Oui')
-              .cancel('Non');
-      
-        return confirm;
-    };
+    
     
    $rootScope.showSimpleToast = function(message, parent_id) {
         $mdToast.show(

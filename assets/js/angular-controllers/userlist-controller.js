@@ -225,7 +225,7 @@ angular.module("eappApp").controller("UserListController", ["$rootScope", "$scop
     
     $scope.removeProductFromList = function(product_id, $event, showDialog)
     {
-        var confirmDialog = $rootScope.createConfirmDIalog ($event, "Ce produit sera supprimé de votre liste.");
+        var confirmDialog = eapp.createConfirmDialog ($event, "Ce produit sera supprimé de votre liste.");
         
         if(showDialog)
         {
@@ -248,7 +248,7 @@ angular.module("eappApp").controller("UserListController", ["$rootScope", "$scop
     
     $scope.deleteList = function(ev)
     {
-        var confirmDialog = $rootScope.createConfirmDIalog (ev, "Êtes-vous sûr de vouloir supprimer votre liste d'épicerie?");
+        var confirmDialog = eapp.createConfirmDialog (ev, "Êtes-vous sûr de vouloir supprimer votre liste d'épicerie?");
         
         $mdDialog.show(confirmDialog).then(function() 
         {
@@ -324,7 +324,7 @@ angular.module("eappApp").controller("UserListController", ["$rootScope", "$scop
     
     $scope.clearMyList = function($event)
     {
-        var confirmDialog = $scope.createConfirmDIalog($event, "Cela effacera tous les contenus de votre liste d'épicerie.");
+        var confirmDialog = eapp.createConfirmDialog($event, "Cela effacera tous les contenus de votre liste d'épicerie.");
 		
         $mdDialog.show(confirmDialog).then(function() 
         {
@@ -464,7 +464,7 @@ angular.module("eappApp").controller("UserListController", ["$rootScope", "$scop
     
     $scope.optimizeMyList = function($event)
     {
-        var confirmDialog = $rootScope.createConfirmDIalog($event, "Cela effacera tous les contenus de votre panier.");
+        var confirmDialog = eapp.createConfirmDialog($event, "Cela effacera tous les contenus de votre panier.");
         
         $mdDialog.show(confirmDialog).then(function() 
         {

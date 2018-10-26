@@ -49,11 +49,11 @@ angular.module('eappApp').factory('cart', function(eapp, appService, profileData
     {
         var rowid = -1;
 
-        for(var key in service.cart)
+        for(var key in appService.cart)
         {
-            if(parseInt(service.cart[key].store_product.product_id) === parseInt(product_id))
+            if(parseInt(appService.cart[key].store_product.product_id) === parseInt(product_id))
             {
-                rowid = service.cart[key].rowid;
+                rowid = appService.cart[key].rowid;
                 break;
             }
         }
@@ -61,7 +61,7 @@ angular.module('eappApp').factory('cart', function(eapp, appService, profileData
         return rowid;
     };
     
-    service.removeProductFromCart = function(product_id)
+    service.removeProductFromCart = function(product_id, callback)
     {
         var removePromise = eapp.removeFromCart(service.getRowID(product_id));
 
@@ -71,9 +71,9 @@ angular.module('eappApp').factory('cart', function(eapp, appService, profileData
             {
                 var index = -1;
 
-                for(var key in service.cart)
+                for(var key in appService.cart)
                 {
-                    if(parseInt(service.cart[key].store_product.product_id) === parseInt(product_id))
+                    if(parseInt(appService.cart[key].store_product.product_id) === parseInt(product_id))
                     {
                         index = key;
                         break;
@@ -82,7 +82,12 @@ angular.module('eappApp').factory('cart', function(eapp, appService, profileData
 
                 if(index > -1)
                 {
-                    service.cart.splice(index, 1);
+                    appService.cart.splice(index, 1);
+                }
+                
+                if(callback)
+                {
+                    callback();
                 }
             }
         });
@@ -121,7 +126,7 @@ angular.module('eappApp').factory('cart', function(eapp, appService, profileData
     {
         var total = 0;
 
-        if((!angular.isNullOrUndefined(profileData.instance.cartSettings) && profileData.instance.cartSettings.cartView) || appService.controller !== 'cart')
+        if((!angular.isNullOrUndefined(profileData.instance) && profileData.instance.cartView) || appService.controller !== 'cart')
         {
             for(var key in appService.cart)
             {
@@ -149,6 +154,153 @@ angular.module('eappApp').factory('cart', function(eapp, appService, profileData
         }
 
         return total;
+    };
+    
+    service.selectCartStore = function(store)
+    {        
+        // For each store product in the cart item, 
+        // we select the least popular(most expensive)
+        for(var i in appService.cart)
+        {
+            var related_products = appService.cart[i].store_product.related_products;
+            
+            if(!angular.isNullOrUndefined(related_products))
+            {
+                // There are no related items. Skip this product
+                if(related_products.length === 0)
+                {
+                    continue;
+                }
+                
+                // The last related product is the most expensive. 
+                appService.cart[i].store_product = related_products[related_products.length - 1];
+                appService.cart[i].store_product.related_products = related_products;
+            }
+            
+            // Set the cart item store products to the 
+            // selected store products
+            for(var x in store.store_products)
+            {
+                if(parseInt(appService.cart[i].store_product.product.id) === parseInt(store.store_products[x].store_product.product.id))
+                {
+                    store.store_products[x].quantity = appService.cart[i].quantity;
+                }
+            }
+            
+            // reset the product price
+            for(var x in store.missing_products)
+            {
+                if(parseInt(appService.cart[i].store_product.product.id) === parseInt(store.missing_products[x].store_product.product.id))
+                {
+                    store.missing_products[x].quantity = appService.cart[i].quantity;
+                }
+            }
+        }
+        
+        return store;
+    };
+    
+    service.getStoreProductFormat = function(storeProduct)
+    {
+        var formatVal = 1;
+        
+        if(storeProduct.format === 'undefined' || storeProduct.format === null)
+        {
+            return 1;
+        }
+        
+        var format = storeProduct.format.toLowerCase().split("x");
+        
+        formatVal = 1;
+        
+        if(format.length === 1)
+        {
+            formatVal = parseFloat(format[0]);
+        }
+        
+        if(format.length === 2)
+        {
+            formatVal = parseFloat(format[0]) * parseFloat(format[1]);
+        }
+        
+        return formatVal;
+    };
+    
+    service.getRelatedProducts = function(store_product)
+    {
+        var results = 
+        {
+            differentFormat : null,
+            differentStore : null
+        };
+        
+        // split related products to store related and format related
+        var different_format_products = [];
+        var different_store_products = [];
+
+        for(var i in store_product.related_products)
+        {
+            if(parseInt(store_product.retailer.id) !== parseInt(store_product.related_products[i].retailer.id))
+            {
+                different_store_products.push(store_product.related_products[i]);
+            }
+            
+            if(store_product.format.toString().trim() !== store_product.related_products[i].format.toString().trim()
+                    && parseInt(store_product.retailer.id) === parseInt(store_product.related_products[i].retailer.id))
+            {
+                different_format_products.push(store_product.related_products[i]);
+            }
+        }
+        
+        // Sort them in ascending order
+        different_store_products.sort(function(a, b)
+        {
+            if(parseFloat(a.compare_unit_price) < parseFloat(b.compare_unit_price))
+            {
+                return -1;
+            }
+            
+            if(parseFloat(a.compare_unit_price) > parseFloat(b.compare_unit_price))
+            {
+                return 1;
+            }
+            
+            return 0;
+            
+        });
+        
+        // Sort them in ascending order
+        different_format_products.sort(function(a, b)
+        {
+            if(parseFloat(a.compare_unit_price) < parseFloat(b.compare_unit_price))
+            {
+                return -1;
+            }
+            
+            if(parseFloat(a.compare_unit_price) > parseFloat(b.compare_unit_price))
+            {
+                return 1;
+            }
+            
+            return 0;
+            
+        });
+        
+        results.differentFormat = different_format_products;
+        results.differentStore = different_store_products;
+
+        return results;
+
+    };
+    
+    service.sortCartByStore = function()
+    {
+        appService.cart.sort(function(a, b)
+        {
+            var keyA = a.store_product.retailer.name.toString(),
+            keyB = b.store_product.retailer.name.toString();
+            return keyA.localeCompare(keyB);
+        });
     };
     
     return service;

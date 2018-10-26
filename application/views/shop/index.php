@@ -43,8 +43,7 @@
                     ng-if="productsReady" 
                     distance="distance" 
                     on-distance-changed="changeDistance(distance)" 
-                    view-config="viewConfig" 
-                    on-refresh="refresh(viewConfig)" 
+                    on-refresh="refresh(userProfileData)" 
                     ready="productsReady" 
                     result-set="filterSettings" 
                     on-settings-changed="settingsChanged(item)" ></result-filter>

@@ -1,6 +1,6 @@
-angular.module('eappApp').controller('ShopController', ["$scope", "$q", "appService", "$rootScope", "eapp", "profileData", function ($scope, $q, appService, $rootScope, eapp, profileData) 
+angular.module('eappApp').controller('ShopController', function ($scope, $q, appService, eapp, cart, profileData) 
 {
-    $rootScope.query = 
+    $scope.query = 
     {
         filter: '',
         limit: '100',
@@ -8,16 +8,8 @@ angular.module('eappApp').controller('ShopController', ["$scope", "$q", "appServ
         page: 1
     };
  
-    $rootScope.searchText = "";
-    
-    $scope.ready = false;
-    
     $scope.isLoading = false;
     
-    $scope.isInitialized = false;
-    
-    $scope.root = $rootScope;
-        
     var ctrl = this;
     
     /**
@@ -27,18 +19,19 @@ angular.module('eappApp').controller('ShopController', ["$scope", "$q", "appServ
        
     $scope.productsReady = false;
     
-    angular.element(document).ready(function()
+    appService.ready.then(function()
     {
-        if(!$scope.ready)
-        {
-            $scope.Init();
-            $scope.ready = true;
-        }
+        $scope.Init();
     });
+    
     var bookmark;
     
     $scope.Init = function()
     {
+        $scope.isUserActive = appService.isUserLogged && parseInt(appService.loggedUser.is_active) === 1;
+        
+        $scope.loggedUser = appService.loggedUser;
+        
         $scope.assets_dir = $scope.base_url.concat("/eapp/assets/");
         
         if($(window).width() < 500)
@@ -46,13 +39,6 @@ angular.module('eappApp').controller('ShopController', ["$scope", "$q", "appServ
             profileData.get().gridView = true;
         }
         
-        if(window.sessionStorage.getItem("searchText"))
-        {
-            $rootScope.searchText = window.sessionStorage.getItem("searchText");
-            window.sessionStorage.removeItem("searchText");
-            $rootScope.query.filter = $rootScope.searchText;
-        }
-                
         // Get the products for the store
         if($scope.controller === 'shop')
         {
@@ -70,57 +56,28 @@ angular.module('eappApp').controller('ShopController', ["$scope", "$q", "appServ
                 $scope.category_id = parseInt(window.sessionStorage.getItem("category_id"));
                 $scope.category_name = window.sessionStorage.getItem("category_name");
             }
-            
-            $rootScope.isSearch = true;
-            $scope.isInitialized = true;
         }
         
         $scope.distance =  profileData.get().optimizationDistance;
                 
     };
-
-    $rootScope.add_product_to_cart = function(product_id, store_product_id = -1, product_quantity = 1)
+    
+    $scope.productInCart = function(product_id)
     {
-        if(typeof store_product_id === 'undefined')
-        {
-            store_product_id = -1;
-        }
-        
-        var addToCartPromise = eapp.addToCart(
-                product_id, 
-                store_product_id, 
-                $rootScope.isUserLogged ? $rootScope.loggedUser.profile.longitude : $rootScope.longitude, 
-                $rootScope.isUserLogged ? $rootScope.loggedUser.profile.latitude : $rootScope.latitude, 
-                product_quantity);
-        
-        addToCartPromise.then(function(response)
-        {
-            if(Boolean(response.data.success))
-            {
-                var cart_item = 
-                {
-                    rowid : response.data.rowid,
-                    store_product : response.data.store_product,
-                    top_five_store_products : [],
-                    quantity : product_quantity,
-                    store_product_id : store_product_id
-                };
-
-                if($rootScope.cart === null || typeof $rootScope.cart === 'undefined')
-                {
-                    $rootScope.cart = [];
-                }
-
-                $rootScope.cart.push(cart_item);
-            }
-        });
+        return cart.productInCart(product_id);
     };
     
-    $scope.remove_from_cart = function(product_id)
+    $scope.addProductToCart = function(product_id, store_product_id = -1, product_quantity = 1)
     {
-        $scope.removeItemFromCart(product_id);
+        cart.addProductToCart(product_id, store_product_id, product_quantity);
     };
 
+    
+    $scope.removeProductFromCart = function(product_id)
+    {
+        cart.removeProductFromCart(product_id);
+    };
+    
     $scope.selected = [];
   
     $scope.filter = 
@@ -136,11 +93,6 @@ angular.module('eappApp').controller('ShopController', ["$scope", "$q", "appServ
         $scope.productsReady = false;
         $scope.isStoreSelected = false;
         $scope.isLoading = true;
-        
-        if(!$scope.ready || !$scope.isInitialized)
-        {
-            return;
-        }
                 
         if(profileData.get().filterSettings)
         {
@@ -251,11 +203,11 @@ angular.module('eappApp').controller('ShopController', ["$scope", "$q", "appServ
     };
     
     
-    $scope.refresh = function(viewConfig)
+    $scope.refresh = function(userProfileData)
     {
-        profileData.set('viewAll', viewConfig.viewAll);
+        profileData.reset(userProfileData);
         
-        if(profileData.get().viewAll)
+        if(profileData.instance.viewAll)
         {
             $scope.isStoreSelected = true;
         }
@@ -265,23 +217,6 @@ angular.module('eappApp').controller('ShopController', ["$scope", "$q", "appServ
         }
 	    
         $scope.getProducts();
-    };
-  	
-    $scope.searchProducts = function(searchText)
-    {
-        $scope.clearSessionItems();
-        window.sessionStorage.setItem("searchText", searchText);
-        window.location.href =  $scope.site_url.concat("/shop");
-    };
-    
-    $rootScope.select_category = function($event, category)
-    {
-        $scope.clearSessionItems();
-        var category_id = parseInt(category.id);
-        eapp.recordHit("eapp_product_category ",category_id);
-        window.sessionStorage.setItem("category_id", category_id);    
-        window.sessionStorage.setItem("category_name", category.name);
-        window.location =  $scope.site_url.concat("/shop");
     };
     
     $scope.viewProduct = function(product_id, ev)
@@ -368,16 +303,6 @@ angular.module('eappApp').controller('ShopController', ["$scope", "$q", "appServ
         $scope.getProducts();
     };
     
-    ctrl.select_category = function($event, category)
-    {
-        appService.selectCategory(category);
-    };
-    
-    ctrl.select_json_category = function($event, category)
-    {
-        ctrl.select_category($event, JSON.parse(category));
-    };
-    
     $scope.viewChanged = function(gridView)
     {
         profileData.set('gridView', gridView);
@@ -388,4 +313,4 @@ angular.module('eappApp').controller('ShopController', ["$scope", "$q", "appServ
     {
         window.scrollTo(0, 0);
     });
-}]);
+});

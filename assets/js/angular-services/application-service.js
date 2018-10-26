@@ -56,12 +56,6 @@ angular.module('eappApp').factory('appService',function($http, profileData, $mdD
     service.method = "";
     service.controller = "";
     
-    
-    /**
-     * The store that is selected in the cart. 
-     */
-    service.cartSelectedStore = null;
-    
     service.ready = $http.post(this.siteUrl.concat("eapp/get_application_data"), null, { transformRequest: angular.identity, headers: {'Content-Type': undefined}});
     
     service.ready.then(function(response)
@@ -148,7 +142,7 @@ angular.module('eappApp').factory('appService',function($http, profileData, $mdD
         for(var key in service.cart)
         {
             total += 
-                    !profileData.cartSettings.cartView ? 
+                    !profileData.instance.cartView ? 
                     service.cart[key].store_products[store_index].price * service.cart[key].quantity : 
                     service.cart[key].store_product.price * service.cart[key].quantity;
         }
@@ -156,41 +150,6 @@ angular.module('eappApp').factory('appService',function($http, profileData, $mdD
         return total;
     };
     
-    service.get_cart_total_price = function()
-    {
-        var total = 0;
-
-        if((!angular.isNullOrUndefined(profileData.instance.cartSettings) && profileData.instance.cartSettings.cartView) || service.controller !== 'cart')
-        {
-            for(var key in service.cart)
-            {
-                total += parseFloat(service.cart[key].quantity * service.cart[key].store_product.price);
-            }
-        }
-        else
-        {
-            if(angular.isNullOrUndefined(service.selectedStore) 
-                    || angular.isNullOrUndefined(service.selectedStore.store_products)
-                    || angular.isNullOrUndefined(service.selectedStore.missing_products))
-            {
-                return 0;
-            }
-            
-            for(var y in service.selectedStore.store_products)
-            {
-                total += parseFloat(service.selectedStore.store_products[y].store_product.price * service.selectedStore.store_products[y].quantity);
-            }
-            
-            for(var y in service.selectedStore.missing_products)
-            {
-                total += parseFloat(service.selectedStore.missing_products[y].store_product.price * service.selectedStore.missing_products[y].quantity);
-            }
-        }
-        
-
-        return total;
-    };
-        
     service.get_cart_total_available_products = function()
     {
         var total = 0;
@@ -401,6 +360,17 @@ angular.module('eappApp').factory('appService',function($http, profileData, $mdD
     {
         service.promptForZipCode();
     }
+    
+    service.getActiveUserCoordinates = function()
+    {
+        var longitude = service.isUserLogged ? service.loggedUser.profile.longitude : service.longitude;
+        var latitude = service.isUserLogged ? service.loggedUser.profile.latitude : service.latitude;
+        
+        return {
+            longitude : longitude,
+            latitude : latitude
+        };
+    };
         
     return service;
 });
