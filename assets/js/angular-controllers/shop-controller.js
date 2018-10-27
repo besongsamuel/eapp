@@ -46,7 +46,7 @@ angular.module('eappApp').controller('ShopController', function ($scope, $q, app
         }
         
         // Get the products for the store
-        if($scope.controller === 'shop')
+        if(appService.controller === 'shop')
         {
             // We selected a specific store flyer
             if(window.sessionStorage.getItem("store_id"))
