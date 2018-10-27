@@ -39,7 +39,7 @@ angular.module('eappApp').controller('SelectAccountStoreController', function ($
         appService.clearSessionItems();  
 	var store_id = parseInt(id);
 	window.sessionStorage.setItem("store_id", store_id);    
-	window.location =  $scope.site_url.concat("/shop");
+	window.location =  appService.siteUrl.concat("/shop");
     };
     
     $scope.removeRetailer = function(ev, index)

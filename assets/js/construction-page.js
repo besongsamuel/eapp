@@ -29,7 +29,7 @@ var x = setInterval(function() {
 
 var pageApp = angular.module('pageApp', ['ngMaterial']);
 
-pageApp.controller('AccountController', ["$scope", "$http", function($scope, $http) 
+pageApp.controller('AccountController', function($scope, $http, appService) 
 {
     $scope.login = function()
     {
@@ -42,14 +42,14 @@ pageApp.controller('AccountController', ["$scope", "$http", function($scope, $ht
             
             
             // Send request to server to get optimized list 	
-            $http.post( $scope.site_url.concat("/account/perform_login"), 
+            $http.post( appService.siteUrl.concat("/account/perform_login"), 
             formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}}).then(
             function(response)
             {
                 if(response.data.success)
                 {
                     // redirect to home page. 
-                    window.location =  $scope.site_url.concat("/" + response.data.redirect);
+                    window.location =  appService.siteUrl.concat("/" + response.data.redirect);
                 }
                 else
                 {
@@ -58,6 +58,6 @@ pageApp.controller('AccountController', ["$scope", "$http", function($scope, $ht
             });
         }
     };
-}]);
+});
 
 

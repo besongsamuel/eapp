@@ -8,7 +8,7 @@ const STAT_TYPE_CLICK = 0;
 
 
 // Create eapp service to get and update our data
-angular.module('eappApp').factory('eapp', ['$http','appService', '$mdDialog', 'profileData', function($http, appService, $mdDialog, profileData)
+angular.module('eappApp').factory('eapp', function($http, appService, $mdDialog, profileData, cart)
 {
     var eappService = {};
     
@@ -435,13 +435,13 @@ angular.module('eappApp').factory('eapp', ['$http','appService', '$mdDialog', 'p
     
     eappService.viewProduct = function($scope, product_id, ev)
     {
-        let quantity = $scope.storeProduct.quantity;
+        let quantity = $scope.storeProduct ? $scope.storeProduct.quantity : 1;
         // Get the latest products
         var promise = eappService.getProduct(product_id);
     
         promise.then(function(response)
         {
-            eappService.recordProductStat(product_id, profileData.instance.optimizationDistance, STAT_TYPE_CLICK);
+            appService.recordProductStat(product_id, profileData.instance.optimizationDistance, STAT_TYPE_CLICK);
             
             $scope.storeProduct = response.data;
             
@@ -488,6 +488,11 @@ angular.module('eappApp').factory('eapp', ['$http','appService', '$mdDialog', 'p
         $scope.close = function() 
         {
             $mdDialog.cancel();
+        };
+        
+        $scope.productInCart = function(product_id)
+        {
+            return cart.productInCart(product_id);
         };
     }
     
@@ -643,4 +648,4 @@ angular.module('eappApp').factory('eapp', ['$http','appService', '$mdDialog', 'p
     };
 
     return eappService;
-}]);
+});

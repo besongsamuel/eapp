@@ -90,6 +90,7 @@ class Home extends CI_Controller {
 
     public function change_location()
     {
+        $this->data['script'] = $this->load->view('home/scripts/change-location', '', TRUE);
         $this->data['body'] = $this->load->view('home/change-location', $this->data, TRUE);
         $this->parser->parse('eapp_template', $this->data);
     }

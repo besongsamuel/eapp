@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-angular.module("eappApp").controller("SubscriptonController", ["$scope", "$company", function($scope, $company) 
+angular.module("eappApp").controller("SubscriptonController", ["$scope", "$company", "appService", function($scope, $company, appService) 
 {
     
     var ctrl = this;
@@ -21,7 +21,7 @@ angular.module("eappApp").controller("SubscriptonController", ["$scope", "$compa
                 sessionStorage.setItem("subscriptionChanged", JSON.stringify(true));
                 
                 // Redirect to the company account page
-                window.location =  $scope.site_url.concat("/account/index/2");
+                window.location =  appService.siteUrl.concat("/account/index/2");
             }
         });
         
@@ -48,7 +48,7 @@ angular.module("eappApp").controller("SubscriptonController", ["$scope", "$compa
                           // Submit payload.nonce to your server
                           $company.submitPayment(payload.nonce, 11, function()
                           {
-                              window.location =  $scope.site_url.concat("/account/index/2");
+                              window.location =  appService.siteUrl.concat("/account/index/2");
                           });
                       });
                     });
@@ -71,7 +71,7 @@ angular.module("eappApp").controller("SubscriptonController", ["$scope", "$compa
                           // Submit payload.nonce to your server
                           $company.submitPayment(payload.nonce, 12, function()
                           {
-                              window.location =  $scope.site_url.concat("/account/index/2");
+                              window.location =  appService.siteUrl.concat("/account/index/2");
                           });
                       });
                     });

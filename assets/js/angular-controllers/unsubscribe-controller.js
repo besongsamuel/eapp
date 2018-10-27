@@ -1,4 +1,4 @@
-angular.module('eappApp').controller('UnsubscribeController', ["$scope", "$location", "eapp", function ($scope, $location, eapp) 
+angular.module('eappApp').controller('UnsubscribeController', ["$scope", "appService", "eapp", function ($scope, appService, eapp) 
 {
     
     $scope.unsubscribeErrorMessage = null;
@@ -20,7 +20,7 @@ angular.module('eappApp').controller('UnsubscribeController', ["$scope", "$locat
         {
             $scope.userEmail = "";
             //redirecto to invalid page
-            window.location.href = $scope.site_url.concat("/account/invalid");
+            window.location.href = appService.siteUrl.concat("/account/invalid");
         }
     });
     
@@ -44,7 +44,7 @@ angular.module('eappApp').controller('UnsubscribeController', ["$scope", "$locat
     
     $scope.gotoHome = function()
     {
-        window.location.href = $scope.site_url.concat("/home");
+        window.location.href = appService.siteUrl.concat("/home");
     };
     
 }]);

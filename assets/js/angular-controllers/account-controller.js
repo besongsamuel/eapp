@@ -38,9 +38,9 @@ angular.module('eappApp').controller('AccountController', ["$scope", "$http", "$
     
     $scope.Init = function()
     {
-        if(!$scope.isUserLogged && $scope.redirectToLogin)
+        if(!appService.isUserLogged && appService.redirectToLogin)
         {
-            window.location.href = $scope.site_url.concat("/account/login");
+            window.location.href = appService.siteUrl.concat("/account/login");
         }
 
         $scope.load_icons();
@@ -78,17 +78,17 @@ angular.module('eappApp').controller('AccountController', ["$scope", "$http", "$
     {
         $rootScope.icons = 
         {
-            person :  $scope.base_url + "/assets/icons/ic_person_white_24px.svg",
-            flag :  $scope.base_url + "/assets/icons/ic_flag_white_24px.svg",
-            place :  $scope.base_url + "/assets/icons/ic_place_white_24px.svg",
-            phone :  $scope.base_url + "/assets/icons/ic_local_phone_white_24px.svg",
-            email :  $scope.base_url + "/assets/icons/ic_email_white_24px.svg",
-            lock :  $scope.base_url + "/assets/icons/ic_lock_white_24px.svg",
-            favorite :  $scope.base_url + "/assets/icons/ic_favorite_white_24px.svg",
-            delete :  $scope.base_url + "/assets/icons/ic_delete_white_24px.svg",
-            add :  $scope.base_url + "/assets/icons/ic_add_circle_white_24px.svg",
-            search :  $scope.base_url + "/assets/icons/ic_search_black_24px.svg",
-            add_img : $scope.base_url + "/assets/img/add_image.png"
+            person :  appService.baseUrl + "/assets/icons/ic_person_white_24px.svg",
+            flag :  appService.baseUrl + "/assets/icons/ic_flag_white_24px.svg",
+            place :  appService.baseUrl + "/assets/icons/ic_place_white_24px.svg",
+            phone :  appService.baseUrl + "/assets/icons/ic_local_phone_white_24px.svg",
+            email :  appService.baseUrl + "/assets/icons/ic_email_white_24px.svg",
+            lock :  appService.baseUrl + "/assets/icons/ic_lock_white_24px.svg",
+            favorite :  appService.baseUrl + "/assets/icons/ic_favorite_white_24px.svg",
+            delete :  appService.baseUrl + "/assets/icons/ic_delete_white_24px.svg",
+            add :  appService.baseUrl + "/assets/icons/ic_add_circle_white_24px.svg",
+            search :  appService.baseUrl + "/assets/icons/ic_search_black_24px.svg",
+            add_img : appService.baseUrl + "/assets/img/add_image.png"
         };
     };
 
@@ -238,7 +238,7 @@ angular.module('eappApp').controller('AccountController', ["$scope", "$http", "$
                         $scope.creatingAccount = false;
                         
                         // redirect to subscription selection page
-                        window.location =  $scope.site_url.concat("/account/select_subscription");
+                        window.location =  appService.siteUrl.concat("/account/select_subscription");
                         
                     }
 
@@ -277,7 +277,7 @@ angular.module('eappApp').controller('AccountController', ["$scope", "$http", "$
             if(response.data)
             {
                 // Send the user to his account
-                window.location.href = $scope.site_url.concat("/account");
+                window.location.href = appService.siteUrl.concat("/account");
             }
         });
     };
@@ -291,14 +291,14 @@ angular.module('eappApp').controller('AccountController', ["$scope", "$http", "$
             formData.append("password", $scope.user.password);
             formData.append("rememberme", $scope.user.rememberme ? 1 : 0);
             // Send request to server to get optimized list 	
-            $http.post( $scope.site_url.concat("/account/perform_login"), 
+            $http.post( appService.siteUrl.concat("/account/perform_login"), 
             formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}}).then(
             function(response)
             {
                 if(response.data.success)
                 {
                     // redirect to home page. 
-                    window.location =  $scope.site_url.concat("/" + response.data.redirect);
+                    window.location =  appService.siteUrl.concat("/" + response.data.redirect);
                 }
                 else
                 {
@@ -311,12 +311,12 @@ angular.module('eappApp').controller('AccountController', ["$scope", "$http", "$
     $scope.logout = function()
     {
         // Send request to server to get optimized list 	
-        $http.post( $scope.site_url.concat("/account/logout"), 
+        $http.post( appService.siteUrl.concat("/account/logout"), 
         null, { transformRequest: angular.identity, headers: {'Content-Type': undefined}}).then(
         function(response)
         {
             // redirect to home page. 
-            window.location =  $scope.site_url.concat("/home");
+            window.location =  appService.siteUrl.concat("/home");
             
         });
     };
@@ -368,7 +368,7 @@ angular.module('eappApp').controller('AccountController', ["$scope", "$http", "$
         formData.append("old_password", $scope.old_password);
         formData.append("password", $scope.password);
         
-        $http.post( $scope.site_url.concat("/account/change_password"), 
+        $http.post( appService.siteUrl.concat("/account/change_password"), 
         formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}}).then(
         function(response)
         {

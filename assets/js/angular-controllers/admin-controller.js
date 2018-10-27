@@ -51,7 +51,7 @@ function apsUploadFileLink(scope, element, attrs)
     });
 }
 
-angular.module("eappApp").controller('AdminController', ["$scope", "Form", "$http", "$q", "$mdDialog", "eapp", "$rootScope", function($scope, Form, $http, $q, $mdDialog, eapp, $rootScope) {
+angular.module("eappApp").controller('AdminController', function($scope, Form, $http, $q, $mdDialog, eapp, $rootScope, appService) {
       
     $scope.selectedProduct = null;
     $scope.searchProductText = "";
@@ -211,7 +211,7 @@ angular.module("eappApp").controller('AdminController', ["$scope", "Form", "$htt
 	var formData = new FormData();
 	formData.append("name", searchProductText);
 
-	$http.post($scope.site_url.concat("/admin/searchProducts"), formData, {
+	$http.post(appService.siteUrl.concat("/admin/searchProducts"), formData, {
 	    transformRequest: angular.identity,
 	    headers: {'Content-Type': undefined}
 	}).then(function(response)
@@ -349,7 +349,7 @@ angular.module("eappApp").controller('AdminController', ["$scope", "Form", "$htt
     {
         $mdDialog.show({
             controller: DialogController,
-            templateUrl:  $scope.base_url + 'assets/templates/create-new-brand.html',
+            templateUrl:  appService.baseUrl + 'assets/templates/create-new-brand.html',
             parent: angular.element(document.body),
             targetEvent: ev,
             clickOutsideToClose:true,
@@ -389,7 +389,7 @@ angular.module("eappApp").controller('AdminController', ["$scope", "Form", "$htt
                     }
                 });
                 
-                $http.post($scope.site_url.concat("/admin/create_product_brand"), formData, {transformRequest: angular.identity,
+                $http.post(appService.siteUrl.concat("/admin/create_product_brand"), formData, {transformRequest: angular.identity,
                 headers: {'Content-Type': undefined}}).then(
                 function(result)
                 {
@@ -432,7 +432,7 @@ angular.module("eappApp").controller('AdminController', ["$scope", "Form", "$htt
                     }
                 });
                 
-                $http.post($scope.site_url.concat("/admin/create_product"), formData, {transformRequest: angular.identity,
+                $http.post(appService.siteUrl.concat("/admin/create_product"), formData, {transformRequest: angular.identity,
                 headers: {'Content-Type': undefined}}).then(
                 function(result)
                 {
@@ -452,7 +452,7 @@ angular.module("eappApp").controller('AdminController', ["$scope", "Form", "$htt
     {
         $mdDialog.show({
             controller: CreateProductController,
-            templateUrl:  $scope.base_url + 'assets/templates/create-new-product.html',
+            templateUrl:  appService.baseUrl + 'assets/templates/create-new-product.html',
             parent: angular.element(document.body),
             targetEvent: ev,
             clickOutsideToClose:true,
@@ -468,10 +468,10 @@ angular.module("eappApp").controller('AdminController', ["$scope", "Form", "$htt
 
         if(!$scope.continue)
         {
-            redirect_url =  $scope.site_url.concat("/admin/store_products");
+            redirect_url =  appService.siteUrl.concat("/admin/store_products");
         }
         
-        var url = $scope.site_url.concat("/admin/create_store_product");
+        var url = appService.siteUrl.concat("/admin/create_store_product");
         var form = document.getElementById("create_store_product_form");
         var formData = new FormData(form);
         // Manually add organic and in flyer form fields
@@ -540,7 +540,7 @@ angular.module("eappApp").controller('AdminController', ["$scope", "Form", "$htt
             if($scope.selectedProduct !== null)
             {
                 formData.append("product_id", $scope.selectedProduct.id);
-                $http.post($scope.site_url.concat("/admin/upload_product_image"), formData, {transformRequest: angular.identity,
+                $http.post(appService.siteUrl.concat("/admin/upload_product_image"), formData, {transformRequest: angular.identity,
                 headers: {'Content-Type': undefined}}).then(
                 function(result)
                 {
@@ -625,7 +625,7 @@ angular.module("eappApp").controller('AdminController', ["$scope", "Form", "$htt
     
     $scope.create_store = function()
     {
-        var url =  $scope.site_url.concat("/admin/create_store");
+        var url =  appService.siteUrl.concat("/admin/create_store");
         var form = document.getElementById("create_store_form");
         var formData = new FormData(form);
         Form.postForm(formData, url, null);
@@ -634,7 +634,7 @@ angular.module("eappApp").controller('AdminController', ["$scope", "Form", "$htt
     
     $scope.upload = function(name, $event)
     {
-        var url = $scope.site_url.concat("/admin/upload_" + name);
+        var url = appService.siteUrl.concat("/admin/upload_" + name);
         var form = document.getElementById("upload_" + name + "_form");
         var formData = new FormData(form);
         Form.postForm(formData, url, null, $event);
@@ -669,7 +669,7 @@ angular.module("eappApp").controller('AdminController', ["$scope", "Form", "$htt
    
     $scope.Init();
     
-}]);
+});
 
 angular.module('eappApp').directive('fileUpload', function () 
 {
@@ -696,7 +696,7 @@ angular.module('eappApp').directive('fileUpload', function ()
     };
 });
 
-angular.module("eappApp").controller("ViewSubCategoriesController", function($scope, eapp, $mdDialog, $http)
+angular.module("eappApp").controller("ViewSubCategoriesController", function($scope, eapp, $mdDialog, $http, appService)
 {
     var ctrl = this;
     
@@ -819,7 +819,7 @@ angular.module("eappApp").controller("ViewSubCategoriesController", function($sc
         var formData = new FormData();
         formData.append("sub_category", jsonSubCategory);
 
-        $http.post($scope.site_url.concat("/admin/edit_sub_category"), formData, {transformRequest: angular.identity,
+        $http.post(appService.siteUrl.concat("/admin/edit_sub_category"), formData, {transformRequest: angular.identity,
         headers: {'Content-Type': undefined}}).then(
         function(result)
         {
@@ -840,7 +840,7 @@ angular.module("eappApp").controller("ViewSubCategoriesController", function($sc
         
         formData.append("sub_category", jsonSubCategory);
 
-        $http.post($scope.site_url.concat("/admin/edit_sub_category"), formData, {transformRequest: angular.identity,
+        $http.post(appService.siteUrl.concat("/admin/edit_sub_category"), formData, {transformRequest: angular.identity,
         headers: {'Content-Type': undefined}}).then(
         function(result)
         {
@@ -870,7 +870,7 @@ angular.module("eappApp").controller("ViewSubCategoriesController", function($sc
             }
         });
 
-        $http.post($scope.site_url.concat("/admin/create_category"), formData, {transformRequest: angular.identity,
+        $http.post(appService.siteUrl.concat("/admin/create_category"), formData, {transformRequest: angular.identity,
         headers: {'Content-Type': undefined}}).then(
         function(result)
         {
@@ -891,7 +891,7 @@ angular.module("eappApp").controller("ViewSubCategoriesController", function($sc
     
 });
 
-angular.module("eappApp").controller("ViewProductsController", function($scope, eapp, $mdDialog, $http)
+angular.module("eappApp").controller("ViewProductsController", function($scope, eapp, $mdDialog, $http, appService)
 {
     var ctrl = this;
     
@@ -916,7 +916,7 @@ angular.module("eappApp").controller("ViewProductsController", function($scope, 
     
     $scope.gotoCreateNewProduct = function()
     {
-        window.location.href = $scope.site_url.concat("/admin/create_otiprix_product");
+        window.location.href = appService.siteUrl.concat("/admin/create_otiprix_product");
     };
     
     $scope.removeFilter = function () 
@@ -1005,7 +1005,7 @@ angular.module("eappApp").controller("ViewProductsController", function($scope, 
     
     $scope.edit_product = function(product_id)
     {
-        window.location.href = $scope.site_url.concat("/admin/edit_product?product=", product_id.toString());
+        window.location.href = appService.siteUrl.concat("/admin/edit_product?product=", product_id.toString());
     };
     
     
@@ -1050,7 +1050,7 @@ angular.module("eappApp").controller("ViewProductsController", function($scope, 
             }
         });
 
-        $http.post($scope.site_url.concat("/admin/edit_otiprix_product"), formData, {transformRequest: angular.identity,
+        $http.post(appService.siteUrl.concat("/admin/edit_otiprix_product"), formData, {transformRequest: angular.identity,
         headers: {'Content-Type': undefined}}).then(
         function(result)
         {
@@ -1069,7 +1069,7 @@ angular.module("eappApp").controller("ViewProductsController", function($scope, 
     
 });
 
-angular.module("eappApp").controller("EditProductController", function($scope, eapp, $http)
+angular.module("eappApp").controller("EditProductController", function($scope, eapp, $http, appService)
 {
     var ctrl = this;
     
@@ -1152,7 +1152,7 @@ angular.module("eappApp").controller("EditProductController", function($scope, e
                 }
             });
 
-            $http.post($scope.site_url.concat("/admin/edit_otiprix_product"), formData, {transformRequest: angular.identity,
+            $http.post(appService.siteUrl.concat("/admin/edit_otiprix_product"), formData, {transformRequest: angular.identity,
             headers: {'Content-Type': undefined}}).then(
             function(result)
             {
@@ -1167,7 +1167,7 @@ angular.module("eappApp").controller("EditProductController", function($scope, e
         
     $scope.gotoViewProducts = function()
     {
-        window.location.href = $scope.site_url.concat("/admin/view_products");
+        window.location.href = appService.siteUrl.concat("/admin/view_products");
     };
     
     angular.element(document).ready(function()
@@ -1178,7 +1178,7 @@ angular.module("eappApp").controller("EditProductController", function($scope, e
 });
 
 
-angular.module("eappApp").controller('ProductsTableController', ['$scope', '$q', '$http', '$rootScope', function($scope, $q, $http, $rootScope) 
+angular.module("eappApp").controller('ProductsTableController', function($scope, $q, $http, $rootScope) 
 {
     $scope.selected = [];
     
@@ -1206,7 +1206,7 @@ angular.module("eappApp").controller('ProductsTableController', ['$scope', '$q',
 
         formData.append("id", store_product_id);
 
-        $scope.promise = $http.post( $scope.site_url.concat("/admin/delete_store_product"), formData, {
+        $scope.promise = $http.post( appService.siteUrl.concat("/admin/delete_store_product"), formData, {
                         transformRequest: angular.identity,
                         headers: {'Content-Type': undefined}});
 
@@ -1221,7 +1221,7 @@ angular.module("eappApp").controller('ProductsTableController', ['$scope', '$q',
 	
     $scope.getProducts = function () 
     {
-        if(typeof $scope.site_url === 'undefined')
+        if(typeof appService.siteUrl === 'undefined')
         {
             // Not ready
             return;
@@ -1239,7 +1239,7 @@ angular.module("eappApp").controller('ProductsTableController', ['$scope', '$q',
         formData.append("limit", $scope.query.limit);
         formData.append("filter", $scope.query.filter);
         formData.append("order", $scope.query.order);
-        $scope.promise = $http.post( $scope.site_url.concat("/admin/get_store_products"), formData, {
+        $scope.promise = $http.post( appService.siteUrl.concat("/admin/get_store_products"), formData, {
                 transformRequest: angular.identity,
                 headers: {'Content-Type': undefined}});
 
@@ -1286,4 +1286,4 @@ angular.module("eappApp").controller('ProductsTableController', ['$scope', '$q',
     });
     
   
-}]);
+});

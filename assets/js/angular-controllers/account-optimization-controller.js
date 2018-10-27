@@ -187,7 +187,7 @@ angular.module('eappApp').controller('AccountOptimizationController', function (
         // Show dialog for user to change the store of the product. 
         $mdDialog.show({
             controller: showOptimizationController,
-            templateUrl:  $scope.base_url + 'assets/templates/show-optimization.html',
+            templateUrl:  appService.baseUrl + 'assets/templates/show-optimization.html',
             parent: angular.element(document.body),
             targetEvent: ev,
             clickOutsideToClose:true,

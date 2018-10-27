@@ -43,7 +43,7 @@ angular.module('eappApp').controller('CategoryController', function ($scope, $ro
         appService.recordHit("eapp_product_category ",category_id);
         window.sessionStorage.setItem("category_id", category_id);    
         window.sessionStorage.setItem("category_name", category.name);
-        window.location =  $scope.site_url.concat("/shop");
+        window.location = appService.siteUrl.concat("/shop");
     };
     
     $scope.select_json_category = function($event, category)

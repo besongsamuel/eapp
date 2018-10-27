@@ -4,9 +4,47 @@
  * and open the template in the editor.
  */
 
-angular.module('eappApp').factory('cart', function(eapp, appService, profileData) 
+angular.module('eappApp').factory('cart', function($http, appService, profileData) 
 {
     var service = this;
+    
+    service.getCart = function()
+    {
+        return $http.post(appService.siteUrl.concat("eapp/get_cart_contents"), null);
+    };
+    
+    service.removeFromCart = function(rowid)
+    {
+        var formData = new FormData();
+        formData.append("rowid", rowid);
+        
+        return $http.post(appService.siteUrl.concat("cart/remove"), formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}});
+    };
+    
+    service.updateCart = function(item)
+    {
+        var formData = new FormData();
+        formData.append("item", JSON.stringify(item));
+        
+        return $http.post(appService.siteUrl.concat("cart/update"), formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}});
+    };
+    
+    service.addToCart = function(productID, storeProductID, longitude, latitude, quantity)
+    {
+        var formData = new FormData();
+        formData.append("product_id", productID);
+        formData.append("store_product_id", storeProductID);
+        formData.append("longitude", longitude);
+        formData.append("latitude", latitude);
+        formData.append("quantity", quantity);
+        
+        return $http.post(appService.siteUrl.concat("cart/insert"), formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}});
+    };
+    
+    service.clearCart = function()
+    {
+        return $http.post(appService.siteUrl.concat("cart/destroy"), null);
+    };
     
     service.addProductToCart = function(product_id, store_product_id = -1, product_quantity = 1)
     {
@@ -15,7 +53,7 @@ angular.module('eappApp').factory('cart', function(eapp, appService, profileData
             store_product_id = -1;
         }
         
-        var addToCartPromise = eapp.addToCart(
+        var addToCartPromise = service.addToCart(
                 product_id, 
                 store_product_id, 
                 appService.isUserLogged ? appService.loggedUser.profile.longitude : appService.longitude, 
@@ -63,7 +101,7 @@ angular.module('eappApp').factory('cart', function(eapp, appService, profileData
     
     service.removeProductFromCart = function(product_id, callback)
     {
-        var removePromise = eapp.removeFromCart(service.getRowID(product_id));
+        var removePromise = service.removeFromCart(service.getRowID(product_id));
 
         removePromise.then(function(response)
         {

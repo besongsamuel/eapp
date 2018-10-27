@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-angular.module("eappApp").controller("ContactUsController", ["$rootScope", "$scope", "eapp", "$http", function($rootScope, $scope, eapp, $http) 
+angular.module("eappApp").controller("ContactUsController", ["$rootScope", "$scope", "appService", "$http", function($rootScope, $scope, appService, $http) 
 {
     $scope.officeLongitude = -75.697530;
     $scope.officeLatitude = 45.495940;
@@ -50,7 +50,7 @@ angular.module("eappApp").controller("ContactUsController", ["$rootScope", "$sco
             marker = new google.maps.Marker({
             position: new google.maps.LatLng(locations[i][1], locations[i][2]),
             map: map ,
-            icon: $scope.base_url.concat('/assets/img/marker.png')
+            icon: appService.baseUrl.concat('/assets/img/marker.png')
             });
 
 
@@ -82,7 +82,7 @@ angular.module("eappApp").controller("ContactUsController", ["$rootScope", "$sco
             formData.append("subject", $scope.contact.subject);
             formData.append("comment", $scope.contact.comment);
 
-            $http.post( $scope.site_url.concat("/home/contactus"), formData, {
+            $http.post(appService.siteUrl.concat("/home/contactus"), formData, {
                     transformRequest: angular.identity,
                     headers: {'Content-Type': undefined}
             }).then(function(response)

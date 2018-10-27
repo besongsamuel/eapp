@@ -294,6 +294,12 @@ angular.module("eappApp").controller("CartController", function(appService, $sco
         
         $scope.profileData = profileData;
         
+        $scope.isUserLogged = appService.isUserLogged;
+        
+        $scope.changeLocationUrl = appService.changeLocationUrl;
+        
+        $scope.currentAddress = appService.currentAddress;
+        
         profileData.set("cartFilterSettings", null);
         
         $scope.update_cart_list();
@@ -913,7 +919,7 @@ angular.module("eappApp").controller("CartController", function(appService, $sco
         
         $mdDialog.show({
             controller: GoogleMapsController,
-            templateUrl:  $scope.base_url + 'assets/templates/google-map.html',
+            templateUrl:  appService.baseUrl + 'assets/templates/google-map.html',
             parent: angular.element(document.body),
             targetEvent: ev,
             clickOutsideToClose:true,
@@ -1488,7 +1494,7 @@ angular.module("eappApp").controller("CartController", function(appService, $sco
 
         cart.sortCartByStore();
         
-        var siteLogo = $scope.base_url.concat("assets/img/logo.png");
+        var siteLogo = appService.baseUrl.concat("assets/img/logo.png");
         
         content += '<style> tr:nth-child(even){ background-color : #f2f2f2;} @media print{ body{ -webkit-print-color-adjust: exact;} } </style>';
         
@@ -1583,7 +1589,7 @@ angular.module("eappApp").controller("CartController", function(appService, $sco
         $scope.scrollTop = $(document).scrollTop();
         $mdDialog.show({
             controller: ChangeDistanceController,
-            templateUrl:  $scope.base_url + 'assets/templates/change-distance.html',
+            templateUrl:  appService.baseUrl + 'assets/templates/change-distance.html',
             parent: angular.element(document.body),
             targetEvent: ev,
             clickOutsideToClose:true,

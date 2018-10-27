@@ -1,15 +1,15 @@
-angular.module('eappApp').controller('AccountCreatedController', ["$scope", function ($scope) 
+angular.module('eappApp').controller('AccountCreatedController', function ($scope, appService) 
 {
     
     $scope.visible = false;
     $scope.gotoHome = function()
     {
-        window.location.href = $scope.site_url.concat("/home");
+        window.location.href = appService.siteUrl.concat("/home");
     };
     
     $scope.gotoAccount = function()
     {
-        window.location.href = $scope.site_url.concat("/account");
+        window.location.href = appService.siteUrl.concat("/account");
     };
     
     $scope.Init = function()
@@ -29,4 +29,4 @@ angular.module('eappApp').controller('AccountCreatedController', ["$scope", func
     
     $scope.Init();
   
-}]);
+});

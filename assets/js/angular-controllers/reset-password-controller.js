@@ -1,4 +1,4 @@
-angular.module('eappApp').controller('ResetPasswordController', ["$scope", "$location", "eapp", function ($scope, $location, eapp) 
+angular.module('eappApp').controller('ResetPasswordController', ["$scope", "appService", "eapp", function ($scope, appService, eapp) 
 {
     
     var ctrl = this;
@@ -46,7 +46,7 @@ angular.module('eappApp').controller('ResetPasswordController', ["$scope", "$loc
         }
         else
         {
-            window.location.href = $scope.site_url.concat("/account/login");
+            window.location.href = appService.siteUrl.concat("/account/login");
         }
     };
     

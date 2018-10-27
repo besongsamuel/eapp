@@ -19,7 +19,7 @@ angular.module('eappApp').controller('ShopController', function ($scope, $q, app
        
     $scope.productsReady = false;
     
-    appService.ready.then(function()
+    Promise.all([appService.ready, profileData.ready]).then(function()
     {
         $scope.Init();
     });
@@ -32,7 +32,13 @@ angular.module('eappApp').controller('ShopController', function ($scope, $q, app
         
         $scope.loggedUser = appService.loggedUser;
         
-        $scope.assets_dir = $scope.base_url.concat("/eapp/assets/");
+        $scope.isUserLogged = appService.isUserLogged;
+        
+        $scope.changeLocationUrl = appService.changeLocationUrl;
+        
+        $scope.currentAddress = appService.currentAddress;
+        
+        $scope.assets_dir = appService.baseUrl.concat("/eapp/assets/");
         
         if($(window).width() < 500)
         {

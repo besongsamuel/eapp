@@ -218,44 +218,4 @@
   {scripts}
   {script}
   
-   <!-- Initialize angular root scope -->
-    <script>
-        $(document).ready(function()
-        {
-            var rootScope = angular.element($("html")).scope();
-            rootScope.$apply(function()
-            {
-                rootScope.base_url = "<?php echo $base_url; ?>";
-                rootScope.site_url = "<?php echo $site_url; ?>";
-                rootScope.controller = "<?php echo $controller; ?>";
-                rootScope.method = "<?php echo $method; ?>";
-                rootScope.longitude = 0;
-                rootScope.latitude = 0;
-                rootScope.redirectToLogin = JSON.parse("<?php echo $redirectToLogin; ?>");
-                var user = '<?php echo $user; ?>';
-                if(user === "" || user == "null")
-                {
-                        rootScope.loggedUser = null;
-                }
-                else
-                {
-                        rootScope.loggedUser = JSON.parse(user);
-                }
-                rootScope.hideSearchArea = 
-                        (rootScope.controller == "account" && (rootScope.method == "login" || rootScope.method == "register")) 
-                        || (rootScope.method == "contact" || (rootScope.method == "about" && rootScope.controller == "home"));
-						
-			
-                rootScope.isUserLogged = rootScope.loggedUser !== null;
-                
-                rootScope.isRegularUser = rootScope.isUserLogged && parseInt(rootScope.loggedUser.subscription) <= 2;
-            });
-        });
-    </script>
-	  
-    <!-- Rootscope Script -->
-    <script src="<?php echo base_url("assets/js/angular-modules/root-scope.js")?>"></script> 
-     
-
-  
 </html>

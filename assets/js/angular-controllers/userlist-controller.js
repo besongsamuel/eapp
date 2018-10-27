@@ -302,7 +302,7 @@ angular.module("eappApp").controller("UserListController", function($rootScope, 
         formData.append("my_list", JSON.stringify($scope.getProductList()));
         formData.append("id", $scope.selectedList.id);
         // Send request to server to get optimized list 	
-        $http.post( $scope.site_url.concat("/account/save_user_list"), 
+        $http.post( appService.siteUrl.concat("/account/save_user_list"), 
         formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}}).then(
         function(response)
         {
@@ -370,7 +370,7 @@ angular.module("eappApp").controller("UserListController", function($rootScope, 
         var formData = new FormData();
         formData.append("name", searchProductText);
 
-        $http.post( $scope.site_url.concat("/admin/searchProducts"), formData, {
+        $http.post( appService.siteUrl.concat("/admin/searchProducts"), formData, {
                 transformRequest: angular.identity,
                 headers: {'Content-Type': undefined}
         }).then(function(response)
@@ -523,7 +523,7 @@ angular.module("eappApp").controller("UserListController", function($rootScope, 
             formData.append("id", $scope.selectedGroceryList.id);
             formData.append("name", result);
             // Send request to server to get optimized list 	
-            $http.post( $scope.site_url.concat("/account/save_user_list"), 
+            $http.post( appService.siteUrl.concat("/account/save_user_list"), 
             formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}}).then(
             function(response)
             {

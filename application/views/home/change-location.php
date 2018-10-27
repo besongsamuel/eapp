@@ -14,11 +14,11 @@
     </div>
 </div> <!-- End Page title area -->
 
-<div class="container change-location-container" ng-cloak>
+<div class="container change-location-container" ng-controller="ChangeLocationController as ctrl" ng-cloak>
     
     <a href="<?php echo site_url("home/goback"); ?>">Retour</a>
     
-    <div class="alert alert-success" ng-show="successMessage">
+    <div class="alert alert-success" ng-show="message">
         <strong>Succès!</strong> Votre adresse actuelle a été modifiée.
     </div>
     
@@ -29,7 +29,7 @@
             <p>La géolocalisation nous permet d'obtenir votre position géographique. Dans ce cas, nous identifions votre ville pour diffuser les promotions disponibles dans ce domaine.</p>
             
             <div class="col-sm-12">
-                <md-button class="md-raised md-primary pull-right" ng-click="getUserCoordinates()">
+                <md-button class="md-raised md-primary pull-right" ng-click="ctrl.getUserCoordinates()">
                     Me géolocaliser
                 </md-button>
             </div>
@@ -49,7 +49,7 @@
             </md-input-container>
             
             <div class="col-sm-12">
-                <md-button class="md-raised md-primary pull-right" ng-click="getUserCoordinatesFromPostcode()">
+                <md-button class="md-raised md-primary pull-right" ng-click="ctrl.getUserCoordinatesFromPostcode()">
                     Changer
                 </md-button>
             </div>

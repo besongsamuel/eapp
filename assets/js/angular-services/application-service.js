@@ -89,8 +89,8 @@ angular.module('eappApp').factory('appService',function($http, $mdDialog, $locat
         }
         
         service.cart = response.data.cart;
-        service.baseUrl = response.data.base_url;
-        service.siteUrl = response.data.site_url;
+        service.baseUrl = response.data.base_url.concat("/");
+        service.siteUrl = response.data.site_url.concat("/");
         service.redirectToLogin = response.data.redirect_to_login;
         service.loggedUser = response.data.user;
         service.isUserLogged = service.loggedUser !== null;
@@ -134,7 +134,7 @@ angular.module('eappApp').factory('appService',function($http, $mdDialog, $locat
         window.location =  service.siteUrl.concat("/shop");
     };
 	
-    service.getUserCoordinates = function()
+    service.getUserCoordinates = function(callback)
     {
         // Get the current geo location only if it's not yet the case
         if ("geolocation" in navigator) 
@@ -148,11 +148,13 @@ angular.module('eappApp').factory('appService',function($http, $mdDialog, $locat
 
                 window.localStorage.setItem("longitude", service.longitude);
                 window.localStorage.setItem("latitude", service.latitude);
+                
+                callback();
             });
         }
     };
         
-    service.getUserCoordinatesFromPostcode = function(postcode)
+    service.getUserCoordinatesFromPostcode = function(postcode, callback)
     {
         var geocoder = new google.maps.Geocoder;
 
@@ -166,6 +168,8 @@ angular.module('eappApp').factory('appService',function($http, $mdDialog, $locat
 
                 window.localStorage.setItem("longitude", service.longitude);
                 window.localStorage.setItem("latitude", service.latitude);
+                
+                callback();
 
             }
         });      

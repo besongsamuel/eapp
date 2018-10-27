@@ -119,7 +119,7 @@ angular.module('eappApp').controller('SelectStoreController', function ($scope, 
         appService.recordRetailerHit(store.id, profileData.instance.cartDistance);
 	window.sessionStorage.setItem("store_id", store_id); 
         window.sessionStorage.setItem("store_name", store.name); 
-	window.location =  $scope.site_url.concat("/shop");
+	window.location =  appService.siteUrl.concat("/shop");
     };
     
     $scope.search = function()

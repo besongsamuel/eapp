@@ -4,10 +4,17 @@
  * and open the template in the editor.
  */
 
-angular.module("eappApp").controller("MenuController", function($scope, eapp, appService, cart) 
+angular.module("eappApp").controller("MenuController", function($scope, appService, cart, $rootScope) 
 {
     appService.ready.then(function()
     {
+        
+        $rootScope.isRegularUser = appService.isRegularUser;
+        
+        $rootScope.loggedUser = appService.loggedUser;
+        
+        $rootScope.isUserLogged = appService.isUserLogged;
+        
         $scope.selectedMenu = 0;
         
         switch(appService.controller.toString())
@@ -80,6 +87,11 @@ angular.module("eappApp").controller("MenuController", function($scope, eapp, ap
     {
         return cart.getCartPrice();
     };
+    
+    $scope.gotoShop = function()
+    {
+        appService.gotoShop();
+    }
     
 });
 
