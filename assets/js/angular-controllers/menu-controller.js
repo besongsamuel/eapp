@@ -15,6 +15,10 @@ angular.module("eappApp").controller("MenuController", function($scope, appServi
         
         $rootScope.isUserLogged = appService.isUserLogged;
         
+        $rootScope.site_url = appService.siteUrl;
+        
+        $rootScope.base_url = appService.baseUrl;
+        
         $scope.selectedMenu = 0;
         
         switch(appService.controller.toString())
