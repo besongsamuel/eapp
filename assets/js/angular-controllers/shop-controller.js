@@ -102,7 +102,7 @@ angular.module('eappApp').controller('ShopController', function ($scope, $q, app
                 
         if(profileData.get().filterSettings)
         {
-            $scope.filterSettings = profileData.get().filterSettings;
+            $scope.filterSettings = profileData.instance.filterSettings;
             // Get the filter from the current settings and checks if a store is selected
             $scope.createResultsFilter();
             $scope.productsReady = true;

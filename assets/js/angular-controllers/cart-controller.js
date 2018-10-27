@@ -300,7 +300,7 @@ angular.module("eappApp").controller("CartController", function(appService, $sco
         
         $scope.currentAddress = appService.currentAddress;
         
-        profileData.set("cartFilterSettings", null);
+        profileData.set("cartFilterSettings", profileData.instance.cartFilterSettings);
         
         $scope.update_cart_list();
         
@@ -329,7 +329,7 @@ angular.module("eappApp").controller("CartController", function(appService, $sco
         
         if(profileData.instance.cartFilterSettings)
         {
-            profileData.instance.cartFilterSettings = profileData.instance.cartFilterSettings;
+            $scope.cartFilterSettings = profileData.instance.cartFilterSettings;
             $scope.createResultsFilter();
             $scope.ready = true;
         }
