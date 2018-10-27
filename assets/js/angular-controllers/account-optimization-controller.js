@@ -256,57 +256,59 @@ angular.module('eappApp').controller('AccountOptimizationController', function (
         getUserOptimizationPromise.then(function(response)
         {
             $scope.userOptimization = response.data;
+            
+            if(appService.isUserLogged)
+            {
+                var data = 
+                {
+                    label : "Économies cette semaine",
+                    value : optimization_avg($scope.userOptimization.currentWeek),
+                    count : items_count($scope.userOptimization.currentWeek)
+                };
+
+                $scope.optimizations.push(data);
+
+
+                var data = 
+                {
+                    label : "Économies ce mois",
+                    value : optimization_avg($scope.userOptimization.currentMonth),
+                    count : items_count($scope.userOptimization.currentMonth)
+                };
+
+                $scope.optimizations.push(data);
+
+                var data = 
+                {
+                    label : "Économies cette année",
+                    value : optimization_avg($scope.userOptimization.currentYear),
+                    count : items_count($scope.userOptimization.currentYear)
+                };
+
+                $scope.optimizations.push(data);
+
+                var data = 
+                {
+                    label : "Économies général",
+                    value : optimization_avg($scope.userOptimization.overall),
+                    count : items_count($scope.userOptimization.overall)
+                };
+
+                //$scope.optimizations.push(data);
+
+            }
+            
         });
         
         
         $scope.optimizations = [];
         
-        if($scope.isUserLogged)
-        {
-            var data = 
-            {
-                label : "Économies cette semaine",
-                value : optimization_avg(appService.loggedUser.optimizations.currentWeek),
-                count : items_count(appService.loggedUser.optimizations.currentWeek)
-            };
-            
-            $scope.optimizations.push(data);
-            
-            
-            var data = 
-            {
-                label : "Économies ce mois",
-                value : optimization_avg(appService.loggedUser.optimizations.currentMonth),
-                count : items_count(appService.loggedUser.optimizations.currentMonth)
-            };
-            
-            $scope.optimizations.push(data);
-            
-            var data = 
-            {
-                label : "Économies cette année",
-                value : optimization_avg(appService.loggedUser.optimizations.currentYear),
-                count : items_count(appService.loggedUser.optimizations.currentYear)
-            };
-            
-            $scope.optimizations.push(data);
-            
-            var data = 
-            {
-                label : "Économies général",
-                value : optimization_avg(appService.loggedUser.optimizations.overall),
-                count : items_count(appService.loggedUser.optimizations.overall)
-            };
-            
-            //$scope.optimizations.push(data);
-            
-        }
+        
     };
     
-    angular.element(document).ready(function()
+    appService.ready.then(function()
     {
         $scope.Init();
     });
-    
   
 });
