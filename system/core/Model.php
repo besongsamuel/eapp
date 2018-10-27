@@ -173,9 +173,9 @@ class CI_Model {
         }
     }    
     
-    public function get_specific($table_name, $data)
+    public function get_specific($table_name, $data,  $columns = "*")
     {
-        $this->db->select("*");
+        $this->db->select($columns);
         $this->db->where($data);
         $query = $this->db->get($table_name);
         if($query != null)

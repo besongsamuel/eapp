@@ -255,9 +255,6 @@ class CI_Controller {
          {
              $this->user = $this->account_model->get_user($this->session->userdata('userId'));
          }
-         
-        
-
     }
     
     public function send_verification_code($phone_number)

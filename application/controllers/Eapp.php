@@ -430,6 +430,13 @@ class Eapp extends CI_Controller
         echo json_encode($user_optimization);
     }
     
+    public function get_user_grocery_lists() 
+    {
+        $grocery_lists = $this->account_model->get_user_grocery_lists($this->user->id);
+        
+        echo json_encode($grocery_lists);
+    }
+    
     public function subscribe() 
     {
         $this->load->helper('email');

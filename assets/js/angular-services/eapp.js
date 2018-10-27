@@ -537,6 +537,11 @@ angular.module('eappApp').factory('eapp', function($http, appService, $mdDialog,
         return $http.post(eappService.getSiteUrl().concat("eapp/get_user_optimizations"), null);
     };
     
+    eappService.getUserGroceryLists = function()
+    {
+        return $http.post(eappService.getSiteUrl().concat("eapp/get_user_grocery_lists"), null);
+    };
+    
     eappService.getStoreProduct = function(spID)
     {
         var formData = new FormData();

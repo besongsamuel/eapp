@@ -34,7 +34,7 @@
             <md-input-container style="width: 300px;">
               <label>Sélectionnez votre liste d'épicerie</label>
               <md-select ng-model="selectedList.id" ng-change="groceryListChanged()"  ng-disabled="loggedUser.is_active == 0">
-                    <md-option ng-repeat="list in loggedUser.grocery_lists track by $index" ng-value="{{list.id}}">
+                    <md-option ng-repeat="list in grocery_lists track by $index" ng-value="{{list.id}}">
                         {{list.name}}
                     </md-option>
                 </md-select>

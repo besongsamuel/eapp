@@ -11,11 +11,20 @@
  */
 class Account_model extends CI_Model 
 {
+    private $ACCOUNT_COLUMNS;
+    
+    private $PROFILE_COLUMNS;
+    
     public function __construct()
     {
         parent::__construct();
         // Your own constructor code
         $this->load->library("geo");
+        
+        $this->ACCOUNT_COLUMNS = "id, email, subscription, is_new, is_active, code, phone, phone_verified, account_number";
+        
+        $this->PROFILE_COLUMNS = "id, firstname, lastname, country, city, state, address, postcode, longitude, latitude";
+        
     }
     
     public function clear_user_favorite_stores($user_id)
@@ -58,52 +67,23 @@ class Account_model extends CI_Model
         }
     }
     
-    public function get_user($account_id) 
+    /**
+     * Get User account grocery list information
+     * @param type $account_id
+     */
+    public function get_user_grocery_lists($account_id) 
     {
-        $user_account = $this->get(USER_ACCOUNT_TABLE, $account_id);
-        
-        if($user_account == null)
-        {
-            return null;
-        }
-        
-        // It' a company
-        if($user_account->subscription >= COMPANY_SUBSCRIPTION)
-        {            
-            // Get company
-            $user_account->company = $this->get_specific(COMPANY_TABLE, array("user_account_id" => $account_id));
-            
-            $user_account->company->subscription = $this->get_specific(COMPANY_SUBSCRIPTIONS_TABLE, array("subscription" => $user_account->subscription));
-            
-            // Get the chain of the company
-            $user_account->company->chain = $this->get_specific(CHAIN_TABLE, array("company_id" => $user_account->company->id));
-            
-            if($user_account->company->chain != null)
-            {
-                //  Get chain stores
-                $user_account->company->chain->department_stores = $this->get_where(CHAIN_STORE_TABLE, "*", array("chain_id" => $user_account->company->chain->id), true);
-            }
-            
-        }
-        
-        $user_account->profile = $this->get_specific(USER_PROFILE_TABLE, array("user_account_id" => $account_id));
-        
-        $user_account->optimizations = $this->get_user_optimizations($user_account);
+        $result = array
+        (
+            "grocery_lists" => array(),
+        );
         
         $product_lists = $this->get_where(USER_GROCERY_LIST_TABLE, '*', array("user_account_id" => $account_id));
 		        
         $favorite_stores = $this->get_favorite_stores($account_id);
         
-        if($product_lists == null)
+        if($product_lists != null)
         {
-            $user_account->grocery_lists = array();
-        }
-        else
-        {
-            $user_account->grocery_lists = array();
-            
-            $user_account->user_stores = array();
-                        
             foreach ($product_lists as $product_list) 
             {                                
                 // Create a new object that represents the list
@@ -175,9 +155,42 @@ class Account_model extends CI_Model
                     array_push($list_object->stores, $favorite_store);
                 }
                 
-                array_push($user_account->grocery_lists, $list_object);
+                array_push($result["grocery_lists"], $list_object);
             }
         }
+        
+        return $result;
+    }
+    
+    public function get_user($account_id) 
+    {
+        $user_account = $this->get(USER_ACCOUNT_TABLE, $account_id, $this->ACCOUNT_COLUMNS);
+        
+        if($user_account == null)
+        {
+            return null;
+        }
+        
+        // It' a company
+        if($user_account->subscription >= COMPANY_SUBSCRIPTION)
+        {            
+            // Get company
+            $user_account->company = $this->get_specific(COMPANY_TABLE, array("user_account_id" => $account_id));
+            
+            $user_account->company->subscription = $this->get_specific(COMPANY_SUBSCRIPTIONS_TABLE, array("subscription" => $user_account->subscription));
+            
+            // Get the chain of the company
+            $user_account->company->chain = $this->get_specific(CHAIN_TABLE, array("company_id" => $user_account->company->id));
+            
+            if($user_account->company->chain != null)
+            {
+                //  Get chain stores
+                $user_account->company->chain->department_stores = $this->get_where(CHAIN_STORE_TABLE, "*", array("chain_id" => $user_account->company->chain->id), true);
+            }
+            
+        }
+        
+        $user_account->profile = $this->get_specific(USER_PROFILE_TABLE, array("user_account_id" => $account_id), $this->PROFILE_COLUMNS);
         
         return $user_account;
     }
@@ -238,7 +251,7 @@ class Account_model extends CI_Model
         
         //return the status
         if($insert){
-            return $this->db->insert_id();;
+            return $this->db->insert_id();
         }else{
             return false;
         }
@@ -261,9 +274,9 @@ class Account_model extends CI_Model
         
         $optimizations->checkDay = $this->db->query("SELECT ROUND(AVG(price_optimization), 2) AS total,DATE_FORMAT(date_created, '%d-%m-%Y') AS date FROM ".USER_OPTIMIZATION_TABLE." WHERE price_optimization > 1 AND user_account_id = ".$user->id." AND YEARWEEK(date_created, 1) = YEARWEEK(NOW(), 1) GROUP BY DATE(date_created) ORDER BY DATE(date_created)")->result();
 		
-		$optimizations->checkWeek = $this->db->query("SELECT ROUND(AVG(price_optimization), 2) AS total, DATE_FORMAT(str_to_date(concat(yearweek(date_created), ' monday'), '%X%V %W'), '%d-%m-%Y')  AS date FROM ".USER_OPTIMIZATION_TABLE." WHERE price_optimization > 1 AND user_account_id = ".$user->id." AND MONTH(date_created) = MONTH(NOW()) GROUP BY Yearweek(date_created, 1) ORDER BY Yearweek(date_created, 1)")->result();
+        $optimizations->checkWeek = $this->db->query("SELECT ROUND(AVG(price_optimization), 2) AS total, DATE_FORMAT(str_to_date(concat(yearweek(date_created), ' monday'), '%X%V %W'), '%d-%m-%Y')  AS date FROM ".USER_OPTIMIZATION_TABLE." WHERE price_optimization > 1 AND user_account_id = ".$user->id." AND MONTH(date_created) = MONTH(NOW()) GROUP BY Yearweek(date_created, 1) ORDER BY Yearweek(date_created, 1)")->result();
 		
-		$optimizations->checkMonth = $this->db->query("SELECT ROUND(AVG(price_optimization), 2) AS total,DATE_FORMAT(date_created, '%m-%Y') AS date FROM ".USER_OPTIMIZATION_TABLE." WHERE price_optimization > 1 AND user_account_id = ".$user->id." AND YEAR(date_created) = YEAR(NOW()) GROUP BY date ORDER BY MONTH(date_created)")->result();
+        $optimizations->checkMonth = $this->db->query("SELECT ROUND(AVG(price_optimization), 2) AS total,DATE_FORMAT(date_created, '%m-%Y') AS date FROM ".USER_OPTIMIZATION_TABLE." WHERE price_optimization > 1 AND user_account_id = ".$user->id." AND YEAR(date_created) = YEAR(NOW()) GROUP BY date ORDER BY MONTH(date_created)")->result();
         
         $this->db->where("user_account_id", $user->id);
         $this->db->order_by("date_created", "asc");

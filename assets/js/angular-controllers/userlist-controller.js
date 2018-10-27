@@ -84,7 +84,7 @@ angular.module("eappApp").controller("UserListController", function($rootScope, 
     $scope.addNewProductToList = function(ev)
     {
         // No grocery list is selected
-        if(parseInt($scope.selectedList.id) === -1 && appService.loggedUser.grocery_lists.length === 0)
+        if(parseInt($scope.selectedList.id) === -1 && $scope.grocery_lists.length === 0)
         {
             // Prompt user to create a list
             
@@ -107,7 +107,7 @@ angular.module("eappApp").controller("UserListController", function($rootScope, 
                     if(response.data.success)
                     {
                         var newList = response.data.data;
-                        appService.loggedUser.grocery_lists.push(newList);
+                        $scope.grocery_lists.push(newList);
                         $scope.selectedList.id = newList.id;
                         eapp.showAlert(ev, 'Succès', response.data.message);
                         $scope.addToMyList($scope.selectedProduct);
@@ -258,12 +258,12 @@ angular.module("eappApp").controller("UserListController", function($rootScope, 
                 {
                     $scope.selectedList.id = -1;
                     $scope.selectedGroceryList = null;
-                    appService.loggedUser.grocery_lists = response.data.grocery_lists;
+                    $scope.grocery_lists = response.data.grocery_lists;
                     
-                    if(appService.loggedUser.grocery_lists.length > 0)
+                    if($scope.grocery_lists.length > 0)
                     {
-                        $scope.selectedList.id = appService.loggedUser.grocery_lists[0].id;
-                        $scope.selectedGroceryList = appService.loggedUser.grocery_lists[0];
+                        $scope.selectedList.id = $scope.grocery_lists[0].id;
+                        $scope.selectedGroceryList = $scope.grocery_lists[0];
                     }
                 }
 
@@ -313,7 +313,7 @@ angular.module("eappApp").controller("UserListController", function($rootScope, 
             else
             {
                 // update grocery lists
-                appService.loggedUser.grocery_lists = response.data.grocery_lists;
+                $scope.grocery_lists = response.data.grocery_lists;
                 // Refresh
                 $scope.groceryListChanged();
             }
@@ -400,11 +400,11 @@ angular.module("eappApp").controller("UserListController", function($rootScope, 
         
     $scope.groceryListChanged = function()
     {        
-        var index = appService.loggedUser.grocery_lists.map(function(e) { return parseInt(e.id); }).indexOf(parseInt($scope.selectedList.id));
+        var index = $scope.grocery_lists.map(function(e) { return parseInt(e.id); }).indexOf(parseInt($scope.selectedList.id));
         
         if(index > -1)
         {
-            $scope.selectedGroceryList = appService.loggedUser.grocery_lists[index];
+            $scope.selectedGroceryList = $scope.grocery_lists[index];
             $scope.getUserProductList();
         }
     };
@@ -529,11 +529,11 @@ angular.module("eappApp").controller("UserListController", function($rootScope, 
             {
                 if(response.data.success)
                 {
-                    var index = appService.loggedUser.grocery_lists.map(function(e) { return parseInt(e.id); }).indexOf(parseInt($scope.selectedList.id));
+                    var index = $scope.grocery_lists.map(function(e) { return parseInt(e.id); }).indexOf(parseInt($scope.selectedList.id));
                     
                     if(index > -1)
                     {
-                        appService.loggedUser.grocery_lists[index].name = result;
+                        $scope.grocery_lists[index].name = result;
                     }
                 }
             });
@@ -563,7 +563,7 @@ angular.module("eappApp").controller("UserListController", function($rootScope, 
                     if(response.data.success)
                     {
                         var newList = response.data.data;
-                        appService.loggedUser.grocery_lists.push(newList);
+                        $scope.grocery_lists.push(newList);
                         $scope.selectedList.id = newList.id;
                         eapp.showAlert(ev, 'Succès', response.data.message);
                     }
@@ -577,17 +577,22 @@ angular.module("eappApp").controller("UserListController", function($rootScope, 
         
     };
     
-    angular.element(document).ready(function()
+    appService.ready.then(function()
     {
         $scope.load_icons(); 
         
         if($scope.isUserLogged)
         {
-            if(appService.loggedUser.grocery_lists.length > 0)
+            eapp.getUserGroceryLists().then(function(response)
             {
-                $scope.selectedList.id = appService.loggedUser.grocery_lists[0].id;
-                $scope.selectedGroceryList = appService.loggedUser.grocery_lists[0];
-            }
+                $scope.grocery_lists = response.data.grocery_lists;
+                
+                if($scope.grocery_lists.length > 0)
+                {
+                    $scope.selectedList.id = $scope.grocery_lists[0].id;
+                    $scope.selectedGroceryList = $scope.grocery_lists[0];
+                }
+            });
         }
            
         $scope.getUserProductList();
