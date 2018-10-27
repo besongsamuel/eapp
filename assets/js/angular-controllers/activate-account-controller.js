@@ -21,7 +21,7 @@ angular.module('eappApp').controller('ActivateAccountController', function($scop
         });
     };
     
-    angular.element(document).ready(function()
+    appService.ready.then(function()
     {
         $scope.accountActivated = !appService.isUserLogged || (appService.isUserLogged && parseInt(appService.loggedUser.is_active) === 1);
     });
