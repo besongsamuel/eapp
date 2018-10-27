@@ -64,26 +64,63 @@ angular.module('eappApp').factory('appService',function($http, $mdDialog, $locat
         
         var pathArray = service.path.split("/");
         
+        var i = 0;
         
-        if(pathArray.length > 0)
+        if(pathArray.length > i)
         {
-            if(pathArray[0].toString() === "index.php")
+            while(pathArray[i] == "" && pathArray.length > i + 1)
             {
-                service.controller = pathArray[1];
+                i++;
+            }
+            
+            if(pathArray[i].toString() === "index.php")
+            {
+                i++;
                 
-                if(pathArray.length > 2)
+                while(pathArray[i] == "" && pathArray.length > i + 1)
                 {
-                    service.method = pathArray[2];
+                    i++;
                 }
                 
+                service.controller = pathArray[i];
+                
+                i++;
+                
+                if(pathArray.length > i)
+                {
+                    while(pathArray[i] == "" && pathArray.length > i + 1)
+                    {
+                        i++;
+                    }
+
+                    if(pathArray.length > i)
+                    {
+                        service.method = pathArray[i];
+                    }
+                }
             }
             else
             {
-                service.controller = pathArray[0];
-                
-                if(pathArray.length > 1)
+                while(pathArray[i] == "" && pathArray.length > i + 1)
                 {
-                    service.method = pathArray[1];
+                    i++;
+                }
+                
+                service.controller = pathArray[i];
+                
+                i++;
+                
+                if(pathArray.length > i)
+                {
+                    while(pathArray[i] == "" && pathArray.length > i + 1)
+                    {
+                        i++;
+                    }
+
+                    if(pathArray.length > i)
+                    {
+                        service.method = pathArray[i];
+                    }
                 }
             }
         }
