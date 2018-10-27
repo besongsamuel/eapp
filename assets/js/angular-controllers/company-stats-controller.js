@@ -1,5 +1,5 @@
 
-angular.module('eappApp').controller('CompanyStatsController', function($scope, $company)
+angular.module('eappApp').controller('CompanyStatsController', function($scope, $company, appService)
 {
     
     var ctrl = this;
@@ -23,9 +23,9 @@ angular.module('eappApp').controller('CompanyStatsController', function($scope, 
         {
              $scope.company = 
             {
-                id : $scope.loggedUser.company.id,
-                name : $scope.loggedUser.company.name,
-                neq : $scope.loggedUser.company.neq
+                id : appService.loggedUser.company.id,
+                name : appService.loggedUser.company.name,
+                neq : appService.loggedUser.company.neq
             };
 
             $scope.loading = true;

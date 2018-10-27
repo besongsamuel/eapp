@@ -16,31 +16,25 @@ const DEFAULT_PROFILE_DATA =
     filterSettings : null,
     cartFilterSettings : null,
     optimizationDistance : 4,
-    viewAll : false, // Need to figure out what this means
+    viewAll : false // Need to figure out what this means
 };
 
-angular.module('eappApp').factory('profileData', function($rootScope, $http, sessionData) 
+angular.module('eappApp').factory('profileData', function($http, sessionData, appService) 
 {
     
-    var profileData = DEFAULT_PROFILE_DATA;
+    let profileData = DEFAULT_PROFILE_DATA;
     
-    
-    angular.element(document).ready(function()
+    var ready = $http.post(getSiteUrl().concat("eapp/get_profile_data/"), null, { transformRequest: angular.identity, headers: {'Content-Type': undefined}});
+        
+    ready.then(function(response)
     {
-        // Initialize profile data
-        if($rootScope.isUserLogged)
+        if(response.data.profileData)
         {
-            $http.post(eapp.getSiteUrl().concat("eapp/get_profile_data/"), null).then(function(response)
-            {
-                if(response.data)
-                {
-                    profileData = response.data;
-                }
-            });
+            profileSettings.instance = response.data.profileData;
         }
         else
         {
-            profileData = sessionData.get();
+            profileSettings.instance = sessionData.get();
         }
     });
     
@@ -58,20 +52,21 @@ angular.module('eappApp').factory('profileData', function($rootScope, $http, ses
     
     var profileSettings = 
     {
+        ready : ready,
         instance : profileData,
         get : function()
         {
-            return profileData;
+            return this.instance;
         },
         set : function(property, value)
         {
-            profileData[property] = value;
+            this.instance[property] = value;
             
-            if($rootScope.isUserLogged)
+            if(appService.isUserLogged)
             {
                 var formData = new FormData();
         
-                formData.append("value", JSON.stringify(profileData));
+                formData.append("value", JSON.stringify(this.instance));
         
                 $http.post(getSiteUrl().concat("/eapp/set_profile_data"), formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}});
             }
@@ -84,29 +79,29 @@ angular.module('eappApp').factory('profileData', function($rootScope, $http, ses
         {
             if(newValue)
             {
-                profileData = newValue;
+                this.instance = newValue;
             }
             else
             {
-                profileData = DEFAULT_PROFILE_DATA;
+                this.instance = DEFAULT_PROFILE_DATA;
             }
             
-            if($rootScope.isUserLogged)
+            if(appService.isUserLogged)
             {
                 var formData = new FormData();
                 
-                formData.append("value", JSON.stringify(profileData));
+                formData.append("value", JSON.stringify(this.instance));
         
                 $http.post(getSiteUrl().concat("/eapp/set_profile_data"), formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}});
             }
             else
             {
-                sessionData.reset(profileData);
+                sessionData.reset(this.instance);
             }
         },
         clear : function()
         {
-            if($rootScope.isUserLogged)
+            if(appService.isUserLogged)
             {
                 $http.post(getSiteUrl().concat("eapp/clear_profile_data/"), null);
             }

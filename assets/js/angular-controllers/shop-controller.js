@@ -110,15 +110,15 @@ angular.module('eappApp').controller('ShopController', function ($scope, $q, app
         
         if(!angular.isNullOrUndefined($scope.store_id))
         {
-            $scope.promise = eapp.getFlyerProducts($scope.store_id, $scope.query, $scope.resultFilter);
+            $scope.promise = eapp.getFlyerProducts($scope.store_id, $scope.query, $scope.resultFilter, profileData.instance.optimizationDistance);
         }
         else if(!angular.isNullOrUndefined($scope.category_id))
         {
-            $scope.promise = eapp.getCategoryProducts($scope.category_id, $scope.query, $scope.resultFilter);
+            $scope.promise = eapp.getCategoryProducts($scope.category_id, $scope.query, $scope.resultFilter, profileData.instance.optimizationDistance);
         }
         else
         {
-            $scope.promise = eapp.getStoreProducts($scope.query, $scope.resultFilter);
+            $scope.promise = eapp.getStoreProducts($scope.query, $scope.resultFilter, profileData.instance.optimizationDistance);
         }
       
         $scope.promise.then(function(response)

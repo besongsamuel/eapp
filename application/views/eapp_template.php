@@ -255,8 +255,7 @@
 	  
     <!-- Rootscope Script -->
     <script src="<?php echo base_url("assets/js/angular-modules/root-scope.js")?>"></script> 
-    <script src="<?php echo base_url("assets/js/angular-services/application-service.js")?>"></script> 
-    <script src="<?php echo base_url("assets/js/angular-services/cart-service.js")?>"></script> 
+     
 
   
 </html>

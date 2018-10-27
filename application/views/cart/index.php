@@ -32,7 +32,7 @@
                     on-refresh="refresh(userProfileData)" 
                     ready="ready" 
                     result-set="cartFilterSettings" 
-                    on-settings-changed="settingsChanged(item)" >
+                    on-settings-changed="settingsChanged(item)">
                 </result-filter>
             </div>
             

@@ -8,7 +8,7 @@ const STAT_TYPE_CLICK = 0;
 
 
 // Create eapp service to get and update our data
-angular.module('eappApp').factory('eapp', ['$http','$rootScope', '$mdDialog', 'profileData', function($http, $rootScope, $mdDialog, profileData)
+angular.module('eappApp').factory('eapp', ['$http','appService', '$mdDialog', 'profileData', function($http, appService, $mdDialog, profileData)
 {
     var eappService = {};
     
@@ -156,7 +156,7 @@ angular.module('eappApp').factory('eapp', ['$http','$rootScope', '$mdDialog', 'p
         return $http.post(eappService.getSiteUrl().concat("cart/get_latest_products"), null);
     };
     
-    eappService.getCategoryProducts = function(id, query, resultsFilter)
+    eappService.getCategoryProducts = function(id, query, resultsFilter, distance)
     {
         var formData = new FormData();
         formData.append("page", query.page);
@@ -164,9 +164,9 @@ angular.module('eappApp').factory('eapp', ['$http','$rootScope', '$mdDialog', 'p
         formData.append("filter", query.filter);
         formData.append("order", query.order);
         // User's longitude
-        formData.append("longitude", $rootScope.longitude);
+        formData.append("longitude", appService.longitude);
         // user's latitude
-        formData.append("latitude", $rootScope.latitude);
+        formData.append("latitude", appService.latitude);
         formData.append("profileData", JSON.stringify(profileData.get()));
         
         if(!angular.isNullOrUndefined(resultsFilter))
@@ -180,7 +180,7 @@ angular.module('eappApp').factory('eapp', ['$http','$rootScope', '$mdDialog', 'p
         {
             formData.append("category_id", id);
         }
-        formData.append("distance", $rootScope.getCartDistance());
+        formData.append("distance", distance);
         
         return $http.post(eappService.getSiteUrl().concat("/shop/get_store_products"), formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}});
 
@@ -191,7 +191,7 @@ angular.module('eappApp').factory('eapp', ['$http','$rootScope', '$mdDialog', 'p
         return $http.post(eappService.getSiteUrl().concat("/eapp/get_most_viewed_categories"), null, { transformRequest: angular.identity, headers: {'Content-Type': undefined}});
     };
     
-    eappService.getFlyerProducts = function(id, query, resultsFilter)
+    eappService.getFlyerProducts = function(id, query, resultsFilter, distance)
     {
         var formData = new FormData();
         formData.append("page", query.page);
@@ -200,9 +200,9 @@ angular.module('eappApp').factory('eapp', ['$http','$rootScope', '$mdDialog', 'p
         formData.append("order", query.order);
         formData.append("profileData", JSON.stringify(profileData.get()));
         // User's longitude
-        formData.append("longitude", $rootScope.longitude);
+        formData.append("longitude", appService.longitude);
         // user's latitude
-        formData.append("latitude", $rootScope.latitude);
+        formData.append("latitude", appService.latitude);
         if(!angular.isNullOrUndefined(resultsFilter))
         {
             resultsFilter.stores = null;
@@ -213,13 +213,13 @@ angular.module('eappApp').factory('eapp', ['$http','$rootScope', '$mdDialog', 'p
         {
             formData.append("store_id", id);
         }
-        formData.append("distance", $rootScope.getCartDistance());
+        formData.append("distance", distance);
         
         return $http.post(eappService.getSiteUrl().concat("/shop/get_store_products"), formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}});
 
     };
     
-    eappService.getStoreProducts = function(query, resultsFilter)
+    eappService.getStoreProducts = function(query, resultsFilter, distance)
     {
         var formData = new FormData();
         formData.append("page", query.page);
@@ -229,10 +229,10 @@ angular.module('eappApp').factory('eapp', ['$http','$rootScope', '$mdDialog', 'p
         formData.append("profileData", JSON.stringify(profileData.get()));
         formData.append("resultsFilter", JSON.stringify(resultsFilter));
         // User's longitude
-        formData.append("longitude", $rootScope.longitude);
+        formData.append("longitude", appService.longitude);
         // user's latitude
-        formData.append("latitude", $rootScope.latitude);
-        formData.append("distance", $rootScope.getOptimizationDistance());
+        formData.append("latitude", appService.latitude);
+        formData.append("distance", distance);
         
         return $http.post(eappService.getSiteUrl().concat("/shop/get_store_products"), formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}});
 
@@ -327,8 +327,8 @@ angular.module('eappApp').factory('eapp', ['$http','$rootScope', '$mdDialog', 'p
     {
         var formData = new FormData();
         formData.append("distance", distance);
-        formData.append("longitude", parseFloat($rootScope.longitude));
-        formData.append("latitude", parseFloat($rootScope.latitude));
+        formData.append("longitude", parseFloat(appService.longitude));
+        formData.append("latitude", parseFloat(appService.latitude));
         
         return $http.post(eappService.getSiteUrl().concat("eapp/get_close_retailers"), formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}});
     };
@@ -339,48 +339,6 @@ angular.module('eappApp').factory('eapp', ['$http','$rootScope', '$mdDialog', 'p
         formData.append("table_name", tableName);
         formData.append("id", id);
         return $http.post(eappService.getSiteUrl().concat("admin/hit"), formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}});
-    };
-    
-    eappService.recordRetailerHit = function(id)
-    {
-        var formData = new FormData();
-        formData.append("id", id);
-        
-        if($rootScope.isUserLogged)
-        {
-            formData.append("distance", $rootScope.getCartDistance());
-            formData.append("postcode", $rootScope.loggedUser.profile.postcode);
-            return $http.post(eappService.getSiteUrl().concat("eapp/record_retailer_hit"), formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}});
-
-        }
-        else
-        {
-            var geocoder = new google.maps.Geocoder;
-            var latlng = {lat: parseFloat($rootScope.latitude), lng: parseFloat($rootScope.longitude)};
-            geocoder.geocode({'location': latlng}, function(results, status) 
-            {
-                
-                var postcode = '';
-                
-                if (status === 'OK') 
-                {
-                    if(results[0]) 
-                    {
-                        if(results[0].address_components[8])
-                        {
-                            postcode = results[0].address_components[8].long_name;
-                        }
-                    } 
-                } 
-                
-                formData.append("postcode", postcode);
-                formData.append("distance", $rootScope.getCartDistance());
-                return $http.post(eappService.getSiteUrl().concat("eapp/record_retailer_hit"), formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}});
-
-                
-            });
-        }
-        
     };
     
     eappService.saveFavoriteStores = function(favoriteStores)
@@ -483,7 +441,7 @@ angular.module('eappApp').factory('eapp', ['$http','$rootScope', '$mdDialog', 'p
     
         promise.then(function(response)
         {
-            eappService.recordProductStat(product_id, STAT_TYPE_CLICK);
+            eappService.recordProductStat(product_id, profileData.instance.optimizationDistance, STAT_TYPE_CLICK);
             
             $scope.storeProduct = response.data;
             
@@ -649,51 +607,6 @@ angular.module('eappApp').factory('eapp', ['$http','$rootScope', '$mdDialog', 'p
     eappService.toggleIsNew = function()
     {
         return $http.post(eappService.getSiteUrl().concat("account/toggle_new"), null);
-    };
-    
-    eappService.recordProductStat = function(storeProductId, type, is_product = false)
-    {
-        var formData = new FormData();
-        formData.append("id", storeProductId);
-        formData.append("type", type);
-        formData.append("is_product", JSON.stringify(is_product));
-        
-        if($rootScope.isUserLogged)
-        {
-            formData.append("distance", $rootScope.getCartDistance());
-            formData.append("postcode", $rootScope.loggedUser.profile.postcode);
-            return $http.post(eappService.getSiteUrl().concat("/eapp/record_stat"), formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}});
-
-        }
-        else
-        {
-            var geocoder = new google.maps.Geocoder;
-            var latlng = {lat: parseFloat($rootScope.latitude), lng: parseFloat($rootScope.longitude)};
-            geocoder.geocode({'location': latlng}, function(results, status) 
-            {
-                
-                var postcode = '';
-                
-                if (status === 'OK') 
-                {
-                    if(results[0]) 
-                    {
-                        if(results[0].address_components[8])
-                        {
-                            postcode = results[0].address_components[8].long_name;
-                        }
-                    } 
-                } 
-                
-                formData.append("postcode", postcode);
-                formData.append("distance", $rootScope.getCartDistance());
-                return $http.post(eappService.getSiteUrl().concat("/eapp/record_stat"), formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}});
-
-                
-            });
-        }
-        
-        
     };
     
     eappService.deleteStoreProductImage = function(id)

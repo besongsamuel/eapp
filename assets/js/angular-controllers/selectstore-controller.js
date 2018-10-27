@@ -1,7 +1,5 @@
-angular.module('eappApp').controller('SelectStoreController', ["$scope", "$mdDialog", "eapp", "$rootScope", function ($scope, $mdDialog, eapp, $rootScope) 
+angular.module('eappApp').controller('SelectStoreController', function ($scope, $mdDialog, eapp, appService, profileData) 
 {
-    $rootScope.isMainMenu = true;
-    
     $scope.loading = false;
     
     var ctrl = this;
@@ -34,7 +32,7 @@ angular.module('eappApp').controller('SelectStoreController', ["$scope", "$mdDia
     {
         if($scope.isUserLogged)
         {
-            return parseInt($scope.loggedUser.profile.optimization_distance);
+            return parseInt(appService.loggedUser.profile.optimization_distance);
         }
         else if(window.localStorage.getItem('optimization_distance'))
         {
@@ -53,7 +51,7 @@ angular.module('eappApp').controller('SelectStoreController', ["$scope", "$mdDia
         $scope.scrollTop = $(document).scrollTop();
         $mdDialog.show({
             controller: ChangeDistanceController,
-            templateUrl:  $scope.base_url + 'assets/templates/change-distance.html',
+            templateUrl:  appService.baseUrl + 'assets/templates/change-distance.html',
             parent: angular.element(document.body),
             targetEvent: ev,
             clickOutsideToClose:true,
@@ -87,7 +85,7 @@ angular.module('eappApp').controller('SelectStoreController', ["$scope", "$mdDia
         
         $scope.change = function()
         {
-            if($scope.isUserLogged)
+            if(appService.isUserLogged)
             {
                 var changePromise = eapp.changeDistance('optimization_distance', $scope.default_distance);
             
@@ -96,7 +94,7 @@ angular.module('eappApp').controller('SelectStoreController', ["$scope", "$mdDia
                     if(response.data)
                     {
                         // Update Logged User
-                        $scope.loggedUser = response.data;
+                        appService.loggedUser = response.data;
                         
                         $scope.Init();
                     }
@@ -116,9 +114,9 @@ angular.module('eappApp').controller('SelectStoreController', ["$scope", "$mdDia
     
     $scope.select_retailer = function($event, store)
     {
-        $scope.clearSessionItems();  
+        appService.clearSessionItems();  
 	var store_id = parseInt(store.id);
-        eapp.recordRetailerHit(store.id);
+        appService.recordRetailerHit(store.id, profileData.instance.cartDistance);
 	window.sessionStorage.setItem("store_id", store_id); 
         window.sessionStorage.setItem("store_name", store.name); 
 	window.location =  $scope.site_url.concat("/shop");
@@ -135,4 +133,4 @@ angular.module('eappApp').controller('SelectStoreController', ["$scope", "$mdDia
     });
     
   
-}]);
+});

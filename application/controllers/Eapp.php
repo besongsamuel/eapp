@@ -587,12 +587,15 @@ class Eapp extends CI_Controller
             
             if($profile)
             {
-                echo $profile->profile_value;
-                return;
+                $result = array("profileData" => json_decode($profile->profile_value));
             }
         }
+        else
+        {
+            $result = array("profileData" => null);
+        }
         
-        echo "";
+        echo json_encode($result);
     }
     
     public function set_profile_data() 

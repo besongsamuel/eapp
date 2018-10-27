@@ -5,7 +5,7 @@
  */
 
 
-angular.module('eappApp').controller('ActivateAccountController', ["$scope","$rootScope","eapp", function($scope,$rootScope, eapp) 
+angular.module('eappApp').controller('ActivateAccountController', function($scope,appService, eapp) 
 {   
     "use strict";
     
@@ -23,8 +23,8 @@ angular.module('eappApp').controller('ActivateAccountController', ["$scope","$ro
     
     angular.element(document).ready(function()
     {
-        $scope.accountActivated = !$rootScope.isUserLogged || ($rootScope.isUserLogged && parseInt($rootScope.loggedUser.is_active) === 1);
+        $scope.accountActivated = !appService.isUserLogged || (appService.isUserLogged && parseInt(appService.loggedUser.is_active) === 1);
     });
    
-}]);
+});
 

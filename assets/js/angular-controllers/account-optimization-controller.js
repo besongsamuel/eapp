@@ -40,7 +40,7 @@ function items_count(list)
     return display;
 }
     
-angular.module('eappApp').controller('AccountOptimizationController', ["$scope", "$rootScope", "eapp", "$mdDialog", function ($scope, $rootScope, eapp, $mdDialog) 
+angular.module('eappApp').controller('AccountOptimizationController', function ($scope, $rootScope, eapp, $mdDialog, appService) 
 {
     $rootScope.isAccountMenu = true;
     
@@ -266,8 +266,8 @@ angular.module('eappApp').controller('AccountOptimizationController', ["$scope",
             var data = 
             {
                 label : "Économies cette semaine",
-                value : optimization_avg($scope.loggedUser.optimizations.currentWeek),
-                count : items_count($scope.loggedUser.optimizations.currentWeek)
+                value : optimization_avg(appService.loggedUser.optimizations.currentWeek),
+                count : items_count(appService.loggedUser.optimizations.currentWeek)
             };
             
             $scope.optimizations.push(data);
@@ -276,8 +276,8 @@ angular.module('eappApp').controller('AccountOptimizationController', ["$scope",
             var data = 
             {
                 label : "Économies ce mois",
-                value : optimization_avg($scope.loggedUser.optimizations.currentMonth),
-                count : items_count($scope.loggedUser.optimizations.currentMonth)
+                value : optimization_avg(appService.loggedUser.optimizations.currentMonth),
+                count : items_count(appService.loggedUser.optimizations.currentMonth)
             };
             
             $scope.optimizations.push(data);
@@ -285,8 +285,8 @@ angular.module('eappApp').controller('AccountOptimizationController', ["$scope",
             var data = 
             {
                 label : "Économies cette année",
-                value : optimization_avg($scope.loggedUser.optimizations.currentYear),
-                count : items_count($scope.loggedUser.optimizations.currentYear)
+                value : optimization_avg(appService.loggedUser.optimizations.currentYear),
+                count : items_count(appService.loggedUser.optimizations.currentYear)
             };
             
             $scope.optimizations.push(data);
@@ -294,8 +294,8 @@ angular.module('eappApp').controller('AccountOptimizationController', ["$scope",
             var data = 
             {
                 label : "Économies général",
-                value : optimization_avg($scope.loggedUser.optimizations.overall),
-                count : items_count($scope.loggedUser.optimizations.overall)
+                value : optimization_avg(appService.loggedUser.optimizations.overall),
+                count : items_count(appService.loggedUser.optimizations.overall)
             };
             
             //$scope.optimizations.push(data);
@@ -309,4 +309,4 @@ angular.module('eappApp').controller('AccountOptimizationController', ["$scope",
     });
     
   
-}]);
+});

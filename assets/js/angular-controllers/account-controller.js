@@ -5,7 +5,7 @@
  */
 
 
-angular.module('eappApp').controller('AccountController', ["$scope", "$http", "$mdToast", "eapp", "$company", "$rootScope", "$mdDialog", "$timeout", "$location", function($scope, $http, $mdToast, eapp, $company, $rootScope, $mdDialog, $timeout, $location) 
+angular.module('eappApp').controller('AccountController', ["$scope", "$http", "$mdToast", "eapp", "$company", "$rootScope", "appService", "$timeout", "$location", function($scope, $http, $mdToast, eapp, $company, $rootScope, appService, $timeout, $location) 
 {   
     "use strict";
     
@@ -31,23 +31,6 @@ angular.module('eappApp').controller('AccountController', ["$scope", "$http", "$
     
     $scope.userPhoneVerified = false;
     
-    var currentUrl = $location.absUrl();
-    
-    if(currentUrl.toString().indexOf("/account") !== -1)
-    {
-        $rootScope.isAccount = true;
-    }
-    
-    if(currentUrl.toString().indexOf("/account/login") !== -1)
-    {
-        $rootScope.isLogin = true;
-    }
-    
-    if(currentUrl.toString().indexOf("/account/register") !== -1)
-    {
-        $rootScope.isRegister = true;
-    }
-    
     $scope.$watch('loggedUserClone', function(oldValue, newVale)
     {
         $scope.userPhoneVerified = !angular.isNullOrUndefined($scope.loggedUserClone) && parseInt($scope.loggedUserClone.phone_verified) === 1;
@@ -69,13 +52,13 @@ angular.module('eappApp').controller('AccountController', ["$scope", "$http", "$
             $scope.securityQuestions = response.data;
         });
         
-        if($scope.isUserLogged && $scope.loggedUser.company && $scope.loggedUser.company.is_new == 1)
+        if($scope.isUserLogged && appService.loggedUser.company && appService.loggedUser.company.is_new == 1)
         {
             $scope.isNewAccount = true;
         }
         
         // Create a copy of the logged user
-        $scope.loggedUserClone = angular.copy($scope.loggedUser);
+        $scope.loggedUserClone = angular.copy(appService.loggedUser);
         
     };
     
@@ -155,7 +138,7 @@ angular.module('eappApp').controller('AccountController', ["$scope", "$http", "$
             formData.append("selected_retailers", JSON.stringify($scope.selected_retailers));
             formData.append("email", $scope.registered_email);
             // Send request to server to get optimized list 	
-            $http.post( $scope.site_url.concat("/account/submit_favorite_stores"), 
+            $http.post( appService.siteUrl.concat("/account/submit_favorite_stores"), 
             formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}}).then(
             function(response)
             {
@@ -165,7 +148,7 @@ angular.module('eappApp').controller('AccountController', ["$scope", "$http", "$
                     if(!$scope.isUserLogged)
                     {
                         window.sessionStorage.setItem("accountCreated", "Votre compte a été créé avec succès.");
-                        window.location =  $scope.site_url.concat("/account/login");
+                        window.location =  appService.siteUrl.concat("/account/login");
                     }
                     else
                     {
@@ -199,11 +182,11 @@ angular.module('eappApp').controller('AccountController', ["$scope", "$http", "$
 
                     if(result.data.success)
                     {
-                        $rootScope.loggedUser = result.data.user;
+                        appService.loggedUser = result.data.user;
                         
                         window.sessionStorage.setItem('newAccount', 'true');
                         
-                        window.location =  $scope.site_url.concat("/account/account_created");
+                        window.location =  appService.siteUrl.concat("/account/account_created");
                         
                     }
 
@@ -250,7 +233,7 @@ angular.module('eappApp').controller('AccountController', ["$scope", "$http", "$
 
                     if(result.data.success)
                     {
-                        $rootScope.loggedUser = result.data.user;
+                        appService.loggedUser = result.data.user;
                                                 
                         $scope.creatingAccount = false;
                         
@@ -357,7 +340,7 @@ angular.module('eappApp').controller('AccountController', ["$scope", "$http", "$
                 if(response.data.success)
                 {
                     $scope.saveProfileSucess = true;
-                    $rootScope.loggedUser = response.data.user;
+                    appService.loggedUser = response.data.user;
                     $scope.saveProfileSuccessMessage = "Les informations de votre profil ont été modifiées.";
                     document.getElementById('saveProfileSucess').scrollIntoView();
                 }
@@ -412,10 +395,10 @@ angular.module('eappApp').controller('AccountController', ["$scope", "$http", "$
         $scope.changeSecurityQuestionError = false;
         $scope.changeSecurityQuestionSuccess = false;
         var formData = new FormData();
-        formData.append("security_question_answer", $scope.loggedUser.security_question_answer);
-        formData.append("security_question_id", $scope.loggedUser.security_question_id);
+        formData.append("security_question_answer", appService.loggedUser.security_question_answer);
+        formData.append("security_question_id", appService.loggedUser.security_question_id);
         
-        $http.post( $scope.site_url.concat("/account/change_security_qa"), 
+        $http.post( appService.siteUrl.concat("/account/change_security_qa"), 
         formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}}).then(
         function(response)
         {
@@ -492,7 +475,7 @@ angular.module('eappApp').controller('AccountController', ["$scope", "$http", "$
         {
             if(response.data.success)
             {
-                $scope.loggedUser.phone_verified = 1;
+                appService.loggedUser.phone_verified = 1;
                 $scope.enterVerificationNumber = true;
                 $scope.validateCodeMessage = response.data.message;
             }
@@ -504,7 +487,7 @@ angular.module('eappApp').controller('AccountController', ["$scope", "$http", "$
         
     };
     
-    angular.element(document).ready(function()
+    appService.ready.then(function()
     {
         $scope.Init();
     });

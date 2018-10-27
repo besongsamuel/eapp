@@ -271,7 +271,7 @@ angular.module("eappApp").controller("CartController", function(appService, $sco
     
     $scope.productCategories = [];
     
-    $scope.profileData = profileData;
+    
     
     $scope.$watch('min_price_optimization', function()
     {
@@ -279,7 +279,7 @@ angular.module("eappApp").controller("CartController", function(appService, $sco
     });
         
     
-    appService.ready.then(function()
+    Promise.all([appService.ready, profileData.ready]).then(function()
     {
         $scope.Init();
     });
@@ -290,8 +290,9 @@ angular.module("eappApp").controller("CartController", function(appService, $sco
      */
     $scope.Init = function()
     {       
-
         $scope.default_distance = profileData.instance.cartDistance;
+        
+        $scope.profileData = profileData;
         
         profileData.set("cartFilterSettings", null);
         
@@ -1604,7 +1605,8 @@ angular.module("eappApp").controller("CartController", function(appService, $sco
     
     $scope.changeCartDistance = function(newDistance)
     {
-        profileData.instance.set("cartDistance", newDistance);
+        profileData.set("cartDistance", newDistance);
+        $scope.update_cart_list();
     };
     
     function ChangeDistanceController($scope, $mdDialog) 

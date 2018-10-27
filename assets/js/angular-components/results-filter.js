@@ -128,7 +128,7 @@ function ResultFilterController($scope, profileData, appService)
     {
         $scope.viewConfig.optimizedCart = !$scope.viewConfig.viewAll;
         
-        ctrl.onRefresh({ viewConfig : $scope.viewConfig });
+        ctrl.onRefresh({ userProfileData : $scope.viewConfig });
     };
     
     $scope.removeFromFilter = function(item)

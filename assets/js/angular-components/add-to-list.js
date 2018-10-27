@@ -9,7 +9,7 @@
 angular.module('eappApp').component("addToList", 
 {
     template : "<a style='text-align : center;' href ng-click='$ctrl.selectListItem($event)'>{{$ctrl.caption}}</a>",
-    controller : function($mdDialog, $scope)
+    controller : function($mdDialog, $scope, appService)
     {
         var ctrl = this;
         
@@ -30,7 +30,7 @@ angular.module('eappApp').component("addToList",
                 targetEvent: ev,
                 locals : 
                 {
-                    grocery_lists : $scope.loggedUser.grocery_lists,
+                    grocery_lists : appService.loggedUser.grocery_lists,
                     product : $scope.product
                 },
                 clickOutsideToClose:true,
@@ -96,8 +96,8 @@ angular.module('eappApp').component("addToList",
                     {
                         var newList = response.data.data;
                         newList.selected = false;
-                        $rootScope.loggedUser.grocery_lists.push(newList);
-                        $scope.grocery_lists = $rootScope.loggedUser.grocery_lists;
+                        appService.loggedUser.grocery_lists.push(newList);
+                        $scope.grocery_lists = appService.loggedUser.grocery_lists;
                         $scope.successMessage = response.data.message;
                     }
                     else
@@ -117,7 +117,7 @@ angular.module('eappApp').component("addToList",
                 {
                     eapp.addProductToList($scope.product, item.id).then(function(response)
                     {
-                        $rootScope.loggedUser.grocery_lists = response.data.grocery_lists;
+                        appService.loggedUser.grocery_lists = response.data.grocery_lists;
                         $scope.grocery_lists = response.data.grocery_lists;
                         $scope.refresh();
                     });
@@ -126,7 +126,7 @@ angular.module('eappApp').component("addToList",
                 {
                     eapp.removeProductFromList($scope.product, item.id).then(function(response)
                     {
-                        $rootScope.loggedUser.grocery_lists = response.data.grocery_lists;
+                        appService.loggedUser.grocery_lists = response.data.grocery_lists;
                         $scope.grocery_lists = response.data.grocery_lists;
                         $scope.refresh();
                     });

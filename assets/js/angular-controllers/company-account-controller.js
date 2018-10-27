@@ -1,5 +1,5 @@
 
-angular.module('eappApp').controller('CompanyAccountController', function($scope, $company, $timeout)
+angular.module('eappApp').controller('CompanyAccountController', function($scope, $company, $timeout, appService)
 {
     
     var ctrl = this;
@@ -10,17 +10,17 @@ angular.module('eappApp').controller('CompanyAccountController', function($scope
     {
         $scope.company = 
         {
-            id : $scope.loggedUser.company.id,
-            name : $scope.loggedUser.company.name,
-            neq : $scope.loggedUser.company.neq
+            id : appService.loggedUser.company.id,
+            name : appService.loggedUser.company.name,
+            neq : appService.loggedUser.company.neq
         };
                 
-        $scope.image_name = $scope.loggedUser.company.chain.image;
+        $scope.image_name = appService.loggedUser.company.chain.image;
         
         // Get the web path of the store image if it is set. 
-        if(!angular.isNullOrUndefined($scope.loggedUser.company.chain.image) && $scope.loggedUser.company.chain.image != '')
+        if(!angular.isNullOrUndefined(appService.loggedUser.company.chain.image) && appService.loggedUser.company.chain.image != '')
         {
-            $scope.storeLogo = $scope.base_url.concat("/assets/img/stores/").concat($scope.loggedUser.company.chain.image);   
+            $scope.storeLogo = appService.baseUrl.concat("/assets/img/stores/").concat(appService.loggedUser.company.chain.image);   
         }
         else
         {

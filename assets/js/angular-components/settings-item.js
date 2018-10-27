@@ -18,7 +18,7 @@ angular.module('eappApp').component("settingsItem",
     }
 });
 
-function SettingsItemController($scope, eapp)
+function SettingsItemController($scope, appService, profileData)
 {
     ctrl = this;
     
@@ -77,7 +77,7 @@ function SettingsItemController($scope, eapp)
         {
             if(item.selected)
             {
-                eapp.recordRetailerHit(item.id);
+                appService.recordRetailerHit(item.id, profileData.instance.cartDistance);
             }
         }
         

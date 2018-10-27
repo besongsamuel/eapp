@@ -1,4 +1,4 @@
-angular.module('eappApp').controller('CategoryController', ["$scope", "$rootScope", "eapp", function ($scope, $rootScope, eapp) 
+angular.module('eappApp').controller('CategoryController', function ($scope, $rootScope, eapp, appService) 
 {
     $rootScope.isMainMenu = true;
     
@@ -38,9 +38,9 @@ angular.module('eappApp').controller('CategoryController', ["$scope", "$rootScop
     
     $rootScope.select_category = function($event, category)
     {
-        $scope.clearSessionItems();
+        appService.clearSessionItems();
         var category_id = parseInt(category.id);
-        eapp.recordHit("eapp_product_category ",category_id);
+        appService.recordHit("eapp_product_category ",category_id);
         window.sessionStorage.setItem("category_id", category_id);    
         window.sessionStorage.setItem("category_name", category.name);
         window.location =  $scope.site_url.concat("/shop");
@@ -57,4 +57,4 @@ angular.module('eappApp').controller('CategoryController', ["$scope", "$rootScop
     });
     
   
-}]);
+});

@@ -1,4 +1,4 @@
-angular.module('eappApp').controller('SelectAccountStoreController', ["$scope", "$mdDialog", "eapp", "$rootScope", function ($scope, $mdDialog, eapp, $rootScope) 
+angular.module('eappApp').controller('SelectAccountStoreController', function ($scope, $mdDialog, eapp, $rootScope, appService) 
 {
     $rootScope.isAccountMenu = true;
     
@@ -36,7 +36,7 @@ angular.module('eappApp').controller('SelectAccountStoreController', ["$scope", 
     
     $scope.goto_retailer = function(id)
     {
-        $scope.clearSessionItems();  
+        appService.clearSessionItems();  
 	var store_id = parseInt(id);
 	window.sessionStorage.setItem("store_id", store_id);    
 	window.location =  $scope.site_url.concat("/shop");
@@ -192,4 +192,4 @@ angular.module('eappApp').controller('SelectAccountStoreController', ["$scope", 
     });
     
   
-}]);
+});

@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-angular.module("eappApp").controller("BlogController", ["$scope", "$http", "$sce", function($scope, $http, $sce) 
+angular.module("eappApp").controller("BlogController", function($scope, $http, $sce, appService) 
 {
     
     $scope.blogPostCount = 0;
@@ -106,7 +106,7 @@ angular.module("eappApp").controller("BlogController", ["$scope", "$http", "$sce
         formdata.append("filter", searchText);
         formdata.append("type", $scope.postType);
 
-        $http.post( $scope.site_url.concat("/blog/search_posts"), 
+        $http.post( appService.siteUrl.concat("/blog/search_posts"), 
         formdata, { transformRequest: angular.identity, headers: {'Content-Type': undefined}}).then(
         function(response)
         {
@@ -129,7 +129,7 @@ angular.module("eappApp").controller("BlogController", ["$scope", "$http", "$sce
         formdata.append("offset", ($scope.selected_page_value - 1) * 3);
         formdata.append("type", $scope.postType);
 
-        $http.post( $scope.site_url.concat("/blog/get_posts"), 
+        $http.post( appService.siteUrl.concat("/blog/get_posts"), 
         formdata, { transformRequest: angular.identity, headers: {'Content-Type': undefined}}).then(
         function(response)
         {
@@ -163,7 +163,7 @@ angular.module("eappApp").controller("BlogController", ["$scope", "$http", "$sce
         var formdata = new FormData();
         formdata.append("post_id", post_id);
 
-        $http.post( $scope.site_url.concat("/blog/like"), 
+        $http.post( appService.siteUrl.concat("/blog/like"), 
         formdata, { transformRequest: angular.identity, headers: {'Content-Type': undefined}}).then(
         function(response)
         {
@@ -177,7 +177,7 @@ angular.module("eappApp").controller("BlogController", ["$scope", "$http", "$sce
         var formdata = new FormData();
         formdata.append("post_id", post_id);
 
-        $http.post( $scope.site_url.concat("/blog/dislike"), 
+        $http.post( appService.siteUrl.concat("/blog/dislike"), 
         formdata, { transformRequest: angular.identity, headers: {'Content-Type': undefined}}).then(
         function(response)
         {
@@ -192,9 +192,9 @@ angular.module("eappApp").controller("BlogController", ["$scope", "$http", "$sce
         {
             var like = $scope.recentPosts[post_id].likes[i];
 
-            if(parseInt(like.user_account_id) === parseInt($scope.loggedUser.id))
+            if(parseInt(like.user_account_id) === parseInt(appService.loggedUser.id))
             {
-                    return false;
+                return false;
             }
         }
 
@@ -202,4 +202,4 @@ angular.module("eappApp").controller("BlogController", ["$scope", "$http", "$sce
     };
 	
 	
-}]);
+});

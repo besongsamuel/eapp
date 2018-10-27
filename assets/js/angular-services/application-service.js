@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-angular.module('eappApp').factory('appService',function($http, profileData, $mdDialog, $location, eapp) 
+angular.module('eappApp').factory('appService',function($http, $mdDialog, $location) 
 {
     
     const APPLICATION_DEFAULT_ADDRESS = "Rue Ste-Catherine Ouest, Québec, Montréal";
@@ -133,97 +133,7 @@ angular.module('eappApp').factory('appService',function($http, profileData, $mdD
         service.clearSessionItems(); 
         window.location =  service.siteUrl.concat("/shop");
     };
-    
-    service.get_store_total = function(store_index)
-    {   
-
-        var total = 0;            
-
-        for(var key in service.cart)
-        {
-            total += 
-                    !profileData.instance.cartView ? 
-                    service.cart[key].store_products[store_index].price * service.cart[key].quantity : 
-                    service.cart[key].store_product.price * service.cart[key].quantity;
-        }
-
-        return total;
-    };
-    
-    service.get_cart_total_available_products = function()
-    {
-        var total = 0;
-
-        if(profileData.cartView)
-        {
-            for(var key in service.cart)
-            {
-                var sp = service.cart[key].store_product;
-                if(parseFloat(sp.department_store.distance) === 0)
-                {
-                    continue;
-                }
-                total += parseFloat(service.cart[key].quantity * sp.price);
-            }
-        }
-        else
-        {
-            for(var i in service.selectedStore.store_products)
-            {
-                total += parseFloat(service.selectedStore.store_products[i].quantity * service.selectedStore.store_products[i].store_product.price);
-            }
-        }
-
-        return total;
-    };
-
-
-
-    service.get_optimized_cart_details = function()
-    {
-        var total = 0;
-
-        for(var key in service.optimized_cart)
-        {
-            total += parseFloat(service.optimized_cart[key].quantity * service.optimized_cart[key].store_product.price);
-        }
-
-        return total;
-    };
-			
-    
-		
-    service.removeItemFromCart = function(product_id)
-    {
-        var index = -1;
-
-        for(var key in service.cart)
-        {
-            if(parseInt(service.cart[key].store_product.product_id) === parseInt(product_id))
-            {
-                index = key;
-                break;
-            }
-        }
-
-        if(index > -1)
-        {
-            service.cart.splice(index, 1);
-        }
-    };
-        
-    service.getCartDistance = function()
-    {
-        return profileData.instance.cartDistance;
-    };
 	
-    service.getOptimizationDistance = function()
-    {
-        return profileData.instance.optimizationDistance;
-    };
-        
-    
-                
     service.getUserCoordinates = function()
     {
         // Get the current geo location only if it's not yet the case
@@ -344,11 +254,11 @@ angular.module('eappApp').factory('appService',function($http, profileData, $mdD
         return false;
     };
     
-    service.selectCaregory = function(category)
+    service.selectCategory = function(category)
     {
         service.clearSessionItems();
         var category_id = parseInt(category.id);
-        eapp.recordHit("eapp_product_category ",category_id);
+        service.recordHit("eapp_product_category ",category_id);
         window.sessionStorage.setItem("category_id", category_id);    
         window.sessionStorage.setItem("category_name", category.name);
         window.location =  service.siteUrl.concat("/shop");
@@ -370,6 +280,99 @@ angular.module('eappApp').factory('appService',function($http, profileData, $mdD
             longitude : longitude,
             latitude : latitude
         };
+    };
+    
+    service.recordRetailerHit = function(id, distance)
+    {
+        var formData = new FormData();
+        formData.append("id", id);
+        
+        if(service.isUserLogged)
+        {
+            formData.append("distance", distance);
+            formData.append("postcode", service.loggedUser.profile.postcode);
+            return $http.post(service.siteUrl.concat("eapp/record_retailer_hit"), formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}});
+
+        }
+        else
+        {
+            var geocoder = new google.maps.Geocoder;
+            var latlng = {lat: parseFloat(service.latitude), lng: parseFloat(service.longitude)};
+            geocoder.geocode({'location': latlng}, function(results, status) 
+            {
+                
+                var postcode = '';
+                
+                if (status === 'OK') 
+                {
+                    if(results[0]) 
+                    {
+                        if(results[0].address_components[8])
+                        {
+                            postcode = results[0].address_components[8].long_name;
+                        }
+                    } 
+                } 
+                
+                formData.append("postcode", postcode);
+                formData.append("distance", distance);
+                return $http.post(service.siteUrl.concat("eapp/record_retailer_hit"), formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}});
+
+                
+            });
+        }
+        
+    };
+    
+    service.recordProductStat = function(storeProductId, type, distance, is_product = false)
+    {
+        var formData = new FormData();
+        formData.append("id", storeProductId);
+        formData.append("type", type);
+        formData.append("is_product", JSON.stringify(is_product));
+        
+        if(service.isUserLogged)
+        {
+            formData.append("distance", distance);
+            formData.append("postcode", service.loggedUser.profile.postcode);
+            return $http.post(service.siteUrl.concat("/eapp/record_stat"), formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}});
+
+        }
+        else
+        {
+            var geocoder = new google.maps.Geocoder;
+            var latlng = {lat: parseFloat(service.latitude), lng: parseFloat(service.longitude)};
+            geocoder.geocode({'location': latlng}, function(results, status) 
+            {
+                
+                var postcode = '';
+                
+                if (status === 'OK') 
+                {
+                    if(results[0]) 
+                    {
+                        if(results[0].address_components[8])
+                        {
+                            postcode = results[0].address_components[8].long_name;
+                        }
+                    } 
+                } 
+                
+                formData.append("postcode", postcode);
+                formData.append("distance", distance);
+                return $http.post(service.siteUrl.concat("/eapp/record_stat"), formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}});
+            });
+        }
+        
+        
+    };
+    
+    service.recordHit = function(tableName, id)
+    {
+        var formData = new FormData();
+        formData.append("table_name", tableName);
+        formData.append("id", id);
+        return $http.post(service.siteUrl.concat("admin/hit"), formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}});
     };
         
     return service;
