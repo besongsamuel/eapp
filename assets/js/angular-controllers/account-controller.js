@@ -9,6 +9,8 @@ angular.module('eappApp').controller('AccountController', ["$scope", "$http", "$
 {   
     "use strict";
     
+    var ctrl = this;
+    
     $scope.address = 
     {
         name : ''
@@ -35,6 +37,14 @@ angular.module('eappApp').controller('AccountController', ["$scope", "$http", "$
     {
         $scope.userPhoneVerified = !angular.isNullOrUndefined($scope.loggedUserClone) && parseInt($scope.loggedUserClone.phone_verified) === 1;
     });
+    
+    ctrl.statusChangeCallback = function(response)
+    {
+        if(response.status == 'not_authorized')
+        {
+            
+        }
+    };
     
     $scope.Init = function()
     {

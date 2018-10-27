@@ -95,11 +95,12 @@
                     </td>
 
                     <td md-cell>
-                        <div>
-                            <div class="row product-image">
-                                <img id="image_{{product.id}}" class="product-image" ng-src="{{product.image}}" />
-                            </div>
-                        </div>
+                        <image-upload 
+                                image="product.image" 
+                                caption="" 
+                                data="product"
+                                on-file-removed="imageRemoved(data)" 
+                                on-file-selected="imageChanged(file, data)"></image-upload>
                     </td>
 
                     <td md-cell>

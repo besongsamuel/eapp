@@ -18,7 +18,7 @@ angular.module('eappApp').component("imageUpload",
             
             $scope.hasImage = false;
             
-            ctrl.onFileRemoved({});
+            ctrl.onFileRemoved({data : ctrl.data});
         };
         
         ctrl.$onChanges = function(changesObj)
@@ -89,7 +89,7 @@ angular.module('eappApp').component("imageUpload",
 
                 reader.readAsDataURL(input.files[0]);
                 
-                ctrl.onFileSelected({ file : input.files[0]});
+                ctrl.onFileSelected({ file : input.files[0], data : ctrl.data});
                                 
             }
         };
@@ -100,7 +100,8 @@ angular.module('eappApp').component("imageUpload",
         name : '@',
         image : '<',
         onFileSelected : '&',
-        onFileRemoved : '&'
+        onFileRemoved : '&',
+        data : '<'
     }
 });
 

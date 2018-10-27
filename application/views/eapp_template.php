@@ -67,7 +67,9 @@
                                       <span class="icon-bar"></span>
                                       <span class="icon-bar"></span>
                                       </button>
-                                      <a class="navbar-brand" href="<?php echo site_url("home"); ?>"><img src="<?php echo base_url("assets/img/logo.png"); ?>" class="eapp-logo" /></a>
+                                      <a class="navbar-brand" href="<?php echo site_url("home"); ?>"><img src="<?php echo base_url("assets/img/logo.png"); ?>" class="eapp-logo" />
+                                          
+                                      </a>
                                   </div>
                                   <div id="navbar" class="navbar-collapse collapse pull-right">
 
