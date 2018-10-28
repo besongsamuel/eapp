@@ -40,6 +40,29 @@ class Geo {
         return FALSE;
     }
     
+    function get_coordinates_from_address($address)
+    {
+        $url = "https://maps.google.com/maps/api/geocode/json?key=AIzaSyBdUBJq3Y93iEd29Q6GAK5SHQJniqZiHu0&address=$address&sensor=false&region=".trim($country);
+        $curl_handle = curl_init();
+        curl_setopt($curl_handle, CURLOPT_URL, $url);
+        curl_setopt($curl_handle, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($curl_handle, CURLOPT_PROXYPORT, 3128);
+        curl_setopt($curl_handle, CURLOPT_SSL_VERIFYHOST, 0);
+        curl_setopt($curl_handle, CURLOPT_SSL_VERIFYPEER, 0);
+        $response = curl_exec($curl_handle);
+        curl_close($curl_handle);
+        $response_a = json_decode($response);
+        $status = $response_a->status;
+
+        if ( $status != 'ZERO_RESULTS' )
+        {
+            $return = array('lat' => $response_a->results[0]->geometry->location->lat, 'long' => $response_a->results[0]->geometry->location->lng);
+            return $return;
+        }
+        
+        return FALSE;
+    }
+    
     /**
      * This method gets a driving distance between two points
      * @param type $lat1 the latitude of the first address

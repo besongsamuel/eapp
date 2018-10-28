@@ -14,7 +14,8 @@
 		"php": ">=5.2.4",
                 "twilio/sdk" : "*",
 		"phpoffice/phpspreadsheet": "^1.2",
-                "braintree/braintree_php" : "3.32.0"
+                "braintree/braintree_php" : "3.32.0",
+		"facebook/graph-sdk": "^5.6"
 	},
 	"suggest": {
 		"paragonie/random_compat": "Provides better randomness in PHP 5.x"

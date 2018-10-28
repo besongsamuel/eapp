@@ -606,28 +606,28 @@ class Account extends CI_Controller
 			
             if($this->form_validation->run() == true)
 	    	{
-                $insert = $this->account_model->create(USER_ACCOUNT_TABLE, $user_account);
-		    
-                if($insert)
-                {
-                    // create user profile
-                    $user_profile['user_account_id'] = $insert;
-                    
-                    // get longitude and latitude
-                    $coordinates = $this->geo->get_coordinates($user_profile["city"], $user_profile["address"], $user_profile["state"], $user_profile["country"]);
-                    if($coordinates)
+                    $insert = $this->account_model->create(USER_ACCOUNT_TABLE, $user_account);
+
+                    if($insert)
                     {
-                        $user_profile["longitude"] = $coordinates["long"];
-                        $user_profile["latitude"] = $coordinates["lat"];
-                    }
-                    
-                    $insert = $this->account_model->create(USER_PROFILE_TABLE, $user_profile);
-                    $this->session->set_userdata('success_msg', 'Your registration was successfully. Please login to your account.');
-                    
-                    $this->login_user(array(
-                        'email'=>$user_account['email'],
-                        'password' => $user_account['password'])
-                    );
+                        // create user profile
+                        $user_profile['user_account_id'] = $insert;
+
+                        // get longitude and latitude
+                        $coordinates = $this->geo->get_coordinates($user_profile["city"], $user_profile["address"], $user_profile["state"], $user_profile["country"]);
+                        if($coordinates)
+                        {
+                            $user_profile["longitude"] = $coordinates["long"];
+                            $user_profile["latitude"] = $coordinates["lat"];
+                        }
+
+                        $insert = $this->account_model->create(USER_PROFILE_TABLE, $user_profile);
+                        $this->session->set_userdata('success_msg', 'Your registration was successfully. Please login to your account.');
+
+                        $this->login_user(array(
+                            'email'=>$user_account['email'],
+                            'password' => $user_account['password'])
+                        );
                     
                     $this->subscribe_logged_user();
                     
@@ -963,5 +963,108 @@ class Account extends CI_Controller
         }
         
     }
+    
+    public function facebook_login() 
+    {
+        $authResponse = $this->input->post("token");
+        
+        $fb = new \Facebook\Facebook([
+            'app_id' => '347670992472912',
+            'app_secret' => 'dd84fb40361da9b127c0c74caabc4bd9',
+            'default_graph_version' => 'v3.2',
+        ]);
+        
+        // Get user data
+        
+        try {
+            // Get the \Facebook\GraphNodes\GraphUser object for the current user.
+            // If you provided a 'default_access_token', the '{access-token}' is optional.
+            $response = $fb->get('/me?fields=first_name,last_name,email,location,hometown,address', $authResponse["accessToken"]);
+        } 
+        catch(\Facebook\Exceptions\FacebookResponseException $e) 
+        {
+            // When Graph returns an error
+            echo 'Graph returned an error: ' . $e->getMessage();
+            exit;
+        } 
+        catch(\Facebook\Exceptions\FacebookSDKException $e) {
+            // When validation fails or other local issues
+            echo 'Facebook SDK returned an error: ' . $e->getMessage();
+            exit;
+        }
+        
+        $graphNode = $response->getGraphNode();
+        
+        $user = array();
+                
+        $location = $graphNode->getField("location");
+        
+        // Check if the user already exists
+        
+        $user_exists = $this->account_model->get_specific(USER_ACCOUNT_TABLE, array("email" => $graphNode->getField("email")), "email,password");
+        
+        if($user_exists)
+        {
+            
+            $data = $this->login_user(array(
+                'email'=>$user_exists->email,
+                'password' => $user_exists->password)
+            );
+
+            echo json_encode($data);
+            return;
+        }
+        else
+        {
+            $user["is_new"] = 1;
+            $user["is_active"] = 1;
+            $user["username"] = $graphNode->getField("email");
+            $user["email"] = $graphNode->getField("email");;
+            $user["subscription"] = 1;
+            $user["password"] = md5($graphNode->getField("id"));
+            
+            $insert = $this->account_model->create(USER_ACCOUNT_TABLE, $user);
+
+            if($insert)
+            {
+                
+                $user_profile = array();
+                
+                $user_profile["firstname"] = $graphNode->getField("first_name");
+                $user_profile["lastname"] = $graphNode->getField("last_name");
+                                
+                // create user profile
+                $user_profile['user_account_id'] = $insert;
+                
+                if($location)
+                {
+                     $address = $location->getField("name");
+
+                    // get longitude and latitude
+                    $coordinates = $this->geo->get_coordinates_from_address($address);
+                    if($coordinates)
+                    {
+                        $user_profile["longitude"] = $coordinates["long"];
+                        $user_profile["latitude"] = $coordinates["lat"];
+                    }
+                }
+
+                $insert = $this->account_model->create(USER_PROFILE_TABLE, $user_profile);
+
+                $data = $this->login_user(array(
+                    'email'=>$user['email'],
+                    'password' => $user['password'])
+                );
+                
+                echo json_encode($data);
+                return;
+            }
+        }
+        
+        echo json_encode(array("success" => false));
+
+    }
+        
+    
     
 }

@@ -29,12 +29,21 @@ function loginFBUser()
         // Log the user if he is connected. 
         if(response.status  === 'connected')
         {
-            FB.api(
-            '/me',
-            {fields: "email,first_name,gender,hometown,location,middle_name,name,last_name"}, 
-            function(response2) 
-            {
-                
+            // Send the auth token to the server
+            $.ajax(
+                    {
+                        type : "POST", 
+                        url : "<?php echo site_url("account/facebook_login"); ?>", 
+                        data : { token : response.authResponse}, 
+                        dataType : "json",
+                        success : function(loginResponse)
+                        {
+                            // Redirect
+                            if(loginResponse.success)
+                            {
+                                location.href = "<?php echo site_url(); ?>".concat("/").concat(loginResponse.redirect);
+                            }
+                        }
             });
         }
     });

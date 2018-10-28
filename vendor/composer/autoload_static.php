@@ -8,6 +8,7 @@ class ComposerStaticInit980805f9f78840a5f7785997d408c4da
 {
     public static $files = array (
         '6124b4c8570aa390c21fafd04a26c69f' => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy/deep_copy.php',
+        'c65d09b6820da036953a371c8c73a9b1' => __DIR__ . '/..' . '/facebook/graph-sdk/src/Facebook/polyfills.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -31,6 +32,10 @@ class ComposerStaticInit980805f9f78840a5f7785997d408c4da
         array (
             'Psr\\SimpleCache\\' => 16,
             'PhpOffice\\PhpSpreadsheet\\' => 25,
+        ),
+        'F' => 
+        array (
+            'Facebook\\' => 9,
         ),
         'D' => 
         array (
@@ -69,6 +74,10 @@ class ComposerStaticInit980805f9f78840a5f7785997d408c4da
         'PhpOffice\\PhpSpreadsheet\\' => 
         array (
             0 => __DIR__ . '/..' . '/phpoffice/phpspreadsheet/src/PhpSpreadsheet',
+        ),
+        'Facebook\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/facebook/graph-sdk/src/Facebook',
         ),
         'Doctrine\\Instantiator\\' => 
         array (
