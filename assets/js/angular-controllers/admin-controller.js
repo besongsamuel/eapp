@@ -1202,7 +1202,7 @@ angular.module("eappApp").controller("EditProductController", function($scope, e
 });
 
 
-angular.module("eappApp").controller('ProductsTableController', function($scope, $q, $http, $rootScope) 
+angular.module("eappApp").controller('ProductsTableController', function($scope, $q, $http, $rootScope, appService) 
 {
     $scope.selected = [];
     
