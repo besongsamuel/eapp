@@ -26,7 +26,7 @@ function CartListItemController($scope, appService, eapp, $mdDialog, profileData
     {
         ctrl.iscartview = profileData.get().cartView;
         
-        ctrl.isUserLogged = appService.isUserLogged;
+        $scope.isUserLogged = appService.isUserLogged;
         
         ctrl.errorMargin = 10;
         

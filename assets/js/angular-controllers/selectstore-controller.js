@@ -30,19 +30,7 @@ angular.module('eappApp').controller('SelectStoreController', function ($scope, 
     
     $scope.getDistance = function()
     {
-        if($scope.isUserLogged)
-        {
-            return parseInt(appService.loggedUser.profile.optimization_distance);
-        }
-        else if(window.localStorage.getItem('optimization_distance'))
-        {
-            return parseInt(window.localStorage.getItem('optimization_distance'));
-        }
-        else
-        {
-            // return a default distance
-            return 4;
-        }
+        return parseInt(profileData.instance.optimizationDistance);
     };
     
     $scope.changeDistance = function(ev)
@@ -85,28 +73,9 @@ angular.module('eappApp').controller('SelectStoreController', function ($scope, 
         
         $scope.change = function()
         {
-            if(appService.isUserLogged)
-            {
-                var changePromise = eapp.changeDistance('optimization_distance', $scope.default_distance);
-            
-                changePromise.then(function(response)
-                {
-                    if(response.data)
-                    {
-                        // Update Logged User
-                        appService.loggedUser = response.data;
-                        
-                        $scope.Init();
-                    }
-                });
-            }
-            else
-            {
-                // Change in the session
-                window.localStorage.setItem('optimization_distance', $scope.default_distance);
-                
-                $scope.Init();
-            }
+            profileData.set("optimizationDistance", $scope.default_distance);
+
+            $scope.Init();
             
             $mdDialog.cancel();
         };
@@ -116,7 +85,7 @@ angular.module('eappApp').controller('SelectStoreController', function ($scope, 
     {
         appService.clearSessionItems();  
 	var store_id = parseInt(store.id);
-        appService.recordRetailerHit(store.id, profileData.instance.cartDistance);
+        appService.recordRetailerHit(store.id, profileData.instance.optimizationDistance);
 	window.sessionStorage.setItem("store_id", store_id); 
         window.sessionStorage.setItem("store_name", store.name); 
 	window.location =  appService.siteUrl.concat("/shop");
@@ -127,10 +96,9 @@ angular.module('eappApp').controller('SelectStoreController', function ($scope, 
         $scope.retailers = ctrl.retailers.filter(x => x.name.toLowerCase().indexOf($scope.storeName.toLowerCase()) !== -1);
     };
     
-    angular.element(document).ready(function()
+    appService.ready.then(function()
     {
         $scope.Init();
     });
-    
   
 });

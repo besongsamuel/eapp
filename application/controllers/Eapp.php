@@ -139,10 +139,9 @@ class Eapp extends CI_Controller
             );
 
             $this->account_model->create(USER_GROCERY_LIST_TABLE, $data);
-            
-            $user = $this->account_model->get_user($this->user->id);
+                        
             $return = array();
-            $return["grocery_lists"] = $user->grocery_lists;
+            $return["grocery_lists"] = $this->account_model->get_user_grocery_lists($this->user->id)["grocery_lists"];
             $return["success"] = true;
             
             echo json_encode($return);
@@ -216,9 +215,8 @@ class Eapp extends CI_Controller
 
                 $this->account_model->create(USER_GROCERY_LIST_TABLE, $data);
                 
-                $user = $this->account_model->get_user($this->user->id);
                 $return = array();
-                $return["grocery_lists"] = $user->grocery_lists;
+                $return["grocery_lists"] = $this->account_model->get_user_grocery_lists($this->user->id)["grocery_lists"];
                 $return["success"] = true;
 
                 echo json_encode($return);

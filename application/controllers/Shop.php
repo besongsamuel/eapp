@@ -55,19 +55,6 @@ class Shop extends CI_Controller {
         
         $distance = $this->input->post("distance");
         
-        if($this->user != null)
-        {
-            $data = array
-            (
-                'id' => $this->user->profile->id,
-                'optimization_distance' => $distance
-            );
-
-            $this->shop_model->create(USER_PROFILE_TABLE, $data);
-            
-            $this->set_user();
-        }
-        
         $retailers = $this->cart_model->get_closest_merchants($this->user, $coords, $distance);
         
         foreach ($retailers as $key => $value) 

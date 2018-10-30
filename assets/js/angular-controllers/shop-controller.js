@@ -40,9 +40,11 @@ angular.module('eappApp').controller('ShopController', function ($scope, $q, app
         
         $scope.assets_dir = appService.baseUrl.concat("/eapp/assets/");
         
+        $scope.profileData = profileData;
+        
         if($(window).width() < 500)
         {
-            profileData.get().gridView = true;
+            profileData.instance.gridView = true;
         }
         
         // Get the products for the store

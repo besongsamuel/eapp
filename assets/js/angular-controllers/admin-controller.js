@@ -51,7 +51,7 @@ function apsUploadFileLink(scope, element, attrs)
     });
 }
 
-angular.module("eappApp").controller('AdminController', function($scope, Form, $http, $q, $mdDialog, eapp, $rootScope, appService) {
+angular.module("eappApp").controller('AdminController', function($scope, Form, $http, $q, $mdDialog, eapp, appService) {
       
     $scope.selectedProduct = null;
     $scope.searchProductText = "";
@@ -77,7 +77,7 @@ angular.module("eappApp").controller('AdminController', function($scope, Form, $
     
     $scope.Init = function()
     {
-        $rootScope.menu = "admin_create_product";
+        $scope.menu = "admin_create_product";
         var spID = angular.getSearchParam("product");
         
         $scope.$watch('store_product.period_from', function(newVal, oldVal)
@@ -1202,11 +1202,11 @@ angular.module("eappApp").controller("EditProductController", function($scope, e
 });
 
 
-angular.module("eappApp").controller('ProductsTableController', function($scope, $q, $http, $rootScope, appService) 
+angular.module("eappApp").controller('ProductsTableController', function($scope, $http, appService) 
 {
     $scope.selected = [];
     
-    $rootScope.menu = "admin_view_products";
+    $scope.menu = "admin_view_products";
   
     $scope.filter = 
     {

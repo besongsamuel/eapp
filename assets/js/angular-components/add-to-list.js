@@ -9,13 +9,13 @@
 angular.module('eappApp').component("addToList", 
 {
     template : "<a style='text-align : center;' href ng-click='$ctrl.selectListItem($event)'>{{$ctrl.caption}}</a>",
-    controller : function($mdDialog, $scope, appService)
+    controller : function($mdDialog, $scope, appService, eapp)
     {
         var ctrl = this;
         
         ctrl.$onInit = function()
         {
-            $scope.loggedUser = ctrl.loggedUser;
+            $scope.loggedUser = appService.loggedUser;
             $scope.product = ctrl.product;
         };
         
@@ -30,7 +30,6 @@ angular.module('eappApp').component("addToList",
                 targetEvent: ev,
                 locals : 
                 {
-                    grocery_lists : appService.loggedUser.grocery_lists,
                     product : $scope.product
                 },
                 clickOutsideToClose:true,
@@ -45,9 +44,15 @@ angular.module('eappApp').component("addToList",
             });
         };
         
-        function DialogController($rootScope, $scope, $mdDialog, grocery_lists, product, eapp) 
+        function DialogController($scope, $mdDialog, product, eapp) 
         {
-            $scope.grocery_lists = grocery_lists;
+            eapp.getUserGroceryLists().then(function(response)
+            {
+                $scope.grocery_lists = response.data.grocery_lists;
+                
+                 $scope.refresh();
+            });
+            
             
             $scope.refresh = function()
             {
@@ -66,7 +71,6 @@ angular.module('eappApp').component("addToList",
                 }  
             };
             
-            $scope.refresh();
             
             $scope.product = product;
             
@@ -96,8 +100,7 @@ angular.module('eappApp').component("addToList",
                     {
                         var newList = response.data.data;
                         newList.selected = false;
-                        appService.loggedUser.grocery_lists.push(newList);
-                        $scope.grocery_lists = appService.loggedUser.grocery_lists;
+                        $scope.grocery_lists.push(newList);
                         $scope.successMessage = response.data.message;
                     }
                     else
@@ -117,7 +120,6 @@ angular.module('eappApp').component("addToList",
                 {
                     eapp.addProductToList($scope.product, item.id).then(function(response)
                     {
-                        appService.loggedUser.grocery_lists = response.data.grocery_lists;
                         $scope.grocery_lists = response.data.grocery_lists;
                         $scope.refresh();
                     });
@@ -126,7 +128,6 @@ angular.module('eappApp').component("addToList",
                 {
                     eapp.removeProductFromList($scope.product, item.id).then(function(response)
                     {
-                        appService.loggedUser.grocery_lists = response.data.grocery_lists;
                         $scope.grocery_lists = response.data.grocery_lists;
                         $scope.refresh();
                     });
@@ -137,7 +138,6 @@ angular.module('eappApp').component("addToList",
     bindings : 
     {
         caption : '@',
-        loggedUser : '<',
         product : '<'
     }
 });
