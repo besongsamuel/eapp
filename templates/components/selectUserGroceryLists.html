@@ -53,6 +53,10 @@
                 
             </div>
 
+            <div ng-if="loadingLists" layout="row" layout-sm="column" layout-align="space-around">
+                <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+            </div> 
+
             <md-list-item ng-repeat="item in grocery_lists">
                 
                 <md-switch  class="md-primary" ng-model="item.selected" aria-label="Ajouter à liste" ng-change="addToList(item)">

@@ -12,7 +12,7 @@ angular.module("eappApp").controller("UserListController", function($rootScope, 
     
     var ctrl = this;
     
-    $rootScope.isMainMenu = true;
+    $scope.loadingLists = true;
     
     $rootScope.selectedProduct = null;
     
@@ -581,11 +581,13 @@ angular.module("eappApp").controller("UserListController", function($rootScope, 
     {
         $scope.load_icons(); 
         
-        if($scope.isUserLogged)
+        if(appService.isUserLogged)
         {
             eapp.getUserGroceryLists().then(function(response)
             {
                 $scope.grocery_lists = response.data.grocery_lists;
+                
+                $scope.loadingLists = false;
                 
                 if($scope.grocery_lists.length > 0)
                 {

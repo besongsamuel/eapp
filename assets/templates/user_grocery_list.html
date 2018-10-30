@@ -31,6 +31,9 @@
     
     <div class="row">
         <div class="center-div">
+            <div ng-if="loadingLists" layout="row" layout-sm="column" layout-align="space-around">
+                <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+            </div> 
             <md-input-container style="width: 300px;">
               <label>Sélectionnez votre liste d'épicerie</label>
               <md-select ng-model="selectedList.id" ng-change="groceryListChanged()"  ng-disabled="loggedUser.is_active == 0">

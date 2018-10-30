@@ -9,7 +9,7 @@
 angular.module('eappApp').component("addToList", 
 {
     template : "<a style='text-align : center;' href ng-click='$ctrl.selectListItem($event)'>{{$ctrl.caption}}</a>",
-    controller : function($mdDialog, $scope, appService, eapp)
+    controller : function($mdDialog, $scope, appService)
     {
         var ctrl = this;
         
@@ -46,8 +46,12 @@ angular.module('eappApp').component("addToList",
         
         function DialogController($scope, $mdDialog, product, eapp) 
         {
+            $scope.loadingLists = true;
+            
             eapp.getUserGroceryLists().then(function(response)
             {
+                $scope.loadingLists = false;
+                
                 $scope.grocery_lists = response.data.grocery_lists;
                 
                  $scope.refresh();
