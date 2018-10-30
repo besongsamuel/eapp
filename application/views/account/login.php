@@ -26,25 +26,42 @@ function loginFBUser()
 {
     FB.getLoginStatus(function(response) 
     {
+        
+        var scope = angular.element($("#admin-container")).scope();
+
+        scope.socialLogin = true;
+        
+        scope.$apply();
+        
         // Log the user if he is connected. 
         if(response.status  === 'connected')
         {
             // Send the auth token to the server
             $.ajax(
+            {
+                type : "POST", 
+                url : "<?php echo site_url("account/facebook_login"); ?>", 
+                data : { token : response.authResponse}, 
+                dataType : "json",
+                success : function(loginResponse)
+                {
+                    scope.socialLogin = true;
+
+                    scope.$apply();
+
+                    // Redirect
+                    if(loginResponse.success)
                     {
-                        type : "POST", 
-                        url : "<?php echo site_url("account/facebook_login"); ?>", 
-                        data : { token : response.authResponse}, 
-                        dataType : "json",
-                        success : function(loginResponse)
-                        {
-                            // Redirect
-                            if(loginResponse.success)
-                            {
-                                location.href = "<?php echo site_url(); ?>".concat("/").concat(loginResponse.redirect);
-                            }
-                        }
+                        location.href = "<?php echo site_url(); ?>".concat("/").concat(loginResponse.redirect);
+                    }
+                }
             });
+        }
+        else
+        {
+            scope.message = "Échec de l'authentification.";
+            scope.socialLogin = true;
+            scope.$apply();
         }
     });
 }
@@ -74,6 +91,10 @@ function loginFBUser()
              <div class="col-12" style="text-align: center; margin : 10px;">
                 <div class="fb-login-button" onlogin="loginFBUser()" data-max-rows="1" data-scope="public_profile,email,user_location" data-size="large" data-button-type="continue_with" data-auto-logout-link="false" data-use-continue-as="true"></div>
             </div>
+            
+            <div ng-if="socialLogin" layout="row" layout-sm="column" layout-align="space-around">
+                <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+            </div> 
             
             <form name="loginForm" class="form-horizontal" role="form" ng-submit="login()" novalidate>
 
