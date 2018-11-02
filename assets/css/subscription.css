@@ -8,52 +8,146 @@ and open the template in the editor.
     Author     : besongsamuel
 */
 
-.subacription-table { border-collapse:collapse; table-layout:fixed; width:100%; }
 
-th { background:#F5F5F5; display:none; }
-td, th {
+div.otiprix-section * {
+  box-sizing:border-box;
+  padding:0;
+  margin:0;
+   outline: 0;
+}
+
+div.otiprix-section article {
+  width:100%;
+  max-width:1000px;
+  margin:0 auto;
+  height:1000px;
+  position:relative;
+}
+div.otiprix-section ul {
+  display:flex;
+  top:0px;
+  z-index:10;
+  padding-bottom:14px;
+}
+div.otiprix-section li {
+  list-style:none;
+  flex:1;
+}
+div.otiprix-section li:last-child {
+  border-right:1px solid #DDD;
+}
+div.otiprix-section button {
+  width:100%;
+  border: 1px solid #DDD;
+  border-right:0;
+  border-top:0;
+  padding: 10px;
+  background:#FFF;
+  font-size:14px;
+  font-weight:bold;
+  height:60px;
+  color:#999
+}
+div.otiprix-section li.active button {
+  background:#F5F5F5;
+  color:#000;
+}
+div.otiprix-section table { border-collapse:collapse; table-layout:fixed; width:100%; }
+div.otiprix-section th { background:#F5F5F5; display:none; }
+div.otiprix-section td, th {
   height:53px
 }
-td,th { border:1px solid #DDD; padding:10px; empty-cells:show; }
-td,th {
+div.otiprix-section td,th { border:1px solid #DDD; padding:10px; empty-cells:show; }
+div.otiprix-section td,th {
   text-align:left;
 }
-td+td, th+th {
+div.otiprix-section td+td, th+th {
   text-align:center;
   display:none;
 }
+div.otiprix-section td.default {
+  display:table-cell;
+}
 
-.bg-purple {
-  border-top:3px solid #A32362;
+.hide.default{
+	border:0;
+	background:none;
+	display:table-cell;
 }
-.bg-blue {
-  border-top:3px solid #0097CF;
+
+
+div.otiprix-section .bg-green {
+  border-top:3px solid #4c7737;
 }
-.sep {
+div.otiprix-section .bg-yellow {
+  border-top:3px solid #ffbb42;
+}
+div.otiprix-section .bg-red {
+  border-top:3px solid #e13c4c;
+}
+
+div.otiprix-section .sep {
   background:#F5F5F5;
   font-weight:bold;
 }
-.txt-l { font-size:28px; font-weight:bold; }
-.txt-top { position:relative; top:-9px; left:-2px; }
-.tick { font-size:18px; color:#2CA01C; }
-.tickred { font-size:18px; color:#e82309; }
-.mask {
+div.otiprix-section .txt-l { font-size:28px; font-weight:bold; }
+div.otiprix-section .txt-top { position:relative; top:-9px; left:-2px; }
+div.otiprix-section .tick { font-size:18px; color:#2CA01C; }
+div.otiprix-section .tickred { font-size:18px; color:#e82309; }
+.hide {
   border:0;
   background:none;
 }
 
 @media (min-width: 640px) {
-  .subacription-ul {
+  div.otiprix-section ul {
     display:none;
   }
-  td,th {
+  div.otiprix-section td,th {
     display:table-cell !important;
   }
-  td,th {
+  div.otiprix-section td,th {
     width: 330px;
   
   }
-  td+td, th+th {
+  div.otiprix-section td+td, th+th {
     width: auto;
   }
+  
+}
+
+div.otiprix-section .button {
+  width: 140px;
+  height: 45px;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 2.5px;
+  font-weight: 500;
+  color: #000;
+  background-color: #fff;
+  border: none;
+  border-radius: 45px;
+  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease 0s;
+  cursor: pointer;
+  outline: none;
+  }
+
+div.otiprix-section .button:hover {
+  background-color: #2EE59D;
+  box-shadow: 0px 15px 20px rgba(46, 229, 157, 0.4);
+  color: #fff;
+  transform: translateY(-7px);
+}
+div.otiprix-section .button:active {
+	box-shadow: inset 0px 2px 2px rgba(0, 0, 0, 0.1);
+}
+div.otiprix-section .button.first {
+    background: #4c7737;
+}
+div.otiprix-section .button.second {
+    background: #ffbb42;
+}
+div.otiprix-section .button.third {
+    background: #e13c4c;
 }
