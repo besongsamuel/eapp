@@ -21,27 +21,44 @@ angular.module('eappApp').component("addToList",
         
         ctrl.selectListItem = function(ev)
         {
-            var scrollTop = $(document).scrollTop();
             
-            $mdDialog.show({
-                controller: DialogController,
-                templateUrl: 'templates/components/selectUserGroceryLists.html',
-                parent: angular.element(document.body),
-                targetEvent: ev,
-                locals : 
+            if(appService.isUserLogged)
+            {
+                var scrollTop = $(document).scrollTop();
+            
+                $mdDialog.show({
+                    controller: DialogController,
+                    templateUrl: 'templates/components/selectUserGroceryLists.html',
+                    parent: angular.element(document.body),
+                    targetEvent: ev,
+                    locals : 
+                    {
+                        product : $scope.product
+                    },
+                    clickOutsideToClose:true,
+                    fullscreen: false
+                })
+                .then(function(answer) 
                 {
-                    product : $scope.product
-                },
-                clickOutsideToClose:true,
-                fullscreen: false
-            })
-            .then(function(answer) 
+                    $(document).scrollTop(scrollTop);
+                }, function() 
+                {
+                    $(document).scrollTop(scrollTop);
+                });
+            }
+            else
             {
-                $(document).scrollTop(scrollTop);
-            }, function() 
-            {
-                $(document).scrollTop(scrollTop);
-            });
+                $mdDialog.show({
+                    controller: RegisterRequestController,
+                    templateUrl: 'templates/dialogs/registerRequestDialog.html',
+                    parent: angular.element(document.body),
+                    targetEvent: ev,
+                    clickOutsideToClose:true,
+                    fullscreen: false
+                });
+            }
+            
+            
         };
         
         function DialogController($scope, $mdDialog, product, eapp) 
@@ -137,6 +154,22 @@ angular.module('eappApp').component("addToList",
                     });
                 }
             };
+        }
+        
+        function RegisterRequestController($scope, appService)
+        {
+            $scope.gotoLoginPage = function()
+            {
+                location.href = appService.siteUrl.concat("account/login");
+                $mdDialog.hide();
+            };
+            
+            $scope.gotoRegisterPage = function()
+            {
+                location.href = appService.siteUrl.concat("account/register");
+                $mdDialog.hide();
+            };
+            
         }
     },
     bindings : 

@@ -29,8 +29,8 @@
     
     <quantity-input ng-if="$ctrl.fullDisplay" quantity="storeProduct.quantity" ></quantity-input>
 
-    <div ng-if='isUserLogged && isUserActive && $ctrl.fullDisplay' class="row" style='text-align: center;'>
-        <add-to-list product='storeProduct.product' caption="Ajouter à liste" logged-user='loggedUser'></add-to-list>
+    <div ng-if='$ctrl.fullDisplay' class="row" style='text-align: center;'>
+        <add-to-list product='storeProduct.product' caption="Ajouter à liste"></add-to-list>
     </div>
 
     <md-divider></md-divider>

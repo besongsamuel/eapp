@@ -1,0 +1,66 @@
+<style>
+md-dialog ol li {
+  position: relative;
+  font: bold italic 25px/1.5 Helvetica, Verdana, sans-serif;
+  margin-bottom: 20px;
+}
+
+md-dialog li p {
+  font: 12px/1.5 Helvetica, sans-serif;
+  padding-left: 60px;
+  color: #555;
+  padding-top : 10px;
+}
+
+md-dialog span {
+  position: absolute;
+}
+</style>
+
+<md-dialog>
+    <md-dialog-content>
+
+        <md-toolbar class="md-primary">
+            <div class="md-toolbar-tools">
+                <h2 md-truncate flex>Veuillez vous connecter</h2>
+            </div>
+        </md-toolbar>
+
+        <div layout-padding>
+            <div class="page-header" >
+            <h4 style="color: rgb(26, 188, 156);
+                font-family: Raleway, sans-serif;
+                font-size: 20px;
+                font-weight: 100;
+                margin-bottom: 20px;
+                margin-top: 20px;
+                text-align: center;">Ouvrez votre compte pour ajouter des produits à votre liste
+                    <p><small>Votre compte vous permet aussi de:</small></p>
+                </h4>
+            </div>
+        
+            <div>
+                <ol style="color: #ccc; list-style-type: none;">
+                    <li><span>1.</span><p>Rechercher automatiquement les produits de votre liste;</p></li>
+                    <li><span>2.</span><p>Connaître l’historique de vos économies;</p></li>
+                    <li><span>3.</span><p>Envoyer la liste d’épicerie par sms et email</p></li>
+                    <li><span>4.</span><p>Choisir vos 4 magasins préférés et obtenir une optimisation plus efficace</p></li>
+                </ol> 
+            </div>
+        </div>
+        
+
+    </md-dialog-content>
+    <md-dialog-actions>
+        <md-container>
+            <md-button ng-click="gotoLoginPage()" class="md-raised md-primary btn pull-right">
+                S'identifier
+            </md-button>
+
+            <md-button ng-click="gotoRegisterPage()" class="md-raised md-primary btn pull-right">
+                Créer un compte
+            </md-button>
+        </md-container> 
+
+    </md-dialog-actions>
+</md-dialog>
