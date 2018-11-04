@@ -56,74 +56,76 @@ angular.module('eappApp').factory('appService',function($http, $mdDialog, $locat
     service.method = "";
     service.controller = "";
     
-    service.ready = $http.post(this.siteUrl.concat("eapp/get_application_data"), null, { transformRequest: angular.identity, headers: {'Content-Type': undefined}});
-    
-    service.ready.then(function(response)
+    service.path = $location.absUrl().toString().substring(($location.protocol() + "://" + service.host).length);
+        
+    var pathArray = service.path.split("/");
+
+    var i = 0;
+
+    if(pathArray.length > i)
     {
-        service.path = $location.absUrl().toString().substring(($location.protocol() + "://" + service.host).length);
-        
-        var pathArray = service.path.split("/");
-        
-        var i = 0;
-        
-        if(pathArray.length > i)
+        while(pathArray[i] == "" && pathArray.length > i + 1)
+        {
+            i++;
+        }
+
+        if(pathArray[i].toString() === "index.php")
+        {
+            i++;
+
+            while(pathArray[i] == "" && pathArray.length > i + 1)
+            {
+                i++;
+            }
+
+            service.controller = pathArray[i];
+
+            i++;
+
+            if(pathArray.length > i)
+            {
+                while(pathArray[i] == "" && pathArray.length > i + 1)
+                {
+                    i++;
+                }
+
+                if(pathArray.length > i)
+                {
+                    service.method = pathArray[i];
+                }
+            }
+        }
+        else
         {
             while(pathArray[i] == "" && pathArray.length > i + 1)
             {
                 i++;
             }
-            
-            if(pathArray[i].toString() === "index.php")
-            {
-                i++;
-                
-                while(pathArray[i] == "" && pathArray.length > i + 1)
-                {
-                    i++;
-                }
-                
-                service.controller = pathArray[i];
-                
-                i++;
-                
-                if(pathArray.length > i)
-                {
-                    while(pathArray[i] == "" && pathArray.length > i + 1)
-                    {
-                        i++;
-                    }
 
-                    if(pathArray.length > i)
-                    {
-                        service.method = pathArray[i];
-                    }
-                }
-            }
-            else
+            service.controller = pathArray[i];
+
+            i++;
+
+            if(pathArray.length > i)
             {
                 while(pathArray[i] == "" && pathArray.length > i + 1)
                 {
                     i++;
                 }
-                
-                service.controller = pathArray[i];
-                
-                i++;
-                
+
                 if(pathArray.length > i)
                 {
-                    while(pathArray[i] == "" && pathArray.length > i + 1)
-                    {
-                        i++;
-                    }
-
-                    if(pathArray.length > i)
-                    {
-                        service.method = pathArray[i];
-                    }
+                    service.method = pathArray[i];
                 }
             }
         }
+    }
+    
+    service.ready = $http.post(this.siteUrl.concat("eapp/get_application_data"), null, { transformRequest: angular.identity, headers: {'Content-Type': undefined}});
+    
+    service.ready.then(function(response)
+    {
+        
         
         service.cart = response.data.cart;
         service.baseUrl = response.data.base_url.concat("/");

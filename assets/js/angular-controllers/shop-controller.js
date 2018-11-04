@@ -26,6 +26,25 @@ angular.module('eappApp').controller('ShopController', function ($scope, $q, app
     
     var bookmark;
     
+    // Get the products for the store
+    if(appService.controller === 'shop')
+    {
+        // We selected a specific store flyer
+        if(window.sessionStorage.getItem("store_id"))
+        {
+            $scope.store_id = parseInt(window.sessionStorage.getItem("store_id"));
+            $scope.store_name = window.sessionStorage.getItem("store_name");
+            $scope.isStoreSelected = true;
+        }
+
+        // We selected a specific category
+        if(window.sessionStorage.getItem("category_id"))
+        {
+            $scope.category_id = parseInt(window.sessionStorage.getItem("category_id"));
+            $scope.category_name = window.sessionStorage.getItem("category_name");
+        }
+    }
+    
     $scope.Init = function()
     {
         $scope.isUserActive = appService.isUserLogged && parseInt(appService.loggedUser.is_active) === 1;
@@ -47,24 +66,7 @@ angular.module('eappApp').controller('ShopController', function ($scope, $q, app
             profileData.instance.gridView = true;
         }
         
-        // Get the products for the store
-        if(appService.controller === 'shop')
-        {
-            // We selected a specific store flyer
-            if(window.sessionStorage.getItem("store_id"))
-            {
-                $scope.store_id = parseInt(window.sessionStorage.getItem("store_id"));
-                $scope.store_name = window.sessionStorage.getItem("store_name");
-                $scope.isStoreSelected = true;
-            }
-
-            // We selected a specific category
-            if(window.sessionStorage.getItem("category_id"))
-            {
-                $scope.category_id = parseInt(window.sessionStorage.getItem("category_id"));
-                $scope.category_name = window.sessionStorage.getItem("category_name");
-            }
-        }
+        
         
         $scope.distance =  profileData.get().optimizationDistance;
                 
