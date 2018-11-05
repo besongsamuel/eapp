@@ -633,9 +633,6 @@ class Account extends CI_Controller
                     
                     $this->send_registration_email();
                     
-                    // MailChimp API credentials
-                    //$this->add_user_to_mailchimp($this->config->item('users_list_id'), $this->config->item('mailchimp_api_key'), $this->get_activation_url());
-                    
                     $data['user'] = $this->user;
                     
                     $data["success"] = true;
@@ -969,8 +966,8 @@ class Account extends CI_Controller
         $authResponse = $this->input->post("token");
         
         $fb = new \Facebook\Facebook([
-            'app_id' => '347670992472912',
-            'app_secret' => 'dd84fb40361da9b127c0c74caabc4bd9',
+            'app_id' => $this->config->item('FACEBOOK_APP_ID'),
+            'app_secret' => $this->config->item('FACEBOOK_APP_SECRET'),
             'default_graph_version' => 'v3.2',
         ]);
         

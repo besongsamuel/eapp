@@ -531,10 +531,8 @@ $config['rewrite_short_tags'] = FALSE;
 $config['proxy_ips'] = '';
 
 // twirlio
-$config['sid'] = '';
-$config['token'] = '';
+$config['sid'] = 'AC2f171c37cc5c0019e946ee6e380a3013';
+$config['token'] = '93dc30b90b3a3bfe648c66778843ac6b';
 
-$config['mailchimp_api_key'] = '';
-$config['users_list_id'] = '';
-$config['company_list_id'] = '';
-$config['activation_email_list_id'] = '';
+$config['FACEBOOK_APP_ID'] = '347670992472912';
+$config['FACEBOOK_APP_SECRET'] = 'dd84fb40361da9b127c0c74caabc4bd9';
