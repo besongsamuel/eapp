@@ -1162,6 +1162,7 @@ angular.module("eappApp").controller("EditProductController", function($scope, e
     $scope.submit = function(ev)
     {
         $scope.product.tags = $scope.product.tagsArray.join();
+        $scope.product.is_popular = 0;
         
         var product = JSON.stringify($scope.product);
         
