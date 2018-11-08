@@ -16,7 +16,7 @@
 
         <div>
 
-            <div style="background-color: #C0C0C0;">
+            <div style="background-color: #f5f7fa;">
                 <div class="container">
                 
                     <?php foreach(array_slice($categoryProducts, 0, 3) as $category_products): ?>
@@ -77,7 +77,7 @@
                 
             <md-divider></md-divider>
             
-            <div style="background-color: #C0C0C0;">
+            <div style="background-color: #f5f7fa;">
             
                 <div class="container">
 

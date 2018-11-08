@@ -207,17 +207,18 @@ and open the template in the editor.
       <td><span class="tickred">&#x2716;</span></td>
       <td><span class="tick">&#10004;</span></td>
     </tr>
-	<tr>
+    <tr>
       <td>Quel est le magasin qui a plus de produits dans la liste des produits moins cher</td>
       <td class="default"><span class="tickred">&#x2716;</span></td>
       <td><span class="tickred">&#x2716;</span></td>
       <td><span class="tick">&#10004;</span></td>
     </tr>
-    <tr><td class="hide"></td>
-		<td class="hide default"><button type="button" class="button first">Souscrire</button></td>
-        <td class="hide"><button type="button" class="button second" onclick="window.location.href='https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=K3PLC2N2CSTL6'">Souscrire</button></td>
-		<td class="hide"><button type="button" class="button third" onclick="window.location.href='https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=67YAR9BVCRBHN'">Souscrire</button></td>
-	</tr> 
+    <tr>
+        <td class="first"></td>
+	<td class="default"><button type="button" class="button first">Souscrire</button></td>
+        <td ><button type="button" class="button second" onclick="window.location.href='https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=K3PLC2N2CSTL6'">Souscrire</button></td>
+	<td ><button type="button" class="button third" onclick="window.location.href='https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=67YAR9BVCRBHN'">Souscrire</button></td>
+    </tr> 
   </tbody>
 </table>
   <script src="<?php echo base_url("assets/js/angular-components/select-subscription.js")?>"></script>

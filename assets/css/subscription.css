@@ -69,10 +69,10 @@ div.otiprix-section td.default {
   display:table-cell;
 }
 
-.hide.default{
-	border:0;
-	background:none;
-	display:table-cell;
+td.first{
+	border:none !important;
+	background:none !important;
+	display:table-cell !important;
 }
 
 

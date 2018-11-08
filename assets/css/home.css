@@ -8,6 +8,10 @@ and open the template in the editor.
     Author     : besongsamuel
 */
 
+h3{
+    color: #ff5722 !important;
+}
+
 .home-category-title
 {
     margin-top: 20px;
