@@ -22,7 +22,7 @@
 
               <div class="container">
 
-                  <div class="row">
+                  <div layout="row">
 
                       <div class="col-lg-3 hide-text">
                           <div class="pull-left header-social">
@@ -47,7 +47,7 @@
                             </p>
                       </div>
 
-                      <div class="col-lg-3 col-sm-6">
+                      <div flex>
 
                             <div class="pull-right" style="border: 2px solid rgb(255,87,34); padding: 1px;">
                                 <span>
