@@ -24,7 +24,7 @@
 
                   <div class="row">
 
-                      <div class="col-sm-3">
+                      <div class="col-lg-3 hide-text">
                           <div class="pull-left header-social">
                               <a href="https://www.facebook.com/otiprix.otiprix.1" target="_blank"><i otiprix-text class="fa fa-facebook"></i></a>
                               <a href="https://twitter.com/otiprix" target="_blank"><i otiprix-text class="fa fa-twitter"></i></a>
@@ -34,9 +34,9 @@
                           </div>
                       </div>
                       
-                      <div class="col-sm-6">
+                      <div class="col-lg-6 col-sm-6">
                             <p style="text-align: center;">
-                                <b>Résultats optimisé pour : 
+                                <b><span class="hide-text">Résultats optimisé pour : </span>
                                     <a href ng-click="menuCtrl.changeAddress($event)">
                                         <md-tooltip>
                                             Changer address
@@ -47,19 +47,16 @@
                             </p>
                       </div>
 
-                      <div class="col-sm-3">
+                      <div class="col-lg-3 col-sm-6">
 
-                          <div>
-                              <div class="pull-right" style="border: 2px solid rgb(255,87,34); padding: 1px;">
-                                  <span>
-                                      <a href="<?php echo site_url("cart"); ?>" style="color : rgb(255,87,34);" class="md-icon-button" aria-label="Cart">
-                                          Voir votre liste
-                                          <md-icon><i class="material-icons" style="color : rgb(255,87,34);">shopping_cart</i></md-icon>
-                                          <span class="badge" style="background-color : rgb(255,87,34);" ng-show="getTotalItemsInCart() > 0">{{getTotalItemsInCart()}} | {{getCartPrice() | number : 2}} C $</span>
-                                      </a>
-                                  </span>
-                              </div>
-                          </div>
+                            <div class="pull-right" style="border: 2px solid rgb(255,87,34); padding: 1px;">
+                                <span>
+                                    <a href="<?php echo site_url("cart"); ?>" style="color : rgb(255,87,34);" class="md-icon-button" aria-label="Cart">
+                                        <md-icon><i class="material-icons" style="color : rgb(255,87,34);">shopping_cart</i></md-icon>
+                                        <span class="badge" style="background-color : rgb(255,87,34);" ng-show="getTotalItemsInCart() > 0">{{getTotalItemsInCart()}} | {{getCartPrice() | number : 2}} C $</span>
+                                    </a>
+                                </span>
+                            </div>
 
                       </div>
 

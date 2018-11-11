@@ -1486,3 +1486,9 @@ md-list-item .md-avatar, md-list-item .md-list-item-inner .md-avatar
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
+@media (max-width: 1200px) {                  
+   .hide-text {
+      display: none;
+   }
+}
