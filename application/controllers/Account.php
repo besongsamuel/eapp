@@ -714,6 +714,16 @@ class Account extends CI_Controller
         
     }
     
+    public function update_address() 
+    {
+        if($this->user != null && $_SERVER['REQUEST_METHOD'] === 'POST')
+        {
+            $user_profile = json_decode($this->input->post('profile'), true);
+            $user_profile['id'] = $this->user->profile->id;
+            $this->account_model->create(USER_PROFILE_TABLE, $user_profile);
+        }
+    }
+    
     public function modify_password() 
     {
         $result = array

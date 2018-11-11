@@ -10,6 +10,7 @@ angular.module('eappApp').factory('appService',function($http, $mdDialog, $locat
     const APPLICATION_DEFAULT_ADDRESS = "Rue Ste-Catherine Ouest, Québec, Montréal";
     const APPLICATION_DEFAULT_LONGITUDE = -73.5815;
     const APPLICATION_DEFAULT_LATITUDE = 45.4921;
+    const APPLICATION_DEFAULT_POSTCODE = "H3B 1K1";
     
     
     var service = this;
@@ -53,6 +54,7 @@ angular.module('eappApp').factory('appService',function($http, $mdDialog, $locat
     service.currentAddress = APPLICATION_DEFAULT_ADDRESS;
     service.longitude = APPLICATION_DEFAULT_LONGITUDE;
     service.latitude = APPLICATION_DEFAULT_LATITUDE;
+    service.postcode = APPLICATION_DEFAULT_POSTCODE;
     service.method = "";
     service.controller = "";
     
@@ -156,7 +158,7 @@ angular.module('eappApp').factory('appService',function($http, $mdDialog, $locat
         service.changeLocationUrl = service.siteUrl.concat("/home/change_location");
         
         
-
+        
         
     });
     
@@ -183,12 +185,11 @@ angular.module('eappApp').factory('appService',function($http, $mdDialog, $locat
                 service.longitude = position.coords.longitude;
                 service.latitude = position.coords.latitude;
                 var geocoder = new google.maps.Geocoder;
-                service.geocodeLatLng(geocoder, service.latitude, service.longitude);
+                service.geocodeLatLng(geocoder, service.latitude, service.longitude, callback);
 
                 window.localStorage.setItem("longitude", service.longitude);
                 window.localStorage.setItem("latitude", service.latitude);
                 
-                callback();
             });
         }
     };
@@ -203,18 +204,17 @@ angular.module('eappApp').factory('appService',function($http, $mdDialog, $locat
             {
                 service.longitude = results[0].geometry.location.lng();
                 service.latitude =results[0].geometry.location.lat();
-                service.geocodeLatLng(geocoder, service.latitude, service.longitude);
 
                 window.localStorage.setItem("longitude", service.longitude);
                 window.localStorage.setItem("latitude", service.latitude);
                 
-                callback();
+                callback(results[0]);
 
             }
         });      
     };
         
-    service.geocodeLatLng = function(geocoder, latitude, longitude) 
+    service.geocodeLatLng = function(geocoder, latitude, longitude, callback) 
     {
         var latlng = {lat: latitude, lng: longitude};
 
@@ -224,9 +224,9 @@ angular.module('eappApp').factory('appService',function($http, $mdDialog, $locat
             {
                 if (results[0]) 
                 {
+                    callback(results[0]);
                     service.currentAddress = results[0].formatted_address;
                     window.localStorage.setItem("currentAddress", service.currentAddress);
-                    service.successMessage = true;
                 } 
                 else 
                 {

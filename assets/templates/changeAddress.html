@@ -1,0 +1,53 @@
+<md-dialog>
+    <md-dialog-content>
+
+        <md-toolbar class="md-primary">
+            <div class="md-toolbar-tools">
+                <h2 md-truncate flex>Changer address</h2>
+            </div>
+        </md-toolbar>
+
+        <div layout-padding>
+            
+            <p style="text-align: center; color : #333;" ng-if="newAddress">{{newAddress}}</p>
+            
+            <div layout="row" layout-align="center center">
+                <md-button class="md-raised md-primary" ng-click="getUserCoordinates()">
+                    Me géolocaliser
+                </md-button>
+            </div>
+            
+            
+            <h2 style="text-align: center;">OU</h2>
+            <p style="text-align: center;" otiprix-text>Entrez votre code postale</p>
+
+
+            <div layout="row" layout-align="center center">
+
+                <md-input-container>
+                    <label>Code Postal</label>
+                    <input ng-model="postal" />
+                </md-input-container>
+
+                <md-button class="md-raised md-primary" ng-click="getUserCoordinatesFromPostcode()">
+                    Changer
+                </md-button>
+
+            </div>
+            
+        </div>
+        
+
+    </md-dialog-content>
+    <md-dialog-actions>
+            <md-button ng-click="cancel()" class="md-raised md-warn btn">
+                Annuller
+            </md-button>
+
+            <md-button ng-click="hide()" class="md-raised md-primary btn">
+                Valider
+            </md-button>
+
+    </md-dialog-actions>
+</md-dialog>
+

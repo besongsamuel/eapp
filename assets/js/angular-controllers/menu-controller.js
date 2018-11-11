@@ -4,8 +4,10 @@
  * and open the template in the editor.
  */
 
-angular.module("eappApp").controller("MenuController", function($scope, appService, cart, $rootScope) 
+angular.module("eappApp").controller("MenuController", function($scope, appService, cart, $rootScope, $mdDialog, eapp) 
 {
+    var ctrl = this;
+    
     appService.ready.then(function()
     {
         
@@ -20,6 +22,15 @@ angular.module("eappApp").controller("MenuController", function($scope, appServi
         $rootScope.base_url = appService.baseUrl;
         
         $scope.selectedMenu = 0;
+        
+        if(appService.isUserLogged)
+        {
+            $scope.postcode = appService.loggedUser.profile.postcode;
+        }
+        else
+        {
+            $scope.postcode = appService.postcode;
+        }
         
         switch(appService.controller.toString())
         {
@@ -95,7 +106,99 @@ angular.module("eappApp").controller("MenuController", function($scope, appServi
     $scope.gotoShop = function()
     {
         appService.gotoShop();
-    }
+    };
+    
+    ctrl.changeAddress = function($event)
+    {
+        $mdDialog.show(
+        {
+            controller: function(appService, $scope)
+            {    
+                $scope.postal = "";
+                
+                var response = null;
+
+                $scope.getUserCoordinates = function()
+                {
+                    appService.getUserCoordinates(function(result)
+                    {
+                        $scope.newAddress = result.formatted_address;
+                        response = result;
+                        $scope.$apply();
+                    });
+                };
+
+                $scope.getUserCoordinatesFromPostcode = function()
+                {
+                    appService.getUserCoordinatesFromPostcode($scope.postal, function(result)
+                    {
+                        $scope.newAddress = result.formatted_address;
+                        response = result;
+                        $scope.$apply();
+                    });
+                };
+                
+                $scope.cancel = function()
+                {
+                    $mdDialog.cancel();
+                };
+                
+                $scope.hide = function()
+                {
+                    $mdDialog.hide(response);
+                };
+            },
+            templateUrl:  appService.baseUrl + 'assets/templates/changeAddress.html',
+            parent: angular.element(document.body),
+            targetEvent: $event,
+            clickOutsideToClose:true,
+            disableParentScroll : true,
+            preserveScope:true,
+            fullscreen: false,
+            onRemoving : function()
+            {
+                // Restore scroll
+                $(document).scrollTop($scope.scrollTop);
+            }
+        }).then(function(address) 
+        {
+            if(address)
+            {
+                if(appService.isUserLogged)
+                {
+                    var profile_address = 
+                    {
+                        postcode : address.address_components.length > 0 ? address.address_components[0].long_name : "",
+                        address : address.formatted_address,
+                        city : address.address_components.length > 2 ?address.address_components[2].long_name : "",
+                        state : address.address_components.length > 4 ?address.address_components[4].long_name : "",
+                        country : address.address_components.length > 5 ?address.address_components[5].long_name : "",
+                        longitude : appService.longitude,
+                        latitude : appService.latitude
+                    };
+                    
+                    $scope.postcode = profile_address.postcode;
+                    
+                    eapp.updateAddress(profile_address).then(function()
+                    {
+                        window.location.reload();
+                    });
+                }
+                else
+                {
+                    $scope.postcode = address.address_components.length > 0 ? address.address_components[0].long_name : appService.postcode;
+                }
+                
+                
+            }
+            
+        }, function() 
+        {
+
+        });
+    };
+    
+    
     
 });
 

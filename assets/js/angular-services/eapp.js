@@ -368,6 +368,13 @@ angular.module('eappApp').factory('eapp', function($http, appService, $mdDialog,
 
     };
     
+    eappService.updateAddress = function(newAddress)
+    {
+        var formData = new FormData();
+        formData.append("profile", JSON.stringify(newAddress));
+        return $http.post(eappService.getSiteUrl().concat("account/update_address"), formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}});
+    };
+    
     eappService.registerUser = function(user)
     {
         // Create form data
