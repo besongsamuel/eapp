@@ -42,14 +42,14 @@ function ResultFilterController($scope, profileData, appService)
         if(ctrl.type === 'CART')
         {
             $scope.viewConfig.viewAll = !$scope.viewConfig.optimizedCart;
-            $scope.showAllResultsCaption = "Voir la liste originale";
-            $scope.showOptimizedResultsCaption = "Voir la liste optimisée";
+            $scope.showAllResultsCaption = "Liste originale";
+            $scope.showOptimizedResultsCaption = "Liste optimisée";
             $scope.isCart = true;
         }
         else
         {
-            $scope.showAllResultsCaption = "Voir tout les produits";
-            $scope.showOptimizedResultsCaption = "Voir produits optimisé";
+            $scope.showAllResultsCaption = "Tout les produits";
+            $scope.showOptimizedResultsCaption = "Produits optimisé";
         }
     };
     
@@ -114,7 +114,7 @@ function ResultFilterController($scope, profileData, appService)
         }
     };
     
-    ctrl.distanceChanged = function()
+    $scope.distanceChanged = function()
     {
         ctrl.onDistanceChanged({distance : $scope.distance});
     };
@@ -129,6 +129,12 @@ function ResultFilterController($scope, profileData, appService)
         $scope.viewConfig.optimizedCart = !$scope.viewConfig.viewAll;
         
         ctrl.onRefresh({ userProfileData : $scope.viewConfig });
+    };
+    
+    ctrl.changeView = function()
+    {
+        $scope.viewConfig.viewAll = !$scope.viewConfig.viewAll;
+        ctrl.refresh();
     };
     
     $scope.removeFromFilter = function(item)

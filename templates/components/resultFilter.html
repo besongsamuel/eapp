@@ -7,24 +7,27 @@
     </div>
     <md-slider-container layout>
         
-        <md-slider flex md-discrete class="md-warn" ng-model="distance" step="1" min="1" max="100" aria-label="Distance">
+        <md-slider flex md-discrete ng-change="distanceChanged()" class="md-warn" ng-model="distance" step="1" min="1" max="100" aria-label="Distance">
         </md-slider>
         <md-input-container>
             <input flex type="number" ng-model="distance" aria-label="Distance">
         </md-input-container>
     </md-slider-container>
 
-    <div class="row" style="margin-bottom : 20px;">
-        <div class="col-sm-12">
-            <md-button ng-click="$ctrl.distanceChanged()" class="md-warn md-raised" style="min-width : auto; min-height : auto; margin : 0px; width : 100%;">Valider</md-button>
-        </div>
-    </div>
-    
     <div style="margin-bottom: 30px; font-size : 13px;">
-        <md-radio-group ng-model="viewConfig.viewAll" ng-change="$ctrl.refresh();">
-            <md-radio-button ng-value="trueVal" class="md-warn">{{showAllResultsCaption}}</md-radio-button>
-            <md-radio-button ng-value="falseVal" class="md-warn">{{showOptimizedResultsCaption}}</md-radio-button>
-        </md-radio-group>
+
+        <p style="text-align : center;"><b>Voire</b></p>
+        <md-input-container ng-if="viewConfig.viewAll" style="border: 2px solid rgb(255,87,34); padding: 1px;">
+            <md-button ng-click="$ctrl.changeView();" style="margin-top: 2px; margin-right: 2px; margin-left: 2px; margin-bottom: 2px;" class="md-raised md-warn btn">
+                {{showOptimizedResultsCaption}}
+            </md-button>
+        </md-input-container>
+
+        <md-input-container ng-if="!viewConfig.viewAll" style="border: 2px solid rgb(0,184,147); padding: 1px;">
+            <md-button ng-click="$ctrl.changeView();" style="margin-top: 2px; margin-right: 2px; margin-left: 2px; margin-bottom: 2px;" class="md-raised md-primary btn">
+                {{showAllResultsCaption}}
+            </md-button>
+        </md-input-container>
 
         <div ng-show="isCart">
             <md-divider></md-divider>
