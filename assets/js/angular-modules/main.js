@@ -96,6 +96,23 @@ eappApp.directive('otiprixText', function()
     };
 });
 
+eappApp.directive('warnText', function()
+{
+    function link(scope, element)
+    {
+        var el = angular.element(element);
+        
+        el.css(
+                {
+                    "color" : "#ff5722"
+                });
+    };
+    
+    return  {
+        link : link
+    };
+});
+
 eappApp.directive('otiprixBackground', function()
 {
     function link(scope, element)
