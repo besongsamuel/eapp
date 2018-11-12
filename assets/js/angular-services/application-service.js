@@ -127,8 +127,6 @@ angular.module('eappApp').factory('appService',function($http, $mdDialog, $locat
     
     service.ready.then(function(response)
     {
-        
-        
         service.cart = response.data.cart;
         service.baseUrl = response.data.base_url.concat("/");
         service.siteUrl = response.data.site_url.concat("/");
@@ -161,9 +159,6 @@ angular.module('eappApp').factory('appService',function($http, $mdDialog, $locat
         }
         
         service.changeLocationUrl = service.siteUrl.concat("/home/change_location");
-        
-        
-        
         
     });
     

@@ -35,9 +35,7 @@
     <md-content class="layout-padding">
         
         <div class="row">
-            
-            <current-address></current-address>
-            
+                        
             <div class="col-md-2">
                 <result-filter 
                     ng-if="productsReady" 
