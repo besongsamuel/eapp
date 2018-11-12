@@ -153,6 +153,11 @@ angular.module('eappApp').factory('appService',function($http, $mdDialog, $locat
             {
                 service.currentAddress = window.localStorage.getItem("currentAddress");
             }
+            
+            if(window.localStorage.getItem("postcode"))
+            {
+                service.postcode = window.localStorage.getItem("postcode");
+            }
         }
         
         service.changeLocationUrl = service.siteUrl.concat("/home/change_location");
@@ -186,10 +191,6 @@ angular.module('eappApp').factory('appService',function($http, $mdDialog, $locat
                 service.latitude = position.coords.latitude;
                 var geocoder = new google.maps.Geocoder;
                 service.geocodeLatLng(geocoder, service.latitude, service.longitude, callback);
-
-                window.localStorage.setItem("longitude", service.longitude);
-                window.localStorage.setItem("latitude", service.latitude);
-                
             });
         }
     };
@@ -202,14 +203,7 @@ angular.module('eappApp').factory('appService',function($http, $mdDialog, $locat
         {
             if (status == google.maps.GeocoderStatus.OK) 
             {
-                service.longitude = results[0].geometry.location.lng();
-                service.latitude =results[0].geometry.location.lat();
-
-                window.localStorage.setItem("longitude", service.longitude);
-                window.localStorage.setItem("latitude", service.latitude);
-                
                 callback(results[0]);
-
             }
         });      
     };
@@ -225,8 +219,6 @@ angular.module('eappApp').factory('appService',function($http, $mdDialog, $locat
                 if (results[0]) 
                 {
                     callback(results[0]);
-                    service.currentAddress = results[0].formatted_address;
-                    window.localStorage.setItem("currentAddress", service.currentAddress);
                 } 
                 else 
                 {

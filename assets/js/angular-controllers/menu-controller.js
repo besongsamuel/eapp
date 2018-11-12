@@ -186,7 +186,12 @@ angular.module("eappApp").controller("MenuController", function($scope, appServi
                 }
                 else
                 {
-                    $scope.postcode = address.address_components.length > 0 ? address.address_components[0].long_name : appService.postcode;
+                    window.localStorage.setItem("longitude", address.geometry.location.lng());
+                    window.localStorage.setItem("latitude", address.geometry.location.lat());
+                    window.localStorage.setItem("postcode", address.address_components.length > 0 ? address.address_components[0].long_name : "");
+                    window.localStorage.setItem("currentAddress", address.formatted_address);
+                    
+                    window.location.reload();
                 }
                 
                 
