@@ -91,7 +91,7 @@ class Shop extends CI_Controller {
         
         $resultsFilter = json_decode($this->input->post('resultsFilter'), true);
         
-        $viewConfig =json_decode($this->input->post('viewConfig'));
+        $viewConfig =json_decode($this->input->post('profileData'));
            
         $get_latest_products = true;
         
