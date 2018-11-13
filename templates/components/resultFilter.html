@@ -20,13 +20,13 @@
 
         <div layout="row" layout-align="center center">
             <md-input-container ng-if="viewConfig.viewAll" style="border: 2px solid rgb(255,87,34); padding: 1px;">
-                <md-button ng-click="$ctrl.changeView();" style="margin-top: 2px; margin-right: 2px; margin-left: 2px; margin-bottom: 2px;" class="md-raised md-warn btn">
+                <md-button ng-click="$ctrl.changeView();" style="margin-top: 2px; margin-right: 2px; margin-left: 2px; margin-bottom: 2px; font-size: 10px;" class="md-raised md-warn btn">
                     {{showOptimizedResultsCaption}}
                 </md-button>
             </md-input-container>
     
             <md-input-container ng-if="!viewConfig.viewAll" style="border: 2px solid rgb(0,184,147); padding: 1px;">
-                <md-button ng-click="$ctrl.changeView();" style="margin-top: 2px; margin-right: 2px; margin-left: 2px; margin-bottom: 2px;" class="md-raised md-primary btn">
+                <md-button ng-click="$ctrl.changeView();" style="margin-top: 2px; margin-right: 2px; margin-left: 2px; margin-bottom: 2px; font-size: 10px;" class="md-raised md-primary btn">
                     {{showAllResultsCaption}}
                 </md-button>
             </md-input-container>

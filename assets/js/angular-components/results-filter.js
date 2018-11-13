@@ -42,14 +42,14 @@ function ResultFilterController($scope, profileData, appService)
         if(ctrl.type === 'CART')
         {
             $scope.viewConfig.viewAll = !$scope.viewConfig.optimizedCart;
-            $scope.showAllResultsCaption = "Liste originale";
-            $scope.showOptimizedResultsCaption = "Liste optimisée";
+            $scope.showAllResultsCaption = "Voire liste originale";
+            $scope.showOptimizedResultsCaption = "Voire liste optimisé";
             $scope.isCart = true;
         }
         else
         {
-            $scope.showAllResultsCaption = "Tout les produits";
-            $scope.showOptimizedResultsCaption = "Produits optimisé";
+            $scope.showAllResultsCaption = "Voire tous les produits";
+            $scope.showOptimizedResultsCaption = "Voire produits optimisé";
         }
     };
     
