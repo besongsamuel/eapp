@@ -168,11 +168,11 @@ angular.module("eappApp").controller("MenuController", function($scope, appServi
                 {
                     var profile_address = 
                     {
-                        postcode : address.address_components.length > 0 ? address.address_components[0].long_name : "",
+                        postcode : ctrl.getAddressComponent(address.address_components, "postal_code"),
                         address : address.formatted_address,
-                        city : address.address_components.length > 2 ?address.address_components[2].long_name : "",
-                        state : address.address_components.length > 4 ?address.address_components[4].long_name : "",
-                        country : address.address_components.length > 5 ?address.address_components[5].long_name : "",
+                        city : ctrl.getAddressComponent(address.address_components, "administrative_area_level_2"),
+                        state : ctrl.getAddressComponent(address.address_components, "administrative_area_level_1"),
+                        country : ctrl.getAddressComponent(address.address_components, "country"),
                         longitude : appService.longitude,
                         latitude : appService.latitude
                     };
@@ -188,7 +188,7 @@ angular.module("eappApp").controller("MenuController", function($scope, appServi
                 {
                     window.localStorage.setItem("longitude", address.geometry.location.lng());
                     window.localStorage.setItem("latitude", address.geometry.location.lat());
-                    window.localStorage.setItem("postcode", address.address_components.length > 0 ? address.address_components[0].long_name : "");
+                    window.localStorage.setItem("postcode", ctrl.getAddressComponent(address.address_components, "postal_code"));
                     window.localStorage.setItem("currentAddress", address.formatted_address);
                     
                     window.location.reload();
@@ -201,6 +201,21 @@ angular.module("eappApp").controller("MenuController", function($scope, appServi
         {
 
         });
+    };
+    
+    ctrl.getAddressComponent = function(address, type)
+    {
+        var res = "";
+        
+        address.forEach(function(component)
+        {
+            if(component.types.includes(type))
+            {
+                res = component.long_name;
+            }
+        });
+        
+        return res;
     };
     
     
