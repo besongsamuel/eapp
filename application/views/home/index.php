@@ -9,14 +9,14 @@
     <div id="home-container" class="otiprix-section parallax-background">
 
         <div ng-cloak>
-            <h3 otiprix-title>Économisez jusqu'a <strong>30%</strong> </br> sur votre facture</h3>
+            <h3 class="otiprix-title" otiprix-title>Économisez jusqu'a <strong>30%</strong> </br> sur votre facture</h3>
         </div>
 
         <md-divider></md-divider>
 
         <div>
 
-            <div style="background-color: #C0C0C0;">
+            <div style="background-color: #f5f7fa;">
                 <div class="container">
                 
                     <?php foreach(array_slice($categoryProducts, 0, 3) as $category_products): ?>
@@ -42,7 +42,7 @@
             
             <div layout-padding ng-cloak>
                 
-                <h2 otiprix-title>Autre Catégories</h2>
+                <h2 class="otiprix-title" otiprix-title>Autre Catégories</h2>
                 
                 <div class="container" ng-controller="CategoryController as ctrl" ng-cloak>    
 
@@ -77,7 +77,7 @@
                 
             <md-divider></md-divider>
             
-            <div style="background-color: #C0C0C0;">
+            <div style="background-color: #f5f7fa;">
             
                 <div class="container">
 
