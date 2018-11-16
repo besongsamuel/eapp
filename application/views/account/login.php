@@ -77,18 +77,20 @@ function loginFBUser()
       <div class="panel panel-info" >
         
         <md-toolbar class="md-primary">
-            <div>
-                <h2 class="md-toolbar-tools">Se connecter</h2>
-            </div>
+            <h2 class="md-toolbar-tools">Se connecter</h2>
         </md-toolbar>  
           
-        <md-content class="login-box">
+        <md-content class="login-box" style="background-color: #f5f7fa;">
+            
+            <div layout="row" layout-align="center">
+                <img src="<?php echo base_url("assets/img/logo.png"); ?>" style="height : 50px; margin : 10px;" />
+            </div>
             
             <div id="login-alert" class="alert alert-danger col-sm-12" ng-show="message">
                <p>{{message}}</p>
             </div>
             
-             <div class="col-12" style="text-align: center; margin : 10px;">
+            <div layout="row" layout-align="center center" layout-padding>
                 <div class="fb-login-button" onlogin="loginFBUser()" data-max-rows="1" data-scope="public_profile,email,user_location" data-size="large" data-button-type="continue_with" data-auto-logout-link="false" data-use-continue-as="true"></div>
             </div>
             
