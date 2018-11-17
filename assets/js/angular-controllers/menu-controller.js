@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-angular.module("eappApp").controller("MenuController", function($scope, appService, cart, $rootScope, $mdDialog, eapp) 
+angular.module("eappApp").controller("MenuController", function($scope, appService, cart, $rootScope, $mdDialog, eapp, $sce) 
 {
     var ctrl = this;
     
@@ -148,7 +148,7 @@ angular.module("eappApp").controller("MenuController", function($scope, appServi
                     $mdDialog.hide(response);
                 };
             },
-            templateUrl:  appService.baseUrl + 'assets/templates/changeAddress.html',
+            templateUrl:  $sce.trustAsResourceUrl(appService.baseUrl + 'assets/templates/changeAddress.html'),
             parent: angular.element(document.body),
             targetEvent: $event,
             clickOutsideToClose:true,

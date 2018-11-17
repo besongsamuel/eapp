@@ -54,6 +54,18 @@ eappApp.config(function($mdThemingProvider)
     
 });
 
+eappApp.config(function($sceDelegateProvider) {
+  $sceDelegateProvider.resourceUrlWhitelist([
+    // Allow same origin resource loads.
+    'self',
+    // Allow loading from our assets domain.  Notice the difference between * and **.
+    'https://otiprix.com//assets/**',
+    'http://otiprix.com//assets/**',
+    'otiprix.com//assets/**',
+  ]);
+
+});
+
 eappApp.directive('otiprixTitle', function()
 {
     function link(scope, element)
