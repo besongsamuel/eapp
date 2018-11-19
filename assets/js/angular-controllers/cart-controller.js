@@ -290,7 +290,7 @@ angular.module("eappApp").controller("CartController", function(appService, $sco
      */
     $scope.Init = function()
     {       
-        $scope.default_distance = profileData.instance.cartDistance;
+        $scope.default_distance = profileData.instance.optimizationDistance;
         
         $scope.profileData = profileData;
         
@@ -313,7 +313,7 @@ angular.module("eappApp").controller("CartController", function(appService, $sco
     
     $scope.getDistance = function()
     {
-        return profileData.instance.cartDistance;
+        return profileData.instance.optimizationDistance;
     };
     
     /**
@@ -335,7 +335,7 @@ angular.module("eappApp").controller("CartController", function(appService, $sco
         }
         	
         var formData = new FormData();
-        formData.append("distance", profileData.instance.cartDistance);
+        formData.append("distance", profileData.instance.optimizationDistance);
         // User's longitude
         formData.append("longitude", appService.longitude);
         // user's latitude
@@ -1611,7 +1611,7 @@ angular.module("eappApp").controller("CartController", function(appService, $sco
     
     $scope.changeCartDistance = function(newDistance)
     {
-        profileData.set("cartDistance", newDistance);
+        profileData.set("optimizationDistance", newDistance);
         $scope.update_cart_list();
     };
     

@@ -77,7 +77,7 @@ function SettingsItemController($scope, appService, profileData)
         {
             if(item.selected)
             {
-                appService.recordRetailerHit(item.id, profileData.instance.cartDistance);
+                appService.recordRetailerHit(item.id, profileData.instance.optimizationDistance);
             }
         }
         

@@ -12,7 +12,6 @@ const DEFAULT_PROFILE_DATA =
     cartView : true,
     optimizedCart : false, 
     searchMyList : false,
-    cartDistance : 4,
     filterSettings : null,
     cartFilterSettings : null,
     optimizationDistance : 4,
