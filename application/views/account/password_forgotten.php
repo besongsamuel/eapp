@@ -35,7 +35,7 @@ and open the template in the editor.
             
                 <form name="passwordForgottenForm" class="form-horizontal" role="form" ng-submit="sendPasswordReset()" novalidate>
 
-                    <p style="text-align: center;">Veillez entrer votre addresse email et on vous enverez des instructions sur comment reinitialiser votre mot de passe. </p>
+                    <p style="text-align: center;">Veuillez entrer votre adresse email pour réinitialiser votre mot de passe. </p>
 
                     <md-input-container class="md-block col-md-12" flex-gt-sm>
                         <label>Email</label>

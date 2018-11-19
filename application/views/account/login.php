@@ -77,14 +77,14 @@ function loginFBUser()
       <div class="panel panel-info" >
         
         <md-toolbar class="md-primary">
-            <h2 class="md-toolbar-tools">Se connecter</h2>
+            <div class="md-toolbar-tools">
+                <span>Se connecter </span>
+                <span flex><img class="pull-right" src="<?php echo base_url("assets/img/logo.png"); ?>" style="height : 40px; margin : 10px;" /></span>
+            </div>
+            
         </md-toolbar>  
           
         <md-content class="login-box" style="background-color: #f5f7fa;">
-            
-            <div layout="row" layout-align="center">
-                <img src="<?php echo base_url("assets/img/logo.png"); ?>" style="height : 50px; margin : 10px;" />
-            </div>
             
             <div id="login-alert" class="alert alert-danger col-sm-12" ng-show="message">
                <p>{{message}}</p>

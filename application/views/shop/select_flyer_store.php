@@ -32,7 +32,7 @@
 
                 <md-toolbar class="md-primary">
                     <div>
-                        <h2 class="md-toolbar-tools">Sélectionnez le magasin pour afficher le contenu du circulaire</h2>
+                        <h2 class="md-toolbar-tools">Sélectionnez le magasin pour afficher le contenu de la circulaire</h2>
                     </div>
                 </md-toolbar>
                 

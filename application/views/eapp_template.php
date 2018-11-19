@@ -41,7 +41,7 @@
                                         <md-tooltip>
                                             Changer address
                                         </md-tooltip>
-                                        {{postcode}}
+                                        {{postcode}} | Changer
                                     </a>
                                 </b>
                             </p>

@@ -233,7 +233,7 @@
     </md-content>
 
     <div>
-        <p class="cart-warning"><b>En cas de différence entre la circulaire du magasin et OTIPRIX, la circulaire a préséance</b></p>
+        <p class="cart-warning"><b>En cas de différence entre la circulaire ou les prix affichés en magasin et OTIPRIX, la circulaire ou les prix affichés en magasin ont préséance.</b></p>
     </div>
 </md-content>
 

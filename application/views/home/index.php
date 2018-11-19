@@ -42,7 +42,7 @@
             
             <div layout-padding ng-cloak>
                 
-                <h2 class="otiprix-title" otiprix-title>Autre Catégories</h2>
+                <h2 class="otiprix-title" otiprix-title>Autres Catégories</h2>
                 
                 <div class="container" ng-controller="CategoryController as ctrl" ng-cloak>    
 

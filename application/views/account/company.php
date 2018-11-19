@@ -7,8 +7,9 @@
         <div class="panel panel-info">
 
             <md-toolbar class="md-primary">
-                <div>
-                    <h2 class="md-toolbar-tools">INSCRIPTION</h2>
+                <div class="md-toolbar-tools">
+                    <span>INSCRIPTION</span>
+                    <span flex><img class="pull-right" src="<?php echo base_url("assets/img/logo.png"); ?>" style="height : 40px; margin : 10px;" /></span>
                 </div>
             </md-toolbar>
 
