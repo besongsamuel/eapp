@@ -98,8 +98,31 @@
             </div>
             <p otiprix-text layout layout-align="center" ng-show="myCategories.length === 0" layout-padding><b>Cette liste est vide. Commencez à ajouter des produits à votre liste d'épicerie.</b></p>
         </div>
+    
+        <div layout="row" layout-align="end">
+            <md-button class="md-raised md-primary pull-right" aria-label="Optimizer votre liste" ng-click="optimizeMyList()" ng-if="myCategories.length > 0">
+
+                <md-tooltip
+                    md-direction="top">
+                    Optimizer votre liste
+                </md-tooltip>
+                <md-icon><i style="color : white;" class="material-icons">build</i></md-icon>
+                Optimizer votre liste
+            </md-button>
+
+            <md-button class="md-raised md-warn pull-right"  ng-click="clearMyList($event)" aria-label="Effacer votre liste" ng-if="myCategories.length > 0">
+
+                <md-tooltip
+                    md-direction="top">
+                    Effacer votre liste
+                </md-tooltip>
+                <md-icon><i class="material-icons">delete_sweep</i></md-icon>
+                Effacer votre liste
+            </md-button>
+        </div>
+           
 		
-        <div  class="row my-grocery-list md-whiteframe-3dp" style="margin : 10px; min-height: 100px;" >
+        <div ng-if="false"  class="row my-grocery-list md-whiteframe-3dp" style="margin : 10px; min-height: 100px;" >
             <md-toolbar class="md-primary">
                 <div>
                     <h2 class="md-toolbar-tools">Votre liste d'épicerie dans vos magasins préférés cette semaine</h2>
@@ -113,29 +136,6 @@
                 </div>
             </md-list-item>
             
-            <div class="">
-                
-                <md-button class="md-raised md-primary pull-right" aria-label="Optimizer votre liste" ng-click="optimizeMyList()" ng-if="myCategories.length > 0">
-                    
-                    <md-tooltip
-                        md-direction="top">
-                        Optimizer votre liste
-                    </md-tooltip>
-                    <md-icon><i style="color : white;" class="material-icons">build</i></md-icon>
-                    Optimizer votre liste
-                </md-button>
-                
-                <md-button class="md-raised md-warn pull-right"  ng-click="clearMyList($event)" aria-label="Effacer votre liste" ng-if="myCategories.length > 0">
-                    
-                    <md-tooltip
-                        md-direction="top">
-                        Effacer votre liste
-                    </md-tooltip>
-                    <md-icon><i class="material-icons">delete_sweep</i></md-icon>
-                    Effacer votre liste
-                </md-button>
-                
-            </div>
         </div>
         
         

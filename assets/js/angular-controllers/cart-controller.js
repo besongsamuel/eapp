@@ -1551,6 +1551,7 @@ angular.module("eappApp").controller("CartController", function(appService, $sco
             var economy = Math.round(parseFloat($scope.price_optimization) * 100) / 100;
             content += "<p style='float : right; color : red;'><b>Vous économiserez environs : " + economy + " C $ </b></p>";
         }
+        content += '<table style="width : 100%; position : absolute; bottom : 10px;"><tr><td><p style="color : red; margin : 10px; text-align : center;"><b>En cas de différence entre la circulaire ou les prix affichés en magasin et OTIPRIX, la circulaire ou les prix affichés en magasin ont préséance.</b></p></td></tr></table>';
         content += '</body></html>';
 
         return content;
