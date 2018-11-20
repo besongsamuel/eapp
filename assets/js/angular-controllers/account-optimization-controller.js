@@ -266,7 +266,7 @@ angular.module('eappApp').controller('AccountOptimizationController', function (
                     count : items_count($scope.userOptimization.currentWeek)
                 };
 
-                $scope.optimizations.push(data);
+                //$scope.optimizations.push(data);
 
 
                 var data = 
