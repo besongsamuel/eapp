@@ -1499,7 +1499,7 @@ angular.module("eappApp").controller("CartController", function(appService, $sco
         content += '<style> tr:nth-child(even){ background-color : #f2f2f2;} @media print{ body{ -webkit-print-color-adjust: exact;} } </style>';
         
         content += '<html><head><title style="font-style: italic; color : #444; ">OtiPrix - All RIghts Reserved</title>';
-        content += '</head><body >';
+        content += '</head><body>';
         content += '<div style="text-align : center; width : 100%; padding : 10px; background-color : #1abc9c !important;"><img style="display = block; margin : auto; width : 60px;" src="' + siteLogo + '" /></div>';
         content += "<h4 style='text-align : center; color : #444; color : #1abc9c;'>OtiPrix - Liste d'épicerie optimisé</h4>";
 
@@ -1551,7 +1551,7 @@ angular.module("eappApp").controller("CartController", function(appService, $sco
             var economy = Math.round(parseFloat($scope.price_optimization) * 100) / 100;
             content += "<p style='float : right; color : red;'><b>Vous économiserez environs : " + economy + " C $ </b></p>";
         }
-        content += '<table style="width : 100%; position : absolute; bottom : 10px;"><tr><td><p style="color : red; margin : 10px; text-align : center;"><b>En cas de différence entre la circulaire ou les prix affichés en magasin et OTIPRIX, la circulaire ou les prix affichés en magasin ont préséance.</b></p></td></tr></table>';
+        content += '<table style="width : 100%; margin-top : 100px;"><tr><td><p style="color : red; margin : 10px; text-align : center;"><b>En cas de différence entre la circulaire ou les prix affichés en magasin et OTIPRIX, la circulaire ou les prix affichés en magasin ont préséance.</b></p></td></tr></table>';
         content += '</body></html>';
 
         return content;
