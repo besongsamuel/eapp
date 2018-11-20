@@ -8,6 +8,7 @@ application/cache/*
 application/logs/*
 !application/logs/index.html
 !application/logs/.htaccess
+application/.htaccess
 
 composer.lock
 
