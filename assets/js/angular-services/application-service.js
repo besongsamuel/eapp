@@ -157,6 +157,12 @@ angular.module('eappApp').factory('appService',function($http, $mdDialog, $locat
                 service.postcode = window.localStorage.getItem("postcode");
             }
         }
+        else
+        {
+            service.latitude = service.loggedUser.profile.latitude;
+            service.longitude = service.loggedUser.profile.longitude;
+            service.postcode = service.loggedUser.profile.postcode;
+        }
         
         service.changeLocationUrl = service.siteUrl.concat("/home/change_location");
         
