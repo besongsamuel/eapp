@@ -174,7 +174,7 @@
                                 <li><a href="<?php echo site_url("account"); ?>">Mon compte</a></li>
                                 <li ng-if="isRegularUser"><a href="<?php echo site_url("account/my_grocery_list"); ?>">Ma liste d'epicerie</a></li>
                                 <li><a href="<?php echo site_url("blog/press_release"); ?>">Presse</a></li>
-                                <li><a href="#">Contacter nous</a></li>
+                                <li><a href="<?php echo site_url("home/contact"); ?>">Contacter nous</a></li>
                                 <li><a href  onclick="window.open('<?php echo base_url("/assets/files/terms_and_conditions.pdf")?>', '_blank', 'fullscreen=yes'); return false;">Terme et conditions</a></li>
                             </ul>                        
                         </div>
