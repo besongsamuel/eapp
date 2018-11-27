@@ -17,25 +17,23 @@
         <div>
 
             <div style="background-color: #f5f7fa;">
+                
                 <div class="container">
                 
-                    <?php foreach(array_slice($categoryProducts, 0, 3) as $category_products): ?>
+                    
+                    <div ng-repeat="cp in categoryProducts">
+                        
+                        <p class="home-category-title"><b>{{cp.category.name}}</b> <span><a href ng-click="hmCtrl.selectCategory(cp.product)"> Voir toutes les offres</a></span></p>
 
-                    <p class="home-category-title"><b><?php echo $category_products["category"]->name; ?></b> <span><a href ng-click="hmCtrl.selectCategory('<?php echo htmlspecialchars(json_encode($category_products["category"])); ?>')"> Voir toutes les offres</a></span></p>
+                        <div class="product-carousel row" style="margin : auto;">
 
-                    <div class="product-carousel row" style="margin : auto;">
+                            <store-product ng-repeat="sp in cp.products"  full-display="false" store-product="sp" ></store-product>
 
-                        <?php foreach($category_products["products"] as $product): ?>
+                        </div>
 
-                        <store-product full-display="false" json-store-product="<?php echo htmlspecialchars(json_encode($product)); ?>" ></store-product>
-
-                        <?php endforeach; ?>
-
+                        <md-divider></md-divider>
+                        
                     </div>
-
-                    <md-divider></md-divider>
-
-                    <?php endforeach; ?>
 
                 </div>
             </div>
@@ -80,24 +78,21 @@
             <div style="background-color: #f5f7fa;">
             
                 <div class="container">
-
-                    <?php foreach(array_slice($categoryProducts, 3, 3) as $category_products): ?>
-
-                        <p class="home-category-title"><b><?php echo $category_products["category"]->name; ?></b> <span><a href ng-click="hmCtrl.selectCategory($event, '<?php echo htmlspecialchars(json_encode($category_products["category"])); ?>')"> Voir toutes les offres</a></span></p>
+                
+                    
+                    <div ng-repeat="cp in categoryProducts2">
+                        
+                        <p class="home-category-title"><b>{{cp.category.name}}</b> <span><a href ng-click="hmCtrl.selectCategory(cp.product)"> Voir toutes les offres</a></span></p>
 
                         <div class="product-carousel row" style="margin : auto;">
 
-                            <?php foreach($category_products["products"] as $product): ?>
-
-                            <store-product full-display="false" json-store-product="<?php echo htmlspecialchars(json_encode($product)); ?>" ></store-product>
-
-                            <?php endforeach; ?>
+                            <store-product ng-repeat="sp in cp.products"  full-display="false" store-product="sp" ></store-product>
 
                         </div>
 
                         <md-divider></md-divider>
-
-                    <?php endforeach; ?>
+                        
+                    </div>
 
                 </div>
                 

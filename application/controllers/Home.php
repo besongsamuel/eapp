@@ -28,9 +28,16 @@ class Home extends CI_Controller {
     {
         $this->data['script'] = $this->load->view('home/scripts/index', '', TRUE);
         
+        $this->data['body'] = $this->load->view('home/index', $this->data, TRUE);
+        $this->rememberme->recordOrigPage();
+        $this->parser->parse('eapp_template', $this->data);
+    }
+    
+    public function get_category_products() 
+    {
         $top_categories = $this->home_model->get_mostviewed_categories();
         
-        $my_location = $this->get_my_location();
+        $my_location = array("longitude" => $this->input->post("longitude"), "latitude" => $this->input->post("latitude"));
         
         $category_products = array();
         
@@ -81,11 +88,7 @@ class Home extends CI_Controller {
             array_push($category_products, $products);
         }
         
-        $this->data["categoryProducts"] = $category_products;
-        
-        $this->data['body'] = $this->load->view('home/index', $this->data, TRUE);
-        $this->rememberme->recordOrigPage();
-        $this->parser->parse('eapp_template', $this->data);
+        echo json_encode($category_products);
     }
 
     public function change_location()

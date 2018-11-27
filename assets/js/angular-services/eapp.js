@@ -142,6 +142,16 @@ angular.module('eappApp').factory('eapp', function($http, appService, $mdDialog,
         return $http.post(eappService.getSiteUrl().concat("eapp/delete_sub_category/", product_id), null);
     };
     
+    eappService.getHomeProducts = function()
+    {
+        var formData = new FormData();
+        // User's longitude
+        formData.append("longitude", appService.longitude);
+        // user's latitude
+        formData.append("latitude", appService.latitude);
+        return $http.post(eappService.getSiteUrl().concat("home/get_category_products"), formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}});
+    };
+    
     eappService.getProducts = function(query)
     {
         var formData = new FormData();
