@@ -4,11 +4,11 @@
  * and open the template in the editor.
  */
 
-angular.module("eappApp").controller("HomeController", ["appService", "$scope", "eapp", "$compile", function(appService, $scope, eapp) 
+angular.module("eappApp").controller("HomeController", ["appService", "$scope", "eapp", "profileData", function(appService, $scope, eapp, profileData) 
 {
     var ctrl = this;
     
-    appService.ready.then(function()
+    Promise.all([appService.ready, profileData.ready]).then(function()
     {
         ctrl.getProducts();
     });

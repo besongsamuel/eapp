@@ -39,6 +39,8 @@ class Home extends CI_Controller {
         
         $my_location = array("longitude" => $this->input->post("longitude"), "latitude" => $this->input->post("latitude"));
         
+        $distance = $this->input->post("distance");
+        
         $category_products = array();
         
         $popular_products = $this->shop_model->get_store_products_limit(
@@ -52,7 +54,7 @@ class Home extends CI_Controller {
                 null, 
                 false,
                 $my_location, // Current user location
-                100 // Search distance in KM 
+                (int)$distance + 5 // Search distance in KM 
                 );
         
         if(sizeof($popular_products["products"]) > 0)
@@ -81,7 +83,7 @@ class Home extends CI_Controller {
                 null, 
                 false,
                 $my_location,
-                100);
+                (int)$distance + 5);
             
             $products["category"] = $category;
             
