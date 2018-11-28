@@ -54,7 +54,7 @@ class Home extends CI_Controller {
                 null, 
                 false,
                 $my_location, // Current user location
-                (int)$distance + 5 // Search distance in KM 
+                (int)$distance // Search distance in KM 
                 );
         
         if(sizeof($popular_products["products"]) > 0)
@@ -83,7 +83,7 @@ class Home extends CI_Controller {
                 null, 
                 false,
                 $my_location,
-                (int)$distance + 5);
+                (int)$distance);
             
             $products["category"] = $category;
             

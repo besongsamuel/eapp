@@ -36,7 +36,8 @@
                       
                       <div class="col-lg-6 col-sm-6">
                             <p style="text-align: center;">
-                                <b><span class="hide-text">Résultats optimisé pour : </span>
+                                <b>
+                                    <span>{{optimizationDistance}} Km de </span>
                                     <a href ng-click="menuCtrl.changeAddress($event)">
                                         <md-tooltip>
                                             Changer address

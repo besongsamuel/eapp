@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-angular.module("eappApp").controller("MenuController", function($scope, appService, cart, $rootScope, $mdDialog, eapp, $sce) 
+angular.module("eappApp").controller("MenuController", function($scope, appService, cart, $rootScope, $mdDialog, eapp, $sce, profileData) 
 {
     var ctrl = this;
     
@@ -22,6 +22,11 @@ angular.module("eappApp").controller("MenuController", function($scope, appServi
         $rootScope.base_url = appService.baseUrl;
         
         $scope.selectedMenu = 0;
+        
+        profileData.ready.then(function()
+        {
+            $scope.optimizationDistance = profileData.instance.optimizationDistance;
+        });
         
         if(appService.isUserLogged)
         {
@@ -112,9 +117,11 @@ angular.module("eappApp").controller("MenuController", function($scope, appServi
     {
         $mdDialog.show(
         {
-            controller: function(appService, $scope)
+            controller: function(appService, $scope, profileData)
             {    
                 $scope.postal = "";
+                
+                $scope.distance = profileData.instance.optimizationDistance;
                 
                 var response = null;
 
@@ -145,7 +152,13 @@ angular.module("eappApp").controller("MenuController", function($scope, appServi
                 
                 $scope.hide = function()
                 {
-                    $mdDialog.hide(response);
+                    var res = 
+                    {
+                        address : response,
+                        distance : $scope.distance
+                    };
+                    
+                    $mdDialog.hide(res);
                 };
             },
             templateUrl:  $sce.trustAsResourceUrl(appService.baseUrl + 'assets/templates/changeAddress.html'),
@@ -160,10 +173,15 @@ angular.module("eappApp").controller("MenuController", function($scope, appServi
                 // Restore scroll
                 $(document).scrollTop($scope.scrollTop);
             }
-        }).then(function(address) 
+        }).then(function(result) 
         {
+            var address = result.address;
+            
+            
             if(address)
             {
+                profileData.set("optimizationDistance", result.distance);
+                
                 if(appService.isUserLogged)
                 {
                     var profile_address = 
@@ -193,8 +211,11 @@ angular.module("eappApp").controller("MenuController", function($scope, appServi
                     
                     window.location.reload();
                 }
-                
-                
+            }
+            else if(parseInt(result.distance) !== parseInt(profileData.instance.optimizationDistance))
+            {
+                profileData.set("optimizationDistance", result.distance);
+                window.location.reload();
             }
             
         }, function() 
