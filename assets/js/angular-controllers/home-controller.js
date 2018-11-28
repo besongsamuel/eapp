@@ -27,13 +27,8 @@ angular.module("eappApp").controller("HomeController", function(appService, $sco
     };
     
     ctrl.howItWorks = function(ev)
-    {
-        if(angular.isNullOrUndefined(profileData.instance.firstLaunch))
-        {
-            profileData.set("firstLaunch", true);
-        }
-        
-        if(profileData.instance.firstLaunch)
+    {        
+        if(angular.isNullOrUndefined(window.localStorage.getItem("firstLaunch")))
         {
             $mdDialog.show({
                 controller: function($scope)
@@ -52,7 +47,7 @@ angular.module("eappApp").controller("HomeController", function(appService, $sco
                 fullscreen: true
             });
             
-            profileData.set("firstLaunch", false);
+            window.localStorage.setItem("firstLaunch", true);
         }
     };
     

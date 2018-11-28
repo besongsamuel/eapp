@@ -105,7 +105,7 @@
                                                   <li><a href="<?php echo site_url("shop/categories"); ?>">Les catégories de produits</a></li>
                                               </ul>
                                           </li>
-                                          <li ng-class="{active : selectedMenu == 2}" class="main-menu-list-item"><a href ng-click="gotoShop()">Trouvez un produit</a></li>
+                                          <li ng-class="{active : selectedMenu == 2}" class="main-menu-list-item"><a href ng-click="gotoShop()"><span style="border: 2px solid #F0776C; padding: 10px;">Trouvez un produit</span></a></li>
                                               <ul class="dropdown-menu" otiprix-background>
                                                   <li><a href="<?php echo site_url("blog/press_release"); ?>">Épicerie dans la presse</a></li>
                                                   <li><a href="<?php echo site_url("blog/stats"); ?>">STAT</a></li>
@@ -119,8 +119,8 @@
                                       </ul>
 
                                       <ul class="menu nav navbar-nav pull-right"  ng-controller="AccountController">
-                                          <li ng-class="{active : selectedMenu == 5}" class="main-menu-list-item" ng-hide="isUserLogged"><a href="<?php echo site_url("account/login"); ?>"><i class="fa fa-user"></i>    S'identifier</a></li>
-                                          <li ng-class="{active : selectedMenu == 6}" class="main-menu-list-item" ng-hide="isUserLogged"><a href="<?php echo site_url("account/register"); ?>"><i class="fa fa-user"></i>    Créer un compte</a></li>
+                                          <li ng-class="{active : selectedMenu == 5}" class="main-menu-list-item" ng-hide="isUserLogged"><a href="<?php echo site_url("account/login"); ?>"><i style="color : #F7FDCA;" class="fa fa-user"></i>    S'identifier</a></li>
+                                          <li ng-class="{active : selectedMenu == 6}" class="main-menu-list-item" ng-hide="isUserLogged"><a href="<?php echo site_url("account/register"); ?>"><i style="color : #F7FDCA;" class="fa fa-user"></i>    Créer un compte</a></li>
                                           <li ng-class="{active : selectedMenu == 5}" class="main-menu-list-item" ng-show="isUserLogged" class=" dropdown">
                                               <a href="#" class="dropdown-toggle active" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                                                   Bonjour 
@@ -129,8 +129,8 @@
                                                   <span class="caret"></span>
                                               </a>
                                               <ul class="dropdown-menu" otiprix-background>
-                                                  <li><a  href="<?php echo site_url("account"); ?>"><i class="fa fa-user"></i> Mon compte</a></li>
-                                                  <li ng-if="isRegularUser"><a href="<?php echo site_url("account/my_grocery_list"); ?>"><i class="fa fa-heart"></i> Ma liste d'épicerie</a></li>
+                                                  <li><a  href="<?php echo site_url("account"); ?>"><i style="color : #F7FDCA;" class="fa fa-user"></i> Mon compte</a></li>
+                                                  <li ng-if="isRegularUser"><a href="<?php echo site_url("account/my_grocery_list"); ?>"><i style="color : #F0776C;" class="fa fa-heart"></i> Ma liste d'épicerie</a></li>
                                                   <li><a href ng-click="logout()">Logout</a></li>
                                               </ul>
                                           </li>
