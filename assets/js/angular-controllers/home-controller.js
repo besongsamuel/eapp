@@ -4,13 +4,16 @@
  * and open the template in the editor.
  */
 
-angular.module("eappApp").controller("HomeController", ["appService", "$scope", "eapp", "profileData", function(appService, $scope, eapp, profileData) 
+angular.module("eappApp").controller("HomeController", function(appService, $scope, eapp, profileData, $mdDialog) 
 {
     var ctrl = this;
+    
+    $scope.loadingProducts = true;
     
     Promise.all([appService.ready, profileData.ready]).then(function()
     {
         ctrl.getProducts();
+        ctrl.howItWorks();
     });
     
     ctrl.selectCategory = function(id, name)
@@ -23,17 +26,48 @@ angular.module("eappApp").controller("HomeController", ["appService", "$scope", 
         appService.selectCategory(category);
     };
     
+    ctrl.howItWorks = function(ev)
+    {
+        if(angular.isNullOrUndefined(profileData.instance.firstLaunch))
+        {
+            profileData.set("firstLaunch", true);
+        }
+        
+        if(profileData.instance.firstLaunch)
+        {
+            $mdDialog.show({
+                controller: function($scope)
+                {
+                    $scope.logo = appService.baseUrl.concat("/assets/img/logo.png");
+
+                    $scope.close = function()
+                    {
+                        $mdDialog.hide();
+                    };
+                },
+                templateUrl: 'templates/dialogs/howItWorks.html',
+                parent: angular.element(document.body),
+                targetEvent: ev,
+                clickOutsideToClose:false,
+                fullscreen: true
+            });
+            
+            profileData.set("firstLaunch", false);
+        }
+    };
+    
     ctrl.getProducts = function()
     {
         eapp.getHomeProducts().then(function(response)
         {
-            $scope.ready = false;
             
             var allCategoryProducts = response.data;
             
             $scope.categoryProducts = allCategoryProducts.slice(0, 3);
             
             $scope.categoryProducts2 = allCategoryProducts.slice(3, allCategoryProducts.length);
+            
+            $scope.loadingProducts = false;
             
             setTimeout(function()
             {
@@ -60,7 +94,7 @@ angular.module("eappApp").controller("HomeController", ["appService", "$scope", 
                     }
                 });
                 
-                $scope.ready = true;
+                
                 
             }, 100);
             
@@ -87,5 +121,5 @@ angular.module("eappApp").controller("HomeController", ["appService", "$scope", 
         appService.gotoShop();
     };
     
-}]);
+});
 

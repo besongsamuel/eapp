@@ -4,7 +4,7 @@
 <link href="<?php echo base_url("assets/css/home.css"); ?>" rel="stylesheet">
 
 
-<div ng-controller="HomeController as hmCtrl">
+<div ng-controller="HomeController as hmCtrl" ng-cloak>
     
     <div id="home-container" class="otiprix-section parallax-background">
 
@@ -20,6 +20,9 @@
                 
                 <div class="container">
                 
+                    <div layout="row" layout-sm="column" layout-align="space-around">
+                        <md-progress-circular ng-disabled="!loadingProducts" class="md-hue-2" md-diameter="40px" md-mode="indeterminate" ng-show="loadingProducts"></md-progress-circular>
+                    </div>
                     
                     <div ng-repeat="cp in categoryProducts">
                         
@@ -77,8 +80,11 @@
             
             <div style="background-color: #f5f7fa;">
             
-                <div class="container">
+                <div layout="row" layout-sm="column" layout-align="space-around">
+                    <md-progress-circular ng-disabled="!loadingProducts" class="md-hue-2" md-diameter="40px" md-mode="indeterminate" ng-show="loadingProducts"></md-progress-circular>
+                </div>
                 
+                <div class="container">
                     
                     <div ng-repeat="cp in categoryProducts2">
                         

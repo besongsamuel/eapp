@@ -15,6 +15,7 @@ const DEFAULT_PROFILE_DATA =
     filterSettings : null,
     cartFilterSettings : null,
     optimizationDistance : 4,
+    firstLaunch : true,
     viewAll : false // Need to figure out what this means
 };
 
