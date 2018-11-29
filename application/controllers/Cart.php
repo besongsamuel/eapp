@@ -188,19 +188,22 @@ class Cart extends CI_Controller {
     
     public function mail_user_cart() 
     {
-        $html_content = $this->input->post("content");
+        if($this->user)
+        {
+            $html_content = $this->input->post("content");
         
-        set_error_handler(function(){ });
-                    
-        $subject = "Merci d'utiliser OtiPrix";
-        $headers = "From: no-reply@otiprix.com \r\n";
-        $headers .= "Reply-To: no-reply@otiprix.com \r\n";
-        $headers .= "MIME-Version: 1.0\r\n";
-		$headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+            set_error_handler(function(){ });
 
-        echo json_encode(mail($this->user->email,$subject,$html_content,$headers));            
-                    
-        restore_error_handler();
+            $subject = "Merci d'utiliser OtiPrix";
+            $headers = "From: no-reply@otiprix.com \r\n";
+            $headers .= "Reply-To: no-reply@otiprix.com \r\n";
+            $headers .= "MIME-Version: 1.0\r\n";
+                    $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+
+            echo json_encode(mail($this->user->email,$subject,$html_content,$headers));            
+
+            restore_error_handler();
+        }
     }
     
     /**
@@ -328,16 +331,13 @@ class Cart extends CI_Controller {
         
         foreach ($cart_items as $cart_item) 
         {
-            
             array_push($product_list, $cart_item->product->id);
-            
         }
         
         $unique_ids =  $this->shop_model->get_store_product_property(PRODUCT_TABLE.'.id', $product_list, $resultsFilter, $this->shop_model->get_close_stores($my_location, $distance), false);
         
         foreach ($cart_items as $cart_item) 
         {
-            
             foreach ($unique_ids as $id) 
             {
                 if($cart_item->product->id == $id->id)

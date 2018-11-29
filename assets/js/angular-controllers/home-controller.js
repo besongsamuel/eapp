@@ -16,13 +16,8 @@ angular.module("eappApp").controller("HomeController", function(appService, $sco
         ctrl.howItWorks();
     });
     
-    ctrl.selectCategory = function(id, name)
+    ctrl.selectCategory = function(category)
     {
-        var category = 
-        {
-            id : id,
-            name : name
-        };
         appService.selectCategory(category);
     };
     

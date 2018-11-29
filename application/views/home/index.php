@@ -26,7 +26,7 @@
                     
                     <div ng-repeat="cp in categoryProducts">
                         
-                        <p class="home-category-title"><b>{{cp.category.name}}</b> <span><a href ng-click="hmCtrl.selectCategory(cp.product)"> Voir toutes les offres</a></span></p>
+                        <p class="home-category-title"><b>{{cp.category.name}}</b> <span><a href ng-click="hmCtrl.selectCategory(cp.category)"> Voir toutes les offres</a></span></p>
 
                         <div class="product-carousel row" style="margin : auto;">
 
@@ -88,7 +88,7 @@
                     
                     <div ng-repeat="cp in categoryProducts2">
                         
-                        <p class="home-category-title"><b>{{cp.category.name}}</b> <span><a href ng-click="hmCtrl.selectCategory(cp.product)"> Voir toutes les offres</a></span></p>
+                        <p class="home-category-title"><b>{{cp.category.name}}</b> <span><a href ng-click="hmCtrl.selectCategory(cp.category)"> Voir toutes les offres</a></span></p>
 
                         <div class="product-carousel row" style="margin : auto;">
 
