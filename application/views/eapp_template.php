@@ -106,7 +106,7 @@
                                                   <li><a href="<?php echo site_url("shop/categories"); ?>">Les catégories de produits</a></li>
                                               </ul>
                                           </li>
-                                          <li ng-class="{active : selectedMenu == 2}" class="main-menu-list-item"><a href ng-click="gotoShop()"><span style="border: 2px solid #F0776C; padding: 10px;">Trouvez un produit</span></a></li>
+                                          <li ng-class="{active : selectedMenu == 2}" class="main-menu-list-item"><a href ng-click="gotoShop()"><span style="border: 2px solid #FFFFFF; padding: 10px;">Trouvez un produit</span></a></li>
                                               <ul class="dropdown-menu" otiprix-background>
                                                   <li><a href="<?php echo site_url("blog/press_release"); ?>">Épicerie dans la presse</a></li>
                                                   <li><a href="<?php echo site_url("blog/stats"); ?>">STAT</a></li>
