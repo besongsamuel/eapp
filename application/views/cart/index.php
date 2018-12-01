@@ -142,7 +142,7 @@
                     
                 </md-card>
                
-                <div class="" style="margin-bottom: 10px; margin-top: 10px;">
+                <div layout="row" layout-align="end center" ng-show="results_available">
 
                     <div class="cart_totals layout-padding pull-right">
 
@@ -176,54 +176,56 @@
 
                     </div>
 
-                    <div class="row pull-right">
+                </div>
+                
+                <div layout="row" layout-align="end center" ng-show="results_available">
 
-                        <md-button class="md-warn md-raised md-rounded-corners"  ng-click="clearCart()" aria-label="Effacer votre panier">
-                            <md-tooltip
-                                md-direction="bottom">
-                                Effacer votre panier
-                            </md-tooltip>
-                            <md-icon><i class="material-icons">clear_all</i></md-icon>
-                            Effacer Liste
-                        </md-button>
+                    <md-button class="md-warn md-raised btn"  ng-click="clearCart()" aria-label="Effacer votre panier">
+                        <md-tooltip
+                            md-direction="bottom">
+                            Effacer votre panier
+                        </md-tooltip>
+                        <md-icon><i class="material-icons">clear_all</i></md-icon>
+                        Effacer Liste
+                    </md-button>
+                    
+                    <md-button class="md-raised md-primary btn" aria-label="Impression" ng-click="printCart()">
+                        <md-tooltip
+                            md-direction="bottom">
+                            Impression
+                        </md-tooltip>
+                        <md-icon><i class="material-icons">print</i></md-icon>
+                        Imprimer
+                    </md-button>
+                    
+                    <add-to-list type='button' products='cartList' caption="Sauver liste"></add-to-list>
 
-                        <md-button class="md-raised md-primary md-rounded-corners" aria-label="Impression" ng-click="printCart()">
-                            <md-tooltip
-                                md-direction="bottom">
-                                Impression
-                            </md-tooltip>
-                            <md-icon><i class="material-icons">print</i></md-icon>
-                            Imprimer
-                        </md-button>
+                    <md-button class="md-raised md-primary btn" ng-click="sendListAsSMS($event)" aria-label="Envoyer à votre téléphone" ng-disabled="!isUserLogged">
+                        <md-tooltip
+                            md-direction="bottom">
+                            Envoyer par sms
+                        </md-tooltip>
+                      <md-icon><i class="material-icons">smartphone</i></md-icon>
+                      Envoyer par SMS
+                    </md-button>
 
-                        <md-button class="md-raised md-primary md-rounded-corners" ng-click="sendListAsSMS($event)" aria-label="Envoyer à votre téléphone" ng-disabled="!isUserLogged">
-                            <md-tooltip
-                                md-direction="bottom">
-                                Envoyer par sms
-                            </md-tooltip>
-                          <md-icon><i class="material-icons">smartphone</i></md-icon>
-                          Envoyer par SMS
-                        </md-button>
-
-                        <md-button class="md-raised md-primary md-rounded-corners" aria-label="Partager" ng-hide="true">
-                            <md-tooltip
-                                md-direction="bottom">
-                                Partager
-                            </md-tooltip>
-                            <md-icon><i class="material-icons">share</i></md-icon>
+                    <md-button class="md-raised md-primary btn" aria-label="Partager" ng-hide="true">
+                        <md-tooltip
+                            md-direction="bottom">
                             Partager
-                        </md-button>
+                        </md-tooltip>
+                        <md-icon><i class="material-icons">share</i></md-icon>
+                        Partager
+                    </md-button>
 
-                        <md-button class="md-raised md-primary md-rounded-corners" aria-label="Envoyer à votre courrier électronique" ng-click="sendListAsEmail($event)"  ng-disabled="!isUserLogged">
-                            <md-tooltip
-                                md-direction="bottom">
-                                Envoyer à votre courrier électronique
-                            </md-tooltip>
-                            <md-icon><i class="material-icons">email</i></md-icon>
-                            Envoyer par Email
-                        </md-button>
-
-                    </div>
+                    <md-button class="md-raised md-primary btn" aria-label="Envoyer à votre courrier électronique" ng-click="sendListAsEmail($event)"  ng-disabled="!isUserLogged">
+                        <md-tooltip
+                            md-direction="bottom">
+                            Envoyer à votre courrier électronique
+                        </md-tooltip>
+                        <md-icon><i class="material-icons">email</i></md-icon>
+                        Envoyer par Email
+                    </md-button>
 
                 </div>
                     

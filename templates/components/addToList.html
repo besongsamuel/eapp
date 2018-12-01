@@ -1,0 +1,12 @@
+
+
+<a ng-if="$ctrl.isLink" style='text-align : center;' href ng-click='$ctrl.selectListItem($event)'>{{$ctrl.caption}}</a>
+
+<md-button ng-if="$ctrl.isButton" class="md-primary md-raised btn" ng-click='$ctrl.selectListItem($event)' aria-label="{{$ctrl.caption}}">
+    <md-tooltip
+        md-direction="bottom">
+        {{$ctrl.caption}}
+    </md-tooltip>
+    <md-icon><i class="material-icons">save</i></md-icon>
+    {{$ctrl.caption}}
+</md-button>

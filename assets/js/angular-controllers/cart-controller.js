@@ -271,7 +271,7 @@ angular.module("eappApp").controller("CartController", function(appService, $sco
     
     $scope.productCategories = [];
     
-    
+    $scope.cartList = [];
     
     $scope.$watch('min_price_optimization', function()
     {
@@ -323,7 +323,9 @@ angular.module("eappApp").controller("CartController", function(appService, $sco
      */
     $scope.update_cart_list = function()
     {
-        $scope.optimized_cart = [];        
+        $scope.optimized_cart = [];   
+        
+        $scope.cartList = [];
         
         $scope.ready = false;
         
@@ -372,7 +374,8 @@ angular.module("eappApp").controller("CartController", function(appService, $sco
                     var relatedProducts = cart.getRelatedProducts(cartItem.store_product);
                     cartItem.different_store_products = relatedProducts.differentStore;
                     cartItem.different_format_products = relatedProducts.differentFormat;
-					
+			
+                    $scope.cartList.push(cartItem.store_product.product_id);
                     appService.cart.push(cartItem);
                 }
                 
@@ -1376,6 +1379,11 @@ angular.module("eappApp").controller("CartController", function(appService, $sco
         
         return true;
 
+    };
+    
+    $scope.saveToMyList = function()
+    {
+        
     };
     
     /**

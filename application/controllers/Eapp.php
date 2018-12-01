@@ -150,6 +150,48 @@ class Eapp extends CI_Controller
         echo false;
     }
     
+    public function add_products_to_list() 
+    {
+        if($this->user != null)
+        {
+            // Get the products to add
+            $products = json_decode($this->input->post("products"));
+            
+            // get the current product list
+            $product_list = $this->get_grocery_list($this->input->post("list_id"));
+            
+            foreach ($products as $product_id) 
+            {
+                // check if product is already in list
+                if($this->list_contains_product($product_list, $product_id) == FALSE)
+                {
+                    $item = new stdClass();
+                    $item->id = $product_id;
+                    $item->quantity = 1;
+                    // add product to list.
+                    array_push($product_list, $item);
+                }
+            }
+            
+            // Save list
+            $data = array
+            (
+                "id" => $this->input->post("list_id"),
+                "grocery_list" => json_encode($product_list)
+            );
+
+            $this->account_model->create(USER_GROCERY_LIST_TABLE, $data);
+                        
+            $return = array();
+            $return["grocery_lists"] = $this->account_model->get_user_grocery_lists($this->user->id)["grocery_lists"];
+            $return["success"] = true;
+            
+            echo json_encode($return);
+        }
+         
+        echo false;
+    }
+    
     private function list_contains_product($product_list, $product_id) 
     {
         foreach ($product_list as $item) 
@@ -227,6 +269,45 @@ class Eapp extends CI_Controller
         echo false;
     }
     
+    public function remove_products_from_list() 
+    {
+        if($this->user != null)
+        {
+            // Get the product id to remove
+            $products = json_decode($this->input->post("products"));
+            // get the current product list
+            $product_list = $this->get_grocery_list($this->input->post("list_id"));
+            
+            
+            $newProductList = array();
+
+            foreach ($product_list as $item) 
+            {
+                if(!in_array($item->id, $products))
+                {
+                    array_push($newProductList, $item);
+                }
+            }
+            
+            // Save list
+            $data = array
+            (
+                "id" => $this->input->post("list_id"),
+                "grocery_list" => json_encode($newProductList)
+            );
+
+            $this->account_model->create(USER_GROCERY_LIST_TABLE, $data);
+
+            $return = array();
+            $return["grocery_lists"] = $this->account_model->get_user_grocery_lists($this->user->id)["grocery_lists"];
+            $return["success"] = true;
+
+            echo json_encode($return);
+        }
+        
+        echo false;
+    }
+        
     public function get_cart_contents() 
     {
         echo $this->get_cached_cart_contents();

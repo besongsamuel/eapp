@@ -8,15 +8,31 @@
 // Component to Select from user grocery list
 angular.module('eappApp').component("addToList", 
 {
-    template : "<a style='text-align : center;' href ng-click='$ctrl.selectListItem($event)'>{{$ctrl.caption}}</a>",
+    templateUrl : "templates/components/addToList.html",
     controller : function($mdDialog, $scope, appService)
     {
         var ctrl = this;
         
         ctrl.$onInit = function()
         {
+            if(ctrl.type == "button")
+            {
+                ctrl.isButton = true;
+            }
+            else
+            {
+                ctrl.isLink = true;
+            }
+            
             $scope.loggedUser = appService.loggedUser;
             $scope.product = ctrl.product;
+            $scope.products = ctrl.products;
+        };
+        
+        ctrl.$onChanges = function(changeObj)
+        {
+            $scope.products = changeObj.products.currentValue;
+            ctrl.products = changeObj.products.currentValue;
         };
         
         ctrl.selectListItem = function(ev)
@@ -33,7 +49,8 @@ angular.module('eappApp').component("addToList",
                     targetEvent: ev,
                     locals : 
                     {
-                        product : $scope.product
+                        product : $scope.product,
+                        products : $scope.products 
                     },
                     clickOutsideToClose:true,
                     fullscreen: false
@@ -61,7 +78,7 @@ angular.module('eappApp').component("addToList",
             
         };
         
-        function DialogController($scope, $mdDialog, product, eapp) 
+        function DialogController($scope, $mdDialog, product, products, eapp) 
         {
             $scope.loadingLists = true;
             
@@ -77,21 +94,48 @@ angular.module('eappApp').component("addToList",
             
             $scope.refresh = function()
             {
-              for(var i in $scope.grocery_lists)
+                for(var i in $scope.grocery_lists)
                 {
-                    $scope.grocery_lists[i].selected = false;
-
-                    for(var j in $scope.grocery_lists[i].products)
+                    if(!angular.isNullOrUndefined(product))
                     {
-                        if(parseInt($scope.grocery_lists[i].products[j].id) === parseInt(product.id))
+                        $scope.grocery_lists[i].selected = false;
+                    
+                        for(var j in $scope.grocery_lists[i].products)
+                        {
+                            if(parseInt($scope.grocery_lists[i].products[j].id) === parseInt(product.id))
+                            {
+                                $scope.grocery_lists[i].selected = true;
+                                continue;
+                            }
+                        }
+                    }
+                    
+                    if(!angular.isNullOrUndefined(products))
+                    {
+                        
+                        
+                        for(var j in $scope.grocery_lists[i].products)
                         {
                             $scope.grocery_lists[i].selected = true;
-                            continue;
+                            
+                            for(var x in products)
+                            {
+                                var product_id = products[x];
+                                
+                                var index = $scope.grocery_lists[i].products.map(function(e){ return e.id; }).indexOf(product_id);
+                                
+                                if(index == -1)
+                                {
+                                    $scope.grocery_lists[i].selected = false;
+                                    break;
+                                }
+                            }
                         }
                     }
                 }  
             };
             
+            $scope.products = products;
             
             $scope.product = product;
             
@@ -139,19 +183,43 @@ angular.module('eappApp').component("addToList",
                 $scope.errorMessage =  null;
                 if(item.selected)
                 {
-                    eapp.addProductToList($scope.product, item.id).then(function(response)
+                    if($scope.product)
                     {
-                        $scope.grocery_lists = response.data.grocery_lists;
-                        $scope.refresh();
-                    });
+                        eapp.addProductToList($scope.product, item.id).then(function(response)
+                        {
+                            $scope.grocery_lists = response.data.grocery_lists;
+                            $scope.refresh();
+                        });
+                    }
+                    
+                    if($scope.products)
+                    {
+                        eapp.addProductsToList($scope.products, item.id).then(function(response)
+                        {
+                            $scope.grocery_lists = response.data.grocery_lists;
+                            $scope.refresh();
+                        });
+                    }
                 }
                 else
                 {
-                    eapp.removeProductFromList($scope.product, item.id).then(function(response)
+                    if($scope.product)
                     {
-                        $scope.grocery_lists = response.data.grocery_lists;
-                        $scope.refresh();
-                    });
+                        eapp.removeProductFromList($scope.product, item.id).then(function(response)
+                        {
+                            $scope.grocery_lists = response.data.grocery_lists;
+                            $scope.refresh();
+                        });
+                    }
+                    
+                    if($scope.products)
+                    {
+                        eapp.removeProductsFromList($scope.products, item.id).then(function(response)
+                        {
+                            $scope.grocery_lists = response.data.grocery_lists;
+                            $scope.refresh();
+                        });
+                    }
                 }
             };
         }
@@ -175,6 +243,8 @@ angular.module('eappApp').component("addToList",
     bindings : 
     {
         caption : '@',
-        product : '<'
+        type : '@',
+        product : '<',
+        products : '<'
     }
 });

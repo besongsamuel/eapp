@@ -268,6 +268,24 @@ angular.module('eappApp').factory('eapp', function($http, appService, $mdDialog,
         return $http.post(eappService.getSiteUrl().concat("/eapp/remove_product_from_list"), formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}});
     };
     
+    eappService.addProductsToList = function(products, listID)
+    {
+        var formData = new FormData();
+        formData.append("products", JSON.stringify(products));
+        formData.append("list_id", listID);
+        
+        return $http.post(eappService.getSiteUrl().concat("/eapp/add_products_to_list"), formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}});
+    };
+    
+    eappService.removeProductsFromList = function(products, listID)
+    {
+        var formData = new FormData();
+        formData.append("products", JSON.stringify(products));
+        formData.append("list_id", listID);
+        
+        return $http.post(eappService.getSiteUrl().concat("/eapp/remove_products_from_list"), formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}});
+    };
+    
     eappService.getCart = function()
     {
         return $http.post(eappService.getSiteUrl().concat("eapp/get_cart_contents"), null);

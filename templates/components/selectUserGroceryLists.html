@@ -14,7 +14,8 @@
 
         <div class="md-dialog-content">
 
-            <p style="margin-bottom : 20px;">Ajouter produit <span otiprix-text>{{product.name}}</span> à ...</p>
+            <p ng-if="product" style="margin-bottom : 20px;">Ajouter produit <span otiprix-text>{{product.name}}</span> à ...</p>
+            <p ng-if="products" style="margin-bottom : 20px;">Ajouter liste d'épicerie courante à ...</p>
 
             <div class="row">
 
