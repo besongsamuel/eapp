@@ -178,27 +178,9 @@
 
                 </div>
                 
-                <div layout="row" layout-align="end center" ng-show="results_available">
+                
+                <div layout="row" layout-align="end" ng-show="results_available">
 
-                    <md-button class="md-warn md-raised btn"  ng-click="clearCart()" aria-label="Effacer votre panier">
-                        <md-tooltip
-                            md-direction="bottom">
-                            Effacer votre panier
-                        </md-tooltip>
-                        <md-icon><i class="material-icons">clear_all</i></md-icon>
-                        Effacer Liste
-                    </md-button>
-                    
-                    <md-button class="md-raised md-primary btn" aria-label="Impression" ng-click="printCart()">
-                        <md-tooltip
-                            md-direction="bottom">
-                            Impression
-                        </md-tooltip>
-                        <md-icon><i class="material-icons">print</i></md-icon>
-                        Imprimer
-                    </md-button>
-                    
-                    <add-to-list type='button' products='cartList' caption="Sauver liste"></add-to-list>
 
                     <md-button class="md-raised md-primary btn" ng-click="sendListAsSMS($event)" aria-label="Envoyer à votre téléphone" ng-disabled="!isUserLogged">
                         <md-tooltip
@@ -206,7 +188,7 @@
                             Envoyer par sms
                         </md-tooltip>
                       <md-icon><i class="material-icons">smartphone</i></md-icon>
-                      Envoyer par SMS
+                        SMS
                     </md-button>
 
                     <md-button class="md-raised md-primary btn" aria-label="Partager" ng-hide="true">
@@ -224,10 +206,35 @@
                             Envoyer à votre courrier électronique
                         </md-tooltip>
                         <md-icon><i class="material-icons">email</i></md-icon>
-                        Envoyer par Email
+                        Email
+                    </md-button>
+                    
+                    <md-button class="md-raised md-primary btn" aria-label="Impression" ng-click="printCart()">
+                        <md-tooltip
+                            md-direction="bottom">
+                            Impression
+                        </md-tooltip>
+                        <md-icon><i class="material-icons">print</i></md-icon>
+                        Imprimer
                     </md-button>
 
                 </div>
+                
+                <div layout="row" layout-align="end" ng-show="results_available">
+
+                    <md-button class="md-warn md-raised btn"  ng-click="clearCart()" aria-label="Effacer votre panier">
+                        <md-tooltip
+                            md-direction="bottom">
+                            Effacer votre
+                        </md-tooltip>
+                        <md-icon><i class="material-icons">clear_all</i></md-icon>
+                        Effacer
+                    </md-button>
+                    
+                    <add-to-list type='button' products='cartList' caption="Sauver"></add-to-list>
+
+                </div>
+                    
                     
             </div>
         </div>

@@ -4,12 +4,17 @@
         <md-toolbar class="md-primary">
             <div class="md-toolbar-tools">
                 <h2 md-truncate flex>Changer address</h2>
+                <md-button class="md-icon-button" ng-click="cancel()">
+                <md-icon>
+                    <i style="color : white;" class="material-icons">close</i>
+                </md-icon>
+            </md-button>
             </div>
         </md-toolbar>
 
         <div layout-padding>
             
-            <p style="text-align: center; color : #333;" ng-if="newAddress">{{newAddress}}</p>
+            <b><p warn-text style="text-align: center; color : #333;" ng-if="newAddress">{{newAddress}}</p></b>
             
             <div layout="row" layout-align="center center">
                 <md-button class="md-raised md-primary" ng-click="getUserCoordinates()">
@@ -49,7 +54,7 @@
     </md-dialog-content>
     <md-dialog-actions>
             <md-button ng-click="cancel()" class="md-raised md-warn btn">
-                Annuller
+                Annuler
             </md-button>
 
             <md-button ng-click="hide()" class="md-raised md-primary btn">
