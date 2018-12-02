@@ -12,6 +12,8 @@ angular.module('eappApp').controller('ShopController', function ($scope, $q, app
     
     var ctrl = this;
     
+    ctrl.ready = false;
+    
     /**
      * This variable is true when a store is selected. 
      */
@@ -66,9 +68,11 @@ angular.module('eappApp').controller('ShopController', function ($scope, $q, app
             profileData.instance.gridView = true;
         }
         
-        
-        
         $scope.distance =  profileData.get().optimizationDistance;
+        
+        ctrl.ready = true;
+        
+        $scope.getProducts();
                 
     };
     
@@ -100,6 +104,11 @@ angular.module('eappApp').controller('ShopController', function ($scope, $q, app
 
     $scope.getProducts = function () 
     {
+        if(!ctrl.ready)
+        {
+            return;
+        }
+        
         $scope.productsReady = false;
         $scope.isStoreSelected = false;
         $scope.isLoading = true;
