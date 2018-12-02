@@ -83,11 +83,12 @@
                                           <span style="vertical-align: bottom; font-size: 14px;">Beta</span>
                                       </a>
                                   </div>
-                                  <div id="navbar" class="navbar-collapse collapse pull-right">
+                                  <div id="navbar" class="navbar-collapse collapse">
 
-                                      <ul class="menu nav navbar-nav"  ng-controller="MenuController">
+                                      <ul class="menu nav navbar-nav">
+                                          
                                           <li ng-class="{active : selectedMenu == 100}" class=" dropdown" ng-show="loggedUser.subscription == 2">
-                                              <a href="#" class="dropdown-toggle " data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Admin<span class="caret"></span></a>
+                                              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Admin<span class="caret"></span></a>
                                               <ul class="dropdown-menu" otiprix-background>
                                                   <li ng-show="loggedUser.subscription == 2"><a  href="<?php echo addslashes(site_url("admin/uploads")); ?>">Uploads</a></li>
                                                   <li><a href="<?php echo addslashes(site_url("admin/create_store_product")); ?>">Create Product</a></li>
@@ -98,23 +99,17 @@
                                           </li>
 
                                           <li ng-class="{active : selectedMenu == 0}" class="main-menu-list-item"><a href="<?php echo site_url("home"); ?>" class=""><md-icon style="color : white"><i class="material-icons">home</i> </md-icon></a></li>
-                                          <li class="main-menu-list-item" class=" dropdown" ng-class="{active : selectedMenu == 1}">
-                                              <a href="#" class="dropdown-toggle " data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Réduisez vos dépenses<span class="caret"></span></a>
+                                          
+                                          <li class="dropdown" ng-class="{active : selectedMenu == 1}">
+                                              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Réduisez vos dépenses<span class="caret"></span></a>
                                               <ul class="dropdown-menu" otiprix-background>
                                                   <li><a href="<?php echo site_url("account/my_grocery_list"); ?>">Votre liste d'épicerie</a></li>
                                                   <li><a href="<?php echo site_url("shop/select_flyer_store"); ?>">Les circulaires des magasins</a></li>
                                                   <li><a href="<?php echo site_url("shop/categories"); ?>">Les catégories de produits</a></li>
                                               </ul>
                                           </li>
+                                          
                                           <li ng-class="{active : selectedMenu == 2}" class="main-menu-list-item"><a href ng-click="gotoShop()"><span style="border: 2px solid #FFFFFF; padding: 10px;">Trouvez un produit</span></a></li>
-                                              <ul class="dropdown-menu" otiprix-background>
-                                                  <li><a href="<?php echo site_url("blog/press_release"); ?>">Épicerie dans la presse</a></li>
-                                                  <li><a href="<?php echo site_url("blog/stats"); ?>">STAT</a></li>
-                                                  <li><a href="<?php echo site_url("blog/videos"); ?>">Vidéo</a></li>
-                                                  <!--<li><a href="<?php echo site_url("home/store_policy"); ?>">Politiques des magasins</a></li>-->
-                                                  <li><a href="<?php echo site_url("home/about_us"); ?>">À propos</a></li>
-                                              </ul>
-                                          </li>
                                           <li ng-class="{active : selectedMenu == 3}" class="main-menu-list-item"><a  href="<?php echo site_url("home/contact"); ?>">Contact</a></li>
                                           <li ng-class="{active : selectedMenu == 4}" class="main-menu-list-item"><a  href="<?php echo site_url("home/about"); ?>">À propos</a></li>
                                       </ul>
@@ -122,7 +117,7 @@
                                       <ul class="menu nav navbar-nav pull-right"  ng-controller="AccountController">
                                           <li ng-class="{active : selectedMenu == 5}" class="main-menu-list-item" ng-hide="isUserLogged"><a href="<?php echo site_url("account/login"); ?>"><i style="color : #F7FDCA;" class="fa fa-user"></i>    S'identifier</a></li>
                                           <li ng-class="{active : selectedMenu == 6}" class="main-menu-list-item" ng-hide="isUserLogged"><a href="<?php echo site_url("account/register"); ?>"><i style="color : #F7FDCA;" class="fa fa-user"></i>    Créer un compte</a></li>
-                                          <li ng-class="{active : selectedMenu == 5}" class="main-menu-list-item" ng-show="isUserLogged" class=" dropdown">
+                                          <li ng-class="{active : selectedMenu == 5}" ng-show="isUserLogged" class=" dropdown">
                                               <a href="#" class="dropdown-toggle active" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                                                   Bonjour 
                                                   <span ng-if="!loggedUser.company"><span ng-show="loggedUser.profile.firstname">{{loggedUser.profile.firstname}},</span> {{loggedUser.profile.lastname}}</span>
