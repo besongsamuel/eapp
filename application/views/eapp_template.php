@@ -206,7 +206,7 @@
                 <div class="row">
                     <div class="col-md-8">
                         <div class="copyright">
-                            <p>&copy; 2017 OtiPrix. Tous droits réservés.</p>
+                            <p>&copy; {{currentYear}} OtiPrix. Tous droits réservés.</p>
                         </div>
                     </div>
 

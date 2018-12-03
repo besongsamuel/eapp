@@ -1559,10 +1559,29 @@ angular.module("eappApp").controller("CartController", function(appService, $sco
             var economy = Math.round(parseFloat($scope.price_optimization) * 100) / 100;
             content += "<p style='float : right; color : red;'><b>Vous économiserez environs : " + economy + " C $ </b></p>";
         }
-        content += '<table style="width : 100%; margin-top : 100px;"><tr><td><p style="color : red; margin : 10px; text-align : center;"><b>En cas de différence entre la circulaire ou les prix affichés en magasin et OTIPRIX, la circulaire ou les prix affichés en magasin ont préséance.</b></p></td></tr></table>';
+        content += '<table style="width : 100%; margin-top : 100px;"><tr><td><p style="color : red; margin : 10px; text-align : center;"><b>En cas de différence entre la circulaire ou les prix affichés en magasin et OTIPRIX, la circulaire ou les prix affichés en magasin ont préséance.</b></p></td></tr><tr style="background-color : white;"><td><p style="margin : 10px; text-align : center;"><b>'+ ctrl.getCurrentDate() +'</b></p></td></tr></table>';
         content += '</body></html>';
 
         return content;
+    };
+    
+    ctrl.getCurrentDate = function()
+    {
+        var today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth()+1; //January is 0!
+        var yyyy = today.getFullYear();
+
+        if(dd<10) {
+            dd = '0'+ dd;
+        } 
+
+        if(mm<10) {
+            mm = '0'+ mm;
+        } 
+
+        today = mm + '/' + dd + '/' + yyyy;
+        return today;
     };
     
     /**

@@ -6,6 +6,9 @@
 
 angular.module("eappApp").controller("FooterController", ["$scope", "eapp", function($scope, eapp) 
 {
+    
+    $scope.currentYear = (new Date()).getFullYear();
+    
     $scope.subscribe = function(ev)
     {
         var subscribePromise = eapp.subscribe($scope.subscribe_email);

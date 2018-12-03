@@ -231,7 +231,7 @@
                         Effacer
                     </md-button>
                     
-                    <add-to-list type='button' products='cartList' caption="Sauver"></add-to-list>
+                    <add-to-list type='button' products='cartList' caption="Enregistrer toute la liste"></add-to-list>
 
                 </div>
                     
