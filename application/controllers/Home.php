@@ -141,7 +141,7 @@ class Home extends CI_Controller {
         }
                 
         set_error_handler(function(){ });
-        echo json_encode( array("result" => mail($to_email,$subject,$comment,$this->get_otiprix_header())));            
+        echo json_encode( array("result" => mail($to_email,$subject,$comment,$this->get_otiprix_header($email))));            
         restore_error_handler();
     }
     
