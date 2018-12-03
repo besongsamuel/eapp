@@ -106,7 +106,7 @@
 											<md-input-container class="md-block" flex-gt-xs>
 												<label>Commentaires</label>
 												<md-icon class="md-primary"><i class="material-icons">comment</i></md-icon>
-												<textarea name="contactComment" ng-model="contact.comment" md-maxlength="100" rows="5" md-select-on-focus required></textarea>
+												<textarea name="contactComment" ng-model="contact.comment" md-maxlength="1000" rows="5" md-select-on-focus required></textarea>
 												<div ng-messages="contactusForm.contactComment.$error">
 													<div ng-message="required">Veillez entrer un message.</div>
 												</div>
