@@ -351,7 +351,7 @@ class CI_Controller {
         return sprintf('%04X%04X%04X%04X%04X%04X%04X%04X', mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(16384, 20479), mt_rand(32768, 49151), mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(0, 65535));
     }
     
-    protected function get_otiprix_header($from_email = "infos@otiprix.com") 
+    protected function get_otiprix_header($from_email = "admin@otiprix.com") 
     {
         // Always set content-type when sending HTML email
         $headers = "MIME-Version: 1.0" . "\r\n";
