@@ -125,7 +125,7 @@ class Home extends CI_Controller {
         $email = $this->input->post("email");
         $subject = 'From '.$name.' ('.$email.') : '.$this->input->post("subject");
         $comment = $this->input->post("comment");
-        $to_email = "infos@otiprix.com";
+        $to_email = "admin@otiprix.com";
         
         $data = array
         (
