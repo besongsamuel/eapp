@@ -31,6 +31,8 @@ angular.module('eappApp').controller('ShopController', function ($scope, $q, app
     // Get the products for the store
     if(appService.controller === 'shop')
     {
+        $scope.noProductsFound = "Aucun résultat trouvé";
+        
         // We selected a specific store flyer
         if(window.sessionStorage.getItem("store_id"))
         {
@@ -42,7 +44,15 @@ angular.module('eappApp').controller('ShopController', function ($scope, $q, app
         // We selected a specific category
         if(window.sessionStorage.getItem("category_id"))
         {
+            
+            
             $scope.category_id = parseInt(window.sessionStorage.getItem("category_id"));
+            
+            if($scope.category_id == 16)
+            {
+                $scope.noProductsFound = "À venir...";
+            }
+            
             $scope.category_name = window.sessionStorage.getItem("category_name");
         }
     }
