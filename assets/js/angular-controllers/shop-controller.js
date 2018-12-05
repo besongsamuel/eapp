@@ -48,7 +48,7 @@ angular.module('eappApp').controller('ShopController', function ($scope, $q, app
             
             $scope.category_id = parseInt(window.sessionStorage.getItem("category_id"));
             
-            if($scope.category_id == 16)
+            if($scope.category_id == 26)
             {
                 $scope.noProductsFound = "À venir...";
             }
