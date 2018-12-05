@@ -28,7 +28,7 @@
         </form>
     </div>
     
-    <p otiprix-text style="text-align: center;" ng-show="products.length === 0">{{noProductsFound}}</p>
+    <p warn-text style="text-align: center;" ng-show="products.length === 0"><b>{{noProductsFound}}</b></p>
     
     <p ng-show="products.length > 0 && profileData.instance.viewAll" otiprix-text style="text-align: center;" ><b>Produits en circulaire</b></p>
     <p ng-show="products.length > 0 && !profileData.instance.viewAll" warn-text style="text-align: center;" ><b>Les meilleurs rabais de la semaine</b></p>
