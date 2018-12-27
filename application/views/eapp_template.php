@@ -14,7 +14,9 @@
     	  
   </head>
   
-    <body class="md-body-1">
+  <body class="md-body-1">
+        
+        
      
         <div class="otiprix-header" ng-controller="MenuController as menuCtrl">
 
@@ -34,8 +36,8 @@
                           </div>
                       </div>
                       
-                      <div class="col-lg-6 col-sm-6">
-                            <p style="text-align: center;">
+                      <div class="col-lg-6 col-sm-6" >
+                            <p style="text-align: center;" id="step1">
                                 <b>
                                     <span>{{optimizationDistance}} Km de </span>
                                     <a href ng-click="menuCtrl.changeAddress($event)">
@@ -50,7 +52,7 @@
 
                       <div flex>
 
-                            <div class="pull-right" style="border: 2px solid rgb(255,87,34); padding: 1px;">
+                            <div  id="step5" class="pull-right" style="border: 2px solid rgb(255,87,34); padding: 1px;">
                                 <span>
                                     <a href="<?php echo site_url("cart"); ?>" style="color : rgb(255,87,34);" class="md-icon-button" aria-label="Cart">
                                         <md-icon><i class="material-icons" style="color : rgb(255,87,34);">shopping_cart</i></md-icon>
@@ -95,12 +97,13 @@
                                                   <li><a href="<?php echo addslashes(site_url("admin/store_products")); ?>">View Store Products</a></li>
                                                   <li><a href="<?php echo addslashes(site_url("admin/view_products")); ?>">View Otiprix Products</a></li>
                                                   <li><a href="<?php echo addslashes(site_url("admin/view_subcategories")); ?>">View Sub Categories</a></li>
+                                                  <li><a href="<?php echo addslashes(site_url("admin/scrap_data")); ?>">Scrap Data</a></li>
                                               </ul>
                                           </li>
 
                                           <li ng-class="{active : selectedMenu == 0}" class="main-menu-list-item"><a href="<?php echo site_url("home"); ?>" class=""><md-icon style="color : white"><i class="material-icons">home</i> </md-icon></a></li>
                                           
-                                          <li class="dropdown" ng-class="{active : selectedMenu == 1}">
+                                          <li id="step3" class="dropdown" ng-class="{active : selectedMenu == 1}">
                                               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Réduisez vos dépenses<span class="caret"></span></a>
                                               <ul class="dropdown-menu" otiprix-background>
                                                   <li><a href="<?php echo site_url("account/my_grocery_list"); ?>">Votre liste d'épicerie</a></li>
@@ -109,12 +112,12 @@
                                               </ul>
                                           </li>
                                           
-                                          <li ng-class="{active : selectedMenu == 2}" class="main-menu-list-item"><a href ng-click="gotoShop()"><span style="border: 2px solid #FFFFFF; padding: 10px;">Trouvez un produit</span></a></li>
+                                          <li id="step4" ng-class="{active : selectedMenu == 2}" class="main-menu-list-item"><a href ng-click="gotoShop()"><span style="border: 2px solid #FFFFFF; padding: 10px;">Trouvez un produit</span></a></li>
                                           <li ng-class="{active : selectedMenu == 3}" class="main-menu-list-item"><a  href="<?php echo site_url("home/contact"); ?>">Contact</a></li>
                                           <li ng-class="{active : selectedMenu == 4}" class="main-menu-list-item"><a  href="<?php echo site_url("home/about"); ?>">À propos</a></li>
                                       </ul>
 
-                                      <ul class="menu nav navbar-nav pull-right"  ng-controller="AccountController">
+                                      <ul class="menu nav navbar-nav pull-right"  ng-controller="AccountController" id="step6">
                                           <li ng-class="{active : selectedMenu == 5}" class="main-menu-list-item" ng-hide="isUserLogged"><a href="<?php echo site_url("account/login"); ?>"><i style="color : #F7FDCA;" class="fa fa-user"></i>    S'identifier</a></li>
                                           <li ng-class="{active : selectedMenu == 6}" class="main-menu-list-item" ng-hide="isUserLogged"><a href="<?php echo site_url("account/register"); ?>"><i style="color : #F7FDCA;" class="fa fa-user"></i>    Créer un compte</a></li>
                                           <li ng-class="{active : selectedMenu == 5}" ng-show="isUserLogged" class=" dropdown">

@@ -22,7 +22,7 @@ angular.getSearchParam = function(name, url)
 };
 
 // Define the `eapp Application` module
-var eappApp = angular.module('eappApp', ['ngMaterial', 'vsGoogleAutocomplete', 'md.data.table', 'ui.carousel', 'lfNgMdFileInput', 'ngMessages', 'ngSanitize', 'mdCountrySelect', 'ngRoute', 'ngAnimate', 'angularCountryState']);
+var eappApp = angular.module('eappApp', ['ngMaterial', 'angular-intro', 'vsGoogleAutocomplete', 'md.data.table', 'lfNgMdFileInput', 'ngMessages', 'ngSanitize', 'mdCountrySelect', 'ngRoute', 'ngAnimate', 'angularCountryState']);
 
 eappApp.config(function($mdThemingProvider)
 {

@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-angular.module("eappApp").controller("HomeController", function(appService, $scope, eapp, profileData, $mdDialog) 
+angular.module("eappApp").controller("HomeController", function(appService, $scope, eapp, profileData, $mdDialog, ngIntroService) 
 {
     var ctrl = this;
     
@@ -13,7 +13,7 @@ angular.module("eappApp").controller("HomeController", function(appService, $sco
     Promise.all([appService.ready, profileData.ready]).then(function()
     {
         ctrl.getProducts();
-        ctrl.howItWorks();
+        
     });
     
     ctrl.selectCategory = function(category)
@@ -22,8 +22,81 @@ angular.module("eappApp").controller("HomeController", function(appService, $sco
     };
     
     ctrl.howItWorks = function(ev)
-    {        
-        if(angular.isNullOrUndefined(window.localStorage.getItem("firstLaunch")))
+    { 
+        if(angular.isNullOrUndefined(window.localStorage.getItem("firstLaunch")) && screen.width > 760)
+        {
+            $scope.IntroOptions = 
+            {
+                steps:[
+                {
+                    element: "#step1",
+                    intro: "Utilisez la <strong  class='text-success'>géolocalisation</strong> ou <strong  class='text-success'>Indiquez votre code postal</strong>"
+                },
+                {
+                    element: "#step2",
+                    intro: "<strong class='text-success'>Ajoutez des produits</strong></span> à votre liste d’achat à partir de la page d’accueil"
+                },
+                {
+                    element: '#step3',
+                    intro: 'Utilisez ce menu pour choisir <ul><li>Les <strong class="text-success">circulaires</strong> des magasins pour voir les épiceries proches de chez vous.</li><li> Les <strong class="text-success">catégories</strong> en cliquant sur Les catégories de produits.</li></ul>'
+                },
+                {
+                    element: '#step4',
+                    intro: '<strong class="text-success">Trouver un produit</strong> permet de voir tous les produits disponibles et d\'effectuer une recherche par nom'
+                },
+                {
+                    element: '#step5',
+                    intro: '<strong class="text-success">Voir</strong> tous les produits ajoutés à votre liste et demandez à OTIPRIX de rechercher les magasins où ils sont le plus <strong class="text-danger">moins chers</strong>.'
+                },
+                {
+                    element: '#step6',
+                    intro: 'Pour gagner du temps, <strong class="text-success">Identifiez-vous</strong> ou <strong class="text-success">créez un compte</strong> pour<ul><li>Enregistrer votre liste d\’épicerie et la soumettre chaque semaine</li><li>Voir votre historique d’économie</li><li>Indiquer les magasins où vous souhaiter faire vos recherches de produits</li><li>Envoyer votre liste par sms ou par mail</li></ul>'
+                }
+                ],
+                showStepNumbers: true,
+                showBullets: true,
+                exitOnOverlayClick: true,
+                exitOnEsc:true,
+                nextLabel: '<span style="color:green">Prochain</span>',
+                prevLabel: '<span style="color:red">Precedent</span>',
+                skipLabel: 'Quitter',
+                doneLabel: 'Quitter',
+                overlayOpacity : 0.5,
+                highlightClass : "half-transparent"
+                
+            };
+
+            ngIntroService.clear();
+            ngIntroService.setOptions($scope.IntroOptions);
+
+            ngIntroService.onComplete(function()
+            {
+               window.localStorage.setItem("firstLaunch", true);
+            });
+
+            ngIntroService.onExit(function()
+            {
+                window.localStorage.setItem("firstLaunch", true);
+            });
+
+            ngIntroService.onBeforeChange(function()
+            {
+              console.log("[service] before change");
+            });
+
+            ngIntroService.onChange(()=>{
+              console.log("[service] on change");
+            });
+
+            ngIntroService.onAfterChange(()=>{
+              console.log("[service] after Change");
+            });
+
+            ngIntroService.start();
+        }
+        
+        
+        if(angular.isNullOrUndefined(window.localStorage.getItem("firstLaunch")) && screen.width < 760)
         {
             $mdDialog.show({
                 controller: function($scope)
@@ -59,9 +132,13 @@ angular.module("eappApp").controller("HomeController", function(appService, $sco
             
             $scope.loadingProducts = false;
             
+            
+            
             setTimeout(function()
             {
-                 $('.product-carousel').owlCarousel({
+                ctrl.howItWorks();
+                
+                $('.product-carousel').owlCarousel({
                     loop:true,
                     nav:false,
                     autoplay:false,

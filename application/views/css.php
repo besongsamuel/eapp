@@ -31,5 +31,5 @@
     <link rel="stylesheet" href="<?php echo CONNECTION_TYPE; ?>://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/css/bootstrap-select.min.css">
     <!-- MD Table CSS -->
     <link rel="stylesheet" href="<?php echo base_url("assets/css/md-data-table.css")?>">
-    <link rel="stylesheet" href="<?php echo base_url("node_modules/angular-ui-carousel/dist/ui-carousel.min.css")?>">
+    <link rel="stylesheet" href="<?php echo base_url("node_modules/intro.js/introjs.css")?>">
 

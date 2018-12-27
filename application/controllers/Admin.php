@@ -193,6 +193,19 @@ class Admin extends CI_Controller
         $this->parser->parse('eapp_template', $this->data);
     }
     
+    public function scrap_data() 
+    {   
+        if($this->user->subscription != 2)
+        {
+            header('Location: '.  site_url('/home'));
+        }
+        
+        $this->rememberme->recordOrigPage();
+        $this->data['body'] = $this->load->view('admin/scrap_data', $this->data, TRUE);
+        $this->data['script'] = $this->load->view('admin/scripts/scrap_data', $this->data, TRUE);
+        $this->parser->parse('eapp_template', $this->data);
+    }
+    
     public function view_products() 
     {    
         if($this->user->subscription != 2)
