@@ -16,7 +16,7 @@ angular.module('eappApp').controller('CompanyStatsController', function($scope, 
         $company.getStats('desc', $scope.limit, $scope.period, getStatsSuccess);
     };
         
-    angular.element(document).ready(function()
+    appService.ready.then(function()
     {
         
         (function()
