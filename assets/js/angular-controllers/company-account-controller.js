@@ -78,10 +78,12 @@ angular.module('eappApp').controller('CompanyAccountController', function($scope
         $timeout.cancel($scope.timeOutPromise);
     }
         
-    angular.element(document).ready(function()
-    {
-        $scope.Init();
-    });
+        
+   appService.ready.then(function()
+   {
+       $scope.Init();
+   }); 
+    
 });
 
 

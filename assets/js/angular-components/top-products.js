@@ -51,10 +51,13 @@ angular.module('eappApp').component("topProducts",
         {
             var dataArray = [];
             
-            ctrl.data.forEach(function(dataElement)
+            if(!angular.isNullOrUndefined(ctrl.data))
             {
-                dataArray.push(dataElement.count);
-            });
+                ctrl.data.forEach(function(dataElement)
+                {
+                    dataArray.push(dataElement.count);
+                });
+            }
             
             return dataArray;
         };
@@ -63,10 +66,13 @@ angular.module('eappApp').component("topProducts",
         {
             var dataLabelsArray = [];
             
-            ctrl.data.forEach(function(dataElement)
+            if(!angular.isNullOrUndefined(ctrl.data))
             {
-                dataLabelsArray.push(dataElement.name);
-            });
+                ctrl.data.forEach(function(dataElement)
+                {
+                    dataLabelsArray.push(dataElement.name);
+                });
+            }
             
             return dataLabelsArray;
         };
