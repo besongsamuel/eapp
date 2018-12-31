@@ -1,0 +1,68 @@
+
+<p otiprix-text>{{$ctrl.caption}}</p>
+
+<md-input-container class="col-md-12">
+
+    <input 
+    vs-google-autocomplete="vsOptions" 
+    ng-model="place.address" 
+    vs-city="place.city"
+    vs-state="place.state" 
+    vs-country="place.country" 
+    vs-post-code="place.postcode"
+    vs-longitude="place.longitude" 
+    vs-latitude="place.latitude" 
+    name="place"
+    aria-label="Addresse"
+    >
+    <div ng-messages="formReference.place.$error">
+        <div ng-message="vsAutocompleteValidator">Veuillez sélectionner une adresse valide
+        </div>
+    </div>
+
+</md-input-container>
+
+<!-- Addresse -->
+<md-input-container class="col-sm-12">
+    <label>Addresse</label>
+    <input required name="address" ng-model="address.address" disabled="ctrl.readOnlyFields" />
+    <div ng-messages="formReference.address.$error">
+        <div ng-message="required">Veuillez sélectionner une adresse valide</div>
+    </div>
+</md-input-container>
+
+<!-- City -->
+<md-input-container class="col-md-6 col-sm-12">
+    <label>Ville</label>
+    <input required name="city" ng-model="address.city" disabled="ctrl.readOnlyFields" />
+    <div ng-messages="formReference.city.$error">
+        <div ng-message="required">Vous devez entrer le nom de la ville</div>
+    </div>
+</md-input-container>
+
+<!-- State -->
+<md-input-container class="col-md-6 col-sm-12">
+    <label>Province</label>
+    <input required name="state" ng-model="address.state" disabled="ctrl.readOnlyFields" />
+    <div ng-messages="formReference.state.$error">
+        <div ng-message="required">Veillez entrer la province</div>
+    </div>
+</md-input-container>
+
+<!-- Country -->
+<md-input-container class="col-md-6 col-sm-12">
+    <label>Pays</label>
+    <input required name="country" ng-model="address.country" disabled="ctrl.readOnlyFields" />
+    <div ng-messages="formReference.country.$error">
+        <div ng-message="required">Vous devez entrer le pays</div>
+    </div>
+</md-input-container>
+
+<!-- Postal Code -->
+<md-input-container class="col-md-6 col-sm-12">
+    <label>Code Postal</label>
+    <input required name="postcode" ng-model="address.postcode" disabled="ctrl.readOnlyFields" />
+    <div ng-messages="formReference.postcode.$error">
+        <div ng-message="required">Veillez entrer votre code postal</div>
+    </div>
+</md-input-container>

@@ -12,7 +12,12 @@ angular.module('eappApp').controller('CompanyAccountController', function($scope
         {
             id : appService.loggedUser.company.id,
             name : appService.loggedUser.company.name,
-            neq : appService.loggedUser.company.neq
+            neq : appService.loggedUser.company.neq,
+            address : appService.loggedUser.company.address,
+            phone : appService.loggedUser.company.phone,
+            email : appService.loggedUser.company.email,
+            website : appService.loggedUser.company.website,
+            description : appService.loggedUser.company.description
         };
                 
         $scope.image_name = appService.loggedUser.company.chain.image;
@@ -60,7 +65,16 @@ angular.module('eappApp').controller('CompanyAccountController', function($scope
     
     $scope.editCompany = function()
     {
-        $company.editCompany($scope.company, success);
+        if($scope.companyForm.$valid)
+        {
+            $company.editCompany($scope.company, success);
+        }
+        else
+        {
+            var invaldControl = angular.element('.ng-invalid').last();
+            
+            invaldControl.focus();
+        }
     };
     
     function success()

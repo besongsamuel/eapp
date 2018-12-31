@@ -681,12 +681,12 @@ $(document).ready(function()
                             <span></span>
                         </div>
 
-                        <form class="companyForm" novalidate ng-submit="editCompany()" class="layout-padding">
+                        <form name="companyForm" novalidate ng-submit="editCompany()" class="layout-padding">
 
                             <p class="subscription-header"><b>Votre Forfait : &nbsp;&nbsp;&nbsp;<span class='md-warn-color'>  {{loggedUser.company.subscription.name}}</span></b> &nbsp;|&nbsp; <a href='<?php echo site_url("account/select_subscription"); ?>'>Changer</a></p>
 
                             <!-- NEQ -->
-                            <md-input-container ng-disabled="loggedUser.company.is_valid == 1" class="md-block col-md-12" flex-gt-sm>
+                            <md-input-container ng-disabled="loggedUser.company.is_valid == 1" class="md-block">
                                 <label>NEQ</label>
                                 <!-- <input required name="neq" ng-model="company.neq" /> -->
                                 <input ng-disabled="true" required name="neq" ng-model="company.neq" />
@@ -696,7 +696,7 @@ $(document).ready(function()
                             </md-input-container>
 
                             <!-- NOM DE L'ENTREPRISE -->
-                            <md-input-container class="md-block col-md-12" flex-gt-sm>
+                            <md-input-container class="md-block">
                                 <label>Nom de l'entreprise</label>
                                 <!-- <input required name="company_name" ng-model="company.name" /> -->
                                 <input ng-disabled="true" required name="company_name" ng-model="company.name" />
@@ -704,6 +704,59 @@ $(document).ready(function()
                                     <div ng-message="required">Vous devez entrer au moins un nom pour l'entreprise</div>
                                 </div>
                             </md-input-container>
+                            
+                            <!-- Company Phone Number -->
+                            <md-input-container class="col-sm-12 col-md-6">
+                                <label>Contact</label>
+                                <input name="phone" ng-model="company.phone" />
+                            </md-input-container>
+                            
+                             <!-- Company Email -->
+                            <md-input-container class="col-sm-12 col-md-6">
+                                <label>Email</label>
+                                <input style="border-top : none; border-right : none; border-left : none;" name="email" type="email" ng-model="company.email" />
+                                <div ng-messages="companyForm.email.$error">
+                                    <div ng-message="email">S'il vous plaît, mettez une adresse email valide.</div>
+                                </div>
+                            </md-input-container>
+                            
+                            <!-- Company Website -->
+                            <md-input-container class="col-sm-12">
+                                <label>Site Web</label>
+                                <input 
+                                    name="website"
+                                    ng-model="company.website"
+                                    ng-pattern="/^(?:(?:https?|ftp):\/\/)(?:\S+(?::\S*)?@)?(?:(?!10(?:\.\d{1,3}){3})(?!127(?:\.​\d{1,3}){3})(?!169\.254(?:\.\d{1,3}){2})(?!192\.168(?:\.\d{1,3}){2})(?!172\.(?:1[​6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1​,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00​a1-\uffff0-9]+-?)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]+-?)*[a-z\u​00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:\/[^\s]*)?$/i"
+                                    />
+                                <div ng-messages="companyForm.website.$error">
+                                    <div ng-message="pattern">Veuillez saisir un site web valide (par exemple, http://www.website.fr)</div>
+                                </div>
+                            </md-input-container>
+                            
+                            <!-- Company Description -->
+                            <md-input-container class="col-sm-12">
+                                <label>Description</label>
+                                <textarea required md-maxlength="1000" rows="5" name="description" ng-model="company.description"></textarea>
+                                <div ng-messages="companyForm.description.$error">
+                                    <div ng-message="required">Veuillez saisir une brève description de votre entreprise.</div>
+                                </div>
+                            </md-input-container>
+                            
+                            <p otiprix-text>Addresse du siège</p>
+
+                            <md-input-container class="col-md-12">
+
+                                <input 
+                                vs-google-autocomplete="vsOptions" 
+                                ng-model="company.address" 
+                                name="addresse"
+                                aria-label="Addresse"
+                                >
+
+                            </md-input-container>
+                            
+                            
+                            <md-button type="submit" class="md-raised md-primary btn pull-right">Changer</md-button>
 
                         </form>
                     </div>                            
