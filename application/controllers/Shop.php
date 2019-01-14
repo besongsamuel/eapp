@@ -93,12 +93,7 @@ class Shop extends CI_Controller {
         $get_latest_products = true;
         
         $viewAll = true;
-        
-        if(isset($viewConfig) && isset($viewConfig->viewAll))
-        {
-            $viewAll = $viewConfig->viewAll;
-        }
-        
+                
         $my_location = $this->get_my_location();
                         
         $products = $this->shop_model->get_store_products_limit(

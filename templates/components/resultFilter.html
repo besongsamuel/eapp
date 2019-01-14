@@ -13,7 +13,7 @@
 
     <div style="margin-bottom: 30px; font-size : 13px;">
 
-        <div layout="row" layout-align="center center">
+        <div ng-if="isCart" layout="row" layout-align="center center">
             <md-input-container ng-if="viewConfig.viewAll" style="border: 2px solid rgb(255,87,34); padding: 1px;">
                 <md-button ng-click="$ctrl.changeView();" style="margin-top: 2px; margin-right: 2px; margin-left: 2px; margin-bottom: 2px; font-size: 10px;" class="md-raised md-warn btn">
                     {{showOptimizedResultsCaption}}
