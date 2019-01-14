@@ -157,9 +157,12 @@ class Statistics
         foreach ($stats as $row) 
         {
             $category = $this->CI->eapp_model->get(CATEGORY_TABLE, $row['product_category_id']);
-            $category->count = $row['count'];
             
-            array_push($result, $category);
+            if($category)
+            {
+                $category->count = $row['count'];
+                array_push($result, $category);
+            }
         }
         
         return $result;
@@ -376,7 +379,16 @@ class Statistics
         
         $bio_count = $this->get_total_products($period, -1, 1, $action);
         
-        return round(((float)$bio_count / (float)($bio_count + $non_bio_count)) * 100, 2);
+        $total_products = $bio_count + $non_bio_count;
+        
+        if($total_products == 0)
+        {
+            return 0;
+        }
+        else
+        {
+            return round(((float)$bio_count / (float)($total_products)) * 100, 2);
+        }
     }
      
     /**
@@ -543,7 +555,7 @@ class Statistics
             
             while(count($result) < $limit)
             {
-                array_push($result, array("count" => -1, "name" => "-", "retailer_id" => -1));
+                array_push($result, array("count" => -1, "name" => "-", "retailer_id" => -1, "id" => -1));
             }
         }
         
@@ -674,7 +686,7 @@ class Statistics
             
             $month_year = "MONTH(date_created) as month, YEAR(date_created) as year";
                         
-            $query = $this->CI->db->query("SELECT count(id) as count, ".$month_year." FROM ".CHAIN_STATS." WHERE retailer_id = ".$most_visited_retailer->id." GROUP BY year, month");
+            $query = $this->CI->db->query("SELECT count(id) as count, ".$month_year." FROM ".CHAIN_STATS." WHERE retailer_id = ".$most_visited_retailer["id"]." GROUP BY year, month");
             
             $sum = 0;
             
