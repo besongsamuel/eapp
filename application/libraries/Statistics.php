@@ -686,7 +686,7 @@ class Statistics
             
             $month_year = "MONTH(date_created) as month, YEAR(date_created) as year";
                         
-            $query = $this->CI->db->query("SELECT count(id) as count, ".$month_year." FROM ".CHAIN_STATS." WHERE retailer_id = ".$most_visited_retailer["id"]." GROUP BY year, month");
+            $query = $this->CI->db->query("SELECT count(id) as count, ".$month_year." FROM ".CHAIN_STATS." WHERE retailer_id = ".$most_visited_retailer->id." GROUP BY year, month");
             
             $sum = 0;
             
