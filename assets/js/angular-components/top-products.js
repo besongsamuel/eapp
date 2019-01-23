@@ -46,9 +46,9 @@ angular.module('eappApp').component("topProducts",
             };
         };
         
-        ctrl.$onChange = function(newValue, oldValue)
+        ctrl.$onChanges = function(newValue)
         {
-            console.log(newValue);
+            console.log(newValue.currentValue);
         };
         
         
