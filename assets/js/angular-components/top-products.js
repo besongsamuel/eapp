@@ -46,6 +46,11 @@ angular.module('eappApp').component("topProducts",
             };
         };
         
+        ctrl.$onChange = function(newValue, oldValue)
+        {
+            console.log(newValue);
+        };
+        
         
         ctrl.getData = function()
         {
