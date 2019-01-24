@@ -5,12 +5,13 @@
     <link rel="icon" type="image/x-icon" href="<?php echo base_url("assets/img/favicon/")?>favicon.ico" sizes="32x32" />
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">   
+    <script src="<?php echo base_url("node_modules/jquery/dist/jquery.min.js")?>"></script>
+    
     <title>{title}</title>
     
     {css}
     
-    <script src="<?php echo base_url("node_modules/jquery/dist/jquery.min.js")?>"></script>
     	  
   </head>
   

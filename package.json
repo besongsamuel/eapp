@@ -11,6 +11,7 @@
     "angular-messages": "^1.6.9",
     "angular-slick-carousel": "^3.1.7",
     "angular-ui-carousel": "^0.1.10",
+    "bootstrap": "^4.2.1",
     "chart.js": "^2.7.2",
     "intl-tel-input": "^13.0.2",
     "jquery": "^3.3.1",

@@ -97,9 +97,9 @@ class Statistics
             
             $product->count = $row['count'];
             
-            if(isset($row['retailer_id']))
+            if(isset($row->retailer_id))
             {
-                $product->retailer = $this->CI->eapp_model->get(CHAIN_TABLE, $row['retailer_id']);
+                $product->retailer = $this->CI->eapp_model->get(CHAIN_TABLE, $row->retailer_id);
             }
             
             array_push($result, $product);
@@ -114,17 +114,17 @@ class Statistics
         
         foreach ($stats as $row) 
         {
-            if(isset($row['retailer_id']))
+            if(isset($row->retailer_id))
             {
-                $retailer = $this->CI->eapp_model->get(CHAIN_TABLE, $row['retailer_id']);
+                $retailer = $this->CI->eapp_model->get(CHAIN_TABLE, $row->retailer_id);
                 
                 if($retailer)
                 {
-                    $retailer->count = $row['count'];
+                    $retailer->count = $row->count;
                 
                     array_push($result, $retailer);
                 }
-                else if((int)$row["count"] == -1)
+                else if((int)$row->count == -1)
                 {
                     array_push($result, $row);
                 }
@@ -555,7 +555,13 @@ class Statistics
             
             while(count($result) < $limit)
             {
-                array_push($result, array("count" => -1, "name" => "-", "retailer_id" => -1, "id" => -1));
+                $empty_chain = new stdClass();
+                $empty_chain->count = -1;
+                $empty_chain->retailer_id = -1;
+                $empty_chain->id = -1;
+                $empty_chain->name = "-";
+                
+                array_push($result, $empty_chain);
             }
         }
         

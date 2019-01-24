@@ -39,6 +39,7 @@
     <script src="<?php echo base_url("assets/js/angular-modules/angular-country-state.js")?>"></script>
     <script src="<?php echo base_url("node_modules/intro.js/intro.js")?>"></script>
     <script src="<?php echo base_url("node_modules/angular-intro.js/build/angular-intro.js")?>"></script>
+    <script src="<?php echo base_url("node_modules/angular-ui-carousel/dist/ui-carousel.min.js")?>"></script>
     <script src="<?php echo base_url("assets/js/angular-modules/main.js")?>"></script>
     
     <!-- Angular Directives -->

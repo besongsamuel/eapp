@@ -32,4 +32,5 @@
     <!-- MD Table CSS -->
     <link rel="stylesheet" href="<?php echo base_url("assets/css/md-data-table.css")?>">
     <link rel="stylesheet" href="<?php echo base_url("node_modules/intro.js/introjs.css")?>">
+    <link rel="stylesheet" href="<?php echo base_url("node_modules/angular-ui-carousel/dist/ui-carousel.min.css"); ?>"
 
