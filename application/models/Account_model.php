@@ -27,6 +27,36 @@ class Account_model extends CI_Model
         
     }
     
+    public function get_company_accounts($query) {
+        
+        
+        $q = $this->db->query('SELECT * FROM '.COMPANY_TABLE);
+
+        $count = $q->num_rows();
+        
+        $this->db->select("id, name, email, phone, neq, is_valid");
+        
+        $this->db->limit($query->limit, $query->limit * ($query->page - 1));
+        
+        return array("count" => $count, "accounts" => $this->get_all(COMPANY_TABLE));
+
+    }
+    
+    public function get_user_accounts($query) {
+        
+        
+        $q = $this->db->query('SELECT * FROM '.USER_ACCOUNT_TABLE);
+
+        $count = $q->num_rows();
+        
+        $this->db->select("id, username, email, is_active");
+        
+        $this->db->limit($query->limit, $query->limit * ($query->page - 1));
+        
+        return array("count" => $count, "accounts" => $this->get_all(USER_ACCOUNT_TABLE));
+
+    }
+    
     public function clear_user_favorite_stores($user_id)
     {
         $this->db->where(array("user_account_id" => $user_id));

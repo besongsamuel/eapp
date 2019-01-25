@@ -99,6 +99,7 @@
                                                   <li><a href="<?php echo addslashes(site_url("admin/view_products")); ?>">View Otiprix Products</a></li>
                                                   <li><a href="<?php echo addslashes(site_url("admin/view_subcategories")); ?>">View Sub Categories</a></li>
                                                   <li><a href="<?php echo addslashes(site_url("admin/scrap_data")); ?>">Scrap Data</a></li>
+                                                  <li><a href="<?php echo addslashes(site_url("admin/user_accounts")); ?>">Scrap Data</a></li>
                                               </ul>
                                           </li>
 

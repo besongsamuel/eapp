@@ -656,6 +656,24 @@ angular.module('eappApp').factory('eapp', function($http, appService, $mdDialog,
         return $http.post(eappService.getSiteUrl().concat("account/toggle_new"), null);
     };
     
+    eappService.getUserAccounts = function(query)
+    {
+        var formData = new FormData();
+        formData.append("query", JSON.stringify(query));
+        return $http.post(eappService.getSiteUrl().concat("account/get_user_accounts"), formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}});
+    };
+    
+    eappService.getCompanyAccounts = function(query)
+    {
+        var formData = new FormData();
+        formData.append("query", JSON.stringify(query));
+        return $http.post(eappService.getSiteUrl().concat("account/get_company_accounts"), formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}});
+    };
+    
+
+    
+    
+    
     eappService.deleteStoreProductImage = function(id)
     {
         var formData = new FormData();

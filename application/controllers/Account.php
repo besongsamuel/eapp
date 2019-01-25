@@ -26,6 +26,40 @@ class Account extends CI_Controller
         $this->upload->initialize($config);
     }
     
+    /**
+     * API call to get company accounts
+     */
+    public function get_company_accounts() 
+    {
+        if($this->user->subscription == 2)
+        {
+            $query = json_decode($this->input->post("query"));
+            
+            echo json_encode($this->account_model->get_company_accounts($query));
+        }
+        else
+        {
+            echo json_encode(array());
+        }
+    }
+    
+    /**
+     * API call to get user accounts
+     */
+    public function get_user_accounts() 
+    {
+        if($this->user->subscription == 2)
+        {
+            $query = json_decode($this->input->post("query"));
+            
+            echo json_encode($this->account_model->get_user_accounts($query));
+        }
+        else
+        {
+            echo json_encode(array());
+        }
+    }
+    
     public function get_stats() 
     {
         
