@@ -6,6 +6,8 @@
 
 angular.module("eappApp").controller("UserAccountsController", function($scope, eapp) 
 {    
+    $scope.type = "company";
+
     
     $scope.query = 
     {
@@ -20,9 +22,8 @@ angular.module("eappApp").controller("UserAccountsController", function($scope, 
         window.scrollTo(0, 0);
     });
     
-    $scope.getAccounts = function(type)
+    $scope.getAccounts = function()
     {
-        $scope.type = type || $scope.type || "company";
         
         $scope.promise = eapp.getCompanyAccounts($scope.query);
         
@@ -45,7 +46,7 @@ angular.module("eappApp").controller("UserAccountsController", function($scope, 
     
     angular.element(document).ready(function()
     {
-        $scope.getAccounts("company");
+        $scope.getAccounts();
     });
     
 });
