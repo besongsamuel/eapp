@@ -60,6 +60,95 @@ class Account extends CI_Controller
         }
     }
     
+    /**
+     * API call to activate or deactivate neq status
+     */
+    public function toggle_neq_state() 
+    {
+        if($this->user && $this->user->subscription == 2)
+        {
+            $id = $this->input->post("id");
+            
+            $is_valid = $this->input->post("is_valid");
+            
+            $this->account_model->create(COMPANY_TABLE, array("id" => $id, "is_valid" => $is_valid));
+            
+            // Get the company account
+            $company_account = $this->acount_model->get(COMPANY_TABLE, $id);
+            
+            if($company_account)
+            {
+                // Get the account
+                $user_account = $this->account_model->get(USER_ACCOUNT_TABLE, $company_account->user_account_id);
+                
+                if($user_account)
+                {
+                    if($is_valid == 1)
+                    {
+                        $subject = "NEQ validé";
+                        $message = "Votre NEQ a été validé par l'équipe Otiprix. Commencez à utiliser toutes les fonctionnalités de votre compte entreprise.";
+                    }
+                    else
+                    {
+                        $subject = "NEQ révoqué";
+                        $message = "Votre NEQ a été révoqué par l'équipe Otiprix. N'hésitez pas à nous contacter pour en savoir plus.";
+                    }
+                    
+                    $this->send_generic_email($user_account->email, $company_account->name, $subject, $message);
+                }
+                
+            }
+            
+            
+            
+            echo json_encode(array("success" => true));
+        }
+        else
+        {
+            echo json_encode(array("success" => false));
+        }
+    }
+    
+      /**
+     * API call to activate or deactivate account
+     */
+    public function toggle_account_state() 
+    {
+        if($this->user && $this->user->subscription == 2)
+        {
+            $id = $this->input->post("id");
+            
+            $is_active = $this->input->post("is_active");
+            
+            $this->account_model->create(USER_ACCOUNT_TABLE, array("id" => $id, "is_active" => $is_active));
+            
+            // Get the account
+            $user_account = $this->account_model->get(USER_ACCOUNT_TABLE, $id);
+
+            if($user_account)
+            {
+                if($is_active == 1)
+                {
+                    $subject = "Compte activé";
+                    $message = "Votre compte a été validé par l'équipe Otiprix. Commencez à utiliser toutes les fonctionnalités de votre compte.";
+                }
+                else
+                {
+                    $subject = "Compte désactivé";
+                    $message = "Votre compte a été désactivé par l'équipe Otiprix. N'hésitez pas à nous contacter pour en savoir plus.";
+                }
+
+                $this->send_generic_email($user_account->email, $user_account->username, $subject, $message);
+            }
+            
+            echo json_encode(array("success" => true));
+        }
+        else
+        {
+            echo json_encode(array("success" => false));
+        }
+    }
+    
     public function get_stats() 
     {
         
@@ -372,6 +461,43 @@ class Account extends CI_Controller
         }
         
         echo json_encode($result);
+    }
+    
+    /**
+     * This mail is sent out when the admin activates a user' account
+     * @param type $email
+     * @param type $reset_token
+     */
+    private function send_generic_email($email, $user, $subject, $message)
+    {
+        $user_account = $this->account_model->get_specific(USER_ACCOUNT_TABLE, array("email" => $email));
+        
+        if($user_account)
+        {
+            $email_path = ASSETS_DIR_PATH."templates/mail/generic_message.html";
+
+            // get the contents of the file. 
+            $mail = file_get_contents($email_path);
+
+            // do the proper replacements of the tags
+            $mail = str_replace("[TITLE]", "Votre compte a été activé", $mail);
+            $mail = str_replace("[USER]", $user, $mail);
+            $mail = str_replace("[MESSAGE]", $message, $mail);
+            $mail = str_replace("[EMAIL]", $email, $mail);
+            $mail = str_replace("[OTIPRIX_ADDRESS]", "550 Avenue Saint-Dominique, Saint-Hyacinthe, J2S 5M6", $mail);
+
+            // images
+            $mail = str_replace("[LOGO_IMAGE]", base_url("/assets/img/logo.png"), $mail);
+
+            // image icons
+            $mail = str_replace("[IMAGE_FACEBOOK]", base_url("/assets/img/icons/if_facebook_circle_gray_107140.png"), $mail);
+            $mail = str_replace("[IMAGE_YOUTUBE]", base_url("/assets/img/icons/if_youtube_circle_gray_107133.png"), $mail);
+            $mail = str_replace("[IMAGE_TWITTER]", base_url("/assets/img/icons/if_twitter_circle_gray_107135.png"), $mail);
+            $mail = str_replace("[UNSUBSCRIBE_URL]", $this->get_unsubscribe_url(), $mail);
+
+            mail($email, $subject, $mail, $this->get_otiprix_header());
+            
+        }
     }
     
     private function send_password_reset_email($email, $reset_token)

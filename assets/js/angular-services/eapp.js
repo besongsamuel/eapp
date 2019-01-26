@@ -670,6 +670,22 @@ angular.module('eappApp').factory('eapp', function($http, appService, $mdDialog,
         return $http.post(eappService.getSiteUrl().concat("account/get_company_accounts"), formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}});
     };
     
+    eappService.ToggleAccountState = function(id, is_active)
+    {
+        var formData = new FormData();
+        formData.append("id", id);
+        formData.append("is_active", is_active);
+        return $http.post(eappService.getSiteUrl().concat("account/toggle_account_state"), formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}});
+    };
+    
+    eappService.ToggleNEQState = function(id, is_valid)
+    {
+        var formData = new FormData();
+        formData.append("id", id);
+        formData.append("is_valid", is_valid);
+        return $http.post(eappService.getSiteUrl().concat("account/toggle_neq_state"), formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}});
+    };
+    
 
     
     
@@ -705,6 +721,20 @@ angular.module('eappApp').factory('eapp', function($http, appService, $mdDialog,
               .cancel('Non');
       
         return confirm;
+    };
+    
+    eappService.showConfirmDialog = function(ev, contentText) 
+    {
+        // Appending dialog to document.body to cover sidenav in docs app
+        var confirm = $mdDialog.confirm()
+              .title('Êtes-vous sûr?')
+              .textContent(contentText)
+              .ariaLabel('Êtes-vous sûr?')
+              .targetEvent(ev)
+              .ok('Oui')
+              .cancel('Non');
+      
+        return $mdDialog.show(confirm);
     };
 
     return eappService;
