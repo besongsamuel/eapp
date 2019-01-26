@@ -31,20 +31,27 @@
                     </td>
                     
                     <td ng-if="type == 'company' && account.is_valid == 0">
-                        <a href ng-click="validateNEQ(account, $event)" >Valiate NEQ</a>
+                        <button ng-click="validateNEQ(account, $event)" class="md-raised md-primary btn">
+                            Valiate NEQ
+                        </button>
                     </td>
+                    
                     <td ng-if="type == 'company' && account.is_valid == 1">
-                        <a href ng-click="revokeNEQ(account, $event)" >Revoke NEQ</a>
+                        <button ng-click="revokeNEQ(account, $event)" class="md-raised md-warn btn">
+                            Revoke NEQ
+                        </button>
                     </td>
                     
                     <td ng-if="type == 'user' && account.is_active == 0">
-                        <a href ng-click="activate(account, $event)" >Activate Account</a>
+                        <button ng-click="activate(account, $event)" class="md-raised md-primary btn">
+                            Activate Account
+                        </button>
                     </td>
                     <td ng-if="type == 'user' && account.is_active == 1">
-                        <a href ng-click="deactivate(account, $event)" >Deactivate account</a>
+                        <button ng-click="deactivate(account, $event)" class="md-raised md-warn btn">
+                            Deactivate account
+                        </button>
                     </td>
-                    
-
                 </tr>
             </tbody>
         </table>

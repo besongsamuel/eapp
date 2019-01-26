@@ -367,6 +367,43 @@ class CI_Controller {
         return $headers;
     }
     
+    /**
+     * This mail is sent out when the admin activates a user' account
+     * @param type $email
+     * @param type $reset_token
+     */
+    protected function send_generic_email($email, $user, $subject, $message)
+    {
+        $user_account = $this->account_model->get_specific(USER_ACCOUNT_TABLE, array("email" => $email));
+        
+        if($user_account)
+        {
+            $email_path = ASSETS_DIR_PATH."templates/mail/generic_message.html";
+
+            // get the contents of the file. 
+            $mail = file_get_contents($email_path);
+
+            // do the proper replacements of the tags
+            $mail = str_replace("[TITLE]", "Votre compte a été activé", $mail);
+            $mail = str_replace("[USER]", $user, $mail);
+            $mail = str_replace("[MESSAGE]", $message, $mail);
+            $mail = str_replace("[EMAIL]", $email, $mail);
+            $mail = str_replace("[OTIPRIX_ADDRESS]", "550 Avenue Saint-Dominique, Saint-Hyacinthe, J2S 5M6", $mail);
+
+            // images
+            $mail = str_replace("[LOGO_IMAGE]", base_url("/assets/img/logo.png"), $mail);
+
+            // image icons
+            $mail = str_replace("[IMAGE_FACEBOOK]", base_url("/assets/img/icons/if_facebook_circle_gray_107140.png"), $mail);
+            $mail = str_replace("[IMAGE_YOUTUBE]", base_url("/assets/img/icons/if_youtube_circle_gray_107133.png"), $mail);
+            $mail = str_replace("[IMAGE_TWITTER]", base_url("/assets/img/icons/if_twitter_circle_gray_107135.png"), $mail);
+            $mail = str_replace("[UNSUBSCRIBE_URL]", $this->get_unsubscribe_url(), $mail);
+
+            mail($email, $subject, $mail, $this->get_otiprix_header());
+            
+        }
+    }
+    
     protected function get_my_location() 
     {
         $coords = array("longitude" => $this->input->post("longitude"), "latitude" => $this->input->post("latitude"));
