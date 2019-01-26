@@ -423,7 +423,7 @@ class Company extends CI_Controller
                     
                     $this->send_registration_email();
                     
-                    $message = "Un nouveau compte d'entreprise a été créé pour l'entreprise: " + $company['name'] + " avec NEQ "+ $company['neq'] +". Veuillez vous rendre sur le panneau d'administration et valider le NEQ.";
+                    $message = "Un nouveau compte d'entreprise a été créé pour l'entreprise: ".$company['name']." avec NEQ ".$company['neq'].". Veuillez vous rendre sur le panneau d'administration et valider le NEQ.";
                     
                     //notify otiprix team
                     $this->send_generic_email("infos@otiprix.com", "administrateur", "Nouveau compte d'entreprise créé", $message);
