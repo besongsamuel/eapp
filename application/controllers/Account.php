@@ -74,7 +74,7 @@ class Account extends CI_Controller
             $this->account_model->create(COMPANY_TABLE, array("id" => $id, "is_valid" => $is_valid));
             
             // Get the company account
-            $company_account = $this->acount_model->get(COMPANY_TABLE, $id);
+            $company_account = $this->account_model->get(COMPANY_TABLE, $id);
             
             if($company_account)
             {
