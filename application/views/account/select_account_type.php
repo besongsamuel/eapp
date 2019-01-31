@@ -1,40 +1,60 @@
 
 <link href="<?php echo base_url("assets/css/register.css"); ?>" rel="stylesheet">
 
-<div id="admin-container" class="container mainbox" ng-controller="AccountController"> 
+<div class="container mainbox" ng-controller="AccountController"> 
     
-    <div>
         
-        <h2 otiprix-title>Sélectionnez le type de compte</h2>
+        <h4 otiprix-text class="text-center">Sélectionnez le type de compte</h4>
         
-        <div layout="row" layout-xs="column" style="margin-bottom: 150px; margin-top: 50px;">
-            
-            <div  layout="column" layout-align="center center" class="col-sm-6 col-md-6">
 
-                <a href="<?php echo site_url("account/register/personal"); ?>" class="center-div">
-                    <div class="choice-block layout-padding">
-                        <img src="<?php echo base_url("assets/img/register/user-512.png");  ?>">
+        <div class="row mt-5">
+
+            <div class="col">
+
+                <div class="container-fluid">
+                    <div class="row justify-content-end">
+                        <div>
+                            <a href="<?php echo site_url("account/register/personal"); ?>">
+                                <div class="choice-block layout-padding">
+                                    <img src="<?php echo base_url("assets/img/register/user-512.png"); ?>">
+                                    <h3  class="text-white text-center">Consommateur</h3>
+                                </div>
+                            </a>
+
+                        </div>
+
                     </div>
-                </a>
 
-                <h3 otiprix-text style="text-align: center"> Compte Consommateur</h3>
+                </div>
 
             </div>
 
-            <div  layout="column" layout-align="center center" class="col-sm-6 col-md-6">
+            <div class="col justify-content-start">
 
-                <a href="<?php echo site_url("account/register/company"); ?>">
-                    <div class="choice-block layout-padding">
-                        <img src="<?php echo base_url("assets/img/register/white-shop-512.png");  ?>">
+                <div class="container-fluid">
+
+                    <div class="row justify-content-start">
+
+                        <div class="justify-content-center">
+                            <a class="text-center" href="<?php echo site_url("account/register/company"); ?>">
+                                <div class="choice-block layout-padding">
+                                    <img src="<?php echo base_url("assets/img/register/white-shop-512.png"); ?>">
+                                    <h3 class="text-white text-center">Entreprise</h3>
+                                </div>
+                            </a>
+
+
+                        </div>
+
                     </div>
-                </a>
 
-                <h3 otiprix-text style="text-align: center"> Compte Entreprise</h3>
+                </div>
 
             </div>
 
         </div>
-    </div>
+        
+    
     
 </div>
 

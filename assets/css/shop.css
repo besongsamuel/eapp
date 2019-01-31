@@ -142,16 +142,7 @@ body{font-family: "Roboto Condensed",sans-serif;}
     float: right;
     border-bottom: 2px solid #1abc9c;
 }
-.btn-info {
-    color: #fff;
-    background-color: #1abc9c;
-    border-color: #1abc9c;
-	font-size:13px;
-	font-weight:600;
-}
-.btn-info:hover{
-     background: #1abc9c;
-}
+
 
 
 /* GRID VIEW END */

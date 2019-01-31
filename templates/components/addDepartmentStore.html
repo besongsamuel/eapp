@@ -1,41 +1,42 @@
 
-  
-  
-<div class="row">
 
-    <div class="col-sm-12">
-        <md-button class="md-raised md-primary pull-right" ng-click="addStoreBranch($event)">
-            Ajouter Succursale               
-        </md-button>
-    </div>
-    
-    <div class="col-sm-12">
-    
-        <h2 otiprix-title>Vos succursales</h2>
-    
-        <md-list flex ng-if="departmentStores.length > 0">
-            
-            <md-list-item class="md-3-line" ng-repeat="ds in departmentStores" ng-click="null">
-                
-                <div class="md-list-item-text" layout="column">
-                    <h3>{{ ds.name }}</h3>
-                    <h4>
-                        {{ ds.address }} 
-                        <span ng-show="ds.country">, {{ds.country}}</span> 
-                        <span ng-show="ds.state">, {{ds.state}}</span>
-                        <span ng-show="ds.city">, {{ds.city}}</span>
-                        <span ng-show="ds.postcode">, {{ds.postcode}}</span>
-                    </h4>
-                    <p ng-if="ds.email">{{ ds.email }}<span ng-show="ds.phonenumber">, {{ds.phonenumber}}</span></p>
-                </div>
-                <md-icon class="md-secondary md-warn" ng-click="removeDepartmentStore(ds.id, $event)"><i class="material-icons">delete</i></md-icon>
-                
-            </md-list-item>
-            
-        </md-list>
-    </div>
+<div class="container-fluid">
+        <div class="row justify-content-center">
 
-</div>  
+                <md-button class="md-raised md-primary pull-right" ng-click="addStoreBranch($event)">
+                    Ajouter Succursale               
+                </md-button>
+            
+            <div class="col-sm-12">
+            
+                <h2 otiprix-title>Vos succursales</h2>
+            
+                <md-list flex ng-if="departmentStores.length > 0">
+                    
+                    <md-list-item class="md-3-line" ng-repeat="ds in departmentStores" ng-click="null">
+                        
+                        <div class="md-list-item-text" layout="column">
+                            <h3>{{ ds.name }}</h3>
+                            <h4>
+                                {{ ds.address }} 
+                                <span ng-show="ds.country">, {{ds.country}}</span> 
+                                <span ng-show="ds.state">, {{ds.state}}</span>
+                                <span ng-show="ds.city">, {{ds.city}}</span>
+                                <span ng-show="ds.postcode">, {{ds.postcode}}</span>
+                            </h4>
+                            <p ng-if="ds.email">{{ ds.email }}<span ng-show="ds.phonenumber">, {{ds.phonenumber}}</span></p>
+                        </div>
+                        <md-icon class="md-secondary md-warn" ng-click="removeDepartmentStore(ds.id, $event)"><i class="material-icons">delete</i></md-icon>
+                        
+                    </md-list-item>
+                    
+                </md-list>
+            </div>
+        
+        </div> 
+</div>
+  
+ 
 
 
 

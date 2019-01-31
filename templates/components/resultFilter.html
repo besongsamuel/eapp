@@ -52,13 +52,12 @@
 
     <h4 style="margin-bottom : 30px; color :rgb(29, 29, 29);">Filtré par</h4>
 
-    <div class="selected-filters" style="margin-bottom: 50px; font-size : 13px;">
-        <div ng-repeat="group in selectedItems">
+    <div class="selected-filters">
+        <div class="my-3" ng-repeat="group in selectedItems">
             <p><b>{{group.name | titlecase}}</b></p>
             <md-divider></md-divider>
             <p style="color :rgb(134, 0, 0)" ng-repeat="item in group.items">&nbsp;&nbsp;&nbsp;&nbsp;<span><a href ng-click="removeFromFilter(item)">×</a></span>&nbsp;&nbsp;{{getDisplayName(item.name) | titlecase}}</p>
         </div>
-        
     </div>
 
     <settings-item ng-repeat="setting in settings" settings-object="setting.values" ready="$ctrl.ready" name="{{setting.setting.caption}}" on-change="$ctrl.change(item)" ></settings-item>

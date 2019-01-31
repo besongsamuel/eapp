@@ -51,7 +51,7 @@
 
                                 <md-divider></md-divider>
 
-                                <div class="" ng-show="departmentStore.fullName">
+                                <div ng-show="departmentStore.fullName">
                                     <img alt="{{ product.name }}" ng-src="{{departmentStore.image}}" style="height : 44px;" />
                                     <b> <a href ng-click="InitMap($event, departmentStore)">{{departmentStore.fullName}}, {{departmentStore.distanceText}} en voiture (environs {{departmentStore.timeText}} )</a></b>
                                 </div>
@@ -66,12 +66,10 @@
 
                             <div class="row layout-padding" id="my_cart">
 
-                                <div ng-repeat="category in departmentStore.categories">
+                                <div class="w-100" ng-repeat="category in departmentStore.categories">
 
-                                    <div class="row">
-
+                                    <div class="row px-5">
                                         <p class="category-name"><b> - {{category.name | uppercase}} - </b></p>
-
                                     </div>
 
                                     <div ng-repeat="item in category.products">

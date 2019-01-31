@@ -10,7 +10,8 @@
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyBdUBJq3Y93iEd29Q6GAK5SHQJniqZiHu0"></script>
     <!-- Latest jQuery form server -->
     
-    <script src="<?php echo CONNECTION_TYPE; ?>://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src="<?php echo base_url("node_modules/bootstrap/dist/js/bootstrap.js")?>"></script>
+
     <script src="<?php echo base_url("assets/js/bootstrap-slider.min.js")?>"></script>
     <script src="<?php echo base_url("assets/js/jquery.sticky.js")?>"></script>
     <script src="<?php echo base_url("assets/js/jquery.easing.1.3.min.js")?>"></script>

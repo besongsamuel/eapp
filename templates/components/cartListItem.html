@@ -1,77 +1,89 @@
+<div class="container-fluid">
+    <div class="row">
 
-
-<div class="row">
-
-    <div class="col-sm-12 col-md-1"><a title="Remove this item" class="remove" style="vertical-align: middle;" href ng-click="$ctrl.delete()">×</a> </div>
-    
-    <!-- Retailer Image -->
-    <div class="col-sm-12 col-md-2 cart-item-container image-container" ng-show="$ctrl.viewImage">
-        <a href><img alt="poster_1_up" ng-src="{{$ctrl.item.store_product.retailer.image}}"></a>
-    </div>
-    
-    <!-- Image -->
-    <div class="col-sm-12 col-md-2 cart-item-container image-container">
-        <a href ng-click="$ctrl.viewProduct($ctrl.item.store_product.id, $event)"><img alt="poster_1_up" ng-src="{{$ctrl.item.store_product.product.image}}"></a>
-        <div style="margin-top : 15px;" ng-show="$ctrl.isUserLogged">
+        <div class="col-1 mx-0"><a title="Remove this item" class="remove" style="vertical-align: middle;" href ng-click="$ctrl.delete()">×</a>
         </div>
-    </div>
-    
-    <!-- Details -->
-    <div ng-class="$ctrl.viewImage ? 'col-sm-12 col-md-4' : 'col-sm-12 col-md-6'">
 
-        <div class="row cart-item-container">
+        <!-- Retailer Image -->
+        <div class="col-md-1 mx-0 col-sm-12 cart-item-container image-container my-2" ng-show="$ctrl.viewImage">
+            <a href><img alt="poster_1_up" ng-src="{{$ctrl.item.store_product.retailer.image}}"></a>
+        </div>
 
-            <p>
-                <b>
-                    <a href ng-click="$ctrl.viewProduct($ctrl.item.store_product.id, $event)">
-                    <span ng-show="$ctrl.item.store_product.brand">{{$ctrl.item.store_product.brand.name | uppercase}}&nbsp;</span>
-                    {{$ctrl.item.store_product.product.name | uppercase}}
-                    <span ng-show="$ctrl.item.store_product.state">, {{$ctrl.item.store_product.state}}</span>
-                    &nbsp;({{$ctrl.item.store_product.format}}<span ng-show="$ctrl.item.store_product.unit">&nbsp;{{$ctrl.item.store_product.unit.name}}</span>)
-                    </a>
-                </b>
-            </p>
-            
-            <p ng-show="$ctrl.item.store_product.size">{{$ctrl.item.store_product.size}}</p>
-            
-            <div ng-show="$ctrl.iscartview">
-                <p ng-show="$ctrl.item.different_store_products.length !== 0">{{$ctrl.item.store_product.retailer.name}} | <a href ng-click="$ctrl.changeProductStore($event, $ctrl.item)">Changer Marchand</a></p>
+        <!-- Image -->
+        <div class="col-md-2 mx-0 col-sm-12 cart-item-container image-container align-self-middle my-2">
+            <a href ng-click="$ctrl.viewProduct($ctrl.item.store_product.id, $event)"><img alt="poster_1_up" ng-src="{{$ctrl.item.store_product.product.image}}"></a>
+            <div style="margin-top : 15px;" ng-show="$ctrl.isUserLogged">
             </div>
-            <p>
-                <span ng-hide="$ctrl.item.different_format_products.length === 0">
-                   | <a href ng-click="$ctrl.changeProductFormat($event, $ctrl.item)">Changer Format</a>
-                </span>
-            </p>
+        </div>
 
-            <p  ng-show="$ctrl.item.store_product.price > 0">
-                <b>
-                    <span class="amount" style="font-size : 15px;">
-                        {{$ctrl.item.store_product.price | number: 2}} C $
-                    </span> 
-                    <span class="badge md-primary" ng-show="$ctrl.getCartItemRebate($ctrl.item) > 0">
-                        Optimisé</span> 
-                </b>
-            </p>
+        <!-- Details -->
+        <div class="col-md-5 mx-0 col-sm-12 my-2">
+
+            <div class="h-100 row align-items-center">
+                <div class="container">
+
+                    <div class="row">
+                        <b>
+                            <a href ng-click="$ctrl.viewProduct($ctrl.item.store_product.id, $event)">
+                                <span ng-show="$ctrl.item.store_product.brand">{{$ctrl.item.store_product.brand.name |
+                                    uppercase}}&nbsp;</span>
+                                {{$ctrl.item.store_product.product.name | uppercase}}
+                                <span ng-show="$ctrl.item.store_product.state">, {{$ctrl.item.store_product.state}}</span>
+                                &nbsp;({{$ctrl.item.store_product.format}}<span ng-show="$ctrl.item.store_product.unit">&nbsp;{{$ctrl.item.store_product.unit.name}}</span>)
+                            </a>
+                        </b>
+                    </div>
+
+                    <div class="row">
+                        <p ng-show="$ctrl.item.store_product.size">{{$ctrl.item.store_product.size}}</p>
+                    </div>
+
+
+                    <div class="row" ng-show="$ctrl.iscartview">
+                        <p ng-show="$ctrl.item.different_store_products.length !== 0">{{$ctrl.item.store_product.retailer.name}}&nbsp;
+                            | <a href ng-click="$ctrl.changeProductStore($event, $ctrl.item)">Changer Marchand&nbsp;</a></p>
+                        <span ng-hide="$ctrl.item.different_format_products.length === 0">
+                            | <a href ng-click="$ctrl.changeProductFormat($event, $ctrl.item)">Changer Format</a>
+                        </span>
+                    </div>
+
+
+                    <div class="row mt-2" ng-show="$ctrl.item.store_product.price > 0">
+                        <b>
+                            <span class="amount" style="font-size : 15px;">
+                                {{$ctrl.item.store_product.price | number: 2}} C $
+                            </span>
+                            <span class="badge md-primary" ng-show="$ctrl.getCartItemRebate($ctrl.item) > 0">
+                                Optimisé</span>
+                        </b>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-md-3 mx-0 col-sm-12 my-2">
+
+            <div class="h-100 row align-items-center justify-content-center">
+                <div class="container">
+
+                    <div class="row m-1 justify-content-center">
+                        <quantity-input quantity="$ctrl.item.quantity" on-change="$ctrl.updateQuantity(quantity)"></quantity-input>
+                        </quantity-input>
+                    </div>
+
+                    <div class="row justify-content-center">
+                        <p>Totale : <span style="font-size : 18px;"><b>{{$ctrl.item.store_product.price
+                                    * $ctrl.item.quantity | number : 2}} C $</b></span></p>
+                    </div>
+
+                    <div class="row justify-content-center">
+                        <add-to-list product='$ctrl.item.store_product.product' caption="Ajouter à liste"></add-to-list>
+                    </div>
+                </div>
+            </div>
 
         </div>
 
     </div>
-
-    <div class="col-sm-12 col-md-3">
-
-        <div class="row cart-item-container" style='margin : auto; padding : 2px;'>
-
-            <quantity-input quantity="$ctrl.item.quantity" on-change="$ctrl.updateQuantity(quantity)"></quantity-input></quantity-input>
-
-        </div>
-
-        <div class="row cart-item-container" style="padding : 2px;">
-            
-            <p style="text-align: right; margin-right: 10px;">Totale : <span style="font-size : 18px;"><b>{{$ctrl.item.store_product.price * $ctrl.item.quantity | number : 2}} C $</b></span></p>
-        </div>
-
-        <add-to-list style='text-align: center; margin-right: 10px;' class='pull-right' product='$ctrl.item.store_product.product' caption="Ajouter à liste"></add-to-list>
-
-    </div>
-
 </div>

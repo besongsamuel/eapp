@@ -5,7 +5,7 @@
 
 .choice-block
 {
-    width : 200px !important;
+    min-width : 250px !important;
     height: 200px !important;
     margin-top: 40px;
     background-color: #1abc9c;
@@ -21,17 +21,12 @@
     height: 120px;
     margin: auto;
     display: block;
-    -webkit-transition: all 1s ease;
-     -moz-transition: all 1s ease;
-       -o-transition: all 1s ease;
-      -ms-transition: all 1s ease;
-          transition: all 1s ease;
 }
 
-.choice-block img:hover 
+.choice-block h3:hover 
 {
-    width : 150px;
-    height: 150px;
+    color : lightgray !important;
+    text-decoration: underline;
 }
 
 h3

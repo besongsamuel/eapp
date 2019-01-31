@@ -37,12 +37,12 @@ $(document).ready(function()
         </div>
     </div>
     
-    <div class="container" ng-controller="TabsController">
+    <div class="container-fluid" ng-controller="TabsController">
         <div class="row profile">
             <div class="col-md-3">
                     <div class="profile-sidebar  border-shadow">
                         <!-- SIDEBAR USERPIC -->
-                        <div class="profile-userpic">
+                        <div class="profile-userpic row justify-content-center">
                             <img src="<?php echo base_url("/assets/img/icons8-customer-80.png"); ?>" class="img-responsive" alt="">
                         </div>
                         <!-- END SIDEBAR USERPIC -->
@@ -58,21 +58,21 @@ $(document).ready(function()
                         <!-- END SIDEBAR USER TITLE -->
                         <!-- SIDEBAR MENU -->
                         <div class="profile-usermenu">
-                            <ul class="nav">
-                                <li ng-class="{active : sessionData.accountMenuIndex == 1}">
-                                    <a ng-click="sessionData.accountMenuIndex = 1;" href><i class="glyphicon glyphicon-user"></i>informations utilisateur</a>
+                            <ul class="nav flex-column">
+                                <li class="nav-item" ng-class="{active : sessionData.accountMenuIndex == 1}">
+                                    <a class="nav-link" ng-click="sessionData.accountMenuIndex = 1;" href><i class="glyphicon glyphicon-user"></i>informations utilisateur</a>
                                 </li>
-                                <li ng-class="{active : sessionData.accountMenuIndex == 2}">
-                                    <a ng-click="sessionData.accountMenuIndex = 2;" href><i class="glyphicon glyphicon-lock"></i>Securité</a>
+                                <li class="nav-item" ng-class="{active : sessionData.accountMenuIndex == 2}">
+                                    <a class="nav-link" ng-click="sessionData.accountMenuIndex = 2;" href><i class="glyphicon glyphicon-lock"></i>Securité</a>
                                 </li>
-                                <li ng-class="{active : sessionData.accountMenuIndex == 3}">
-                                    <a ng-click="sessionData.accountMenuIndex = 3;" href><i class="glyphicon glyphicon-stats"></i>Historique de mes économies</a>
+                                <li class="nav-item" ng-class="{active : sessionData.accountMenuIndex == 3}">
+                                    <a class="nav-link" ng-click="sessionData.accountMenuIndex = 3;" href><i class="glyphicon glyphicon-stats"></i>Historique de mes économies</a>
                                 </li>
-                                <li ng-class="{active : sessionData.accountMenuIndex == 4}">
-                                    <a ng-click="sessionData.accountMenuIndex = 4;" href><i class="glyphicon glyphicon-list"></i>Vos liste 'd'épicerie</a>
+                                <li class="nav-item" ng-class="{active : sessionData.accountMenuIndex == 4}">
+                                    <a class="nav-link" ng-click="sessionData.accountMenuIndex = 4;" href><i class="glyphicon glyphicon-list"></i>Vos liste 'd'épicerie</a>
                                 </li>
-                                <li ng-class="{active : sessionData.accountMenuIndex == 5}">
-                                    <a ng-click="sessionData.accountMenuIndex = 5;" href><i class="glyphicon glyphicon-heart"></i>Magasins préférés</a>
+                                <li class="nav-item" ng-class="{active : sessionData.accountMenuIndex == 5}">
+                                    <a class="nav-link" ng-click="sessionData.accountMenuIndex = 5;" href><i class="glyphicon glyphicon-heart"></i>Magasins préférés</a>
                                 </li>
                             </ul>
                         </div>
@@ -80,27 +80,26 @@ $(document).ready(function()
                     </div>
 		</div>
             <div class="col-md-9 profile-content border-shadow">
-                <div class="">
+                <div class="p-5">
                     
                     <div>
-                        
                         
                         <!-- Change personal info -->    
                         <div layout-padding ng-if="sessionData.accountMenuIndex == 1">
                             
-                            <h2 otiprix-title>Informations Utilisateur</h2>
+                            <h2 otiprix-title class="text-center">Informations Utilisateur</h2>
                             
                             <form  ng-controller="AccountController" name="userInfoForm" novalidate ng-submit="updateProfile()">
 
                                 <!-- First name -->
-                                <md-input-container class="md-block col-md-6 col-sm-12" flex-gt-sm>
+                                <md-input-container class="md-block" flex-gt-sm>
                                     <label>Prénom</label>
                                     <md-icon class="md-primary"><i class="material-icons">person</i></md-icon>
                                     <input name="profile[firstname]" ng-model="loggedUserClone.profile.firstname" />
                                 </md-input-container>
                                 
                                 <!-- Firstname -->
-                                <md-input-container class="md-block col-md-6 col-sm-12" flex-gt-sm>
+                                <md-input-container class="md-block" flex-gt-sm>
                                     <label>Nom</label>
                                     <md-icon class="md-primary"><i class="material-icons">person</i></md-icon>
                                     <input required name="profile[lastname]" ng-model="loggedUserClone.profile.lastname" />
@@ -110,7 +109,7 @@ $(document).ready(function()
                                 </md-input-container>
 
                                 <!-- User Address -->    
-                                <md-input-container class="md-block col-md-12" flex-gt-sm>
+                                <md-input-container class="md-block" flex-gt-sm>
 
                                     <input 
                                         vs-google-autocomplete
@@ -129,7 +128,7 @@ $(document).ready(function()
                                 </md-input-container>
                                 
                                 <!-- City -->
-                                <md-input-container class="md-block col-md-6 col-sm-12" flex-gt-sm>
+                                <md-input-container class="md-block" flex-gt-sm>
                                     <label>Ville</label>
                                     <md-icon class="md-primary"><i class="material-icons">place</i></md-icon>
                                     <input required name="profile[city]" ng-model="loggedUserClone.profile.city" />
@@ -139,7 +138,7 @@ $(document).ready(function()
                                 </md-input-container>
 
                                 <!-- State -->
-                                <md-input-container class="md-block col-md-6" flex-gt-sm>
+                                <md-input-container class="md-block" flex-gt-sm>
                                     <label>Province</label>
                                     <input required name="state" ng-model="loggedUserClone.profile.state" />
                                     <div ng-messages="signupForm.state.$error">
@@ -148,7 +147,7 @@ $(document).ready(function()
                                 </md-input-container>
                                 
                                  <!-- Country -->
-                                <md-input-container class="md-block col-md-6" flex-gt-sm>
+                                <md-input-container class="md-block" flex-gt-sm>
                                     <label>Pays</label>
                                     <input required name="country" ng-model="loggedUserClone.profile.country" />
                                     <div ng-messages="signupForm.country.$error">
@@ -157,7 +156,7 @@ $(document).ready(function()
                                 </md-input-container>
 
                                 <!-- Postal Code -->
-                                <md-input-container class="md-block col-md-6 col-sm-12" flex-gt-sm>
+                                <md-input-container class="md-block" flex-gt-sm>
                                     <label>Code Postal</label>
                                     <md-icon class="md-primary"><i class="material-icons">place</i></md-icon>
                                     <input required name="profile[postcode]" ng-model="loggedUserClone.profile.postcode" />
@@ -182,16 +181,16 @@ $(document).ready(function()
                         </div>
 
                         <!-- Security -->
-                        <div ng-if="sessionData.accountMenuIndex == 2" layout-padding ng-controller="AccountController">
+                        <div class="p-5" ng-if="sessionData.accountMenuIndex == 2" ng-controller="AccountController">
 
                             <!-- Change Password -->
                             <div class="row">
                                 
-                                <h2 otiprix-title>Changer votre mot de passe</h2>
+                                <h2 otiprix-title class="text-center">Changer votre mot de passe</h2>
 
-                                <form name="userSecurityForm" novalidate ng-submit="changePassword()">
+                                <form class="w-100" name="userSecurityForm" novalidate ng-submit="changePassword()">
 
-                                    <md-input-container class="md-block col-md-4 col-sm-12" flex-gt-sm>
+                                    <md-input-container class="md-block" flex-gt-sm>
                                         <label>Ancien mot de passe</label>
                                         <md-icon class="md-primary"><i class="material-icons">lock</i></md-icon>
                                         <input style="border-left : none; border-right : none;border-top : none;" type="password" required name="old_password" ng-model="old_password" />
@@ -200,7 +199,7 @@ $(document).ready(function()
                                         </div>
                                     </md-input-container>
 
-                                    <md-input-container class="md-block col-md-4 col-sm-12" flex-gt-sm>
+                                    <md-input-container class="md-block" flex-gt-sm>
                                         <label>Nouveau mot de passe</label>
                                         <md-icon class="md-primary"><i class="material-icons">lock</i></md-icon>
                                         <input style="border-left : none; border-right : none;border-top : none;" type="password" required name="password" ng-model="password" equals="{{confirm_password}}" ng-pattern="/^(?=.*?[0-9])(?=.*?[a-z])(?=.*?[A-Z]).{8,}/" />
@@ -211,7 +210,7 @@ $(document).ready(function()
                                         </div>
                                     </md-input-container>
 
-                                    <md-input-container class="md-block col-md-4 col-sm-12" flex-gt-sm>
+                                    <md-input-container class="md-block " flex-gt-sm>
                                         <label>Confirmer mot de passe</label>
                                         <md-icon class="md-primary"><i class="material-icons">lock</i></md-icon>
                                         <input style="border-left : none; border-right : none;border-top : none;" type="password" required name="confirm_password" ng-model="confirm_password" equals="{{password}}" />
@@ -235,8 +234,6 @@ $(document).ready(function()
                                         </md-button>
                                     </div>
 
-
-
                                 </form>
                                 
                             </div>
@@ -244,7 +241,7 @@ $(document).ready(function()
                             <!-- Change security question -->
                             <div class="row">
                                 
-                                <div ng-if="sessionData.accountMenuIndex == 2" layout-padding>
+                                <div class="w-100" ng-if="sessionData.accountMenuIndex == 2" layout-padding>
 
                                     <div class="col-sm-12">
                                         <p otiprix-text style="text-align: center; margin: 5px;"><b>Changer la réponse et la question de sécurité</b></p>
@@ -351,7 +348,7 @@ $(document).ready(function()
                         <!-- History -->
                         <div ng-if="sessionData.accountMenuIndex == 3">
                             
-                            <h2 otiprix-title>Historique de mes économies</h2>
+                            <h2 otiprix-title  class="text-center">Historique de mes économies</h2>
                             
                             <div class="md-padding">
                                 <md-list ng-controller="AccountOptimizationController">
@@ -370,7 +367,7 @@ $(document).ready(function()
                         
                         <!-- Grocery List -->
                         <div ng-if="sessionData.accountMenuIndex == 4">
-                            <h2 otiprix-title>Vos liste d'épicerie</h2>
+                            <h2 otiprix-title  class="text-center">Vos liste d'épicerie</h2>
                             <div  ng-controller="UserListController" id="groceryListContainer" ng-include="'<?php echo base_url(); ?>/assets/templates/user_grocery_list.html'"></div>
                         </div>
                         

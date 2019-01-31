@@ -50,6 +50,40 @@ body
     top: 0px !important;
 }
 
+.nav-item {
+    font-family: Century Gothic;
+    margin: 0 auto;
+    text-align: center;
+}
+.nav-item a {
+    color: #FFF;
+    text-decoration: none;
+    font: 14px Century Gothic;
+    position: relative;
+    z-index: 0;
+}
+
+nav a, nav.dropdown-item
+{
+    color : white;
+}
+
+nav.dropdown-menu a:hover
+{
+    color: #17a78b !important;
+}
+
+nav a:hover
+{
+    text-decoration: underline !important;
+    color: white;
+}
+
+nav.dropdown-menu
+{
+    font-size: 14px!important;
+}
+
 .eapp-container
 {
     padding-left : 20px;
@@ -1200,110 +1234,6 @@ div.cart-collaterals ul.products li.product:hover .add_to_cart_button{background
 {
     opacity: .5;
 }
-
-/* LOGIN CSS END */
-
-
-
-/* NEW MWNU */
-
-.first-navbar
-{
-    background-color: white;
-    color: #666;
-}
-
-.top-navbar-element
-{
-    padding : 15px;
-}
-
-.navbar-nav>li>.dropdown-menu
-{
-    margin-top: 3px;
-}
-
-.navbar-padding
-{
-    padding-left: 20px;
-    padding-right: 20px;
-}
-
-.navbar, .dropdown-menu
-{
-    background:#1abc9c;
-}
-
-.nav>li>a, 
-.dropdown-menu>li>a:focus, 
-.dropdown-menu>li>a:hover, 
-.dropdown-menu>li>a,
-.dropdown-menu>li
-{
-  border-bottom: 3px solid transparent;
-}
-.nav>li>a:focus, 
-.nav>li>a:hover,
-.nav .open>a, 
-.nav .open>a:focus, 
-.nav .open>a:hover, 
-.dropdown-menu>li>a:focus, 
-.dropdown-menu>li>a:hover{
-  border-bottom: 3px solid transparent;
-  background: none;
-}
-.navbar a, 
-.dropdown-menu>li>a, 
-.dropdown-menu>li>a:focus, 
-.dropdown-menu>li>a:hover, 
-.navbar-toggle{
- color: #fff;
-}
-
-.dropdown-menu
-{
-    -webkit-box-shadow: none;
-    box-shadow:none;
-}
-
-.nav .open
-{
-    border-bottom: White 3px solid;
-}
-
-.menu li:hover:nth-child(8n+1), .nav li.active:nth-child(8n+1){
-  border-bottom: #C4E17F 3px solid;
-}
-.menu li:hover:nth-child(8n+2), .nav li.active:nth-child(8n+2){
-  border-bottom: #F7FDCA 3px solid;
-}
-.menu li:hover:nth-child(8n+3), .nav li.active:nth-child(8n+3){
-  border-bottom: #FECF71 3px solid;
-}
-.menu li:hover:nth-child(8n+4), .nav li.active:nth-child(8n+4){
-  border-bottom: #F0776C 3px solid;
-}
-.menu li:hover:nth-child(8n+5), .nav li.active:nth-child(8n+5){
-  border-bottom: #DB9DBE 3px solid;
-}
-.menu li:hover:nth-child(8n+6), .nav li.active:nth-child(8n+6){
-  border-bottom: #C49CDE 3px solid;
-}
-.menu li:hover:nth-child(8n+7), .nav li.active:nth-child(8n+7){
-  border-bottom: #669AE1 3px solid;
-}
-.menu li:hover:nth-child(8n+8), .nav li.active:nth-child(8n+8){
-  border-bottom: #62C2E4 3px solid;
-}
-
-.navbar-toggle .icon-bar{
-    color: #fff;
-    background: #fff;
-}
-
-/* NEW MENU END*/
-
-/* LOGO */
 
 .eapp-logo
 {

@@ -8,11 +8,10 @@
     <!-- Google Fonts -->
     <link rel="stylesheet" href="<?php echo CONNECTION_TYPE; ?>://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic">
     
-    <!-- Bootstrap -->
-    <link rel="stylesheet" href="<?php echo CONNECTION_TYPE; ?>://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <!-- Bootstrap -->    
+    <link rel="stylesheet" href="<?php echo base_url("node_modules/bootstrap/dist/css/bootstrap.css")?>">
 
     <!-- Optional theme -->
-    <link rel="stylesheet" href="<?php echo CONNECTION_TYPE; ?>://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
     <link rel="stylesheet" href="<?php echo base_url("assets/css/bootstrap-slider.css")?>">
     
     <!-- Font Awesome -->

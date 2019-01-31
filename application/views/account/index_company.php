@@ -50,7 +50,7 @@ $(document).ready(function()
             <div class="col-md-3">
                     <div class="profile-sidebar border-shadow">
                         <!-- SIDEBAR USERPIC -->
-                        <div class="profile-userpic" ng-controller="CompanyAccountController">
+                        <div class="profile-userpic row justify-content-center" ng-controller="CompanyAccountController">
                             <image-upload 
                                 image="storeLogo" 
                                 caption="Ajouter logo" 
@@ -82,24 +82,24 @@ $(document).ready(function()
                         <!-- END SIDEBAR BUTTONS -->
                         <!-- SIDEBAR MENU -->
                         <div class="profile-usermenu">
-                            <ul class="nav">
-                                <li ng-class="{active : sessionData.accountMenuIndex == 1}">
-                                    <a ng-click="sessionData.accountMenuIndex = 1;" href><i class="glyphicon glyphicon-user"></i>informations utilisateur</a>
+                            <ul class="nav flex-column">
+                                <li class="nav-item" ng-class="{active : sessionData.accountMenuIndex == 1}">
+                                    <a  class="nav-link" ng-click="sessionData.accountMenuIndex = 1;" href><i class="glyphicon glyphicon-user"></i>Informations utilisateur</a>
                                 </li>
-                                <li ng-class="{active : sessionData.accountMenuIndex == 2}">
-                                    <a ng-click="sessionData.accountMenuIndex = 2;" href><i class="glyphicon glyphicon-lock"></i>Securité</a>
+                                <li class="nav-item" ng-class="{active : sessionData.accountMenuIndex == 2}">
+                                    <a  class="nav-link" ng-click="sessionData.accountMenuIndex = 2;" href><i class="glyphicon glyphicon-lock"></i>Securité</a>
                                 </li>
-                                <li ng-class="{active : sessionData.accountMenuIndex == 3}">
-                                    <a ng-click="sessionData.accountMenuIndex = 3;" href><i class="glyphicon glyphicon-stats"></i>Statistiques</a>
+                                <li class="nav-item" ng-class="{active : sessionData.accountMenuIndex == 3}">
+                                    <a class="nav-link" ng-click="sessionData.accountMenuIndex = 3;" href><i class="glyphicon glyphicon-stats"></i>Statistiques</a>
                                 </li>
-                                <li ng-class="{active : sessionData.accountMenuIndex == 4}">
-                                    <a ng-click="sessionData.accountMenuIndex = 4;" href><i class="glyphicon glyphicon-list"></i>Vos Produits</a>
+                                <li class="nav-item" ng-class="{active : sessionData.accountMenuIndex == 4}">
+                                    <a class="nav-link" ng-click="sessionData.accountMenuIndex = 4;" href><i class="glyphicon glyphicon-list"></i>Vos Produits</a>
                                 </li>
-                                <li ng-class="{active : sessionData.accountMenuIndex == 5}">
-                                    <a ng-click="sessionData.accountMenuIndex = 5;" href><i class="glyphicon glyphicon-heart"></i>Vos Succursales</a>
+                                <li class="nav-item" ng-class="{active : sessionData.accountMenuIndex == 5}">
+                                    <a class="nav-link" ng-click="sessionData.accountMenuIndex = 5;" href><i class="glyphicon glyphicon-heart"></i>Vos Succursales</a>
                                 </li>
-                                <li ng-class="{active : sessionData.accountMenuIndex == 6}">
-                                    <a ng-click="sessionData.accountMenuIndex = 6;" href><i class="glyphicon glyphicon-heart"></i>Informations Entreprise</a>
+                                <li class="nav-item" ng-class="{active : sessionData.accountMenuIndex == 6}">
+                                    <a class="nav-link" ng-click="sessionData.accountMenuIndex = 6;" href><i class="glyphicon glyphicon-heart"></i>Informations Entreprise</a>
                                 </li>
                             </ul>
                         </div>
@@ -116,19 +116,19 @@ $(document).ready(function()
                         
                         <form name="userInfoForm" novalidate ng-submit="updateProfile()">
 
-                            <md-input-container class="md-block col-md-12 col-sm-12" flex-gt-sm>
+                            <md-input-container class="md-block" flex-gt-sm>
                                 <label>Email</label>
                                 <md-icon class="md-primary"><i class="material-icons">email</i></md-icon>
                                 <input disabled="true" style="border-left: none; border-top: none; border-right: none;" type="email" name="email" ng-model="loggedUserClone.email" />
                             </md-input-container>
                                 <!-- -->
-                            <md-input-container class="md-block col-md-6 col-sm-12" flex-gt-sm>
+                            <md-input-container class="md-block" flex-gt-sm>
                                 <label>Prénom</label>
                                 <md-icon class="md-primary"><i class="material-icons">person</i></md-icon>
                                 <input name="profile[firstname]" ng-model="loggedUserClone.profile.firstname" />
                             </md-input-container>
                                 <!-- -->
-                            <md-input-container class="md-block col-md-6 col-sm-12" flex-gt-sm>
+                            <md-input-container class="md-block" flex-gt-sm>
                                 <label>Nom</label>
                                 <md-icon class="md-primary"><i class="material-icons">person</i></md-icon>
                                 <input required name="profile[lastname]" ng-model="loggedUserClone.profile.lastname" />
@@ -138,7 +138,7 @@ $(document).ready(function()
                             </md-input-container>
 
                             <!-- User Address -->    
-                            <md-input-container class="md-block col-md-12" flex-gt-sm>
+                            <md-input-container class="md-block" flex-gt-sm>
 
                                 <input 
                                     vs-google-autocomplete
@@ -157,7 +157,7 @@ $(document).ready(function()
                             </md-input-container>
 
                             <!-- City -->
-                            <md-input-container class="md-block col-md-6 col-sm-12" flex-gt-sm>
+                            <md-input-container class="md-block" flex-gt-sm>
                                 <label>Ville</label>
                                 <md-icon class="md-primary"><i class="material-icons">place</i></md-icon>
                                 <input required name="profile[city]" ng-model="loggedUserClone.profile.city" />
@@ -167,7 +167,7 @@ $(document).ready(function()
                             </md-input-container>
 
                             <!-- State -->
-                            <md-input-container class="md-block col-md-6" flex-gt-sm>
+                            <md-input-container class="md-block" flex-gt-sm>
                                 <label>Province</label>
                                 <input required name="state" ng-model="loggedUserClone.profile.state" />
                                 <div ng-messages="signupForm.state.$error">
@@ -176,7 +176,7 @@ $(document).ready(function()
                             </md-input-container>
 
                             <!-- Country -->
-                            <md-input-container class="md-block col-md-6" flex-gt-sm>
+                            <md-input-container class="md-block" flex-gt-sm>
                                 <label>Pays</label>
                                 <input required name="country" ng-model="loggedUserClone.profile.country" />
                                 <div ng-messages="signupForm.country.$error">
@@ -185,7 +185,7 @@ $(document).ready(function()
                             </md-input-container>
 
                             <!-- Postal Code -->
-                            <md-input-container class="md-block col-md-6 col-sm-12" flex-gt-sm>
+                            <md-input-container class="md-block" flex-gt-sm>
                                 <label>Code Postal</label>
                                 <md-icon class="md-primary"><i class="material-icons">place</i></md-icon>
                                 <input required name="profile[postcode]" ng-model="loggedUserClone.profile.postcode" />
@@ -214,13 +214,14 @@ $(document).ready(function()
                 <div ng-if="sessionData.accountMenuIndex == 2" layout-padding ng-controller="AccountController">
 
                     <!-- Change Password -->
-                    <div class="row">
+                    <div class="container">
 
-                        <h2 otiprix-title>Changer votre mot de passe</h2>
+                        
+                        <h2 otiprix-title class="text-center">Changer votre mot de passe</h2>
 
                         <form name="userSecurityForm" novalidate ng-submit="changePassword()">
 
-                            <md-input-container class="md-block col-md-4 col-sm-12" flex-gt-sm>
+                            <md-input-container class="md-block" flex-gt-sm>
                                 <label>Ancien mot de passe</label>
                                 <md-icon class="md-primary"><i class="material-icons">lock</i></md-icon>
                                 <input style="border-left : none; border-right : none;border-top : none;" type="password" required name="old_password" ng-model="old_password" />
@@ -229,7 +230,7 @@ $(document).ready(function()
                                 </div>
                             </md-input-container>
 
-                            <md-input-container class="md-block col-md-4 col-sm-12" flex-gt-sm>
+                            <md-input-container class="md-block" flex-gt-sm>
                                 <label>Nouveau mot de passe</label>
                                 <md-icon class="md-primary"><i class="material-icons">lock</i></md-icon>
                                 <input style="border-left : none; border-right : none;border-top : none;" type="password" required name="password" ng-model="password" equals="{{confirm_password}}" ng-pattern="/^(?=.*?[0-9])(?=.*?[a-z])(?=.*?[A-Z]).{8,}/" />
@@ -240,7 +241,7 @@ $(document).ready(function()
                                 </div>
                             </md-input-container>
 
-                            <md-input-container class="md-block col-md-4 col-sm-12" flex-gt-sm>
+                            <md-input-container class="md-block" flex-gt-sm>
                                 <label>Confirmer mot de passe</label>
                                 <md-icon class="md-primary"><i class="material-icons">lock</i></md-icon>
                                 <input style="border-left : none; border-right : none;border-top : none;" type="password" required name="confirm_password" ng-model="confirm_password" equals="{{password}}" />
@@ -263,8 +264,6 @@ $(document).ready(function()
                                     Valider
                                 </md-button>
                             </div>
-
-
 
                         </form>
 
@@ -382,7 +381,7 @@ $(document).ready(function()
                     
                     <h2 otiprix-title>Statistiques</h2>
                     
-                    <div ng-controller="CompanyStatsController as ctrl">
+                    <div class="container-fluid" ng-controller="CompanyStatsController as ctrl">
 
                         <div layout="row" layout-align='center center'>
                             <md-radio-group ng-change="ctrl.periodChanged()" ng-model="period" >
@@ -399,57 +398,132 @@ $(document).ready(function()
                             </div>
                         </div>
 
-                        <div class="row" style="margin-top: 30px;">
+                        <div class="row">
 
-                            <div class="panel-group" role="tablist" id="accordion" aria-multiselectable="true">
+                            <div class="accordion w-100">
+                                
 
-                                <div id="origin-products" class="panel panel-default">
+                                    <div id="origin-products" class="card">
 
-                                    <div class="panel-heading" role="tab" id="headingOne">
-                                        <h4 class="panel-title">
-                                            <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                                Statistiques sur l'origine
-                                            </a>
-                                        </h4>
+                                        <div class="card-header" id="headingOne">
+                                            <h2 class="mb-0">
+                                                <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                                    Statistiques sur l'origine
+                                                </button>
+                                            </h2>
+                                        </div>
+
+                                        <div id="collapseOne" class="collapse show" role="tabpanel" aria-labelledby="headingOne">
+
+                                            <div class="card-body">
+
+                                                <top-products  class="col-sm-12 col-md-6"
+                                                    ng-if="stats.top_viewed_product_states && stats.top_viewed_product_states.length > 0" 
+                                                    data="stats.top_viewed_product_states" 
+                                                    count-caption="Visites :"
+                                                    caption="Origine des produits visités par les utilisateurs"></top-products>
+
+                                                <top-products  class="col-sm-12 col-md-6"
+                                                    ng-if="stats.top_cart_product_states && stats.top_cart_product_states.length > 0" 
+                                                    data="stats.top_cart_product_states" 
+                                                    count-caption="Nombre de fois ajoutées au panier :"
+                                                    caption="Origine des produits ajoutés au panier par les utilisateurs"></top-products>
+
+                                                <span class="col-sm-12">{{stats.get_percentage_bio_added_to_cart}} % de produits  bio sont ajoutées au panier</span>
+                                                <div class="col-sm-12">
+                                                    <div class="progress">
+                                                        <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40"
+                                                        aria-valuemin="0" aria-valuemax="100" style="width:{{stats.get_percentage_bio_added_to_cart}}%">
+                                                            {{stats.get_percentage_bio_added_to_cart}} %
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <span class="col-sm-12">
+                                                    {{stats.get_percentage_bio_viewed}} % de produits  bio sont visitées
+                                                </span>
+
+                                                <div class="col-sm-12">
+                                                    <div class="progress">
+                                                        <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="50"
+                                                            aria-valuemin="0" aria-valuemax="100" style="width:{{stats.get_percentage_bio_viewed}}%">
+                                                            {{stats.get_percentage_bio_viewed}} %
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+
                                     </div>
 
-                                    <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+                                    <div class="card">
 
-                                        <div class="panel-body">
+                                        <div class="card-header" id="headingTwo">
+                                            <h2 class="mb-0">
+                                                <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                                                    Statistiques sur les produits
+                                                </button>
+                                            </h2>
+                                        </div>
 
-                                            <top-products  class="col-sm-12 col-md-6"
-                                                ng-if="stats.top_viewed_product_states && stats.top_viewed_product_states.length > 0" 
-                                                data="stats.top_viewed_product_states" 
+                                        <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo">
+
+                                            <div class="card-body">
+                                                <ui-carousel
+                                                    slides-to-show="2"
+                                                    slides-to-scroll="2"
+                                                    slides="productStats"
+                                                      initial-slide="1"
+                                                    dots="true">
+
+                                                    <carousel-item>
+                                                        <top-products
+                                                           data="item.data" 
+                                                           caption2="item.caption">
+                                                       </top-products>
+                                                    </carousel-item>
+                                                </ui-carousel>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="card">
+
+                                        <div class="card-header" id="headingThree">
+                                            <h2 class="mb-0">
+                                                <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
+                                                    Statistiques des magasins
+                                                </button>
+                                            </h2>
+                                        </div>
+
+                                        <div id="collapseThree" class="collapse" aria-labelledby="headingThree">
+
+                                            <div class="card-body">
+
+                                                <div ng-if="stats.most_visited_store">
+
+                                                    <span class="col-sm-12">
+                                                        <b>{{stats.most_visited_store.retailer.name}}</b> entre environs {{stats.most_visited_store.avg}} produits par mois en moyenne.
+                                                    </span>
+
+                                                </div>
+
+                                                <top-products  class="col-sm-12 col-md-6"
+                                                ng-if="stats.get_top_visited_chains && stats.get_top_visited_chains.length > 0" 
+                                                data="stats.get_top_visited_chains" 
                                                 count-caption="Visites :"
-                                                caption="Origine des produits visités par les utilisateurs"></top-products>
+                                                caption="Les magasins les plus visitées"></top-products>
 
-                                            <top-products  class="col-sm-12 col-md-6"
-                                                ng-if="stats.top_cart_product_states && stats.top_cart_product_states.length > 0" 
-                                                data="stats.top_cart_product_states" 
-                                                count-caption="Nombre de fois ajoutées au panier :"
-                                                caption="Origine des produits ajoutés au panier par les utilisateurs"></top-products>
 
-                                            <span class="col-sm-12">{{stats.get_percentage_bio_added_to_cart}} % de produits  bio sont ajoutées au panier</span>
-                                            <div class="col-sm-12">
-                                                <div class="progress">
-                                                    <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40"
-                                                    aria-valuemin="0" aria-valuemax="100" style="width:{{stats.get_percentage_bio_added_to_cart}}%">
-                                                        {{stats.get_percentage_bio_added_to_cart}} %
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <span class="col-sm-12">
-                                                {{stats.get_percentage_bio_viewed}} % de produits  bio sont visitées
-                                            </span>
-
-                                            <div class="col-sm-12">
-                                                <div class="progress">
-                                                    <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="50"
-                                                        aria-valuemin="0" aria-valuemax="100" style="width:{{stats.get_percentage_bio_viewed}}%">
-                                                        {{stats.get_percentage_bio_viewed}} %
-                                                    </div>
-                                                </div>
+                                                <top-products  class="col-sm-12 col-md-6"
+                                                ng-if="stats.top_optimized_chains && stats.top_optimized_chains.length > 0" 
+                                                data="stats.top_optimized_chains" 
+                                                count-caption="Produits optimisées :"
+                                                caption="Les magasins les plus optimisées"></top-products>
 
                                             </div>
 
@@ -457,142 +531,70 @@ $(document).ready(function()
 
                                     </div>
 
-                                </div>
+                                    <div class="card">
 
-                                <div class="panel panel-default">
-
-                                    <div class="panel-heading" role="tab" id="headingTwo">
-                                        <h4 class="panel-title">
-                                            <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-                                                Statistiques sur les produits
-                                            </a>
-                                        </h4>
-                                    </div>
-
-                                    <div id="collapseTwo" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingTwo">
-
-                                        <div class="panel-body">
-                                            <ui-carousel
-                                                slides-to-show="2"
-                                                slides-to-scroll="2"
-                                                slides="productStats"
-                                                  initial-slide="1"
-                                                dots="true">
-
-                                                <carousel-item>
-                                                    <top-products
-                                                       data="item.data" 
-                                                       caption2="item.caption">
-                                                   </top-products>
-                                                </carousel-item>
-                                            </ui-carousel>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="panel panel-default">
-
-                                    <div class="panel-heading" role="tab" id="headingThree">
-                                        <h4 class="panel-title">
-                                            <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
-                                                Statistiques des magasins
-                                            </a>
-                                        </h4>
-                                    </div>
-
-                                    <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
-
-                                        <div class="panel-body">
-
-                                            <div ng-if="stats.most_visited_store">
-
-                                                <span class="col-sm-12">
-                                                    <b>{{stats.most_visited_store.retailer.name}}</b> entre environs {{stats.most_visited_store.avg}} produits par mois en moyenne.
-                                                </span>
-
-                                            </div>
-
-                                            <top-products  class="col-sm-12 col-md-6"
-                                            ng-if="stats.get_top_visited_chains && stats.get_top_visited_chains.length > 0" 
-                                            data="stats.get_top_visited_chains" 
-                                            count-caption="Visites :"
-                                            caption="Les magasins les plus visitées"></top-products>
-
-
-                                            <top-products  class="col-sm-12 col-md-6"
-                                            ng-if="stats.top_optimized_chains && stats.top_optimized_chains.length > 0" 
-                                            data="stats.top_optimized_chains" 
-                                            count-caption="Produits optimisées :"
-                                            caption="Les magasins les plus optimisées"></top-products>
-
+                                        <div class="card-header" id="headingFour">
+                                            <h2 class="mb-0">
+                                                <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseFour" aria-expanded="true" aria-controls="collapseFour">
+                                                    Statistiques de mon Épicerie
+                                                </button>
+                                            </h2>
                                         </div>
 
-                                    </div>
+                                        <div id="collapseFour" class="collapse" aria-labelledby="headingFour">
 
-                                </div>
+                                            <div class="card-body">
 
-                                <div class="panel panel-default">
+                                                <div ng-if="stats.get_store_userlist_info">
 
-                                    <div class="panel-heading" role="tab" id="headingFour">
-                                        <h4 class="panel-title">
-                                            <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFour" aria-expanded="true" aria-controls="collapseFour">
-                                                Statistiques de mon Épicerie
-                                            </a>
-                                        </h4>
-                                    </div>
+                                                    <span class="col-sm-12">
+                                                        {{stats.get_store_userlist_info.users}} % des utilisateurs m'ont comme magasin préféré.
+                                                    </span>
 
-                                    <div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour">
-
-                                        <div class="panel-body">
-
-                                            <div ng-if="stats.get_store_userlist_info">
-
-                                                <span class="col-sm-12">
-                                                    {{stats.get_store_userlist_info.users}} % des utilisateurs m'ont comme magasin préféré.
-                                                </span>
-
-                                                <div class="col-sm-12">
-                                                    <div class="progress">
-                                                        <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="50"
-                                                            aria-valuemin="0" aria-valuemax="100" style="width:{{stats.get_store_userlist_info.users}}%">
-                                                            {{stats.get_store_userlist_info.users}} %
+                                                    <div class="col-sm-12">
+                                                        <div class="progress">
+                                                            <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="50"
+                                                                aria-valuemin="0" aria-valuemax="100" style="width:{{stats.get_store_userlist_info.users}}%">
+                                                                {{stats.get_store_userlist_info.users}} %
+                                                            </div>
                                                         </div>
+
                                                     </div>
 
                                                 </div>
 
-                                            </div>
+                                                <div ng-if="stats.get_store_visitors_info">
 
-                                            <div ng-if="stats.get_store_visitors_info">
+                                                    <span class="col-sm-12">
+                                                        {{stats.get_store_visitors_info.visits}}% des utilisateurs visitent votre magasin à une distance d'environ {{stats.get_store_visitors_info.avg_distance}} km.
+                                                    </span>
 
-                                                <span class="col-sm-12">
-                                                    {{stats.get_store_visitors_info.visits}}% des utilisateurs visitent votre magasin à une distance d'environ {{stats.get_store_visitors_info.avg_distance}} km.
-                                                </span>
-
-                                                <div class="col-sm-12">
-                                                    <div class="progress">
-                                                        <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="50"
-                                                            aria-valuemin="0" aria-valuemax="100" style="width:{{stats.get_store_visitors_info.visits}}%">
-                                                            {{stats.get_store_visitors_info.visits}} %
+                                                    <div class="col-sm-12">
+                                                        <div class="progress">
+                                                            <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="50"
+                                                                aria-valuemin="0" aria-valuemax="100" style="width:{{stats.get_store_visitors_info.visits}}%">
+                                                                {{stats.get_store_visitors_info.visits}} %
+                                                            </div>
                                                         </div>
+
                                                     </div>
 
                                                 </div>
 
-                                            </div>
+                                                <div ng-if="stats.get_product_visitors_info">
 
-                                            <div ng-if="stats.get_product_visitors_info">
+                                                    <span class="col-sm-12">
+                                                        {{stats.get_product_visitors_info.visits}}% des produits ajoutées au panier sont de votre magasin et sont des utilisateurs à une distance d'environ {{stats.get_product_visitors_info.avg_distance}} km.
+                                                    </span>
 
-                                                <span class="col-sm-12">
-                                                    {{stats.get_product_visitors_info.visits}}% des produits ajoutées au panier sont de votre magasin et sont des utilisateurs à une distance d'environ {{stats.get_product_visitors_info.avg_distance}} km.
-                                                </span>
-
-                                                <div class="col-sm-12">
-                                                    <div class="progress">
-                                                        <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="50"
-                                                            aria-valuemin="0" aria-valuemax="100" style="width:{{stats.get_product_visitors_info.visits}}%">
-                                                            {{stats.get_product_visitors_info.visits}} %
+                                                    <div class="col-sm-12">
+                                                        <div class="progress">
+                                                            <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="50"
+                                                                aria-valuemin="0" aria-valuemax="100" style="width:{{stats.get_product_visitors_info.visits}}%">
+                                                                {{stats.get_product_visitors_info.visits}} %
+                                                            </div>
                                                         </div>
+
                                                     </div>
 
                                                 </div>
@@ -603,11 +605,10 @@ $(document).ready(function()
 
                                     </div>
 
-                                </div>
-
+                                
                             </div>
 
-                    </div>
+                        </div>
 
                     </div>
                 </div>
@@ -615,7 +616,7 @@ $(document).ready(function()
                 <!-- Products -->
                 <div ng-if="sessionData.accountMenuIndex == 4">
 
-                    <div ng-controller="UploadController" style="text-align: center;">
+                    <div ng-controller="UploadController">
 
                         <div ng-show="success" class="alert alert-success" role="alert">      
                             Vos produits ont été mis à jour.
@@ -632,25 +633,30 @@ $(document).ready(function()
                     </div>
 
                     <form method="get" action="<?php echo base_url("/assets/files/Formulaire de Produits.xlsx")?>">
-                        <div class="row download-products-form layout-padding">
-                            <div class="col-sm-12">
-                                <md-button type="submit"  style="margin : auto; display: block;" class="md-raised md-primary">
+                        <div class="container download-products-form layout-padding">
+                            <div class="row  justify-content-center">
+                                <md-button type="submit" class="md-raised md-primary">
                                    Télécharger fichier des produits Otiprix
                                 </md-button>
                             </div>
-                            <p otiprix-text style="text-align: center">Téléchargez ce document pour faciliter le téléversement de produits sur Otiprix</p>
+                            <div class="row justify-content-center">
+                                <p otiprix-text class="text-center">Téléchargez ce document pour faciliter le téléversement de produits sur Otiprix</p>
+                            </div>
                         </div>
                     </form>
 
                     <md-divider></md-divider>
 
-                    <div class="row layout-padding" ng-controller="UploadController">
-                        <div class="col-sm-12">
-                            <md-button ng-disabled="loggedUser.company.is_valid == 0" ng-click="selectFile()" style="margin : auto; display: block;" ng-click="uploadStoreProducts()" class="md-primary md-raised">
+                    <div class="container layout-padding" ng-controller="UploadController">
+                        <div class="row justify-content-center">
+                            <md-button ng-disabled="loggedUser.company.is_valid == 0" ng-click="selectFile()" ng-click="uploadStoreProducts()" class="md-primary md-raised">
                                Téléverser vos produits
                             </md-button>
                         </div>
-                        <p otiprix-text style="text-align: center">Téléversez le fichier de produits</p>
+                        <div class="row justify-content-center">
+                            <p otiprix-text>Téléversez le fichier de produits</p>
+                        </div>
+                        
                         <form id="uploadForm" method="post" action="<?php site_url('company/upload_products'); ?>" >
                             <input type="file" name="products" id="fileUploadInput" style="display:none"/> 
                         </form>
@@ -664,8 +670,8 @@ $(document).ready(function()
 
                 <!-- Succursales -->
                 <div  ng-if="sessionData.accountMenuIndex == 5">
-                    <div class="row layout-padding" ng-controller="AccountController">
-                        <add-department-store department-stores='loggedUser.company.chain.department_stores'></add-department-store>
+                    <div ng-controller="AccountController">
+                        <add-department-store class="w-100 p-5" department-stores='loggedUser.company.chain.department_stores'></add-department-store>
                     </div>
                 </div>
 
@@ -681,7 +687,7 @@ $(document).ready(function()
                             <span></span>
                         </div>
 
-                        <form name="companyForm" novalidate ng-submit="editCompany()" class="layout-padding">
+                        <form name="companyForm" novalidate ng-submit="editCompany()" class="container">
 
                             <p class="subscription-header"><b>Votre Forfait : &nbsp;&nbsp;&nbsp;<span class='md-warn-color'>  {{loggedUser.company.subscription.name}}</span></b> &nbsp;|&nbsp; <a href='<?php echo site_url("account/select_subscription"); ?>'>Changer</a></p>
 
@@ -706,13 +712,13 @@ $(document).ready(function()
                             </md-input-container>
                             
                             <!-- Company Phone Number -->
-                            <md-input-container class="col-sm-12 col-md-6">
+                            <md-input-container class="md-block">
                                 <label>Contact</label>
                                 <input name="phone" ng-model="company.phone" />
                             </md-input-container>
                             
                              <!-- Company Email -->
-                            <md-input-container class="col-sm-12 col-md-6">
+                            <md-input-container class="md-block">
                                 <label>Email</label>
                                 <input style="border-top : none; border-right : none; border-left : none;" name="email" type="email" ng-model="company.email" />
                                 <div ng-messages="companyForm.email.$error">
@@ -721,7 +727,7 @@ $(document).ready(function()
                             </md-input-container>
                             
                             <!-- Company Website -->
-                            <md-input-container class="col-sm-12">
+                            <md-input-container class="md-block">
                                 <label>Site Web</label>
                                 <input 
                                     name="website"
@@ -734,7 +740,7 @@ $(document).ready(function()
                             </md-input-container>
                             
                             <!-- Company Description -->
-                            <md-input-container class="col-sm-12">
+                            <md-input-container class="md-block">
                                 <label>Description</label>
                                 <textarea required md-maxlength="1000" rows="5" name="description" ng-model="company.description"></textarea>
                                 <div ng-messages="companyForm.description.$error">
@@ -744,7 +750,7 @@ $(document).ready(function()
                             
                             <p otiprix-text>Addresse du siège</p>
 
-                            <md-input-container class="col-md-12">
+                            <md-input-container class="md-block">
 
                                 <input 
                                 vs-google-autocomplete="vsOptions" 

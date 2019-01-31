@@ -24,22 +24,20 @@
             <md-progress-circular ng-disabled="!loading" class="md-hue-2" md-diameter="30px" md-mode="indeterminate" ng-show="loading"></md-progress-circular>
         </div>
 
-        <div style=" margin-top:50px" class="container">
+        <div style=" margin-top:50px" class="container-fluid">
             
-            <div class="panel panel-info">
+            <div class="card m-5">
 
                 <md-toolbar class="md-primary">
                     <div>
-                        <h2 class="md-toolbar-tools">Sélectionnez une categorie pour voir son contenu</h2>
+                        <h2 class="md-toolbar-tools text-truncate">Sélectionnez une categorie pour voir son contenu</h2>
                     </div>
                 </md-toolbar>
                 
-                <div style="margin-top: 10px;">
-                    <div class="row" style="padding : 10px;">
-                        
-                        <box-item hover-effect="true" item='category' on-item-clicked='select_category($event, category)' ng-repeat="category in categories" ></box-item>
-                        
-                    </div>
+                <div class="row p-2" style="padding : 10px;">
+
+                    <box-item  class="col-sm-6 col-md-4 col-lg-3 my-2" hover-effect="true" item='category' on-item-clicked='select_category($event, category)' ng-repeat="category in categories" ></box-item>
+
                 </div>
                 
              </div> 

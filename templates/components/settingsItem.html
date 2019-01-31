@@ -1,11 +1,16 @@
-<div class="row" ng-show="data.length > 1">
-    <p style="text-align : center;"><b>{{$ctrl.name}}</b></p>
+<div class="container-fluid m-0" ng-show="data.length > 1">
+
+    <div class="row m-0 justify-content-center">
+        <p class="text-center font-weight-bold">{{$ctrl.name}}</p>
+    </div>
+
     <md-divider></md-divider>
 
-    <div style="padding-top : 16px;">
-        <div ng-repeat="item in data track by $index">
-            <div ng-show="$index < 4" >
-                <md-checkbox style="margin-left : 10px;" ng-disabled="!$ctrl.ready" class="md-primary" ng-model="item.selected" aria-label="item.name" ng-change="$ctrl.change(item)">
+    <div class="py-2 row m-0">
+        <div class="w-100" ng-repeat="item in data track by $index">
+            <div ng-show="$index < 4">
+                <md-checkbox style="margin-left : 10px;" ng-disabled="!$ctrl.ready" class="md-primary" ng-model="item.selected"
+                    aria-label="item.name" ng-change="$ctrl.change(item)">
                     <span style="font-size: 12px;">{{getDisplayName(item.name)}}</span>
                 </md-checkbox>
             </div>
@@ -15,15 +20,21 @@
     <div ng-show="$ctrl.data.length > 4">
 
         <div id="more_{{$ctrl.name}}" class="collapse">
-            <div ng-repeat="item in data track by $index">
-                <div ng-show="$index > 3" >
-                    <md-checkbox style="margin-left : 10px;"  ng-disabled="!$ctrl.ready" class="md-primary" ng-model="item.selected" aria-label="item.name" ng-change="$ctrl.change(item)" >
+            <div class="w-100" ng-repeat="item in data track by $index">
+                <div ng-show="$index > 3">
+                    <md-checkbox style="margin-left : 10px;" ng-disabled="!$ctrl.ready" class="md-primary" ng-model="item.selected"
+                        aria-label="item.name" ng-change="$ctrl.change(item)">
                         <span style="font-size: 12px;">{{getDisplayName(item.name)}}</span>
                     </md-checkbox>
                 </div>
             </div>
         </div>
 
-        <a ng-click="showHideDetails($event)" style="margin-right : 10px;" class="pull-right" data-toggle="collapse" data-target="#more_{{$ctrl.name}}" href>{{moreLessLabel}}...</a>
+        
     </div>
+    <div class="row m-0 justify-content-end">
+            <a class="font-weight-bold" ng-click="showHideDetails($event)" data-toggle="collapse"
+            data-target="#more_{{$ctrl.name}}" href>{{moreLessLabel}}...</a>
+    </div>
+    
 </div>

@@ -144,7 +144,7 @@ angular.module("eappApp").controller("HomeController", function(appService, $sco
                     autoplay:false,
                     autoplayTimeout: 1000,
                     autoplayHoverPause:true,
-                    margin:0,
+                    margin:10,
                     responsiveClass:true,
                     navText : ['Précédent', 'Suivant'],
 

@@ -57,14 +57,10 @@
                             <md-progress-circular ng-disabled="!loading" class="md-hue-2" md-diameter="30px" md-mode="indeterminate" ng-show="loading"></md-progress-circular>
                         </div>
 
-                        <div  class="container" style="margin-bottom : 30px;" ng-init="ctrl.getHomeCategories()">
+                        <div  class="container my-2" ng-init="ctrl.getHomeCategories()">
 
-                            <div style="margin-top: 10px;">
-                                <div class="row" style="padding : 10px;">
-
-                                    <box-item item='category' on-item-clicked='select_category($event, category)' ng-repeat="category in homePageCategories" ></box-item>
-
-                                </div>
+                            <div class="row p-2">
+                                <box-item class="col-sm-6 col-md-4 col-lg-3 my-2" item='category' on-item-clicked='select_category($event, category)' ng-repeat="category in homePageCategories" ></box-item>
                             </div>
 
                         </div> 
@@ -116,8 +112,8 @@
 
                 <div class="container">
 
-                    <div class="row">
-                        <div id="step3" style="margin-top: 5px; margin-bottom: 25px; text-align: center;">
+                    <div class="row justify-content-center">
+                        <div id="step3" class="text-center col my-2">
                             <md-button class="md-raised md-warn" style="z-index : 10;" ng-click="hmCtrl.gotoShop()">
                                 <md-icon><i class="material-icons">money_off</i></md-icon>
                                 <b>Commencez à économiser aujourd'hui</b>

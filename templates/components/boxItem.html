@@ -1,9 +1,9 @@
 <link rel="stylesheet" href="./templates/components/boxItem.css">
 
-<div class="col-md-4 col-sm-6 col-lg-3 box">
+<div class="w-100">
     <div class="border-shadow truncate-text box-background">
         <img  ng-click="$ctrl.itemClicked($event)" ng-src="{{$ctrl.item.image}}" alt="{{$ctrl.item.name}}" class="box-item" ng-class="hoverEffect ? 'image-hover-effect' : 'opacity-effect'">
         <md-divider></md-divider>
-        <b><p>{{$ctrl.item.name}}</p></b>
+        <b><p class="text-center text-truncate">{{$ctrl.item.name}}</p></b>
     </div>
 </div>

@@ -7,24 +7,24 @@ To change this template file, choose Tools | Templates
 and open the template in the editor.
 -->
 
-<div id="admin-container" class="container mainbox" ng-controller="PasswordForgottenController" ng-cloak>
+<div class="container mainbox" ng-controller="PasswordForgottenController" ng-cloak>
     
-   <div id="loginbox" class="col-md-8 col-md-offset-2 col-sm-12">
-       
-       <div class="row" style="margin: 10px;">
-           <a href="<?php echo site_url("home/goback"); ?>">Retour</a>
-       </div>
+    <div class="row" style="margin: 10px;">
+        <a href="<?php echo site_url("home/goback"); ?>">Retour</a>
+    </div>
+    
+    <div class="justify-content-center">
         
-        <div class="panel panel-info" >
-          
+        <div class="card">
+
             <md-toolbar class="md-primary">
                 <div>
                     <h2 class="md-toolbar-tools">Mot de passe oublié</h2>
                 </div>
             </md-toolbar>
-            
-            <div class="panel-body">
-            
+
+            <div class="card-body">
+
                 <div class="alert alert-danger col-sm-12" ng-show="passwordForgottenErrorMessage">
                    <p>{{passwordForgottenErrorMessage}}</p>
                 </div>
@@ -32,7 +32,7 @@ and open the template in the editor.
                 <div class="alert alert-success col-sm-12" ng-show="passwordForgottenSuccessMessage">
                    <p>{{passwordForgottenSuccessMessage}}</p>
                 </div>
-            
+
                 <form name="passwordForgottenForm" class="form-horizontal" role="form" ng-submit="sendPasswordReset()" novalidate>
 
                     <p style="text-align: center;">Veuillez entrer votre adresse email pour réinitialiser votre mot de passe. </p>
@@ -54,8 +54,11 @@ and open the template in the editor.
 
                 </form>
         </div>
-          
-      </div>
-   </div>
+
+       </div>
+        
+    </div>
+    
+    
 </div>
 

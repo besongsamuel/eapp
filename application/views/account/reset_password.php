@@ -10,15 +10,17 @@ and open the template in the editor.
 <div id="admin-container" class="container otiprix-section" ng-controller="ResetPasswordController" ng-cloak>
     
     
-   <div id="loginbox" class="mainbox col-md-8 col-md-offset-2 col-sm-12">
+    <div class="row justify-content-center">
        
-        <div class="panel panel-info" >
-          
-            <div class="panel-heading">
-               <div class="panel-title">Réinitialiser le mot de passe</div>
-            </div>
+        <div class="card">
             
-            <div style="padding-top:30px" class="panel-body">
+            <md-toolbar class="md-primary">
+                <div>
+                    <h2 class="md-toolbar-tools">Réinitialiser le mot de passe</h2>
+                </div>
+            </md-toolbar>
+            
+            <div class="card-body">
             
                 <div class="alert alert-danger col-sm-12" ng-show="resetPasswordErrorMessage">
                    <p>{{resetPasswordErrorMessage}}</p>

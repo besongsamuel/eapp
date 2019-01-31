@@ -20,7 +20,7 @@
         <md-progress-circular ng-disabled="!loading"  class="md-hue-2" md-diameter="30px" md-mode="indeterminate" ng-show="loading"></md-progress-circular>
     </div>
     
-        <div id="signupbox" style=" margin-top:50px" class="container">
+        <div class="container-fluid">
             
             <div class="col-12">
                 <p style="text-align: center;">Résultats dans un rayon de {{getDistance()}} km
@@ -28,29 +28,28 @@
                 </p>
             </div>
            
-	    <div class="panel panel-info">
+	    <div class="card m-5">
 
                 <md-toolbar class="md-primary">
                     <div>
-                        <h2 class="md-toolbar-tools">Sélectionnez le magasin pour afficher le contenu de la circulaire</h2>
+                        <h2 class="md-toolbar-tools text-truncate">Sélectionnez le magasin pour afficher le contenu de la circulaire</h2>
                     </div>
                 </md-toolbar>
                 
-                <md-input-container class="md-icon-float md-block">
-                    <label>Rechercher magasin</label>
-                    <md-icon style="margin-left : -20px;">
+                <md-input-container class="md-block px-5">
+                    <md-icon>
                         <i class="material-icons">search</i>
                     </md-icon>
                     <input ng-model="storeName" ng-change="search()">
                 </md-input-container>
                 
+                
+                
                 <p ng-if="!storesAvailable" style="text-align: center;" class="md-warn-color"><b>Il n'y a pas de magasin disponible près de chez vous.</b></p>
 		  
-                <div style="margin-top: 10px;">
-                    <div class="row" style="padding : 10px;">
-                        <box-item item='store' on-item-clicked='select_retailer($event, store)' ng-repeat="store in retailers" ></box-item>
+                    <div class="row p-2">
+                        <box-item class="col-sm-6 col-md-4 col-lg-3 my-2" item='store' on-item-clicked='select_retailer($event, store)' ng-repeat="store in retailers" ></box-item>
                     </div>
-                </div>
 
 	    </div>
          </div> 

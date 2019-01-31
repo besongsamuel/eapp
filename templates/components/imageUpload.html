@@ -1,6 +1,6 @@
 <style>
-    
-.product-pic
+
+    .product-pic
 {
     width: 100% !important;
     height: 100% !important;
@@ -51,35 +51,29 @@ img
   color: #999;
 }
 
-.column, .columns 
-{
-    position: relative;
-    padding-left: 0.9375rem;
-    padding-right: 0.9375rem;
-    display: table;
-    margin: auto;
-    margin-top: 10px;
-    margin-bottom: 10px;
-}
+
 
 </style>
 
-<div class="row">
-    <div class="columns">
-        <div class="circle">
-            <!-- User Profile Image -->
-            <img class="product-pic" ng-src="{{$ctrl.image}}">
-    
-            <!-- Default Image -->
-            <!-- <i class="fa fa-user fa-5x"></i> -->
-        </div>
-        <div class="p-image">
-            <!-- <i ng-attr-id="{{uploadButtonId}}" class="fa fa-camera upload-button" ng-show="!hasImage"></i> -->
-            <i class="fa fa-close" style="color : red;" ng-click="$ctrl.removeImage()" ng-show="hasImage"></i>
-            <input ng-attr-id="{{inputButtonId}}" name="{{$ctrl.name}}" class="file-upload" type="file" accept="image/*"/>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="position-relative">
+            <div class="circle">
+                <!-- User Profile Image -->
+                <img class="product-pic" ng-src="{{$ctrl.image}}">
+
+                <!-- Default Image -->
+                <!-- <i class="fa fa-user fa-5x"></i> -->
+            </div>
+            <div class="p-image">
+                <i class="fa fa-close" style="color : red;" ng-click="$ctrl.removeImage()" ng-show="hasImage"></i>
+                <input ng-attr-id="{{inputButtonId}}" name="{{$ctrl.name}}" class="file-upload" type="file" accept="image/*" />
+            </div>
         </div>
     </div>
-	
-	<center><i ng-attr-id="{{uploadButtonId}}" class="fa fa-camera upload-button" otiprix-text ng-show="!hasImage"> {{$ctrl.caption}}</i></center>
-	
+    <div class="row justify-content-center my-2">
+        <i ng-attr-id="{{uploadButtonId}}" class="fa fa-camera upload-button" otiprix-text ng-show="!hasImage">
+                {{$ctrl.caption}}</i>
+    </div>
 </div>
