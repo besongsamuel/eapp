@@ -29,7 +29,7 @@
 
                       <div class="col-lg-3 hide-text">
                           <div class="pull-left header-social">
-                              <a href="https://www.facebook.com/otiprix.otiprix.1" target="_blank"><i otiprix-text class="fa fa-facebook"></i></a>
+                              <a href="https://fr-fr.facebook.com/pages/category/Grocery-Store/Otiprix-2231399793546712/" target="_blank"><i otiprix-text class="fa fa-facebook"></i></a>
                               <a href="https://twitter.com/otiprix" target="_blank"><i otiprix-text class="fa fa-twitter"></i></a>
                               <a href="https://www.youtube.com/channel/UCbwxS8s1WKYgGCRzd9vIl5A" target="_blank"><i otiprix-text class="fa fa-youtube"></i></a>
                               <a ng-hide="true" href="https://www.instagram.com/otiprix/" target="_blank"><i otiprix-text class="fa fa-instagram"></i></a>
@@ -152,10 +152,10 @@
                         <div class="footer-about-us">
                             <a href="<?php echo site_url("home"); ?>"><img src="<?php echo base_url("assets/img/logo.png"); ?>" class="eapp-logo-footer" /></a>
                             <p style="margin-top : 10px;">  
-                                En un seul clic, otiPrix réduit le coût de votre panier d’épicerie en identifiant les meilleurs et les vrais rabais dans les magasins proches de vous. Avec OTIPRIX, consulter en un seul et même endroit l’ensemble des produits alimentaires en rabais dans les grandes surfaces, mais aussi dans tous les petits magasins situés à proximité de votre lieu de résidence.
+                                En un seul clic, OtiPrix réduit le coût de votre panier d’épicerie en identifiant les meilleurs et les vrais rabais dans les magasins proches de vous. Avec OtiPrix, consulter en un seul et même endroit l’ensemble des produits alimentaires en rabais dans les grandes surfaces, mais aussi dans tous les petits magasins situés à proximité de votre lieu de résidence.
                             </p>
                             <div class="footer-social">
-                                <a href="https://www.facebook.com/otiprix.otiprix.1" target="_blank"><i class="fa fa-facebook"></i></a>
+                                <a href="https://fr-fr.facebook.com/pages/category/Grocery-Store/Otiprix-2231399793546712/" target="_blank"><i class="fa fa-facebook"></i></a>
                                 <a href="https://twitter.com/otiprix" target="_blank"><i class="fa fa-twitter"></i></a>
                                 <a href="https://www.youtube.com/channel/UCbwxS8s1WKYgGCRzd9vIl5A" target="_blank"><i class="fa fa-youtube"></i></a>
                                 <a href="https://www.instagram.com/otiprix/" target="_blank"><i class="fa fa-instagram"></i></a>
@@ -194,7 +194,7 @@
                             <div class="newsletter-form" ng-submit="subscribe($event)" >
                                 <form novalidate>
                                     <input type="email" placeholder="Entrez votre email" ng-model="subscribe_email">
-                                    <div class="col-sm-12">
+                                    <div class="col-sm-18">
                                         <md-button type="submit" class="md-raised md-primary pull-right" >S’INSCRIRE</md-button>
                                     </div>
                                 </form>

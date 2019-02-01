@@ -186,7 +186,7 @@
                             Envoyer par sms
                         </md-tooltip>
                       <md-icon><i class="material-icons">smartphone</i></md-icon>
-                        SMS
+                        &nbsp;&nbsp;&nbsp; SMS &nbsp;&nbsp;&nbsp;
                     </md-button>
 
                     <md-button class="md-raised md-primary btn" aria-label="Partager" ng-hide="true">
@@ -204,7 +204,7 @@
                             Envoyer à votre courrier électronique
                         </md-tooltip>
                         <md-icon><i class="material-icons">email</i></md-icon>
-                        Email
+                        &nbsp;&nbsp; Email &nbsp;&nbsp;
                     </md-button>
                     
                     <md-button class="md-raised md-primary btn" aria-label="Impression" ng-click="printCart()">
