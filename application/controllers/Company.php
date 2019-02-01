@@ -208,7 +208,7 @@ class Company extends CI_Controller
                     return;
                 }
                 
-                if($key == 1)
+                if($key < 4)
                 {
                     continue;
                 }
