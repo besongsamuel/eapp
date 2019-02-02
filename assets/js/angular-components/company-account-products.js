@@ -9,7 +9,7 @@ angular.module('eappApp').component('companyProducts',
     }
 });
 
-function Controller($scope, eapp, $mdDialog, $company)
+function Controller($scope, eapp, $mdDialog, $company, appService, $http)
 {
     'use strict';
     
@@ -107,6 +107,32 @@ function Controller($scope, eapp, $mdDialog, $company)
 
         });
     };
+    
+    $scope.imageRemoved = function(data)
+    {
+        ctrl.updateProductImage(null, data, function(){});
+    };
+    
+    $scope.imageChanged = function(file, data)
+    {
+        ctrl.updateProductImage(file, data, function(){});
+    };
+    
+    ctrl.updateProductImage = function(image, data, success)
+    {
+        var formData = new FormData();
+
+        formData.append("image", image);
+
+        formData.append("id", data.id);
+
+        return $http.post(
+            appService.siteUrl.concat("/company/change_store_product_image"), 
+            formData, 
+            { transformRequest: angular.identity, headers: {'Content-Type': undefined}}).then(success);
+    };
+    
+    
 
     $scope.getStoreProducts = function () 
     {

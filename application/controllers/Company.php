@@ -601,6 +601,44 @@ class Company extends CI_Controller
         
     }
     
+    public function change_store_product_image() 
+    {
+        if($this->user && $this->user->subscription >= COMPANY_SUBSCRIPTION)
+        {
+            
+            $id = $this->input->post("id");
+            
+            $product = $this->company_model->get(STORE_PRODUCT_TABLE, $id);
+            
+            // Get and delete the current image file
+            if(file_exists(ASSETS_DIR_PATH.'img/products/'.$product->image))
+            {
+                unlink(ASSETS_DIR_PATH.'img/products/'.$product->image);
+            }
+            
+            // Upload the image
+            $this->load->helper('file');
+            
+            $this->initialize_upload_library(ASSETS_DIR_PATH.'img/products/', uniqid().".png");
+        
+            $row = array();
+
+            $row['id'] = $product->id;
+
+            if($this->upload->do_upload('image'))
+            {
+                $upload_data = $this->upload->data();
+                $row['image'] = $upload_data['file_name'];
+            }
+            else
+            {
+                $row['image'] = "";
+            }
+            
+            $this->company_model->create(STORE_PRODUCT_TABLE, $row);
+        }
+    }
+    
     public function select_subscription() 
     {
         $subscription = (int)$this->input->post("subscription");
