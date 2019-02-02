@@ -400,7 +400,7 @@ $(document).ready(function()
 
                         <div class="row">
 
-                            <div class="accordion w-100">
+                            <div class="accordion w-100" ng-if="!loading">
                                 
 
                                     <div id="origin-products" class="card">
@@ -472,20 +472,17 @@ $(document).ready(function()
                                         <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo">
 
                                             <div class="card-body">
-                                                <ui-carousel
-                                                    slides-to-show="2"
-                                                    slides-to-scroll="2"
-                                                    slides="productStats"
-                                                      initial-slide="1"
-                                                    dots="true">
-
-                                                    <carousel-item>
-                                                        <top-products
-                                                           data="item.data" 
-                                                           caption2="item.caption">
-                                                       </top-products>
-                                                    </carousel-item>
-                                                </ui-carousel>
+                                                
+                                                <div class="container">
+                                                    <div class="row">
+                                                        <div class="col-sm-12 col-6" ng-repeat="item in productStats">
+                                                            <top-products
+                                                                data="item.data" 
+                                                                caption2="item.caption">
+                                                            </top-products>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>

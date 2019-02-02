@@ -48,7 +48,7 @@ angular.module('eappApp').component("topProducts",
         
         ctrl.$onChanges = function(newValue)
         {
-            console.log(newValue.currentValue);
+            console.log(newValue);
         };
         
         
