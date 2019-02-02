@@ -25,41 +25,35 @@
 
               <div class="container">
 
-                  <div layout="row">
+                  <div class="row">
 
-                      <div class="col-lg-3 hide-text">
+                      <div class="col-auto hide-text">
                           <div class="pull-left header-social">
                               <a href="https://www.facebook.com/otiprix.otiprix.1" target="_blank"><i otiprix-text class="fa fa-facebook"></i></a>
                               <a href="https://twitter.com/otiprix" target="_blank"><i otiprix-text class="fa fa-twitter"></i></a>
                               <a href="https://www.youtube.com/channel/UCbwxS8s1WKYgGCRzd9vIl5A" target="_blank"><i otiprix-text class="fa fa-youtube"></i></a>
-                              <a ng-hide="true" href="https://www.instagram.com/otiprix/" target="_blank"><i otiprix-text class="fa fa-instagram"></i></a>
-                              <a ng-hide="true" href="https://plus.google.com/u/0/117638375580963001925" target="_blank"><i class="md-primary" class="fa fa-google-plus"></i></a>
                           </div>
                       </div>
                       
-                      <div class="col-lg-6 col-sm-6" >
-                            <p style="text-align: center;" id="step1">
-                                <b>
-                                    <span>{{optimizationDistance}} Km de </span>
-                                    <a href ng-click="menuCtrl.changeAddress($event)">
-                                        <md-tooltip>
-                                            Changer address
-                                        </md-tooltip>
-                                        {{postcode}} | Changer
-                                    </a>
-                                </b>
+                      <div class="col">
+                          <p class="text-center font-weight-bold" id="step1">
+                                <span>{{optimizationDistance}} Km de </span>
+                                <a href ng-click="menuCtrl.changeAddress($event)">
+                                    <md-tooltip>
+                                        Changer address
+                                    </md-tooltip>
+                                    {{postcode}} | Changer
+                                </a>
                             </p>
                       </div>
 
-                      <div flex>
+                      <div class="col-auto">
 
-                            <div  id="step5" class="pull-right" style="border: 2px solid rgb(255,87,34); padding: 1px;">
-                                <span>
-                                    <a href="<?php echo site_url("cart"); ?>" style="color : rgb(255,87,34);" class="md-icon-button" aria-label="Cart">
-                                        <md-icon><i class="material-icons" style="color : rgb(255,87,34);">shopping_cart</i></md-icon>
-                                        <span class="badge text-white" style="background-color : rgb(255,87,34);" ng-show="getTotalItemsInCart() > 0">{{getTotalItemsInCart()}} | {{getCartPrice() | number : 2}} C $</span>
-                                    </a>
-                                </span>
+                            <div id="step5">
+                                <a href="<?php echo site_url("cart"); ?>" style="color : rgb(255,87,34);" class="md-icon-button" aria-label="Cart">
+                                    <md-icon><i class="material-icons" style="color : rgb(255,87,34);">shopping_cart</i></md-icon>
+                                    <span class="badge text-white" style="background-color : rgb(255,87,34);" ng-show="getTotalItemsInCart() > 0">{{getTotalItemsInCart()}} | {{getCartPrice() | number : 2}} C $</span>
+                                </a>
                             </div>
 
                       </div>
