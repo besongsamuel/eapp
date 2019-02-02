@@ -44,7 +44,7 @@ class Home extends CI_Controller {
         $category_products = array();
         
         $popular_products = $this->shop_model->get_store_products_limit(
-                20, 
+                4, 
                 0, 
                 true, 
                 null, 
@@ -73,7 +73,7 @@ class Home extends CI_Controller {
         foreach ($top_categories as $category) 
         {
             $products = $this->shop_model->get_store_products_limit(
-                8, 
+                4, 
                 0, 
                 true, 
                 null, 
