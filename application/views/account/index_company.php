@@ -475,7 +475,7 @@ $(document).ready(function()
                                                 
                                                 <div class="container">
                                                     <div class="row">
-                                                        <div class="col-sm-12 col-6" ng-repeat="item in productStats">
+                                                        <div class="col-sm-12 col-md-6" ng-repeat="item in productStats">
                                                             <top-products
                                                                 data="item.data" 
                                                                 caption2="item.caption">
