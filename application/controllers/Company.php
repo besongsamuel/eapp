@@ -329,7 +329,7 @@ class Company extends CI_Controller
         }
         
     }
-    
+        
     public function register() 
     {
         $this->load->library('form_validation');
@@ -338,8 +338,9 @@ class Company extends CI_Controller
         if($_SERVER['REQUEST_METHOD'] === 'POST')
         {
             $this->load->helper('file');
-                        
-            $user_account = json_decode($this->input->post('account'), true);
+                  
+            $this->form_validation->set_rules('account[email]', 'Email', 'email_check');
+            $user_account = $this->input->post('account');
             $company_profile = json_decode($this->input->post('profile'), true);
             $company = json_decode($this->input->post('company'), true);
             
@@ -351,7 +352,7 @@ class Company extends CI_Controller
                 return;
             }
             
-            $this->form_validation->set_rules('email', 'Email', 'callback_email_check');
+            
             
             $user_account['password'] = md5($user_account['password']);	
             // Subscription of 10 is a company

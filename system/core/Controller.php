@@ -564,7 +564,7 @@ class CI_Controller {
     /*
      * Existing email check during validation
      */
-    public function email_check($str){
+    protected function email_check($str){
         $condition = array('email'=>$str);
         $checkEmail = $this->account_model->get_specific(USER_ACCOUNT_TABLE, $condition);
         if($checkEmail != null){

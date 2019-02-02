@@ -722,7 +722,7 @@ class Account extends CI_Controller
 		
         if($_SERVER['REQUEST_METHOD'] === 'POST')
         {
-            $this->form_validation->set_rules('account[email]', 'Email', 'callback_email_check');
+            $this->form_validation->set_rules('account[email]', 'Email', 'email_check');
 
             $user_account = $this->input->post('account');
             $user_profile = $this->input->post('profile');
@@ -732,44 +732,44 @@ class Account extends CI_Controller
             $user_account['account_number'] = mt_rand(1000000, 9999999);
 			
             if($this->form_validation->run() == true)
-	    	{
-                    $insert = $this->account_model->create(USER_ACCOUNT_TABLE, $user_account);
+            {
+                $insert = $this->account_model->create(USER_ACCOUNT_TABLE, $user_account);
 
-                    if($insert)
-                    {
-                        // create user profile
-                        $user_profile['user_account_id'] = $insert;
-
-                        // get longitude and latitude
-                        $coordinates = $this->geo->get_coordinates($user_profile["city"], $user_profile["address"], $user_profile["state"], $user_profile["country"]);
-                        if($coordinates)
-                        {
-                            $user_profile["longitude"] = $coordinates["long"];
-                            $user_profile["latitude"] = $coordinates["lat"];
-                        }
-
-                        $insert = $this->account_model->create(USER_PROFILE_TABLE, $user_profile);
-                        $this->session->set_userdata('success_msg', 'Your registration was successfully. Please login to your account.');
-
-                        $this->login_user(array(
-                            'email'=>$user_account['email'],
-                            'password' => $user_account['password'])
-                        );
-                    
-                    $this->subscribe_logged_user();
-                    
-                    $this->send_registration_email();
-                    
-                    $data['user'] = $this->user;
-                    
-                    $data["success"] = true;
-                }
-                else
+                if($insert)
                 {
-                    $data["success"] = false;
-                    $data["message"] = "Des problèmes sont survenus, veuillez réessayer plus tard.";
-                }
+                    // create user profile
+                    $user_profile['user_account_id'] = $insert;
+
+                    // get longitude and latitude
+                    $coordinates = $this->geo->get_coordinates($user_profile["city"], $user_profile["address"], $user_profile["state"], $user_profile["country"]);
+                    if($coordinates)
+                    {
+                        $user_profile["longitude"] = $coordinates["long"];
+                        $user_profile["latitude"] = $coordinates["lat"];
+                    }
+
+                    $insert = $this->account_model->create(USER_PROFILE_TABLE, $user_profile);
+                    $this->session->set_userdata('success_msg', 'Your registration was successfully. Please login to your account.');
+
+                    $this->login_user(array(
+                        'email'=>$user_account['email'],
+                        'password' => $user_account['password'])
+                    );
+
+                $this->subscribe_logged_user();
+
+                $this->send_registration_email();
+
+                $data['user'] = $this->user;
+
+                $data["success"] = true;
             }
+            else
+            {
+                $data["success"] = false;
+                $data["message"] = "Des problèmes sont survenus, veuillez réessayer plus tard.";
+            }
+        }
             else
             {
                 $data["success"] = false;

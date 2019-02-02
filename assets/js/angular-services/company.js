@@ -23,7 +23,10 @@ angular.module('eappApp').factory("$company", function(appService, $http)
         register : function(account, profile, company, logo)
         {
             var formData = new FormData();
-            formData.append("account", JSON.stringify(account));
+            formData.append("account[email]", account.email);
+            formData.append("account[password]", account.password);
+            formData.append("account[security_question_answer]", account.security_question_answer);
+            formData.append("account[security_question_id]", account.security_question_id);
             formData.append("profile", JSON.stringify(profile));
             formData.append("company", JSON.stringify(company));
             if(logo)
