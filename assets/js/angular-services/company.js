@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-angular.module('eappApp').factory("$company", function($rootScope, $http)
+angular.module('eappApp').factory("$company", function(appService, $http)
 {
     var service = 
     {
@@ -15,7 +15,7 @@ angular.module('eappApp').factory("$company", function($rootScope, $http)
             formData.append("query", JSON.stringify(query));
         
             return $http.post(
-                $rootScope.site_url.concat("/company/get_store_products"), 
+                appService.siteUrl.concat("/company/get_store_products"), 
                 formData, 
                 { transformRequest: angular.identity, headers: {'Content-Type': undefined}}).then(success, onError);
             
@@ -31,7 +31,7 @@ angular.module('eappApp').factory("$company", function($rootScope, $http)
                 formData.append('image', logo);
             }
 
-            return $http.post($rootScope.site_url.concat("/company/register"), formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}});
+            return $http.post(appService.siteUrl.concat("/company/register"), formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}});
         },
         addStoreProduct : function(storeProduct, image, success)
         {
@@ -44,7 +44,7 @@ angular.module('eappApp').factory("$company", function($rootScope, $http)
             formData.append("image", image);
             
             return $http.post(
-                $rootScope.site_url.concat("/company/add_store_product"), 
+                appService.siteUrl.concat("/company/add_store_product"), 
                 formData, 
                 { transformRequest: angular.identity, headers: {'Content-Type': undefined}}).then(success, onError);
             
@@ -57,7 +57,7 @@ angular.module('eappApp').factory("$company", function($rootScope, $http)
             formData.append("name", name);
                         
             return $http.post(
-                $rootScope.site_url.concat("/company/add_product_brand"), 
+                appService.siteUrl.concat("/company/add_product_brand"), 
                 formData, 
                 { transformRequest: angular.identity, headers: {'Content-Type': undefined}}).then(success, onError);
         },
@@ -68,7 +68,7 @@ angular.module('eappApp').factory("$company", function($rootScope, $http)
             formData.append("name", name);
                         
             return $http.post(
-                $rootScope.site_url.concat("/company/add_unit"), 
+                appService.siteUrl.concat("/company/add_unit"), 
                 formData, 
                 { transformRequest: angular.identity, headers: {'Content-Type': undefined}}).then(success, onError);
         },
@@ -79,7 +79,7 @@ angular.module('eappApp').factory("$company", function($rootScope, $http)
             formData.append("store_products", JSON.stringify(storeProducts));
                         
             return $http.post(
-                $rootScope.site_url.concat("/company/batch_delete_store_products"), 
+                appService.siteUrl.concat("/company/batch_delete_store_products"), 
                 formData, 
                 { transformRequest: angular.identity, headers: {'Content-Type': undefined}}).then(success, onError);
         },
@@ -91,7 +91,7 @@ angular.module('eappApp').factory("$company", function($rootScope, $http)
             formData.append("replace", JSON.stringify(replace))
                         
             return $http.post(
-                $rootScope.site_url.concat("/company/upload_products"), 
+                appService.siteUrl.concat("/company/upload_products"), 
                 formData, 
                 { transformRequest: angular.identity, headers: {'Content-Type': undefined}}).then(success, onError);
         },
@@ -104,7 +104,7 @@ angular.module('eappApp').factory("$company", function($rootScope, $http)
             formData.append("image_name", imageName);
                         
             return $http.post(
-                $rootScope.site_url.concat("/company/change_logo"), 
+                appService.siteUrl.concat("/company/change_logo"), 
                 formData, 
                 { transformRequest: angular.identity, headers: {'Content-Type': undefined}}).then(success, onError);
         },
@@ -115,7 +115,7 @@ angular.module('eappApp').factory("$company", function($rootScope, $http)
             formData.append("company", JSON.stringify(company));
                         
             return $http.post(
-                $rootScope.site_url.concat("/company/edit_company"), 
+                appService.siteUrl.concat("/company/edit_company"), 
                 formData, 
                 { transformRequest: angular.identity, headers: {'Content-Type': undefined}}).then(success, onError);
         },
@@ -128,7 +128,7 @@ angular.module('eappApp').factory("$company", function($rootScope, $http)
             formData.append("period", period);
                         
             return $http.post(
-                $rootScope.site_url.concat("/account/get_stats"), 
+                appService.siteUrl.concat("/account/get_stats"), 
                 formData, 
                 { transformRequest: angular.identity, headers: {'Content-Type': undefined}}).then(success, onError);
         },
@@ -139,7 +139,7 @@ angular.module('eappApp').factory("$company", function($rootScope, $http)
             formData.append("subscription", selectedSubscription);
                         
             return $http.post(
-                $rootScope.site_url.concat("/company/select_subscription"), 
+                appService.siteUrl.concat("/company/select_subscription"), 
                 formData, 
                 { transformRequest: angular.identity, headers: {'Content-Type': undefined}}).then(success, onError);
         },
@@ -152,13 +152,13 @@ angular.module('eappApp').factory("$company", function($rootScope, $http)
             formData.append("subscription", subscription);
                         
             return $http.post(
-                $rootScope.site_url.concat("/company/submit_payment"), 
+                appService.siteUrl.concat("/company/submit_payment"), 
                 formData, 
                 { transformRequest: angular.identity, headers: {'Content-Type': undefined}}).then(success, onError);
         },
         getClientToken : function(success)
         {
-            $http.post($rootScope.site_url.concat("/company/get_client_token"), null).then(success, onError);
+            $http.post(appService.siteUrl.concat("/company/get_client_token"), null).then(success, onError);
         }
     };
     
