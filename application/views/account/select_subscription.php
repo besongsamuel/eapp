@@ -214,15 +214,15 @@ and open the template in the editor.
       <td><span class="tickred">&#x2716;</span></td>
       <td><span class="tick">&#10004;</span></td>
     </tr>
-                <tr><td class="first"></td>
+            <tr><td class="first"></td>
                 <td class="default"><md-button class='first md-raised md-primary md-hue-2' ng-click="ctrl.selectSubscription(1)">Souscrire</md-button></td>
                 <td>
                     <div id="dropin-container"></div>
-                    <md-button id="submit-button" class='second md-raised md-primary'>Souscrire</md-button>
+                    <md-button id="submit-button" class='btn second md-raised md-primary'>Souscrire</md-button>
                 </td>
                 <td>
                     <div id="dropin-container2"></div>
-                    <md-button id="submit-button2" class='third md-raised md-primary'>Souscrire</md-button>
+                    <md-button id="submit-button2" class='btn third md-raised md-primary'>Souscrire</md-button>
                 </td>
             </tr> 
         </tbody>
