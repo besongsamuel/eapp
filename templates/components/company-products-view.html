@@ -52,7 +52,14 @@
                   <tr md-row md-select="sp" md-select-id="id" ng-repeat="sp in storeProducts.data">
                       <td md-cell width="168">
                           <div class="image-container">
-                              <img alt=""  ng-src="{{sp.product.image}}">
+
+                              <image-upload 
+                                    image="sp.product.image"
+                                    caption="" 
+                                    on-file-removed="imageRemoved(sp)" 
+                                    on-file-selected="imageChanged(file, sp)">       
+                              </image-upload> 
+
                           </div>
                       </td>
                       <td md-cell style="text-align: left;">
