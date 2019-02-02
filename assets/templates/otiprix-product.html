@@ -32,12 +32,12 @@
                             <p ng-show="storeProduct.state">{{storeProduct.state}}</p>
                             <p>Valide du <b>{{storeProduct.period_from}}</b> au <b>{{storeProduct.period_to}}</b></p>
 
-                            <md-button class="md-primary md-raised pull-right" ng-hide="productInCart(storeProduct.product.id)"  ng-click="add_product_to_cart(storeProduct.product.id, storeProduct.id)">
+                            <md-button class="md-primary md-raised pull-right" ng-hide="productInCart(storeProduct.product.id)"  ng-click="addProductToCart(storeProduct.product.id, storeProduct.id, storeProduct.quantity)">
                                 <md-icon><i class="material-icons">add_shopping_cart</i></md-icon>
                                 Ajouter au panier
                             </md-button>
 
-                            <md-button class="md-warn md-raised pull-right" ng-show="productInCart(storeProduct.product.id)" ng-click="remove_product_from_cart(storeProduct.product.id)">
+                            <md-button class="md-warn md-raised pull-right" ng-show="productInCart(storeProduct.product.id)" ng-click="removeProductFromCart(storeProduct.product.id)">
                                 <md-icon><i class="material-icons">remove_shopping_cart</i></md-icon>
                                 Retirer du panier
                             </md-button>
@@ -70,7 +70,7 @@
                                 <p>Valide du <b>{{sp.period_from}}</b> au <b>{{sp.period_to}}</b></p>
 
                                 <div class="col-sm-12">
-                                    <md-button class="md-primary md-raised md-secondary" ng-hide="productInCart(sp.product.id)"  ng-click="add_product_to_cart(sp.product.id, sp.id)">
+                                    <md-button class="md-primary md-raised md-secondary" ng-hide="productInCart(sp.product.id)"  ng-click="addProductToCart(sp.product.id, sp.id, sp.quantity)">
                                         <md-icon><i class="material-icons">add_shopping_cart</i></md-icon>
                                         Ajouter au panier
                                     </md-button>

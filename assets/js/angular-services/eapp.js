@@ -552,6 +552,17 @@ angular.module('eappApp').factory('eapp', function($http, appService, $mdDialog,
 
             });
         };
+        
+        $scope.addProductToCart = function(product_id, store_product_id = -1, product_quantity = 1)
+        {
+            cart.addProductToCart(product_id, store_product_id, product_quantity);
+        };
+
+        $scope.removeProductFromCart = function(product_id)
+        {
+            cart.removeProductFromCart(product_id);
+
+        };
     }
     
     eappService.getUnitCompareUnits = function(id)
