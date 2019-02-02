@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-angular.module("eappApp").controller("MenuController", function($scope, appService, cart, $rootScope, $mdDialog, eapp, $sce, profileData) 
+angular.module("eappApp").controller("MenuController", function($scope, appService, cart, $rootScope, $mdDialog, eapp, $sce, profileData, $http) 
 {
     var ctrl = this;
     
@@ -100,6 +100,20 @@ angular.module("eappApp").controller("MenuController", function($scope, appServi
         
     });
 	
+        
+    $scope.logout = function ()
+    {
+        // Send request to server to get optimized list 	
+        $http.post(appService.siteUrl.concat("/account/logout"),
+                null, {transformRequest: angular.identity, headers: {'Content-Type': undefined}}).then(
+                function (response)
+                {
+                    // redirect to home page. 
+                    window.location = appService.siteUrl.concat("/home");
+
+                });
+    };
+    
     $scope.getTotalItemsInCart = function()
     {
         return cart.getTotalItemsInCart();

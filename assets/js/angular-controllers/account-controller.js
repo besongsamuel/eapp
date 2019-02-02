@@ -318,19 +318,6 @@ angular.module('eappApp').controller('AccountController', ["$scope", "$http", "$
         }
     };
     
-    $scope.logout = function()
-    {
-        // Send request to server to get optimized list 	
-        $http.post( appService.siteUrl.concat("/account/logout"), 
-        null, { transformRequest: angular.identity, headers: {'Content-Type': undefined}}).then(
-        function(response)
-        {
-            // redirect to home page. 
-            window.location =  appService.siteUrl.concat("/home");
-            
-        });
-    };
-    
     $scope.updateProfile = function()
     {
         if(!$scope.userInfoForm.$valid)
