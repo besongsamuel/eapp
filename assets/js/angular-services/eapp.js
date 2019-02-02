@@ -494,17 +494,17 @@ angular.module('eappApp').factory('eapp', function($http, appService, $mdDialog,
                 targetEvent: ev,
                 clickOutsideToClose:true,
                 disableParentScroll : true,
+                bindToController : true,
                 preserveScope:true,
-                scope : $scope,
+                locals : 
+                    {
+                        storeProduct : $scope.storeProduct
+                    },
                 fullscreen: true,
                 onRemoving : function()
                 {
                     // Restore scroll
                     $(document).scrollTop($scope.scrollTop);
-                },
-                onShowing : function()
-                {
-                    $scope.RelatedProductsAvailable = !angular.isNullOrUndefined($scope.storeProduct.similar_products) && $scope.storeProduct.similar_products.length > 0;
                 }
             })
             .then(function(answer) {
@@ -522,6 +522,11 @@ angular.module('eappApp').factory('eapp', function($http, appService, $mdDialog,
     function ViewProductController($scope, $mdDialog)
     {
         
+        $scope.storeProduct = this.storeProduct;
+        
+        $scope.RelatedProductsAvailable = !angular.isNullOrUndefined($scope.storeProduct.similar_products) && $scope.storeProduct.similar_products.length > 0;
+
+        
         $scope.close = function() 
         {
             $mdDialog.cancel();
@@ -530,6 +535,22 @@ angular.module('eappApp').factory('eapp', function($http, appService, $mdDialog,
         $scope.productInCart = function(product_id)
         {
             return cart.productInCart(product_id);
+        };
+        
+        $scope.selectProduct = function(sp)
+        {
+            // Backup quantity
+            var quantity =  $scope.storeProduct.quantity;
+            
+            eappService.getProduct(sp.id).then(function(response)
+            {
+                $scope.storeProduct = response.data;
+            
+                $scope.storeProduct.quantity = quantity;
+                
+                $scope.RelatedProductsAvailable = !angular.isNullOrUndefined($scope.storeProduct.similar_products) && $scope.storeProduct.similar_products.length > 0;
+
+            });
         };
     }
     

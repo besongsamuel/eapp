@@ -1,76 +1,89 @@
-<md-dialog class="col-md-12 col-sm-12">
+<md-dialog>
         
-    <md-dialog-content class="md-dialog-content">
+    <md-dialog-content>
         
-        <!-- Product Area -->
-        <div class="row">
-            <!-- Product Image Area -->
-            <div class="col-sm-12 col-md-4">
-                <img ng-src="{{storeProduct.product.image}}" alt="{{storeProduct.product.name}}" style="max-width : 100%; margin : auto; display : block;">
-            </div>
-            
-            <!-- Product Description Area -->
-            <div class="col-sm-12 col-md-8">
-                <h4><a href>{{storeProduct.product.name}}</a></h4>
-                <md-divider></md-divider>
-                <div style="font-style: italic;">
-                    
-                    <img  ng-src="{{storeProduct.retailer.image}}" alt="{{storeProduct.retailer.name}}" width="100px" style="margin-bottom: 10px; margin-top: 20px;">
-                    <ul class="breadcrumb" style="background-color: white; text-align: left;">
-                        <li><a href ng-click="select_category($event)" id="{{storeProduct.product.category.id}}">{{storeProduct.product.category.name}}</a></li>
-                        <li class="active">{{storeProduct.product.subcategory.name}}</li>
-                    </ul>
-                    <p>Prix : <b> $ CAD {{storeProduct.price}} </b></p>
-                    <p ng-show="storeProduct.format">{{storeProduct.format}} <span ng-show="storeProduct.unit"> {{storeProduct.unit.name}}</span></p>
-                    <p ng-show="storeProduct.size">{{storeProduct.size}}</p>
-                    <p ng-show="storeProduct.brand">{{storeProduct.brand.name}}</p>
-                    <p ng-show="storeProduct.state">{{storeProduct.state}}</p>
-                    <p>Valide du <b>{{storeProduct.period_from}}</b> au <b>{{storeProduct.period_to}}</b></p>
-                    
-                    <md-button class="md-primary md-raised pull-right" ng-hide="productInCart(storeProduct.product.id)"  ng-click="add_product_to_cart(storeProduct.product.id, storeProduct.id)">
-                        <md-icon><i class="material-icons">add_shopping_cart</i></md-icon>
-                        Ajouter au panier
-                    </md-button>
-                    
-                    <md-button class="md-warn md-raised pull-right" ng-show="productInCart(storeProduct.product.id)" ng-click="remove_product_from_cart(storeProduct.product.id)">
-                        <md-icon><i class="material-icons">remove_shopping_cart</i></md-icon>
-                        Retirer du panier
-                    </md-button>
-                    
+        <div class="container">
+            <!-- Product Area -->
+            <div class="row">
+
+                <!-- Product Image Area -->
+                <div class="col-sm-12 col-md-4">
+                    <img ng-src="{{storeProduct.product.image}}" class="w-100 p-1 m-2 border" alt="{{storeProduct.product.name}}">
                 </div>
                 
-            </div>
-            
-            <!-- Related Products Image Area -->
-            <div class="col-sm-12 col-md-12 container" ng-show="RelatedProductsAvailable">
-                <md-list flex>
-                    <md-subheader class="md-no-sticky">Produits similaires</md-subheader>
-                    <md-list-item class="md-3-line" ng-repeat="sp in storeProduct.similar_products" ng-click="selectProduct(sp)">
-                      <img ng-src="{{sp.retailer.image}}" class="md-avatar" alt="{{sp.retailer.name}}" />
-                      <img ng-src="{{sp.product.image}}" class="md-avatar" alt="{{sp.product.name}}" />
-                      <div class="md-list-item-text" layout="column">
-                        <p>Prix : <b> $ CAD {{sp.price}} </b></p>
-                        <p>Marchand : <b><a href>{{sp.retailer.name}}</a></b></p>
-                        <p ng-show="sp.format">{{sp.format}} <span ng-show="sp.unit">{{sp.unit.name}}</span></p>
-                        <p ng-show="sp.size">{{sp.size}}</p>
-                        <p ng-show="sp.brand">{{sp.brand.name}}</p>
-                        <p ng-show="sp.state">{{sp.state}}</p>
-                        <p>Valide du <b>{{sp.period_from}}</b> au <b>{{sp.period_to}}</b></p>
-                        
-                        <div class="col-sm-12">
-                            <md-button class="md-primary md-raised md-secondary" ng-hide="productInCart(sp.product.id)"  ng-click="add_product_to_cart(sp.product.id, sp.id)">
+
+                <!-- Product Description Area -->
+                <div class="col-sm-12 col-md-8">
+
+                    <div class="m-2 p-1">
+                        <h4><a href>{{storeProduct.product.name}}</a></h4>
+                        <md-divider></md-divider>
+                        <div style="font-style: italic;">
+
+                            <img  ng-src="{{storeProduct.retailer.image}}" alt="{{storeProduct.retailer.name}}" width="100px" style="margin-bottom: 10px; margin-top: 20px;">
+                            <ul class="breadcrumb" style="background-color: white; text-align: left;">
+                                <li><a href ng-click="select_category($event)" id="{{storeProduct.product.category.id}}">{{storeProduct.product.category.name}}</a></li>
+                                <li class="active">{{storeProduct.product.subcategory.name}}</li>
+                            </ul>
+                            <p>Prix : <b> $ CAD {{storeProduct.price}} </b></p>
+                            <p ng-show="storeProduct.format">{{storeProduct.format}} <span ng-show="storeProduct.unit"> {{storeProduct.unit.name}}</span></p>
+                            <p ng-show="storeProduct.size">{{storeProduct.size}}</p>
+                            <p ng-show="storeProduct.brand">{{storeProduct.brand.name}}</p>
+                            <p ng-show="storeProduct.state">{{storeProduct.state}}</p>
+                            <p>Valide du <b>{{storeProduct.period_from}}</b> au <b>{{storeProduct.period_to}}</b></p>
+
+                            <md-button class="md-primary md-raised pull-right" ng-hide="productInCart(storeProduct.product.id)"  ng-click="add_product_to_cart(storeProduct.product.id, storeProduct.id)">
                                 <md-icon><i class="material-icons">add_shopping_cart</i></md-icon>
                                 Ajouter au panier
                             </md-button>
-                        </div>
 
-                      </div>
-                      <md-divider ng-if="!$last"></md-divider>
-                    </md-list-item>
-                </md-list>
+                            <md-button class="md-warn md-raised pull-right" ng-show="productInCart(storeProduct.product.id)" ng-click="remove_product_from_cart(storeProduct.product.id)">
+                                <md-icon><i class="material-icons">remove_shopping_cart</i></md-icon>
+                                Retirer du panier
+                            </md-button>
+
+                        </div>
+                    </div>
+
+                </div>
+
             </div>
             
+            <md-divider></md-divider>
+
+            
+            <div class="row">
+                <!-- Related Products Image Area -->
+                <div class="col" ng-show="RelatedProductsAvailable">
+                    <md-list flex>
+                        <h4 otiprix-title>Produits similaires</h4>
+                        <md-list-item class="md-3-line" ng-repeat="sp in storeProduct.similar_products" ng-click="selectProduct(sp)">
+                            <img ng-src="{{sp.retailer.image}}" class="md-avatar" alt="{{sp.retailer.name}}" />
+                            <img ng-src="{{sp.product.image}}" class="md-avatar" alt="{{sp.product.name}}" />
+                            <div class="md-list-item-text" layout="column">
+                                <p>Prix : <b> $ CAD {{sp.price}} </b></p>
+                                <p>Marchand : <b><a href>{{sp.retailer.name}}</a></b></p>
+                                <p ng-show="sp.format">{{sp.format}} <span ng-show="sp.unit">{{sp.unit.name}}</span></p>
+                                <p ng-show="sp.size">{{sp.size}}</p>
+                                <p ng-show="sp.brand">{{sp.brand.name}}</p>
+                                <p ng-show="sp.state">{{sp.state}}</p>
+                                <p>Valide du <b>{{sp.period_from}}</b> au <b>{{sp.period_to}}</b></p>
+
+                                <div class="col-sm-12">
+                                    <md-button class="md-primary md-raised md-secondary" ng-hide="productInCart(sp.product.id)"  ng-click="add_product_to_cart(sp.product.id, sp.id)">
+                                        <md-icon><i class="material-icons">add_shopping_cart</i></md-icon>
+                                        Ajouter au panier
+                                    </md-button>
+                                </div>
+
+                            </div>
+                            <md-divider ng-if="!$last"></md-divider>
+                        </md-list-item>
+                    </md-list>
+                </div>
+            </div>
         </div>
+        
         
     </md-dialog-content>
     

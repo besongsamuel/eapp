@@ -50,6 +50,12 @@ body
     top: 0px !important;
 }
 
+md-dialog
+{
+    margin-top: 100px !important;
+}
+
+
 li > a:before {
   content: "";
   position: absolute;
