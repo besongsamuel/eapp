@@ -8,6 +8,8 @@ angular.module("eappApp").controller("MenuController", function($scope, appServi
 {
     var ctrl = this;
     
+    $rootScope.isUserLogged = false;
+    
     appService.ready.then(function()
     {
         

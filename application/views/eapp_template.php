@@ -15,7 +15,7 @@
     	  
   </head>
   
-  <body class="md-body-1">
+  <body class="md-body-1 otiprix">
         
         
      
@@ -71,13 +71,13 @@
           </div>
 
             <div class="navbar-wrapper text-white" ng-cloak>
-                <nav otiprix-background class="navbar navbar-expand-lg fixed-top" style="top : 50px;">
+                <nav otiprix-background class="navbar navbar-expand-lg navbar-dark fixed-top" style="top : 50px;">
                     
-                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#menuNavbar" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
                     
-                    <div id="navbar" class="navbar-collapse collapse">
+                    <div id="menuNavbar" class="navbar-collapse collapse">
 
                         <!-- Branding -->
                         <a class="navbar-brand" href="<?php echo site_url("home"); ?>">
@@ -111,14 +111,11 @@
                                 </div>
                             </li>
 
-                            <li id="step4" class="nav-item" ng-class="{active : selectedMenu == 2}" ><a class="nav-link align-middle" href ng-click="gotoShop()"><span class="p-2 border rounded border-white">Trouvez un produit</span></a></li>
+                            <li id="step4" class="nav-item" ng-class="{active : selectedMenu == 2}" ><a class="nav-link align-middle" href ng-click="gotoShop()"><span class="p-2">Trouvez un produit</span></a></li>
                             <li ng-class="{active : selectedMenu == 3}" class="nav-item " ><a class="nav-link align-middle" href="<?php echo site_url("home/contact"); ?>">Contact</a></li>
                             <li ng-class="{active : selectedMenu == 4}" class="nav-item " ><a class="nav-link align-middle"  href="<?php echo site_url("home/about"); ?>">À propos</a></li>
-                        </ul>
-
-                        <ul class="nav navbar-nav"  ng-controller="AccountController" id="step6">
-                            <li ng-class="{active : selectedMenu == 5}" class="nav-item" ng-hide="isUserLogged"><a class="align-middle nav-link" href="<?php echo site_url("account/login"); ?>"><i style="color : #F7FDCA;" class="fa fa-user"></i>    S'identifier</a></li>
-                            <li ng-class="{active : selectedMenu == 6}" class="nav-item" ng-hide="isUserLogged"><a class="align-middle nav-link" href="<?php echo site_url("account/register"); ?>"><i style="color : #F7FDCA;" class="fa fa-user"></i>    Créer un compte</a></li>
+                            <li ng-class="{active : selectedMenu == 5}" class="nav-item" ng-show="!isUserLogged"><a class="align-middle nav-link" href="<?php echo site_url("account/login"); ?>"><i style="color : #F7FDCA;" class="fa fa-user"></i>    S'identifier</a></li>
+                            <li  id="step6" ng-class="{active : selectedMenu == 6}" class="nav-item" ng-show="!isUserLogged"><a class="align-middle nav-link" href="<?php echo site_url("account/register"); ?>"><i style="color : #F7FDCA;" class="fa fa-user"></i>    Créer un compte</a></li>
                             <li ng-class="{active : selectedMenu == 5}" class="nav-item dropdown" ng-show="isUserLogged">
                                 <a href="#" class="dropdown-toggle nav-link active" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                                     Bonjour 
@@ -133,7 +130,6 @@
                                 </div>
                             </li>
                         </ul>
-
                     </div>
                 </nav>
             </div>
