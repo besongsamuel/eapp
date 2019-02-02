@@ -17,15 +17,20 @@
                                 <h3>À PROPOS DE <span class="baron">OTIPRIX</span></h3>
                             </div><!-- end section title -->
                             <p class="css">Otiprix est un site de comparaison de prix à la fois indépendant des supermarchés et gratuit. Sa fonction principale est d’aider les consommateurs à économiser en moyenne 30 % à 40 % sur leur facture d’épicerie. Otiprix réduit le coût de votre panier d’épicerie en identifiant les meilleurs et les vrais rabais dans les magasins proches de vous. Avec Otiprix, consulter en un seul et même endroit l’ensemble des produits alimentaires en rabais dans les grandes surfaces, mais aussi dans tous les petits magasins situés à proximité de votre lieu de résidence. Otiprix est fier d’assurer au consommateur le meilleur rapport qualité-prix pour sa maison dans chaque magasin. </p>
+                            <p class="css"><b>Zone géographique: </b>pour l'instant, OtiPrix affiche seulement les magasins présent au Québec.</p>
+                            
                         </div><!-- end col -->
                     </div><!-- end col -->
 
-                    <div class="col-md-4 col-sm-4 col-xs-12">
-                        <!-- <img src="https://upload.wikimedia.org/wikipedia/commons/c/ce/Transparent.gif" class="img-circle" alt="" width="400" height="450" style="background:url(http://www.tarbes.fr/components/comp_ckfinder/ckfinder/userfiles/files/epicerie-sociale-3.JPG) 0 400px;" /> -->
-                    </div><!-- end col -->
                 </div><!-- end row -->
             </div><!-- end container -->
         </section><!-- end section gray -->
+        
+        <div class="container">
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                                <iframe width="1200" height="500" src="https://www.youtube.com/embed/kYQ7Z9DHjSs" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div><!-- end col -->
+            </div><!-- end container -->
 
         <section class="section-white bgpatttern clearfix" ng-controller="AboutUsController">
             <div class="row-fluid">

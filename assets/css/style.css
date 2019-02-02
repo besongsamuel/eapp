@@ -1490,3 +1490,7 @@ md-list-item .md-avatar, md-list-item .md-list-item-inner .md-avatar
 filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
 
 }
+.md-button.md-raised.md-primary.pull-right {
+      margin: 8px 0px 5px 8px;
+
+}
