@@ -200,6 +200,9 @@ class Company extends CI_Controller
             $reader->setLoadSheetsOnly(["products"]);
             $sheetData = $spreadsheet->getActiveSheet()->toArray(null, true, true, true);
 
+            // Get all products
+            $products = $this->company_model->get_all(PRODUCT_TABLE);
+            
             foreach ($sheetData as $key => $value) 
             {
                 if($items_added > $company_subscription->product_count)
@@ -274,7 +277,7 @@ class Company extends CI_Controller
                 }
                 
                 $store_product["retailer_id"] = $this->user->company->chain->id;
-                $store_product["product_id"] = $this->company_model->get_product_id($store_product);
+                $store_product["product_id"] = $this->company_model->get_product_id($store_product, $products);
 
                 $this->company_model->create(STORE_PRODUCT_TABLE, $store_product);
                 

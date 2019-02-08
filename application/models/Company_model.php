@@ -65,17 +65,14 @@ class Company_model extends CI_Model
         $this->company_model->create(STORE_PRODUCT_TABLE, $store_product);
     }
     
-    public function get_product_id($store_product) 
+    public function get_product_id($store_product, $products) 
     {
         // Search for product
-        $this->db->select(PRODUCT_TABLE.'.*');
-        $this->add_product_name_filter($store_product["store_name"]);
-        $products = $this->db->get(PRODUCT_TABLE)->result_array();
+        $match = $this->get_product_id_match($products, $store_product["store_name"]);
         
-        // Get Match
-        if(sizeof($products) > 0)
+        if($match !== false)
         {
-            return $this->get_product_id_match($products, $store_product["store_name"]);
+            return $match;
         }
         else
         {
@@ -93,80 +90,79 @@ class Company_model extends CI_Model
             }
             
             return $this->create(PRODUCT_TABLE, $product);
-            
         }
     }
     
-    private function get_product_id_match($products, $filter) 
+    private function get_product_id_match($products, $store_product_name) 
     {
-        $query = trim(mb_strtolower($filter, 'UTF-8'));
+        $store_product_name = trim(mb_strtolower($store_product_name, 'UTF-8'));
+        
+        $possible_matches = array();
                 
         foreach ($products as $product) 
         {
-            $product_name = trim(mb_strtolower($product["name"], 'UTF-8'));
+            $product_name = trim(mb_strtolower($product->name, 'UTF-8'));
             
-            if($product_name == $query)
+            if($product_name == $store_product_name)
             {
-                return $product["id"];
+                return $product->id;
+            }
+            else
+            {
+                if(strpos($store_product_name, $product_name) !== false)
+                {
+                    $match = new stdClass();
+                    $match->id =  $product->id;
+                    $match->name = $product_name;
+                    $match->match_offset =  abs(strlen($store_product_name) - strlen($product_name));
+                    array_push($possible_matches, $match);
+                }
             }
             
-            $tags = explode(",", $product["tags"]);
+            // Get the product tags
+            $tags = explode(",", $product->tags);
             
             foreach ($tags as $tag_name) 
             {
-                if(!empty($tag_name))
+                if(isset($tag_name) && trim($tag_name) != '' && $tag_name != null)
                 {
-                    if($product_name == $tag_name)
+                    if($store_product_name == $tag_name)
                     {
-                        return $product["id"];
+                        return $product->id;
+                    }
+                    else
+                    {
+                        if (strpos($store_product_name, $tag_name)  !== false) 
+                        {
+                            $match = new stdClass();
+                            $match->id = $product->id;
+                            $match->name = $tag_name;
+                            $match->match_offset = abs(strlen($store_product_name) - strlen($tag_name));
+                            array_push($possible_matches, $match);
+                        }
                     }
                 }
             }
         }
         
-        foreach ($products as $product) 
-        {
-            $product_name = trim(mb_strtolower($product["name"], 'UTF-8'));
-            
-            if(strpos($product_name, $query) === 0)
-            {
-                return $product["id"];
-            }
-            
-            foreach ($tags as $tag_name) 
-            {
-                if(!empty($tag_name))
-                {
-                    if(strpos($tag_name, $query) === 0)
-                    {
-                        return $product["id"];
-                    }
+        if (sizeof($possible_matches) == 0) {
+            return false;
+        }
+
+        $match_product = null;
+
+        foreach ($possible_matches as $match) {
+
+            if ($match_product == null) {
+                $match_product = $match;
+            } else {
+                if ($match_product->match_offset > $match->match_offset) {
+                    $match_product = $match;
                 }
             }
         }
-        
-        foreach ($products as $product) 
-        {
-            $product_name = trim(mb_strtolower(product["name"], 'UTF-8'));
-            
-            if(strpos($product_name, $query) > 0)
-            {
-                return $product["id"];
-            }
-            
-            foreach ($tags as $tag_name) 
-            {
-                if(!empty($tag_name))
-                {
-                    if(strpos($tag_name, $query) > 0)
-                    {
-                        return $product["id"];
-                    }
-                }
-            }
-        }
-        
-        
+
+        return $match_product->id;
     }
 	
 	
