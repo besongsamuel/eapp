@@ -357,7 +357,7 @@ class Account extends CI_Controller
             $mail = str_replace("[LASTNAME]", $this->user->profile->firstname, $mail);
             $mail = str_replace("[FIRSTNAME]", $this->user->profile->lastname, $mail);
             $mail = str_replace("[ACTIVATE_URL]", $this->get_activation_url(), $mail);
-            $mail = str_replace("[OTIPRIX_ADDRESS]", "550 Avenue Saint-Dominique, Saint-Hyacinthe, J2S 5M6", $mail);
+            $mail = str_replace("[OTIPRIX_ADDRESS]", "76 Rue Jean-Perrin, Gatineau, QC, J8V 2R2", $mail);
 
             // images
             $mail = str_replace("[LOGO_IMAGE]", base_url("/assets/img/logo.png"), $mail);
@@ -484,7 +484,7 @@ class Account extends CI_Controller
             $mail = str_replace("[TITLE]", "Réinitialisation de mot de passe", $mail);
             $mail = str_replace("[EMAIL]", $email, $mail);
             $mail = str_replace("[PASSWORD_RESET_URL]", $reset_url, $mail);
-            $mail = str_replace("[OTIPRIX_ADDRESS]", "550 Avenue Saint-Dominique, Saint-Hyacinthe, J2S 5M6", $mail);
+            $mail = str_replace("[OTIPRIX_ADDRESS]", "76 Rue Jean-Perrin, Gatineau, QC, J8V 2R2", $mail);
 
             // images
             $mail = str_replace("[LOGO_IMAGE]", base_url("/assets/img/logo.png"), $mail);
@@ -797,7 +797,7 @@ class Account extends CI_Controller
         $mail = str_replace("[ACTIVATE_URL]", $this->get_activation_url(), $mail);
         $mail = str_replace("[LOGIN_URL]", site_url("account/login"), $mail);
         $mail = str_replace("[OTIPRIX_URL]", site_url(), $mail);
-        $mail = str_replace("[OTIPRIX_ADDRESS]", "550 Avenue Saint-Dominique, Saint-Hyacinthe, J2S 5M6", $mail);
+        $mail = str_replace("[OTIPRIX_ADDRESS]", "76 Rue Jean-Perrin, Gatineau, QC, J8V 2R2", $mail);
         
         // images
         $mail = str_replace("[LOGO_IMAGE]", base_url("/assets/img/logo.png"), $mail);
