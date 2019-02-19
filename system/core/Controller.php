@@ -388,7 +388,7 @@ class CI_Controller {
             $mail = str_replace("[USER]", $user, $mail);
             $mail = str_replace("[MESSAGE]", $message, $mail);
             $mail = str_replace("[EMAIL]", $email, $mail);
-            $mail = str_replace("[OTIPRIX_ADDRESS]", "550 Avenue Saint-Dominique, Saint-Hyacinthe, J2S 5M6", $mail);
+            $mail = str_replace("[OTIPRIX_ADDRESS]", "76 Rue Jean-Perrin, Gatineau, QC, J8V 2R2", $mail);
 
             // images
             $mail = str_replace("[LOGO_IMAGE]", base_url("/assets/img/logo.png"), $mail);
@@ -518,7 +518,7 @@ class CI_Controller {
                             <table width="650" align="center" border="0" cellspacing="0" cellpadding="0">
                                 <tbody>
                                     <tr><td width="100%" height="32"></td></tr>
-                                    <tr><td align="center"><span style="color:#75787D;font-size:12px;line-height:18px;font-family:\'Roboto\', Helvetica, Arial, sans-serif;" class="yiv7776326831fallback-text yiv7776326831appleLinksGrey">© 2017 Otiprix Technology. All Rights Reserved.<br>'.$otiprix_address.'</span></td></tr>
+                                    <tr><td align="center"><span style="color:#75787D;font-size:12px;line-height:18px;font-family:\'Roboto\', Helvetica, Arial, sans-serif;" class="yiv7776326831fallback-text yiv7776326831appleLinksGrey">© 2019 Otiprix Technology. All Rights Reserved.<br>'.$otiprix_address.'</span></td></tr>
                                     <tr><td align="center"><span style="color:#75787D;font-size:12px;line-height:18px;font-family:\'Roboto\', Helvetica, Arial, sans-serif;" class="yiv7776326831fallback-text yiv7776326831appleLinksGrey">8h30 à 20h du lundi au vendredi : infos@otiprix.com</span></td></tr>
                                     <tr><td height="8" width="100%"></td></tr>
                                     <tr><td align="center">

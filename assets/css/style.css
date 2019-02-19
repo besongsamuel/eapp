@@ -1079,7 +1079,7 @@ div.cart-collaterals ul.products li.product:hover .add_to_cart_button{background
 
 .mainbox
 {
-    padding-top: 170px;
+    padding-top: 130px;
     padding-bottom: 50px;
 }
 
@@ -1492,5 +1492,11 @@ filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
 }
 .md-button.md-raised.md-primary.pull-right {
       margin: 8px 0px 5px 8px;
+
+}
+.companyrules{
+      font-size:15px;
+      text-align: justify;
+      text-justify: inter-word;
 
 }

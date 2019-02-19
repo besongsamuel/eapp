@@ -17,7 +17,7 @@
                                 <h3>À PROPOS DE <span class="baron">OTIPRIX</span></h3>
                             </div><!-- end section title -->
                             <p class="css">Otiprix est un site de comparaison de prix à la fois indépendant des supermarchés et gratuit. Sa fonction principale est d’aider les consommateurs à économiser en moyenne 30 % à 40 % sur leur facture d’épicerie. Otiprix réduit le coût de votre panier d’épicerie en identifiant les meilleurs et les vrais rabais dans les magasins proches de vous. Avec Otiprix, consulter en un seul et même endroit l’ensemble des produits alimentaires en rabais dans les grandes surfaces, mais aussi dans tous les petits magasins situés à proximité de votre lieu de résidence. Otiprix est fier d’assurer au consommateur le meilleur rapport qualité-prix pour sa maison dans chaque magasin. </p>
-                            <p class="css"><b>Zone géographique: </b>pour l'instant, OtiPrix affiche seulement les magasins présent au Québec.</p>
+                            <p class="css"><b><span class="md-warn-color">Zone géographique: </span></b>pour l'instant, OtiPrix affiche seulement les magasins présent au Québec.</p>
                             
                         </div><!-- end col -->
                     </div><!-- end col -->
