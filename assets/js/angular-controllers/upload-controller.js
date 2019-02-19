@@ -70,6 +70,28 @@ angular.module("eappApp").controller("UploadController", ["$rootScope", "$scope"
         }
     });
     
+    $scope.companyProductsRules = function (event) 
+    {
+        $mdDialog.show({
+            controller: function($scope, eapp)
+            {
+                $scope.close = function()
+                {
+                    $mdDialog.hide();
+                    
+                };
+            },
+            
+          clickOutsideToClose: true,
+          parent: angular.element(document.body),
+          controllerAs: 'ctrl',
+          focusOnOpen: false,
+          targetEvent: event,
+          templateUrl: 'templates/dialogs/company-products-rules.html'
+        });   
+    };
+
+    
     $scope.selectFile = function()
     {
         $('#fileUploadInput').trigger('click');

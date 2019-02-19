@@ -204,7 +204,7 @@
                             Envoyer à votre courrier électronique
                         </md-tooltip>
                         <md-icon><i class="material-icons">email</i></md-icon>
-                        &nbsp;&nbsp; Email &nbsp;&nbsp;
+                        &nbsp;&nbsp;&nbsp; Email &nbsp;&nbsp;&nbsp;
                     </md-button>
                     
                     <md-button class="md-raised md-primary btn" aria-label="Impression" ng-click="printCart()">

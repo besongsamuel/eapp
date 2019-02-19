@@ -61,7 +61,7 @@ and open the template in the editor.
     </tr>
 	
     <tr>
-      <td colspan="4" class="sep">Statistiques: Produits plus</td>
+      <td colspan="4" class="sep">Statistiques sur les produits (+)</td>
     </tr>
 	<tr>
       <td>La poportion des produits biologiques ajoutés au panier par les utilisateurs</td>
@@ -70,7 +70,7 @@ and open the template in the editor.
       <td><span class="tick">&#10004;</span></td>
     </tr>
 	<tr>
-      <td>La catégorie de produits la plus visitée par les utilisateurs</td>
+      <td>Les 5 catégories de produits les plus visités par les utilisateurs</td>
       <td class="default"><span class="tick">&#10004;</span></td>
 	  <td><span class="tick">&#10004;</span></td>
       <td><span class="tick">&#10004;</span></td>
@@ -82,7 +82,7 @@ and open the template in the editor.
       <td><span class="tick">&#10004;</span></td>
     </tr>
 	<tr>
-      <td>Origine des produits visités par les utilisateurs</td>
+      <td>La poportion des produits biologiques visités par les utilisateurs</td>
       <td class="default"><span class="tickred">&#x2716;</span></td>
       <td><span class="tick">&#10004;</span></td>
       <td><span class="tick">&#10004;</span></td>
@@ -125,7 +125,7 @@ and open the template in the editor.
     </tr>
 	
     <tr>
-      <td colspan="4" class="sep">Statistiques: Produits moins</td>
+      <td colspan="4" class="sep">Statistiques sur les produits (-)</td>
     </tr>
 	<tr>
       <td>La catégorie de produits la moins visitée par les utilisateurs</td>
@@ -170,36 +170,12 @@ and open the template in the editor.
       <td><span class="tick">&#10004;</span></td>
     </tr>
 	<tr>
-      <td colspan="4" class="sep">Entreprises</td>
-    </tr>
-	<tr>
-      <td>Combien d'utilisateurs visitent mon magasin</td>
-      <td class="default"><span class="tick">&#10004;</span></td>
-      <td><span class="tick">&#10004;</span></td>
-      <td><span class="tick">&#10004;</span></td>
+      <td colspan="4" class="sep">Statistiques des magasins</td>
     </tr>
 	<tr>
       <td>Combien de produits le magasin le plus visité met en ligne chaque semaine</td>
       <td class="default"><span class="tick">&#10004;</span></td>
       <td><span class="tick">&#10004;</span></td>
-      <td><span class="tick">&#10004;</span></td>
-    </tr>
-	<tr>
-      <td>À quelle distance se trouvent les utilisateurs qui visitent mon magasin </td>
-      <td class="default"><span class="tickred">&#x2716;</span></td>
-      <td><span class="tick">&#10004;</span></td>
-      <td><span class="tick">&#10004;</span></td>
-    </tr>
-    <tr>
-      <td>Combien d'utilisateurs m'ont choisi comme magasin préféré</td>
-      <td class="default"><span class="tickred">&#x2716;</span></td>
-      <td><span class="tickred">&#x2716;</span></td>
-      <td><span class="tick">&#10004;</span></td>
-    </tr>
-	<tr>
-      <td>À quelle distance se trouvent les utilisateurs qui ajoutent mes produits à leur panier</td>
-      <td class="default"><span class="tickred">&#x2716;</span></td>
-      <td><span class="tickred">&#x2716;</span></td>
       <td><span class="tick">&#10004;</span></td>
     </tr>
 	<tr>
@@ -210,6 +186,33 @@ and open the template in the editor.
     </tr>
     <tr>
       <td>Quel est le magasin qui a plus de produits dans la liste des produits moins cher</td>
+      <td class="default"><span class="tickred">&#x2716;</span></td>
+      <td><span class="tickred">&#x2716;</span></td>
+      <td><span class="tick">&#10004;</span></td>
+    </tr>
+	<tr>
+      <td colspan="4" class="sep">Statistiques de mon épicerie</td>
+    </tr>
+	<tr>
+      <td>Combien d'utilisateurs visitent mon magasin</td>
+      <td class="default"><span class="tick">&#10004;</span></td>
+      <td><span class="tick">&#10004;</span></td>
+      <td><span class="tick">&#10004;</span></td>
+    </tr>
+	<tr>
+      <td>À quelle distance se trouvent les utilisateurs qui visitent mon magasin</td>
+      <td class="default"><span class="tickred">&#x2716;</span></td>
+      <td><span class="tick">&#10004;</span></td>
+      <td><span class="tick">&#10004;</span></td>
+    </tr>
+    <tr>
+      <td>Combien d'utilisateurs m'ont choisi comme magasin préféré</td>
+      <td class="default"><span class="tickred">&#x2716;</span></td>
+      <td><span class="tickred">&#x2716;</span></td>
+      <td><span class="tick">&#10004;</span></td>
+    </tr>
+    <tr>
+      <td>À quelle distance se trouvent les utilisateurs qui ajoutent mes produits à leur panier</td>
       <td class="default"><span class="tickred">&#x2716;</span></td>
       <td><span class="tickred">&#x2716;</span></td>
       <td><span class="tick">&#10004;</span></td>
