@@ -6,14 +6,27 @@ angular.module('eappApp').controller('CompanyStatsController', function($scope, 
     
     $scope.period = 1;
     
+    $scope.fromDate = new Date();
+    $scope.fromDate.setDate($scope.fromDate.getDate() - 365);
+    $scope.toDate = new Date();
+    
     $scope.sort = "desc";
     
     $scope.limit = 5;
     
+    ctrl.formatDate = function(date) 
+    {
+        var day = date.getDate().toString().length === 1 ? "0" + date.getDate().toString() : date.getDate().toString();
+        var monthIndex = date.getMonth().toString().length === 1 ? "0" + date.getMonth().toString() : date.getMonth().toString();
+        var year = date.getFullYear();
+
+        return year + '-' +  monthIndex + '-' + day;
+    };
+    
     ctrl.periodChanged = function()
     {
         $scope.loading = true;
-        $company.getStats('desc', $scope.limit, $scope.period, getStatsSuccess);
+        $company.getStats('desc', $scope.limit, ctrl.formatDate($scope.fromDate), ctrl.formatDate($scope.toDate), getStatsSuccess);
     };
         
     appService.ready.then(function()
@@ -30,7 +43,7 @@ angular.module('eappApp').controller('CompanyStatsController', function($scope, 
 
             $scope.loading = true;
 
-            $company.getStats('desc', $scope.limit, $scope.period, getStatsSuccess);
+            $company.getStats('desc', $scope.limit, ctrl.formatDate($scope.fromDate), ctrl.formatDate($scope.toDate), getStatsSuccess);
             
         })();
         

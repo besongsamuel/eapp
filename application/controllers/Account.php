@@ -153,7 +153,15 @@ class Account extends CI_Controller
     {
         
         $order = $this->input->post("order");
+        
         $period = $this->input->post("period");
+        
+        $to_date = $this->input->post("to_date");
+        
+        $from_date = $this->input->post("from_date");
+        
+        $this->statistics->filter_stats($from_date, $to_date);
+        
         $limit = $this->input->post("limit");
         $limit = 5;
         

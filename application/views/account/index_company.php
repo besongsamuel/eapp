@@ -383,6 +383,12 @@ $(document).ready(function()
                     
                     <div class="container-fluid" ng-controller="CompanyStatsController as ctrl">
 
+                        <div class="row justify-content-center">
+                            <div class="col-auto">
+                                <md-datepicker ng-model="fromDate" md-placeholder="De"></md-datepicker>
+                                <md-datepicker ng-model="toDate" md-placeholder="À"></md-datepicker>
+                            </div>
+                        </div>
                         <div layout="row" layout-align='center center'>
                             <md-radio-group ng-change="ctrl.periodChanged()" ng-model="period" >
 

@@ -122,13 +122,14 @@ angular.module('eappApp').factory("$company", function(appService, $http)
                 formData, 
                 { transformRequest: angular.identity, headers: {'Content-Type': undefined}}).then(success, onError);
         },
-        getStats : function(order, limit, period, success)
+        getStats : function(order, limit, from, to, success)
         {
             var formData = new FormData();
         
             formData.append("order", order);
             formData.append("limit", limit);
-            formData.append("period", period);
+            formData.append("from_date", from);
+            formData.append("to_date", to);
                         
             return $http.post(
                 appService.siteUrl.concat("/account/get_stats"), 

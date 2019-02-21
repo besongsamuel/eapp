@@ -79,12 +79,27 @@ class Statistics
         
         $this->product_statistics = $this->CI->db->query("SELECT *, ".$dates_sql." FROM ".PRODUCT_STATS)->result_array();
                 
-        $this->product_optimization_statistics = $this->CI->db->query("SELECT *, ".$dates_sql." FROM ".PRODUCT_OPTIMIZATION_STATS)->result_array();;
+        $this->product_optimization_statistics = $this->CI->db->query("SELECT *, ".$dates_sql." FROM ".PRODUCT_OPTIMIZATION_STATS)->result_array();
         
-        $this->retailer_visits = $this->CI->db->query("SELECT *, ".$dates_sql." FROM ".CHAIN_VISITS)->result_array();;
+        $this->retailer_visits = $this->CI->db->query("SELECT *, ".$dates_sql." FROM ".CHAIN_VISITS)->result_array();
         
-        $this->retailer_statistics = $this->CI->db->query("SELECT *, ".$dates_sql." FROM ".CHAIN_STATS)->result_array();;
+        $this->retailer_statistics = $this->CI->db->query("SELECT *, ".$dates_sql." FROM ".CHAIN_STATS)->result_array();
             
+    }
+    
+    public function filter_stats($from_date, $to_date) {
+        
+        $dates_sql = "MONTH(date_created) AS month, YEAR(date_created) AS year, YEAR(CURRENT_DATE()) AS current_year, MONTH(CURRENT_DATE()) AS current_month";
+        
+        $where = " WHERE '".$from_date."' <= date_created AND date_created <= '".$to_date."'";
+        
+        $this->product_statistics = $this->CI->db->query("SELECT *, ".$dates_sql." FROM ".PRODUCT_STATS.$where)->result_array();
+                
+        $this->product_optimization_statistics = $this->CI->db->query("SELECT *, ".$dates_sql." FROM ".PRODUCT_OPTIMIZATION_STATS.$where)->result_array();
+        
+        $this->retailer_visits = $this->CI->db->query("SELECT *, ".$dates_sql." FROM ".CHAIN_VISITS.$where)->result_array();
+        
+        $this->retailer_statistics = $this->CI->db->query("SELECT *, ".$dates_sql." FROM ".CHAIN_STATS.$where)->result_array();
     }
     
     private function get_products_from_query($stats) 
@@ -162,32 +177,6 @@ class Statistics
             {
                 $category->count = $row['count'];
                 array_push($result, $category);
-            }
-        }
-        
-        return $result;
-    }
-    
-    private function filter_by_date($stats, $period) 
-    {
-        $result = array();
-        
-        foreach ($stats as $stat) 
-        {
-            if($period == 0)
-            {
-                if($stat['month'] == $stat['current_month'] && $stat['year'] == $stat['current_year'])
-                {
-                    array_push($result, $stat);
-                }
-            }
-            
-            if($period == 1)
-            {
-                if($stat['year'] == $stat['current_year'])
-                {
-                    array_push($result, $stat);
-                }
             }
         }
         
@@ -298,9 +287,7 @@ class Statistics
         
         $result = array();
         
-        $result = $this->filter_by_date($this->product_statistics, $period);
-        
-        $result = $this->filter_by($result, $in_flyer, "in_flyer");
+        $result = $this->filter_by($this->product_statistics, $in_flyer, "in_flyer");
         
         $result = $this->filter_by($result, $bio, "bio");
         
@@ -332,9 +319,7 @@ class Statistics
         
         $result = array();
         
-        $result = $this->filter_by_date($this->retailer_statistics, $period);
-        
-        $result = $this->filter_by($result, $action, "type");
+        $result = $this->filter_by($this->retailer_statistics, $action, "type");
         
         $result = $this->group_by($result, array("product_id"));
         
@@ -361,9 +346,7 @@ class Statistics
     {
         $result = array();
         
-        $result = $this->filter_by_date($this->product_statistics, $period);
-        
-        $result = $this->filter_by($result, $in_flyer, "in_flyer");
+        $result = $this->filter_by($this->product_statistics, $in_flyer, "in_flyer");
         
         $result = $this->filter_by($result, $bio, "bio");
         
@@ -401,9 +384,7 @@ class Statistics
         
         $result = array();
         
-        $result = $this->filter_by_date($this->retailer_statistics, $period);
-        
-        $result = $this->group_by($result, array("product_id", "retailer_id"));
+        $result = $this->group_by($this->retailer_statistics, array("product_id", "retailer_id"));
         
         usort($result, "cmp_count_".$order);
                 
@@ -420,9 +401,7 @@ class Statistics
     {
         $result = array();
         
-        $result = $this->filter_by_date($this->product_statistics, $period);
-        
-        $result = $this->filter_by($result, $action, "type");
+        $result = $this->filter_by($this->product_statistics, $action, "type");
         
         $result = $this->group_by($result, array("product_id", "country"));
         
@@ -448,9 +427,7 @@ class Statistics
     {
         $result = array();
         
-        $result = $this->filter_by_date($this->product_statistics, $period);
-        
-        $result = $this->filter_by($result, $action, "type");
+        $result = $this->filter_by($this->product_statistics, $action, "type");
         
         foreach ($result as $key => $value) 
         {
@@ -482,9 +459,7 @@ class Statistics
     {
         $result = array();
         
-        $result = $this->filter_by_date($this->product_statistics, $period);
-        
-        $result = $this->filter_by($result, $action, "type");
+        $result = $this->filter_by($this->product_statistics, $action, "type");
         
         $result = $this->group_by($result, array("brand_id"));
         
@@ -543,9 +518,7 @@ class Statistics
         
         $result = array();
         
-        $result = $this->filter_by_date($this->retailer_visits, $period);
-        
-        $result = $this->group_by($result, array("retailer_id"));
+        $result = $this->group_by($this->retailer_visits, array("retailer_id"));
         
         usort($result, "cmp_count_".$order);
                 
@@ -573,9 +546,7 @@ class Statistics
     {
         $result = array();
         
-        $result = $this->filter_by_date($this->product_optimization_statistics, $period);
-        
-        $result = $this->group_by($result, array("retailer_id"));
+        $result = $this->group_by($this->product_optimization_statistics, array("retailer_id"));
         
         usort($result, "cmp_count_".$order);
                 
