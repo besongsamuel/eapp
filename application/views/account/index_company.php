@@ -389,13 +389,10 @@ $(document).ready(function()
                                 <md-datepicker ng-model="toDate" md-placeholder="À"></md-datepicker>
                             </div>
                         </div>
-                        <div layout="row" layout-align='center center'>
-                            <md-radio-group ng-change="ctrl.periodChanged()" ng-model="period" >
-
-                                <md-radio-button value="1" class="md-primary">Année</md-radio-button>
-                                <md-radio-button value="0" class="md-primary"> Mois </md-radio-button>
-
-                            </md-radio-group>
+                        <div class="row justify-content-center mb-3">
+                            <md-button ng-click="ctrl.refresh()" class="md-raised md-primary btn">
+                                Valider
+                            </md-button>
                         </div>
 
                         <div layout='row' layout-align='center center'>

@@ -23,7 +23,7 @@ angular.module('eappApp').controller('CompanyStatsController', function($scope, 
         return year + '-' +  monthIndex + '-' + day;
     };
     
-    ctrl.periodChanged = function()
+    ctrl.refresh = function()
     {
         $scope.loading = true;
         $company.getStats('desc', $scope.limit, ctrl.formatDate($scope.fromDate), ctrl.formatDate($scope.toDate), getStatsSuccess);
