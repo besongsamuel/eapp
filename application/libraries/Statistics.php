@@ -276,8 +276,7 @@ class Statistics
      * @param type $action 1 for products added to cart, 0 for products viewed, 2 for products added to user's list, 3 appeared in search
      * @return type
      */
-    public function get_top_products(
-            $period = 0, 
+    public function get_top_products( 
             $order = 'desc', 
             $in_flyer = -1, 
             $bio = -1,
@@ -310,8 +309,7 @@ class Statistics
         return $this->get_products_from_query($result);
     }
     
-    public function get_top_recurring_products(
-            $period = 0, 
+    public function get_top_recurring_products( 
             $order = 'desc', 
             $action = 0,
             $limit = 5) 
@@ -338,8 +336,7 @@ class Statistics
         return $this->get_products_from_query($result);
     }
     
-    private function get_total_products(
-            $period = 0, 
+    private function get_total_products( 
             $in_flyer = -1, 
             $bio = -1,
             $action = 0) 
@@ -356,11 +353,11 @@ class Statistics
 
     }
     
-    public function get_percentage_bio($period = 0, $action = 0) 
+    public function get_percentage_bio($action = 0) 
     {
-        $non_bio_count = $this->get_total_products($period, -1, 0, $action);
+        $non_bio_count = $this->get_total_products(-1, 0, $action);
         
-        $bio_count = $this->get_total_products($period, -1, 1, $action);
+        $bio_count = $this->get_total_products(-1, 1, $action);
         
         $total_products = $bio_count + $non_bio_count;
         
@@ -379,7 +376,7 @@ class Statistics
      * @param type $order
      * @return type
      */
-    public function get_top_product_retailers($order = 'desc', $period = 0, $limit = 5) 
+    public function get_top_product_retailers($order = 'desc', $limit = 5) 
     {
         
         $result = array();
@@ -397,33 +394,7 @@ class Statistics
         
     }
     
-    public function get_top_countries($order = 'desc', $period = 0, $action = 0, $limit = 5) 
-    {
-        $result = array();
-        
-        $result = $this->filter_by($this->product_statistics, $action, "type");
-        
-        $result = $this->group_by($result, array("product_id", "country"));
-        
-        usort($result, "cmp_count_".$order);
-                
-        if($limit != -1)
-        {
-            $result = array_slice($result, 0, $limit);
-        }
-        
-        foreach ($result as $key => $value) 
-        {
-            if($key == "country")
-            {
-                $result["name"] = $value;
-            }
-        }
-        
-        return $result;
-    }
-    
-    public function get_top_states($order = 'desc', $period = 0, $action = 0, $limit = 5) 
+    public function get_top_states($order = 'desc', $action = 0, $limit = 5) 
     {
         $result = array();
         
@@ -455,7 +426,7 @@ class Statistics
         return $result;
     }
     
-    public function get_top_product_brands($order = 'desc', $period = 0, $action = 0, $limit = 5) 
+    public function get_top_product_brands($order = 'desc', $action = 0, $limit = 5) 
     {
         $result = array();
         
@@ -490,18 +461,10 @@ class Statistics
         
     }
     
-    public function get_top_product_categories($order = 'desc', $period = 0, $limit = 5) 
+    public function get_top_product_categories($order, $from_date, $to_date, $limit = 5) 
     {
-        if($period == 0)
-        {
-            // Get products for current month
-            $period_sql = " AND MONTH(".PRODUCT_STATS.".date_created) = MONTH(CURRENT_DATE()) AND YEAR(".PRODUCT_STATS.".date_created) = YEAR(CURRENT_DATE())";
-        }
-        else
-        {
-            // Get products for current year
-            $period_sql = " AND YEAR(".PRODUCT_STATS.".date_created) = YEAR(CURRENT_DATE())";
-        }
+        
+        $period_sql = " AND '".$from_date."' <= ".PRODUCT_STATS.".date_created AND ".PRODUCT_STATS.".date_created <= '".$to_date."'";
         
         $products_join_clause = " INNER JOIN ".PRODUCT_TABLE." ON (".PRODUCT_STATS.".product_id = ".PRODUCT_TABLE.".id) ";
         $subcategories_join_clause = " LEFT OUTER JOIN ".SUB_CATEGORY_TABLE." ON (".SUB_CATEGORY_TABLE.".id = ".PRODUCT_TABLE.".subcategory_id) ";
@@ -513,7 +476,7 @@ class Statistics
         return $this->get_categories_from_query($query->result_array());
     }
     
-    public function get_top_visited_chains($order = 'desc', $period = 0, $limit = 5) 
+    public function get_top_visited_chains($order = 'desc', $limit = 5) 
     {
         
         $result = array();
@@ -542,7 +505,7 @@ class Statistics
         
     }
     
-    public function get_top_optimized_chains($order = 'desc', $period = 0, $limit = 5) 
+    public function get_top_optimized_chains($order = 'desc', $limit = 5) 
     {
         $result = array();
         
@@ -558,14 +521,16 @@ class Statistics
         return $this->get_retailers_from_query($result);
     }
     
-    public function get_store_visitors_info() 
+    public function get_store_visitors_info($from_date, $to_date) 
     {
         $result = new stdClass();
+        
+        $period = " AND '".$from_date."' <= ".CHAIN_VISITS.".date_created AND ".CHAIN_VISITS.".date_created <= '".$to_date."'";
         
         // Get all visits
         $total_visits =  count($this->retailer_visits);
                 
-        $my_store_visits = $this->CI->db->query("SELECT * FROM ".CHAIN_VISITS." WHERE retailer_id = ".$this->user->company->chain->id)->result();
+        $my_store_visits = $this->CI->db->query("SELECT * FROM ".CHAIN_VISITS." WHERE retailer_id = ".$this->user->company->chain->id.$period)->result();
         
         if(count($my_store_visits) > 0)
         {
@@ -592,14 +557,16 @@ class Statistics
         
     }
     
-    public function get_store_userlist_info() 
+    public function get_store_userlist_info($from_date, $to_date) 
     {
+        $period = "'".$from_date."' <= ".USER_FAVORITE_STORE_TABLE.".date_created AND ".USER_FAVORITE_STORE_TABLE.".date_created <= '".$to_date."'";
+        
         $result = new stdClass();
         
         // Get all visits
-        $total_users_with_favorite_stores =  count($this->CI->db->query("SELECT DISTINCT user_account_id FROM ".USER_FAVORITE_STORE_TABLE)->result());
+        $total_users_with_favorite_stores =  count($this->CI->db->query("SELECT DISTINCT user_account_id FROM ".USER_FAVORITE_STORE_TABLE." WHERE ".$period)->result());
         
-        $users_with_my_store_as_favorite = $this->CI->db->query("SELECT DISTINCT user_account_id FROM ".USER_FAVORITE_STORE_TABLE." WHERE retailer_id = ".$this->user->company->chain->id)->result();
+        $users_with_my_store_as_favorite = $this->CI->db->query("SELECT DISTINCT user_account_id FROM ".USER_FAVORITE_STORE_TABLE." WHERE retailer_id = ".$this->user->company->chain->id." AND ".$period)->result();
         
         if(count($users_with_my_store_as_favorite) > 0)
         {
@@ -615,15 +582,17 @@ class Statistics
         
     }
     
-    public function get_product_visitors_info($action) 
+    public function get_product_visitors_info($action, $from_date, $to_date) 
     {
         $result = new stdClass();
         
-        // Get all product visits
-        $all_product_stats =  count($this->CI->db->query("SELECT count(*) FROM ".PRODUCT_STATS." WHERE type = ".$action)->result());
+        $period = " AND '".$from_date."' <= ".PRODUCT_STATS.".date_created AND ".PRODUCT_STATS.".date_created <= '".$to_date."'";
+
+        // Get all product visits of a certain type
+        $all_product_stats =  count($this->CI->db->query("SELECT count(*) FROM ".PRODUCT_STATS." WHERE type = ".$action.$period)->result());
         
         // Get visits to my store
-        $store_product_stats = $this->CI->db->query("SELECT * FROM ".PRODUCT_STATS." WHERE retailer_id = ".$this->user->company->chain->id." AND type = ".$action)->result();
+        $store_product_stats = $this->CI->db->query("SELECT * FROM ".PRODUCT_STATS." WHERE retailer_id = ".$this->user->company->chain->id." AND type = ".$action.$period)->result();
         
         if(count($store_product_stats) > 0)
         {
@@ -651,11 +620,13 @@ class Statistics
         
     }
     
-    public function most_visited_store($order = 'desc', $period = 0, $limit = 5) 
+    public function most_visited_store($order = 'desc', $from_date, $to_date, $limit = 5) 
     {
         $mvs = new stdClass();
         
-        $retailers =  $this->get_top_visited_chains($order, $period, $limit);
+        $period = " AND '".$from_date."' <= ".CHAIN_STATS.".date_created AND ".CHAIN_STATS.".date_created <= '".$to_date."'";
+        
+        $retailers =  $this->get_top_visited_chains($order, $limit);
         
         if(sizeof($retailers) > 0)
         {
@@ -663,7 +634,7 @@ class Statistics
             
             $month_year = "MONTH(date_created) as month, YEAR(date_created) as year";
                         
-            $query = $this->CI->db->query("SELECT count(id) as count, ".$month_year." FROM ".CHAIN_STATS." WHERE retailer_id = ".$most_visited_retailer->id." GROUP BY year, month");
+            $query = $this->CI->db->query("SELECT count(id) as count, ".$month_year." FROM ".CHAIN_STATS." WHERE retailer_id = ".$most_visited_retailer->id.$period." GROUP BY year, month");
             
             $sum = 0;
             

@@ -199,13 +199,13 @@ function AddStoreProductController($scope, $q, $timeout, eapp, $company, $mdDial
     
     $scope.edit = false;
     
-    $scope.buttonCaption = "Ajouter";
+    $scope.caption = "Ajouter";
     
     ctrl.imageUploaded = null;
     
     if($scope.sp)
     {
-        $scope.buttonCaption = "Modifier";
+        $scope.caption = "Modifier";
         
         $scope.storeProduct = storeProduct;
         

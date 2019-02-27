@@ -1,6 +1,6 @@
 <md-dialog>
 
-    <h2 otiprix-title>Ajouter Produit</h2>  
+    <h2 otiprix-title>{{caption}} Produit</h2>  
     <md-divider></md-divider>  
 
     <md-dialog-content class="md-dialog-content">
@@ -110,7 +110,7 @@
                     </div>
                 </md-input-container>
 
-                <md-input-container class="md-icon-float md-icon-right col-12">
+                <md-input-container class="col-12">
                     <label>Prix</label>
                     <input ng-model="sp.price" name="price" required type="number" step="0.01">
                     <md-icon class="md-primary"><i class="material-icons">attach_money</i></md-icon>
@@ -144,7 +144,7 @@
                 <div class="col-md-12 col-sm-12">
                     <md-input-container class='pull-right'>
                         <md-button type="submit" class='md-raised md-primary'>
-                            {{buttonCaption}}
+                            {{caption}}
                         </md-button>
                     </md-input-container>
                 </div>

@@ -406,51 +406,209 @@ $(document).ready(function()
                             <div class="accordion w-100" ng-if="!loading">
                                 
 
-                                    <div id="origin-products" class="card">
+                                <div class="card">
 
-                                        <div class="card-header" id="headingOne">
-                                            <h2 class="mb-0">
-                                                <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                                    Statistiques sur l'origine
-                                                </button>
-                                            </h2>
+                                    <div class="card-header" id="headingTwo">
+                                        <h2 class="mb-0">
+                                            <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                                                Statistiques sur les produits
+                                            </button>
+                                        </h2>
+                                    </div>
+
+                                    <div id="collapseTwo" class="collapse show" role="tabpanel" aria-labelledby="headingTwo">
+
+                                        <div class="card-body">
+
+                                            <div class="container">
+                                                <div class="row">
+                                                    <div class="col-sm-12 col-md-6" ng-repeat="item in productStats">
+                                                        <top-products
+                                                            data="item.data" 
+                                                            caption2="item.caption">
+                                                        </top-products>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
+                                    </div>
+                                </div>
+                                
+                                
+                                <div id="origin-products" class="card">
 
-                                        <div id="collapseOne" class="collapse show" role="tabpanel" aria-labelledby="headingOne">
+                                    <div class="card-header" id="headingOne">
+                                        <h2 class="mb-0">
+                                            <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                                Statistiques sur l'origine
+                                            </button>
+                                        </h2>
+                                    </div>
 
-                                            <div class="card-body">
+                                    <div id="collapseOne" class="collapse" role="tabpanel" aria-labelledby="headingOne">
 
-                                                <top-products  class="col-sm-12 col-md-6"
-                                                    ng-if="stats.top_viewed_product_states && stats.top_viewed_product_states.length > 0" 
-                                                    data="stats.top_viewed_product_states" 
-                                                    count-caption="Visites :"
-                                                    caption="Origine des produits visités par les utilisateurs"></top-products>
+                                        <div class="card-body">
 
-                                                <top-products  class="col-sm-12 col-md-6"
-                                                    ng-if="stats.top_cart_product_states && stats.top_cart_product_states.length > 0" 
-                                                    data="stats.top_cart_product_states" 
-                                                    count-caption="Nombre de fois ajoutées au panier :"
-                                                    caption="Origine des produits ajoutés au panier par les utilisateurs"></top-products>
+                                            <div class="container">
+                                                <div class="row">
+                                                    <div class="col-6">
+                                                        <top-products 
+                                                            ng-if="stats.top_viewed_product_states && stats.top_viewed_product_states.length > 0" 
+                                                            data="stats.top_viewed_product_states" 
+                                                            count-caption="Visites :"
+                                                            caption="Origine des produits visités par les utilisateurs"></top-products>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <top-products 
+                                                                       ng-if="stats.top_cart_product_states && stats.top_cart_product_states.length > 0" 
+                                                                       data="stats.top_cart_product_states" 
+                                                                       count-caption="Nombre de fois ajoutées au panier :"
+                                                                       caption="Origine des produits ajoutés au panier par les utilisateurs"></top-products>
+                                                    </div>
+                                                </div>
+                                            </div>
 
-                                                <span class="col-sm-12">{{stats.get_percentage_bio_added_to_cart}} % de produits  bio sont ajoutées au panier</span>
-                                                <div class="col-sm-12">
-                                                    <div class="progress">
-                                                        <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40"
-                                                        aria-valuemin="0" aria-valuemax="100" style="width:{{stats.get_percentage_bio_added_to_cart}}%">
-                                                            {{stats.get_percentage_bio_added_to_cart}} %
-                                                        </div>
+
+
+
+                                            <span class="col-sm-12">{{stats.get_percentage_bio_added_to_cart}} % de produits  bio sont ajoutées au panier</span>
+                                            <div class="col-sm-12">
+                                                <div class="progress">
+                                                    <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40"
+                                                    aria-valuemin="0" aria-valuemax="100" style="width:{{stats.get_percentage_bio_added_to_cart}}%">
+                                                        {{stats.get_percentage_bio_added_to_cart}} %
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <span class="col-sm-12">
+                                                {{stats.get_percentage_bio_viewed}} % de produits  bio sont visitées
+                                            </span>
+
+                                            <div class="col-sm-12">
+                                                <div class="progress">
+                                                    <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="50"
+                                                        aria-valuemin="0" aria-valuemax="100" style="width:{{stats.get_percentage_bio_viewed}}%">
+                                                        {{stats.get_percentage_bio_viewed}} %
                                                     </div>
                                                 </div>
 
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                                <div class="card">
+
+                                    <div class="card-header" id="headingThree">
+                                        <h2 class="mb-0">
+                                            <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
+                                                Statistiques des magasins
+                                            </button>
+                                        </h2>
+                                    </div>
+
+                                    <div id="collapseThree" class="collapse" aria-labelledby="headingThree">
+
+                                        <div class="card-body">
+
+                                            <div ng-if="stats.most_visited_store">
+
                                                 <span class="col-sm-12">
-                                                    {{stats.get_percentage_bio_viewed}} % de produits  bio sont visitées
+                                                    <b>{{stats.most_visited_store.retailer.name}}</b> entre environs {{stats.most_visited_store.avg}} produits par mois en moyenne.
+                                                </span>
+
+                                            </div>
+                                            
+                                            <div class="container">
+                                                <div class="row">
+                                                    <div class="col-6">
+                                                        <top-products 
+                                                                       ng-if="stats.get_top_visited_chains && stats.get_top_visited_chains.length > 0" 
+                                                                       data="stats.get_top_visited_chains" 
+                                                                       count-caption="Visites :"
+                                                                       caption="Les magasins les plus visitées"></top-products>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <top-products 
+                                                                       ng-if="stats.top_optimized_chains && stats.top_optimized_chains.length > 0" 
+                                                                       data="stats.top_optimized_chains" 
+                                                                       count-caption="Produits optimisées :"
+                                                                       caption="Les magasins les plus optimisées"></top-products>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                                <div class="card">
+
+                                    <div class="card-header" id="headingFour">
+                                        <h2 class="mb-0">
+                                            <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseFour" aria-expanded="true" aria-controls="collapseFour">
+                                                Statistiques de mon Épicerie
+                                            </button>
+                                        </h2>
+                                    </div>
+
+                                    <div id="collapseFour" class="collapse" aria-labelledby="headingFour">
+
+                                        <div class="card-body">
+
+                                            <div ng-if="stats.get_store_userlist_info">
+
+                                                <span class="col-sm-12">
+                                                    {{stats.get_store_userlist_info.users}} % des utilisateurs m'ont comme magasin préféré.
                                                 </span>
 
                                                 <div class="col-sm-12">
                                                     <div class="progress">
                                                         <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="50"
-                                                            aria-valuemin="0" aria-valuemax="100" style="width:{{stats.get_percentage_bio_viewed}}%">
-                                                            {{stats.get_percentage_bio_viewed}} %
+                                                            aria-valuemin="0" aria-valuemax="100" style="width:{{stats.get_store_userlist_info.users}}%">
+                                                            {{stats.get_store_userlist_info.users}} %
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+
+                                            <div ng-if="stats.get_store_visitors_info">
+
+                                                <span class="col-sm-12">
+                                                    {{stats.get_store_visitors_info.visits}}% des utilisateurs visitent votre magasin à une distance d'environ {{stats.get_store_visitors_info.avg_distance}} km.
+                                                </span>
+
+                                                <div class="col-sm-12">
+                                                    <div class="progress">
+                                                        <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="50"
+                                                            aria-valuemin="0" aria-valuemax="100" style="width:{{stats.get_store_visitors_info.visits}}%">
+                                                            {{stats.get_store_visitors_info.visits}} %
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+
+                                            <div ng-if="stats.get_product_visitors_info">
+
+                                                <span class="col-sm-12">
+                                                    {{stats.get_product_visitors_info.visits}}% des produits ajoutées au panier sont de votre magasin et sont des utilisateurs à une distance d'environ {{stats.get_product_visitors_info.avg_distance}} km.
+                                                </span>
+
+                                                <div class="col-sm-12">
+                                                    <div class="progress">
+                                                        <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="50"
+                                                            aria-valuemin="0" aria-valuemax="100" style="width:{{stats.get_product_visitors_info.visits}}%">
+                                                            {{stats.get_product_visitors_info.visits}} %
                                                         </div>
                                                     </div>
 
@@ -462,148 +620,7 @@ $(document).ready(function()
 
                                     </div>
 
-                                    <div class="card">
-
-                                        <div class="card-header" id="headingTwo">
-                                            <h2 class="mb-0">
-                                                <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-                                                    Statistiques sur les produits
-                                                </button>
-                                            </h2>
-                                        </div>
-
-                                        <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo">
-
-                                            <div class="card-body">
-                                                
-                                                <div class="container">
-                                                    <div class="row">
-                                                        <div class="col-sm-12 col-md-6" ng-repeat="item in productStats">
-                                                            <top-products
-                                                                data="item.data" 
-                                                                caption2="item.caption">
-                                                            </top-products>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="card">
-
-                                        <div class="card-header" id="headingThree">
-                                            <h2 class="mb-0">
-                                                <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
-                                                    Statistiques des magasins
-                                                </button>
-                                            </h2>
-                                        </div>
-
-                                        <div id="collapseThree" class="collapse" aria-labelledby="headingThree">
-
-                                            <div class="card-body">
-
-                                                <div ng-if="stats.most_visited_store">
-
-                                                    <span class="col-sm-12">
-                                                        <b>{{stats.most_visited_store.retailer.name}}</b> entre environs {{stats.most_visited_store.avg}} produits par mois en moyenne.
-                                                    </span>
-
-                                                </div>
-
-                                                <top-products  class="col-sm-12 col-md-6"
-                                                ng-if="stats.get_top_visited_chains && stats.get_top_visited_chains.length > 0" 
-                                                data="stats.get_top_visited_chains" 
-                                                count-caption="Visites :"
-                                                caption="Les magasins les plus visitées"></top-products>
-
-
-                                                <top-products  class="col-sm-12 col-md-6"
-                                                ng-if="stats.top_optimized_chains && stats.top_optimized_chains.length > 0" 
-                                                data="stats.top_optimized_chains" 
-                                                count-caption="Produits optimisées :"
-                                                caption="Les magasins les plus optimisées"></top-products>
-
-                                            </div>
-
-                                        </div>
-
-                                    </div>
-
-                                    <div class="card">
-
-                                        <div class="card-header" id="headingFour">
-                                            <h2 class="mb-0">
-                                                <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseFour" aria-expanded="true" aria-controls="collapseFour">
-                                                    Statistiques de mon Épicerie
-                                                </button>
-                                            </h2>
-                                        </div>
-
-                                        <div id="collapseFour" class="collapse" aria-labelledby="headingFour">
-
-                                            <div class="card-body">
-
-                                                <div ng-if="stats.get_store_userlist_info">
-
-                                                    <span class="col-sm-12">
-                                                        {{stats.get_store_userlist_info.users}} % des utilisateurs m'ont comme magasin préféré.
-                                                    </span>
-
-                                                    <div class="col-sm-12">
-                                                        <div class="progress">
-                                                            <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="50"
-                                                                aria-valuemin="0" aria-valuemax="100" style="width:{{stats.get_store_userlist_info.users}}%">
-                                                                {{stats.get_store_userlist_info.users}} %
-                                                            </div>
-                                                        </div>
-
-                                                    </div>
-
-                                                </div>
-
-                                                <div ng-if="stats.get_store_visitors_info">
-
-                                                    <span class="col-sm-12">
-                                                        {{stats.get_store_visitors_info.visits}}% des utilisateurs visitent votre magasin à une distance d'environ {{stats.get_store_visitors_info.avg_distance}} km.
-                                                    </span>
-
-                                                    <div class="col-sm-12">
-                                                        <div class="progress">
-                                                            <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="50"
-                                                                aria-valuemin="0" aria-valuemax="100" style="width:{{stats.get_store_visitors_info.visits}}%">
-                                                                {{stats.get_store_visitors_info.visits}} %
-                                                            </div>
-                                                        </div>
-
-                                                    </div>
-
-                                                </div>
-
-                                                <div ng-if="stats.get_product_visitors_info">
-
-                                                    <span class="col-sm-12">
-                                                        {{stats.get_product_visitors_info.visits}}% des produits ajoutées au panier sont de votre magasin et sont des utilisateurs à une distance d'environ {{stats.get_product_visitors_info.avg_distance}} km.
-                                                    </span>
-
-                                                    <div class="col-sm-12">
-                                                        <div class="progress">
-                                                            <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="50"
-                                                                aria-valuemin="0" aria-valuemax="100" style="width:{{stats.get_product_visitors_info.visits}}%">
-                                                                {{stats.get_product_visitors_info.visits}} %
-                                                            </div>
-                                                        </div>
-
-                                                    </div>
-
-                                                </div>
-
-                                            </div>
-
-                                        </div>
-
-                                    </div>
+                                </div>
 
                                 
                             </div>
