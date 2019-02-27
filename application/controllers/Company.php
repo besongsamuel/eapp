@@ -74,6 +74,8 @@ class Company extends CI_Controller
             
             if($products_count < $company_subscription->product_count)
             {
+                $products = $this->company_model->get_all(PRODUCT_TABLE);
+
                 // Get the store product
                 $store_product = json_decode($this->input->post("store_product"), true);
 
@@ -87,7 +89,7 @@ class Company extends CI_Controller
                 }
 
                 // Get the product_id
-                $store_product["product_id"] = $this->company_model->get_product_id($store_product);
+                $store_product["product_id"] = $this->company_model->get_product_id($store_product, $products);
 
                 // Assign the retailer id
                 $store_product["retailer_id"] = $this->user->company->chain->id;
