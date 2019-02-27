@@ -23,7 +23,7 @@ class Account_model extends CI_Model
         
         $this->ACCOUNT_COLUMNS = "id, email, subscription, is_new, is_active, code, phone, phone_verified, account_number, payment_token";
         
-        $this->PROFILE_COLUMNS = "id, firstname, lastname, country, city, state, address, postcode, longitude, latitude";
+        $this->PROFILE_COLUMNS = "id, firstname, lastname, country, city, state, address, profile_value, postcode, longitude, latitude";
         
     }
     
