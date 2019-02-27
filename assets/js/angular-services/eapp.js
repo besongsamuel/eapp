@@ -150,7 +150,7 @@ angular.module('eappApp').factory('eapp', function($http, appService, $mdDialog,
         // user's latitude
         formData.append("latitude", appService.latitude);
         //
-        formData.append("distance", profileData.instance.optimizationDistance);
+        formData.append("distance", profileData.get().optimizationDistance);
         return $http.post(eappService.getSiteUrl().concat("home/get_category_products"), formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}});
     };
     

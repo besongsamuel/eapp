@@ -133,7 +133,7 @@ angular.module("eappApp").controller("UserListController", function($rootScope, 
 
         $scope.AddProductToList(product);
         
-        appService.recordProductStat(product.id, STAT_TYPE_ADDED_TO_LIST, profileData.instance.optimizationDistance, true);
+        appService.recordProductStat(product.id, STAT_TYPE_ADDED_TO_LIST, profileData.get().optimizationDistance, true);
 
         $scope.saveMyList();
     };
@@ -492,6 +492,7 @@ angular.module("eappApp").controller("UserListController", function($rootScope, 
                 
                 var formData = new FormData();
                 formData.append("items", JSON.stringify(items));
+                formData.append("distance", profileData.instance.optimizationDistance);
 
                 $http.post($rootScope.site_url.concat("/cart/insert_batch"), 
                 formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}}).then(function(response)
