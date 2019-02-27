@@ -764,7 +764,7 @@ class CI_Controller {
                 // attempt to get distance
                 $profile_value = json_decode($this->user->profile->profile_value);
                 
-                if($distance == -1 && $profile_value && $profile_value->optimizationDistance)
+                if($distance <= -1 && $profile_value && $profile_value->optimizationDistance)
                 {
                     $distance = $profile_value->optimizationDistance;
                 }
