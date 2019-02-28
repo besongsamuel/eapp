@@ -17,7 +17,7 @@ angular.module('eappApp').controller('CompanyStatsController', function($scope, 
     ctrl.formatDate = function(date) 
     {
         var day = date.getDate().toString().length === 1 ? "0" + date.getDate().toString() : date.getDate().toString();
-        var monthIndex = date.getMonth().toString().length === 1 ? "0" + date.getMonth().toString() : date.getMonth().toString();
+        var monthIndex = (date.getMonth() + 1).toString().length === 1 ? "0" + (date.getMonth() + 1).toString() : (date.getMonth() + 1).toString();
         var year = date.getFullYear();
 
         return year + '-' +  monthIndex + '-' + day;

@@ -129,6 +129,9 @@ class Statistics
         
         foreach ($stats as $row) 
         {
+            // convert row to object
+            $row = json_decode(json_encode($row), FALSE);
+            
             if(isset($row->retailer_id))
             {
                 $retailer = $this->CI->eapp_model->get(CHAIN_TABLE, $row->retailer_id);

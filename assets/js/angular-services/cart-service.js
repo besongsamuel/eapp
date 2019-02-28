@@ -37,6 +37,7 @@ angular.module('eappApp').factory('cart', function($http, appService, profileDat
         formData.append("longitude", longitude);
         formData.append("latitude", latitude);
         formData.append("quantity", quantity);
+        formData.append("distance", profileData.get().optimizationDistance)
         
         return $http.post(appService.siteUrl.concat("cart/insert"), formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}});
     };

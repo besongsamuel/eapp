@@ -492,7 +492,7 @@ angular.module("eappApp").controller("UserListController", function($rootScope, 
                 
                 var formData = new FormData();
                 formData.append("items", JSON.stringify(items));
-                formData.append("distance", profileData.instance.optimizationDistance);
+                formData.append("distance", profileData.get().optimizationDistance);
 
                 $http.post($rootScope.site_url.concat("/cart/insert_batch"), 
                 formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}}).then(function(response)

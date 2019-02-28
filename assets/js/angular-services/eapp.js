@@ -478,7 +478,7 @@ angular.module('eappApp').factory('eapp', function($http, appService, $mdDialog,
     
         promise.then(function(response)
         {
-            appService.recordProductStat(product_id, profileData.instance.optimizationDistance, STAT_TYPE_CLICK);
+            appService.recordProductStat(product_id, STAT_TYPE_CLICK, profileData.get().optimizationDistance);
             
             $scope.storeProduct = response.data;
             

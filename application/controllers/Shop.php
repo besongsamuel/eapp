@@ -115,7 +115,7 @@ class Shop extends CI_Controller {
         {
             foreach ($products["products"] as $sp) 
             {
-                $this->record_product_stat($sp->id, STAT_TYPE_SEARCH);
+                $this->record_product_stat($sp->id, STAT_TYPE_SEARCH, false, $distance);
             }
         }
         

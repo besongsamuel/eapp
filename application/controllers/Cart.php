@@ -70,6 +70,8 @@ class Cart extends CI_Controller {
     {
         $items = json_decode($this->input->post("items"));
         
+        $distance = $this->input->post("distance");
+        
         foreach ($items as $item) 
         {
             $store_product = $this->cart_model->get_cheapest_store_product($item->product_id);
@@ -79,7 +81,7 @@ class Cart extends CI_Controller {
                 continue;
             }
             
-            $this->record_product_stat($store_product->id, STAT_TYPE_ADD_TO_CART);
+            $this->record_product_stat($store_product->id, STAT_TYPE_ADD_TO_CART, false, $distance);
 
             $data = array
             (
@@ -105,6 +107,8 @@ class Cart extends CI_Controller {
         
         $quantity = $this->input->post("quantity");
         
+        $distance = $this->input->post("distance");
+        
         if(!isset($quantity))
         {
             $quantity = 1;
@@ -122,7 +126,7 @@ class Cart extends CI_Controller {
         }
         else
         {
-            $this->record_product_stat($store_product_id, STAT_TYPE_ADD_TO_CART);
+            $this->record_product_stat($store_product_id, STAT_TYPE_ADD_TO_CART, false, $distance);
             $store_product = $this->cart_model->getStoreProduct($store_product_id, false, true, true);
             $store_product->department_store = new stdClass();
             $store_product->department_store->name = "Le magasin n'est pas disponible près de chez vous.";
