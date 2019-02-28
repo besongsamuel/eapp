@@ -592,7 +592,7 @@ class Statistics
         $period = " AND '".$from_date."' <= ".PRODUCT_STATS.".date_created AND ".PRODUCT_STATS.".date_created <= '".$to_date."'";
 
         // Get all product visits of a certain type
-        $all_product_stats =  count($this->CI->db->query("SELECT count(*) FROM ".PRODUCT_STATS." WHERE type = ".$action.$period)->result());
+        $all_product_stats =  count($this->CI->db->query("SELECT * FROM ".PRODUCT_STATS." WHERE type = ".$action.$period)->result());
         
         // Get visits to my store
         $store_product_stats = $this->CI->db->query("SELECT * FROM ".PRODUCT_STATS." WHERE retailer_id = ".$this->user->company->chain->id." AND type = ".$action.$period)->result();
