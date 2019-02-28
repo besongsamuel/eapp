@@ -623,7 +623,7 @@ class Statistics
         
     }
     
-    public function most_visited_store($order = 'desc', $from_date, $to_date, $limit = 5) 
+    public function most_visited_store($order, $from_date, $to_date, $limit = 5) 
     {
         $mvs = new stdClass();
         
@@ -653,7 +653,7 @@ class Statistics
                 return;
             }
             
-            $mvs->avg =  $sum / count($result);
+            $mvs->avg =  round((float)($sum / count($result)), 2);
             
             $mvs->retailer = $most_visited_retailer;
             
