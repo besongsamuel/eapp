@@ -655,7 +655,7 @@ $(document).ready(function()
                         </div>
                         
                         <div class="row justify-content-center">
-                            <p otiprix-text><b><a  href ng-click="companyProductsRules()">Règles d’affichages</a></b></p>
+                            <p otiprix-text><b><a class="md-warn-color" href ng-click="companyProductsRules()">Règles d’affichages</a></b></p>
                         </div>
                         
                         <form id="uploadForm" method="post" action="<?php site_url('company/upload_products'); ?>" >
