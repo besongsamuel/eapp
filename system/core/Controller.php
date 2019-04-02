@@ -568,7 +568,6 @@ class CI_Controller {
         $condition = array('email'=>$str);
         $checkEmail = $this->account_model->get_specific(USER_ACCOUNT_TABLE, $condition);
         if($checkEmail != null){
-            $this->form_validation->set_message('email_check', 'The given email already exists.');
             return FALSE;
         } 
         return TRUE;

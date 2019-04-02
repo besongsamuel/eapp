@@ -334,17 +334,15 @@ class Company extends CI_Controller
         }
         
     }
-        
+    
     public function register() 
     {
-        $this->load->library('form_validation');
         $this->load->library('geo');
         
         if($_SERVER['REQUEST_METHOD'] === 'POST')
         {
             $this->load->helper('file');
                   
-            $this->form_validation->set_rules('account[email]', 'Email', 'email_check');
             $user_account = $this->input->post('account');
             $company_profile = json_decode($this->input->post('profile'), true);
             $company = json_decode($this->input->post('company'), true);
@@ -357,8 +355,6 @@ class Company extends CI_Controller
                 return;
             }
             
-            
-            
             $user_account['password'] = md5($user_account['password']);	
             // Subscription of 10 is a company
             $user_account['subscription'] = 10;
@@ -367,7 +363,7 @@ class Company extends CI_Controller
             // Set the account number
             $user_account['account_number'] = mt_rand(1000000, 9999999);
 			
-            if($this->form_validation->run() == true)
+            if($this->email_check($user_account["email"]))
             {
                 // Create the account
                 $user_account_id = $this->account_model->create(USER_ACCOUNT_TABLE, $user_account);

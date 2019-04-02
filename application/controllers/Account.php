@@ -730,7 +730,6 @@ class Account extends CI_Controller
 		
         if($_SERVER['REQUEST_METHOD'] === 'POST')
         {
-            $this->form_validation->set_rules('account[email]', 'Email', 'email_check');
 
             $user_account = $this->input->post('account');
             $user_profile = $this->input->post('profile');
@@ -739,7 +738,7 @@ class Account extends CI_Controller
             $user_account['username'] = $user_account['email'];
             $user_account['account_number'] = mt_rand(1000000, 9999999);
 			
-            if($this->form_validation->run() == true)
+            if($this->email_check($user_account["email"]))
             {
                 $insert = $this->account_model->create(USER_ACCOUNT_TABLE, $user_account);
 
