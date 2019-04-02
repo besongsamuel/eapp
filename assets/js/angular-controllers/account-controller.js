@@ -84,9 +84,9 @@ angular.module('eappApp').controller('AccountController', ["$scope", "$http", "$
         );
     };
     
-    $rootScope.load_icons = function()
+    $scope.load_icons = function()
     {
-        $rootScope.icons = 
+        $scope.icons = 
         {
             person :  appService.baseUrl + "/assets/icons/ic_person_white_24px.svg",
             flag :  appService.baseUrl + "/assets/icons/ic_flag_white_24px.svg",

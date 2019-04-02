@@ -14,24 +14,24 @@ angular.module("eappApp").controller("UserListController", function($rootScope, 
     
     $scope.loadingLists = true;
     
-    $rootScope.selectedProduct = null;
+    $scope.selectedProduct = null;
     
     $scope.selectedGroceryList = null;
     
     /**
      * Query text for the product being searched. 
      */
-    $rootScope.searchProductText = "";
+    $scope.searchProductText = "";
     
     /**
      * The different product categories of the list
      */
-    $rootScope.myCategories = [];
+    $scope.myCategories = [];
     
     /**
      * The maximum number of products the list can contain
      */
-    $rootScope.maxNumItems = 50;
+    $scope.maxNumItems = 50;
     
     $scope.selectedList = { id : -1};
     
@@ -296,7 +296,7 @@ angular.module("eappApp").controller("UserListController", function($rootScope, 
         }
     };
   
-    $rootScope.saveMyList = function()
+    $scope.saveMyList = function()
     {
         var formData = new FormData();
         formData.append("my_list", JSON.stringify($scope.getProductList()));
@@ -328,11 +328,11 @@ angular.module("eappApp").controller("UserListController", function($rootScope, 
 		
         $mdDialog.show(confirmDialog).then(function() 
         {
-            $http.post($rootScope.site_url.concat("/cart/destroy"), null).then(function(response)
+            $http.post(appService.siteUrl.concat("/cart/destroy"), null).then(function(response)
             {
-                $rootScope.myCategories = [];
+                $scope.myCategories = [];
                 appService.loggedUser.grocery_list = [];
-                $rootScope.saveMyList();
+                $scope.saveMyList();
             });
 
         });
@@ -468,7 +468,7 @@ angular.module("eappApp").controller("UserListController", function($rootScope, 
         
         $mdDialog.show(confirmDialog).then(function() 
         {
-            $http.post($rootScope.site_url.concat("/cart/destroy"), null).then(function(response)
+            $http.post(appService.siteUrl.concat("/cart/destroy"), null).then(function(response)
             {
                 appService.cart = [];
                 var items = [];
@@ -494,10 +494,10 @@ angular.module("eappApp").controller("UserListController", function($rootScope, 
                 formData.append("items", JSON.stringify(items));
                 formData.append("distance", profileData.get().optimizationDistance);
 
-                $http.post($rootScope.site_url.concat("/cart/insert_batch"), 
+                $http.post(appService.siteUrl.concat("/cart/insert_batch"), 
                 formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}}).then(function(response)
                 {
-                    window.location = $rootScope.site_url.concat("/cart");
+                    window.location = appService.siteUrl.concat("/cart");
                 });
             });
 
@@ -576,6 +576,24 @@ angular.module("eappApp").controller("UserListController", function($rootScope, 
                 
           });
         
+    };
+    
+    $scope.load_icons = function()
+    {
+        $scope.icons = 
+        {
+            person :  appService.baseUrl + "/assets/icons/ic_person_white_24px.svg",
+            flag :  appService.baseUrl + "/assets/icons/ic_flag_white_24px.svg",
+            place :  appService.baseUrl + "/assets/icons/ic_place_white_24px.svg",
+            phone :  appService.baseUrl + "/assets/icons/ic_local_phone_white_24px.svg",
+            email :  appService.baseUrl + "/assets/icons/ic_email_white_24px.svg",
+            lock :  appService.baseUrl + "/assets/icons/ic_lock_white_24px.svg",
+            favorite :  appService.baseUrl + "/assets/icons/ic_favorite_white_24px.svg",
+            delete :  appService.baseUrl + "/assets/icons/ic_delete_white_24px.svg",
+            add :  appService.baseUrl + "/assets/icons/ic_add_circle_white_24px.svg",
+            search :  appService.baseUrl + "/assets/icons/ic_search_black_24px.svg",
+            add_img : appService.baseUrl + "/assets/img/add_image.png"
+        };
     };
     
     appService.ready.then(function()
