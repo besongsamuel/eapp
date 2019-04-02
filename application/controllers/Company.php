@@ -499,6 +499,9 @@ class Company extends CI_Controller
             $company['is_new'] = 0;
             
             $this->company_model->create(COMPANY_TABLE, $company);
+            
+            // update associated chain
+            //$this->company_model->update(CHAIN_TABLE, array("name" => $company["name"]), array("company_id" => $this->user->company->id));
         }
     }
     

@@ -723,6 +723,12 @@ class CI_Model {
         
     }
     
+    public function update($table_name, $data, $condition)
+    {
+        $data['date_modified'] = date("Y-m-d H:i:s");
+        $this->db->update($table_name, $data, $condition);
+    }
+    
     public function get_store_products_limit(
             $limit, 
             $offset, 
