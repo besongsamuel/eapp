@@ -189,8 +189,10 @@ function AddStoreProductController($scope, $q, $timeout, eapp, $company, $mdDial
         
     };
     
-    $scope.sp = storeProduct.store_product;
-
+    if(!angular.isNullOrUndefined(storeProduct))
+    {
+        $scope.sp = storeProduct.store_product;
+    }
     
     $scope.hide = function()
     {
