@@ -99,7 +99,6 @@
                             <li id="step3" class="nav-item dropdown" ng-class="{active : selectedMenu == 1}">
                                 <a href class="dropdown-toggle nav-link align-middle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Réduisez vos dépenses<span class="caret"></span></a>
                                 <div class="dropdown-menu" otiprix-background>
-                                    <a class="dropdown-item" href="<?php echo site_url("account/my_grocery_list"); ?>">Votre liste d'épicerie</a>
                                     <a class="dropdown-item" href="<?php echo site_url("shop/select_flyer_store"); ?>">Les circulaires des magasins</a>
                                     <a class="dropdown-item" href="<?php echo site_url("shop/categories"); ?>">Les catégories de produits</a>
                                 </div>
