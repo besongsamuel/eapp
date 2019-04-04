@@ -215,8 +215,9 @@ function AddStoreProductController($scope, $q, $timeout, eapp, $company, $mdDial
         $scope.period_to = getDate($scope.sp.period_to);
         
         $scope.sp.price = parseFloat($scope.sp.price);
-        $scope.sp.organic = parseInt($scope.sp.organic) === 1;
-        $scope.sp.in_flyer = parseInt($scope.sp.in_flyer) === 1;
+        $scope.organic = parseInt($scope.sp.organic) === 1;
+        $scope.in_flyer = parseInt($scope.sp.in_flyer) === 1;
+        
         
         // Get the web path of the store image if it is set. 
         if(!angular.isNullOrUndefined($scope.storeProduct.product.image) && $scope.storeProduct.product.image != '')
