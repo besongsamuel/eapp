@@ -672,7 +672,7 @@ angular.module('eappApp').factory('eapp', function($http, appService, $mdDialog,
         var formData = new FormData();
         formData.append("department_store", JSON.stringify(departmentStore));
         
-        return $http.post(eappService.getSiteUrl().concat("/account/add_department_store"), formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}});
+        return $http.post(eappService.getSiteUrl().concat("/company/add_department_store"), formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}});
     };
     
     eappService.removeDepartmentStore = function(id)

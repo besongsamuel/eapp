@@ -1053,34 +1053,7 @@ class Account extends CI_Controller
         }
     }
     
-    public function add_department_store() 
-    {
-        if($this->user != null && $this->user->subscription >= COMPANY_SUBSCRIPTION)
-        {
-            $department_store = json_decode($this->input->post('department_store'), true);
-            $department_store["chain_id"] = $this->user->company->chain->id;
-            
-            if(!isset($department_store["longitude"]))
-            {
-                $coordinates = $this->geo->get_coordinates($department_store["city"], $department_store["address"], $department_store["state"], $department_store["country"]);
-                if($coordinates)
-                {
-                    $department_store["longitude"] = $coordinates["long"];
-                    $department_store["latitude"] = $coordinates["lat"];
-                }
-            }
-            
-            $id = $this->account_model->create(CHAIN_STORE_TABLE, $department_store);
-            
-            if($id)
-            {
-                // Change company to not new
-                $this->account_model->create(COMPANY_TABLE, array("id" => $this->user->company->id, "is_new" => 0));
-                
-                echo json_encode(array("id" => $id, "success" => true));
-            }
-        }
-    }
+    
     
     public function remove_department_store()
     {

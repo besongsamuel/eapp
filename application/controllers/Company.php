@@ -412,8 +412,24 @@ class Company extends CI_Controller
                     $chain['company_id'] = $company_id;
                     
                     // Create Chain
-                    $this->account_model->create(CHAIN_TABLE, $chain);
-                                        
+                    $chain_id = $this->account_model->create(CHAIN_TABLE, $chain);
+                    
+                    $department_store = array
+                    (
+                        "chain_id" => $chain_id,
+                        "name" => $company['name'],
+                        "address" => $company_profile["address"],
+                        "country" => $company_profile["country"],
+                        "city" => $company_profile["city"],
+                        "state" => $company_profile["state"],
+                        "postcode" => $company_profile["postcode"],
+                        "longitude" => $company_profile["longitude"],
+                        "latitude" => $company_profile["latitude"],
+                        "email" => $user_account['email']
+                    );
+                    
+                    $this->account_model->create(CHAIN_STORE_TABLE, $department_store);
+
                     $data["success"] = true;
                     
                     $this->login_user(array(
@@ -531,6 +547,35 @@ class Company extends CI_Controller
             }
             
             $this->company_model->create(CHAIN_TABLE, $chain);
+        }
+    }
+    
+    public function add_department_store() 
+    {
+        if($this->user != null && $this->user->subscription >= COMPANY_SUBSCRIPTION)
+        {
+            $department_store = json_decode($this->input->post('department_store'), true);
+            $department_store["chain_id"] = $this->user->company->chain->id;
+            
+            if(!isset($department_store["longitude"]))
+            {
+                $coordinates = $this->geo->get_coordinates($department_store["city"], $department_store["address"], $department_store["state"], $department_store["country"]);
+                if($coordinates)
+                {
+                    $department_store["longitude"] = $coordinates["long"];
+                    $department_store["latitude"] = $coordinates["lat"];
+                }
+            }
+            
+            $id = $this->account_model->create(CHAIN_STORE_TABLE, $department_store);
+            
+            if($id)
+            {
+                // Change company to not new
+                $this->account_model->create(COMPANY_TABLE, array("id" => $this->user->company->id, "is_new" => 0));
+                
+                echo json_encode(array("id" => $id, "success" => true));
+            }
         }
     }
     
