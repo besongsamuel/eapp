@@ -306,21 +306,23 @@
 
                                 </div>
 
-                                    <div class="col-sm-12" ng-hide="enterVerificationNumber">
-                                        <div class="alert alert-danger col-sm-12 message" ng-show="validateCodeMessage">
-                                            <strong>Erreur!</strong> {{validateCodeMessage}}
-                                        </div>
-                                        <p class="message">Veuillez entrer ci-dessous le code que vous avez reçu ou cliquez sur <a href ng-click="enterVerificationNumber = true">réessayez</a> pour renvoyer un autre code de vérification.</p>
-                                        <md-input-container class="col-sm-12 col-md-6 col-md-offset-3">
+                                <div class="w-100" ng-hide="enterVerificationNumber">
+                                    <div class="alert alert-danger col-sm-12 message" ng-show="validateCodeMessage">
+                                        <strong>Erreur!</strong> {{validateCodeMessage}}
+                                    </div>
+                                    <p class="message text-center">Veuillez entrer ci-dessous le code que vous avez reçu ou cliquez sur <a href ng-click="enterVerificationNumber = true">réessayez</a> pour renvoyer un autre code de vérification.</p>
+
+                                    <div class="w-100 d-flex flex-row justify-content-center align-items-center">
+                                        <md-input-container>
                                             <label>Code</label>
                                             <input ng-model="verificationCode">
                                         </md-input-container>
-                                        <div class="col-sm-12">
-                                            <md-button class="md-primary md-raised col-md-4 col-md-offset-4" ng-click="validateCode()">
-                                                Valider
-                                            </md-button>
-                                        </div>
+                                        <md-button class="md-primary md-raised" ng-click="validateCode()">
+                                            Valider
+                                        </md-button>
                                     </div>
+
+                                </div>
 
                                 
                             </div>
