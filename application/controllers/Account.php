@@ -1178,7 +1178,5 @@ class Account extends CI_Controller
         echo json_encode(array("success" => false));
 
     }
-        
-    
     
 }

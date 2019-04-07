@@ -3,13 +3,6 @@
 <link rel="stylesheet" href="<?php echo base_url("node_modules/intl-tel-input/build/css/intlTelInput.min.css")?>">
 <link rel="stylesheet" href="<?php echo base_url("assets/css/account.css")?>">
 
-<script>
-    
-$(document).ready(function()
-{
-    $("#phone").intlTelInput({utilsScript : "<?php echo base_url("node_modules/intl-tel-input/build/js/utils.js")?>"});
-});
-</script>
 
 <md-content class="otiprix-section" id="admin-container" ng-cloak>
     
@@ -286,42 +279,32 @@ $(document).ready(function()
                             </div>
                             
                             <!-- Verify phone number -->
-                            <div class="row">
+                            <div class="w-100 my-4">
                                 
-                                <div ng-if="menuIndex == 2" layout-padding>
+                                <p otiprix-text class="text-center font-weight-bold" ng-hide="userPhoneVerified">Vérifier votre numéro de téléphone</p>
 
-                                    <div class="row"  ng-hide="userPhoneVerified">
-                                        <b><p otiprix-text class="message">Vérifier votre numéro de téléphone</p></b>
+                                <div class="w-100" ng-show="enterVerificationNumber">
+
+                                    <div class="alert alert-danger col-sm-12 message" ng-show="phoneNumberError">
+                                        <strong>Erreur!</strong> {{phoneNumberError}}.
                                     </div>
 
-                                    <div class="col-sm-12" ng-show="enterVerificationNumber">
-
-                                        <div class="alert alert-danger col-sm-12 message" ng-show="phoneNumberError">
-                                            <strong>Erreur!</strong> {{phoneNumberError}}.
-                                        </div>
-
-                                        <div class="alert alert-success col-sm-12 message" ng-show="validateCodeMessage">
-                                            <strong>Success!</strong> {{validateCodeMessage}}
-                                        </div>
-
-                                        <div class="row"  ng-show="userPhoneVerified">
-                                            <p otiprix-text class="message"><b>Verified : {{loggedUserClone.phone}}</b></p>
-                                        </div>
-
-                                        <div class="row">
-                                            <p class="message">Veuillez entrer ci-dessous un numéro de téléphone où nous vous enverrons le code de vérification.</p>
-                                        </div>
-
-                                        <div class="row">
-                                            <div class="center-block" style="width : 315px;">
-                                                <input class="form-control" style="border-radius: 2px;" type="tel" id="phone">
-                                                <md-button class="md-primary md-raised" ng-click="sendVerificationCode()">
-                                                    Valider
-                                                </md-button>
-                                            </div>
-                                        </div>
-
+                                    <div class="alert alert-success col-sm-12 message" ng-show="validateCodeMessage">
+                                        <strong>Success!</strong> {{validateCodeMessage}}
                                     </div>
+
+                                    <p ng-show="userPhoneVerified" otiprix-text class="message text-center"><b>Verified : {{loggedUserClone.phone}}</b></p>
+
+                                    <p otiprix-text class="text-center">Veuillez entrer ci-dessous un numéro de téléphone où nous vous enverrons le code de vérification.</p>
+
+                                    <div class="d-flex flex-row justify-content-center">
+                                        <input class="form-control" style="border-radius: 2px;" type="tel" id="phone">
+                                        <md-button class="md-primary md-raised my-0" ng-click="sendVerificationCode()">
+                                            Valider
+                                        </md-button>
+                                    </div>
+
+                                </div>
 
                                     <div class="col-sm-12" ng-hide="enterVerificationNumber">
                                         <div class="alert alert-danger col-sm-12 message" ng-show="validateCodeMessage">
@@ -339,7 +322,6 @@ $(document).ready(function()
                                         </div>
                                     </div>
 
-                                </div>
                                 
                             </div>
 
