@@ -485,6 +485,16 @@ class CI_Model {
         
         $this->db->limit($query->limit, $query->limit * ($query->page - 1));
         
+        if($query->is_new)
+        {
+            $this->db->where("is_new", 1);
+        }
+        
+        if($query->no_tags)
+        {
+            $this->db->where("tags", "");
+        }
+        
         $products = $this->get_all(PRODUCT_TABLE);
         
         foreach ($products as $key => $value) 

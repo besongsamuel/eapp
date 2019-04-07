@@ -898,12 +898,18 @@ angular.module("eappApp").controller("ViewProductsController", function($scope, 
     $scope.selected = [];
     
     $scope.product = null;
+    
+    $scope.viewNewProducts = false;
+    
+    $scope.viewProductsWithNoTags = false;
       
     $scope.query = 
     {
         filter: '',
         limit: 20,
-        page: 1
+        page: 1,
+        is_new: false,
+        no_tags: false
     };
     
     $scope.filter = 

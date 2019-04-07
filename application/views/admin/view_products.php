@@ -43,6 +43,8 @@
         </md-button>
       </div>
     </md-toolbar>
+    
+    
 
     <md-toolbar class="md-table-toolbar md-default" ng-show="filter.show && !selected.length">
         <div class="md-toolbar-tools">
@@ -55,6 +57,15 @@
             </md-button>
         </div>
     </md-toolbar>
+    
+    <div class="w-100 d-flex flex-row justify-content-center my-3">
+        <md-checkbox ng-model="query.is_new" ng-change="getProducts()" aria-label="View new products">
+            Voir les nouveaux produits
+        </md-checkbox>
+        <md-checkbox ng-model="query.no_tags" ng-change="getProducts()" aria-label="View products with no tags">
+            Voir les produits sans tags
+        </md-checkbox>
+    </div>
     
     
     <md-table-container>
