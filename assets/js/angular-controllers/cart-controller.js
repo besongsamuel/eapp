@@ -1196,7 +1196,9 @@ angular.module("eappApp").controller("CartController", function(appService, $sco
                 appService.cart = [];
                 $scope.stores = [];
                 $scope.departmenStores = [];
-		$scope.totalPriceAvailableProducts = 0;
+                $scope.totalPriceAvailableProducts = 0;
+                $scope.totalPriceUnavailableProducts = 0;
+                ctrl.update_price_optimization();
                 
             });
 
