@@ -46,13 +46,27 @@
                                         <div ng-message="required">Vous devez entrer au moins un nom pour l'entreprise</div>
                                     </div>
                                 </md-input-container>
+                                
+                                <!-- Site Web -->
+                                <md-input-container class="md-block col-md-6 col-sm-12">
+                                    <label>Site Web</label>
+                                    <input name="website" ng-model="company.website" />
+                                </md-input-container>
+                                
+                                <!-- Contact -->
+                                <md-input-container class="md-block col-md-6 col-sm-12">
+                                    <label>Contact</label>
+                                    <input required name="contact" ng-model="company.phone" />
+                                    <div ng-messages="signupForm.contact.$error">
+                                        <div ng-message="required">Veillez entrer un numéro de téléphone de contact</div>
+                                    </div>
+                                </md-input-container>
 
                                 <image-upload 
                                     caption="Ajouter logo" 
                                     on-file-removed="onFileRemoved()" 
                                     on-file-selected="imageChanged(file)">       
                                 </image-upload> 
-                                
                                 
                             </div>
                         </div>
@@ -67,14 +81,14 @@
                         <div class="container">
                             <div class="row">
                                 <!-- First Name -->
-                                <md-input-container class="md-block col-md-6" flex-gt-sm>
+                                <md-input-container class="md-block col-md-6 col-sm-12" flex-gt-sm>
                                     <label>Prénom</label>
                                     <md-icon class="md-primary"><i class="material-icons">person</i></md-icon>
                                     <input name="firstname" ng-model="profile.firstname" />
                                 </md-input-container>
 
                                 <!-- Last Name -->
-                                <md-input-container class="md-block col-md-6" flex-gt-sm>
+                                <md-input-container class="md-block col-md-6 col-sm-12" flex-gt-sm>
                                     <label>Nom</label>
                                     <input required name="lastname" ng-model="profile.lastname" />
                                     <div ng-messages="signupForm.lastname.$error">
@@ -83,7 +97,7 @@
                                 </md-input-container>
 
                                 <!-- User Address -->
-                                <md-input-container class="col-sm-12">
+                                <md-input-container class="col-12">
                                     <!-- <label>Adresse</label> -->
                                     <input 
                                         vs-google-autocomplete
@@ -101,7 +115,7 @@
                                 </md-input-container>
 
                                 <!-- City -->
-                                <md-input-container class="md-block col-md-6" flex-gt-sm>
+                                <md-input-container class="md-block col-md-6 col-sm-12" flex-gt-sm>
                                     <label>Ville</label>
                                     <input required name="city" ng-model="profile.city" />
                                     <div ng-messages="signupForm.city.$error">
@@ -110,7 +124,7 @@
                                 </md-input-container>
 
                                 <!-- State -->
-                                <md-input-container class="md-block col-md-6" flex-gt-sm>
+                                <md-input-container class="md-block col-md-6 col-sm-12" flex-gt-sm>
                                     <label>Province</label>
                                     <input required name="state" ng-model="profile.state" />
                                     <div ng-messages="signupForm.state.$error">
@@ -119,7 +133,7 @@
                                 </md-input-container>
 
                                 <!-- Country -->
-                                <md-input-container class="md-block col-md-6" flex-gt-sm>
+                                <md-input-container class="md-block col-md-6 col-sm-12" flex-gt-sm>
                                     <label>Pays</label>
                                     <input required name="country" ng-model="profile.country" />
                                     <div ng-messages="signupForm.country.$error">
@@ -128,13 +142,15 @@
                                 </md-input-container>
 
                                 <!-- Postcode -->
-                                <md-input-container class="md-block col-md-6" flex-gt-sm>
+                                <md-input-container class="md-block col-md-6 col-sm-12" flex-gt-sm>
                                     <label>Code Postal</label>
                                     <input required name="postcode" ng-model="profile.postcode" />
                                     <div ng-messages="signupForm.postcode.$error">
                                         <div ng-message="required">Veillez entrer votre code postal</div>
                                     </div>
                                 </md-input-container>
+                                
+                               
                             </div>
                         </div>
 
