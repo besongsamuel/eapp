@@ -52,7 +52,9 @@
               
             <td md-cell>
                 <div style="width: 160px;">
-                    <img class="retailer-img" alt="" ng-src="{{product.retailer.image}}">
+                    <a href ng-click="viewStoreDetails($event, product.retailer)">
+                        <img class="retailer-img" alt="" ng-src="{{product.retailer.image}}">
+                    </a>
                     
                     <div class="image-container">
                         <a href ng-click="viewProduct(product.id, $event)">

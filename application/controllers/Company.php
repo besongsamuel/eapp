@@ -132,6 +132,53 @@ class Company extends CI_Controller
         }
     }
     
+    public function get()
+    {
+        if($_SERVER['REQUEST_METHOD'] === 'GET')
+        {
+            $id = $this->input->get("id");
+            
+            $retailer_id = $this->input->get("retailer_id");
+            
+            $branches;
+            $store;
+            $company = array
+            (
+                "branches" => array(),
+                "store" => null,
+                "address" => "Not Provided",
+                "website" => "Not Provided",
+                "description" => "",
+                "phone" => "",
+                "email" => ""
+            );
+            
+            if($retailer_id)
+            {
+                $branches = $this->company_model->get_where(CHAIN_STORE_TABLE, array("chain_id" => $retailer_id));
+                $store = $this->company_model->get(CHAIN_TABLE, $retailer_id);
+            }
+        
+            if($id)
+            {
+                $company = $this->company_model->get(COMPANY_TABLE, $id);
+                $company->branches = $branches;
+                $company->store = $store;
+                
+                echo json_encode($company);
+            }
+            else
+            {
+                $company->name = $store->name;
+                $company->description = $store->description;
+            }
+            
+            
+        }
+        
+        
+    }
+    
     public function add_unit() 
     {
         echo json_encode($this->get_unit($this->input->post("name")));

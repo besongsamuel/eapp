@@ -163,6 +163,10 @@ angular.module('eappApp').factory("$company", function(appService, $http)
         getClientToken : function(success)
         {
             $http.post(appService.siteUrl.concat("/company/get_client_token"), null).then(success, onError);
+        },
+        get : function(id, retailer_id)
+        {
+            return $http.get(appService.siteUrl.concat("/company/get?id=" + id + "&retailer_id=" + retailer_id));
         }
     };
     

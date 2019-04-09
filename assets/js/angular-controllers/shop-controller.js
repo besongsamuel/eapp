@@ -253,6 +253,13 @@ angular.module('eappApp').controller('ShopController', function ($scope, $q, app
         eapp.viewProduct($scope, product_id, ev);
     };
     
+    $scope.viewStoreDetails = function(ev, retailer)
+    {
+        eapp.viewStoreDetails(ev, retailer);
+    };
+    
+  
+    
     $scope.settingsChanged = function(item)
     {
         $scope.updateItemChanged(item);

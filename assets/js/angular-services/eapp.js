@@ -8,7 +8,7 @@ const STAT_TYPE_CLICK = 0;
 
 
 // Create eapp service to get and update our data
-angular.module('eappApp').factory('eapp', function($http, appService, $mdDialog, profileData, cart)
+angular.module('eappApp').factory('eapp', function($http, appService, $mdDialog, profileData, cart, $company)
 {
     var eappService = {};
     
@@ -516,6 +516,26 @@ angular.module('eappApp').factory('eapp', function($http, appService, $mdDialog,
         function(errorResponse)
         {
             $scope.storeProduct = null;
+        });
+    };
+    
+    eappService.viewStoreDetails = function(ev, retailer)
+    {
+        $mdDialog.show({
+            controller: function($scope)
+            {
+                $company.get(retailer.company_id, retailer.id);
+                
+                $scope.close = function()
+                {
+                    $mdDialog.hide();
+                };
+            },
+            templateUrl: 'templates/dialogs/store-details.html',
+            parent: angular.element(document.body),
+            targetEvent: ev,
+            clickOutsideToClose:true,
+            fullscreen: true
         });
     };
     

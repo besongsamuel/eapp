@@ -58,4 +58,9 @@ function Controller($scope, appService, eapp, cart)
 
     };
     
+    $scope.viewStoreDetails = function(ev, retailer)
+    {
+        eapp.viewStoreDetails(ev, retailer);
+    };
+    
 }
