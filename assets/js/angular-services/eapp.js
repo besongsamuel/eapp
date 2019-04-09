@@ -521,22 +521,26 @@ angular.module('eappApp').factory('eapp', function($http, appService, $mdDialog,
     
     eappService.viewStoreDetails = function(ev, retailer)
     {
-        $mdDialog.show({
-            controller: function($scope)
-            {
-                $company.get(retailer.company_id, retailer.id);
-                
-                $scope.close = function()
-                {
-                    $mdDialog.hide();
-                };
-            },
-            templateUrl: 'templates/dialogs/store-details.html',
-            parent: angular.element(document.body),
-            targetEvent: ev,
-            clickOutsideToClose:true,
-            fullscreen: true
-        });
+	    $company.get(retailer.company_id, retailer.id).then((response) => 
+	    { 
+			$mdDialog.show({
+				controller: function($scope)
+				{
+					$scope.company = response.data; 
+					$scope.close = function()
+					{
+						$mdDialog.hide();
+					};
+				},
+				templateUrl: 'templates/dialogs/store-details.html',
+				parent: angular.element(document.body),
+				targetEvent: ev,
+				clickOutsideToClose:true,
+				fullscreen: true
+			});
+		
+		});
+        
     };
     
     function ViewProductController($scope, $mdDialog)
