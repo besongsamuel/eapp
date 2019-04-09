@@ -140,17 +140,18 @@ class Company extends CI_Controller
             
             $retailer_id = $this->input->get("retailer_id");
             
-            $branches;
-            $store;
+            $branches = null;
+            $store = array();
             $company = array
             (
+		"name" => "",
                 "branches" => array(),
                 "store" => null,
-                "address" => "Not Provided",
-                "website" => "Not Provided",
-                "description" => "",
-                "phone" => "",
-                "email" => ""
+                "address" => "Aucune adresse fournie pour la succursale principale",
+                "website" => "Pas encore de site fourni",
+                "description" => "Aucune description fournie pour le moment",
+                "phone" => "Pas encore de numéro de téléphone fourni",
+                "email" => "Pas encore de mail fourni"
             );
             
             if($retailer_id)
@@ -165,18 +166,17 @@ class Company extends CI_Controller
                 $company->branches = $branches;
                 $company->store = $store;
                 
-                echo json_encode($company);
+                
             }
             else
             {
                 $company->name = $store->name;
                 $company->description = $store->description;
             }
-            
+		
+            echo json_encode($company);
             
         }
-        
-        
     }
     
     public function add_unit() 
