@@ -6,7 +6,9 @@
 
     <div class="card-body p-1">
         <div>
-            <img class="md-user-avatar" style="margin : 2px; width: 40px;" ng-src="{{storeProduct.retailer.image}}" />
+            <a href ng-click="viewStoreDetails($event, storeProduct.retailer)">
+                <img class="md-user-avatar" style="margin : 2px; width: 40px;" ng-src="{{storeProduct.retailer.image}}" />
+            </a>
         </div>
         <div style="font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow:ellipsis;">
 
