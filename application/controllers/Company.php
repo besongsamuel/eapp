@@ -157,7 +157,7 @@ class Company extends CI_Controller
             if($retailer_id)
             {
                 $branches = $this->company_model->get_where(CHAIN_STORE_TABLE, array("chain_id" => $retailer_id));
-                $store = $this->company_model->get(CHAIN_TABLE, $retailer_id);
+                $store = $this->company_model->get_retailer($retailer_id, "*");
             }
         
             if($id)
