@@ -1,39 +1,49 @@
-<div class="w-100 my-3">
-  <div class="d-flex flex-row justify-content-center my-2 overflow-hidden" style="height: 200px;">
-    <img class="h-100" ng-src="{{company.retailer.image}}">
-  </div>
-  <h1 class="text-center my-3" >{{company.name}}</h1>
-  <div class="w-100 d-flex flex-row justify-content-center">
-    <div class="col-sm-12 col-6 text-secondary">
-    	{{company.description}}    
-		</div>
-  </div>
-  <div class="d-flex flex-column mt-4 text-info">
-      <div class="col-6">
-        <i class="fas fa-phone mr-3"></i><strong>Contact: </strong>{{company.phone}}
-      </div>
-      <div class="col-6">
-        <i class="far fa-envelope mr-3"></i><strong>Email: </strong>{{company.email}}
-      </div>
-      <div class="col-6">
-        <i class="fas fa-globe mr-3"></i><strong>Website: </strong>{{company.website}}
-      </div>
-    </div>
-	
-	<div class="w-100 card">
-		<div class="card-body">
-			  <h5 otiprix-title class="card-title"></h5>
-				<md-list-item class="md-3-line" ng-repeat="branch in company.branches" ng-click="null">
-          <img ng-src="{{company.retailer.image}}" class="md-avatar" alt="{{company.name}}" />
-          <div class="md-list-item-text" layout="column">
-            <h3>{{ branch.name }}</h3>
-            <h4><span class="mr-2"><i class="fas fa-map"></i></span>{{ branch.address }}</h4>
-						<div class="d-flex flex-row">
-            	<div ng-if="branch.phonenumber"><span class="mr-2"><i class="fas fa-phone mr-2"></span>{{  branch.phonenumber }}</div>
-							<div ng-if="branch.email"><span class="mr-2"><i class="far fa-envelope mr-2"></span>{{  branch.email }}</div>
-						</div>
-          </div>
-        </md-list-item>
-		</div>
-	</div>
-</div>
+<md-dialog>
+    <md-dialog-content>
+            <div class="w-100 p-2 mt-3">
+                    <div class="d-flex flex-row justify-content-center my-2 overflow-hidden" style="height: 200px;">
+                      <img class="h-100" ng-src="{{company.store.image}}">
+                    </div>
+                    <h1 class="text-center my-3" >{{company.name}}</h1>
+                    <h5 class="text-center" ng-if="company.address">{{company.address}}</h5>
+                    <div class="w-100 d-flex flex-row justify-content-center">
+                      <div class="col-sm-12 col-6 text-secondary text-center">
+                          {{company.description}}    
+                          </div>
+                    </div>
+                    <div class="mt-4 text-info">
+                        <div ng-if="company.phone" class="w-100">
+                          <i class="fas fa-phone mr-3"></i><strong>Contact: </strong>{{company.phone}}
+                        </div>
+                        <div ng-if="company.email" class="w-100">
+                          <i class="far fa-envelope mr-3"></i><strong>Email: </strong>{{company.email}}
+                        </div>
+                        <div ng-if="company.website" class="w-100">
+                          <i class="fas fa-globe mr-3"></i><strong>Website: </strong>{{company.website}}
+                        </div>
+                      </div>
+                      
+                      <div class="w-100 card p-3">
+                          <div class="card-body">
+                                <h5 otiprix-title class="card-title mt-0">Succursales</h5>
+                                  <md-list-item class="md-3-line" ng-repeat="branch in company.branches" ng-click="null">
+                                  <img ng-src="{{company.store.image}}" class="md-avatar" alt="{{company.name}}" />
+                                  <div class="md-list-item-text" layout="column">
+                                      <h3>{{ branch.name }}</h3>
+                                      <h4><span class="mr-2"><i class="fas fa-map"></i></span>{{ branch.address }}</h4>
+                                      <div class="d-flex flex-row">
+                                          <p ng-if="branch.phonenumber" class="mr-auto"><span><i class="fas fa-phone mr-2"></i></span>{{  branch.phonenumber }}</p>
+                                          <p ng-if="branch.email" class="ml-auto"><span><i class="far fa-envelope mr-2"></i></span>{{  branch.email }}</p>
+                                      </div>
+                                  </div>
+                                  </md-list-item>
+                          </div>
+                      </div>
+                  </div>
+    </md-dialog-content>
+    <md-dialog-actions>
+        
+    </md-dialog-actions>
+</md-dialog>
+
+

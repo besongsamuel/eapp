@@ -136,31 +136,31 @@ class Company extends CI_Controller
     {
         if($_SERVER['REQUEST_METHOD'] === 'GET')
         {
-            $id = $this->input->get("id");
+            $id = (int)$this->input->get("id");
             
-            $retailer_id = $this->input->get("retailer_id");
+            $retailer_id = (int)$this->input->get("retailer_id");
             
             $branches = null;
             $store = array();
-            $company = array
+            $company = (object)array
             (
 		"name" => "",
                 "branches" => array(),
                 "store" => null,
-                "address" => "Aucune adresse fournie pour la succursale principale",
-                "website" => "Pas encore de site fourni",
-                "description" => "Aucune description fournie pour le moment",
-                "phone" => "Pas encore de numéro de téléphone fourni",
-                "email" => "Pas encore de mail fourni"
+                "address" => "",
+                "website" => "",
+                "description" => "",
+                "phone" => "",
+                "email" => ""
             );
             
             if($retailer_id)
             {
-                $branches = $this->company_model->get_where(CHAIN_STORE_TABLE, array("chain_id" => $retailer_id));
+                $branches = $this->company_model->get_where(CHAIN_STORE_TABLE, "*", array("chain_id" => $retailer_id));
                 $store = $this->company_model->get_retailer($retailer_id, "*");
             }
         
-            if($id)
+            if($id > -1)
             {
                 $company = $this->company_model->get(COMPANY_TABLE, $id);
                 $company->branches = $branches;
@@ -170,6 +170,8 @@ class Company extends CI_Controller
             }
             else
             {
+                $company->branches = $branches;
+                $company->store = $store;
                 $company->name = $store->name;
                 $company->description = $store->description;
             }
