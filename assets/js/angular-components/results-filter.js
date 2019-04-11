@@ -43,7 +43,7 @@ function ResultFilterController($scope, profileData, appService)
         {
             $scope.viewConfig.viewAll = !$scope.viewConfig.optimizedCart;
             $scope.showAllResultsCaption = "Voir liste originale";
-            $scope.showOptimizedResultsCaption = "Voir liste optimisés";
+            $scope.showOptimizedResultsCaption = "Voir liste optimisée";
             $scope.isCart = true;
         }
         else

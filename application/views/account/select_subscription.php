@@ -36,8 +36,8 @@ and open the template in the editor.
     <tr>
       <td>Prix par mois</td>
       <td class="default"><span class="txt-top">&dollar; CAD</span><span class="txt-l">0</span></td>
-      <td><span class="txt-top">&dollar; CAD</span><span class="txt-l">99</span></td>
-      <td><span class="txt-top">&dollar; CAD</span><span class="txt-l">199</span></td>
+      <td><span class="txt-top">&dollar; CAD</span><span class="txt-l">10</span></td>
+      <td><span class="txt-top">&dollar; CAD</span><span class="txt-l">20</span></td>
     </tr>
 	
 	<tr>
@@ -220,10 +220,12 @@ and open the template in the editor.
             <tr><td class="first"></td>
                 <td class="default"><md-button class='first md-raised md-primary md-hue-2' ng-click="ctrl.selectSubscription(1)">Souscrire</md-button></td>
                 <td>
+                    Totale de la facture pour un an : 120$
                     <div id="dropin-container"></div>
                     <md-button id="submit-button" class='btn second md-raised md-primary'>Souscrire</md-button>
                 </td>
                 <td>
+                    Totale de la facture pour un an : 240$
                     <div id="dropin-container2"></div>
                     <md-button id="submit-button2" class='btn third md-raised md-primary'>Souscrire</md-button>
                 </td>

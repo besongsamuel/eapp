@@ -119,7 +119,7 @@
                                 <div class="dropdown-menu" otiprix-background>
                                     <a class="dropdown-item" href="<?php echo site_url("account"); ?>"><i style="color : #F7FDCA;" class="fa fa-user mr-2"></i>Mon compte</a>
                                     <a class="dropdown-item" ng-if="isRegularUser" href="<?php echo site_url("account/my_grocery_list"); ?>"><i style="color : #F0776C;" class="fa fa-heart mr-2"></i>Ma liste d'épicerie</a>
-                                    <a class="dropdown-item" href ng-click="logout()">Logout</a>
+                                    <a class="dropdown-item" href ng-click="logout()">Déconnexion</a>
                                 </div>
                             </li>
                         </ul>

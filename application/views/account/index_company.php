@@ -84,7 +84,7 @@ $(document).ready(function()
                         <div class="profile-usermenu">
                             <ul class="nav flex-column">
                                 <li class="nav-item" ng-class="{active : sessionData.accountMenuIndex == 1}">
-                                    <a  class="nav-link" ng-click="sessionData.accountMenuIndex = 1;" href><i class="glyphicon glyphicon-user"></i>Informations utilisateur</a>
+                                    <a  class="nav-link" ng-click="sessionData.accountMenuIndex = 1;" href><i class="glyphicon glyphicon-user"></i>Informations de l'utilisateur</a>
                                 </li>
                                 <li class="nav-item" ng-class="{active : sessionData.accountMenuIndex == 2}">
                                     <a  class="nav-link" ng-click="sessionData.accountMenuIndex = 2;" href><i class="glyphicon glyphicon-lock"></i>Securité</a>
@@ -99,7 +99,7 @@ $(document).ready(function()
                                     <a class="nav-link" ng-click="sessionData.accountMenuIndex = 5;" href><i class="glyphicon glyphicon-heart"></i>Vos Succursales</a>
                                 </li>
                                 <li class="nav-item" ng-class="{active : sessionData.accountMenuIndex == 6}">
-                                    <a class="nav-link" ng-click="sessionData.accountMenuIndex = 6;" href><i class="glyphicon glyphicon-heart"></i>Informations Entreprise</a>
+                                    <a class="nav-link" ng-click="sessionData.accountMenuIndex = 6;" href><i class="glyphicon glyphicon-heart"></i>Informations sur l'entreprise</a>
                                 </li>
                             </ul>
                         </div>
@@ -112,7 +112,7 @@ $(document).ready(function()
                 <div layout-padding ng-if="sessionData.accountMenuIndex == 1">
                     <div ng-controller="AccountController">
                         
-                        <h2 otiprix-title>informations utilisateur</h2>
+                        <h2 otiprix-title>Informations de l'utilisateur</h2>
                         
                         <form name="userInfoForm" novalidate ng-submit="updateProfile()">
 
@@ -675,7 +675,7 @@ $(document).ready(function()
                         </div>
                         
                         <div class="row justify-content-center">
-                            <p otiprix-text><b><a  href ng-click="companyProductsRules()">Règles d’affichages</a></b></p>
+                            <p otiprix-text><b><a class="md-warn-color" href ng-click="companyProductsRules()">Règles d’affichages</a></b></p>
                         </div>
                         
                         <form id="uploadForm" method="post" action="<?php site_url('company/upload_products'); ?>" >
@@ -701,7 +701,7 @@ $(document).ready(function()
 
                     <div ng-controller="CompanyAccountController" >
                         
-                        <h2 otiprix-title>Informations Entreprise</h2>
+                        <h2 otiprix-title>Informations sur l'entreprise</h2>
 
                         <div id="error_message" class="alert alert-success" ng-show="successMessage">
                             <p style="text-align: center;">{{successMessage}}</p>
