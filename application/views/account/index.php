@@ -53,7 +53,7 @@
                         <div class="profile-usermenu">
                             <ul class="nav flex-column">
                                 <li class="nav-item" ng-class="{active : sessionData.accountMenuIndex == 1}">
-                                    <a class="nav-link" ng-click="sessionData.accountMenuIndex = 1;" href><i class="glyphicon glyphicon-user"></i>informations utilisateur</a>
+                                    <a class="nav-link" ng-click="sessionData.accountMenuIndex = 1;" href><i class="glyphicon glyphicon-user"></i>informations de l'utilisateur</a>
                                 </li>
                                 <li class="nav-item" ng-class="{active : sessionData.accountMenuIndex == 2}">
                                     <a class="nav-link" ng-click="sessionData.accountMenuIndex = 2;" href><i class="glyphicon glyphicon-lock"></i>Securité</a>
@@ -80,7 +80,7 @@
                         <!-- Change personal info -->    
                         <div layout-padding ng-if="sessionData.accountMenuIndex == 1">
                             
-                            <h2 otiprix-title class="text-center">Informations Utilisateur</h2>
+                            <h2 otiprix-title class="text-center">Informations de l'utilisateur</h2>
                             
                             <form  ng-controller="AccountController" name="userInfoForm" novalidate ng-submit="updateProfile()">
 
