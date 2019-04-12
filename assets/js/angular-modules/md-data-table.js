@@ -1291,7 +1291,7 @@ function mdTablePagination() {
     var defaultLabel = {
       page: 'Page:',
       rowsPerPage: 'Produits par page:',
-      of: 'of'
+      of: 'sur'
     };
 
     self.label = angular.copy(defaultLabel);
