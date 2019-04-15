@@ -486,7 +486,11 @@ angular.module('eappApp').controller('AccountController', ["$scope", "$http", "$
     
     appService.ready.then(function()
     {
-        $("#phone").intlTelInput({utilsScript : `${appService.baseUrl}/node_modules/intl-tel-input/build/js/utils.js`});
+        if($("#phone").length == 1)
+        {
+            $("#phone").intlTelInput({utilsScript : `${appService.baseUrl}/node_modules/intl-tel-input/build/js/utils.js`});
+        }
+        
         $scope.Init();
     });
    
