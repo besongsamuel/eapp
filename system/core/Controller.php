@@ -663,7 +663,6 @@ class CI_Controller {
         if(isset($this->user->company))
         {
             $mergeFields['CMPYNAME'] = $this->user->company->name;
-            $mergeFields['NEQ'] = $this->user->company->neq;
         }
         
         if($activation_url != null)

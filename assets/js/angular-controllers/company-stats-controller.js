@@ -37,8 +37,7 @@ angular.module('eappApp').controller('CompanyStatsController', function($scope, 
              $scope.company = 
             {
                 id : appService.loggedUser.company.id,
-                name : appService.loggedUser.company.name,
-                neq : appService.loggedUser.company.neq
+                name : appService.loggedUser.company.name
             };
 
             $scope.loading = true;

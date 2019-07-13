@@ -30,18 +30,6 @@
                         {{data}}
                     </td>
                     
-                    <td ng-if="type == 'company' && account.is_valid == 0">
-                        <button ng-click="validateNEQ(account, $event)" class="md-raised md-primary btn">
-                            Valiate NEQ
-                        </button>
-                    </td>
-                    
-                    <td ng-if="type == 'company' && account.is_valid == 1">
-                        <button ng-click="revokeNEQ(account, $event)" class="md-raised md-warn btn">
-                            Revoke NEQ
-                        </button>
-                    </td>
-                    
                     <td ng-if="type == 'user' && account.is_active == 0">
                         <button ng-click="activate(account, $event)" class="md-raised md-primary btn">
                             Activate Account

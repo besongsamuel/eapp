@@ -734,18 +734,6 @@ angular.module('eappApp').factory('eapp', function($http, appService, $mdDialog,
         return $http.post(eappService.getSiteUrl().concat("account/toggle_account_state"), formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}});
     };
     
-    eappService.ToggleNEQState = function(id, is_valid)
-    {
-        var formData = new FormData();
-        formData.append("id", id);
-        formData.append("is_valid", is_valid);
-        return $http.post(eappService.getSiteUrl().concat("account/toggle_neq_state"), formData, { transformRequest: angular.identity, headers: {'Content-Type': undefined}});
-    };
-    
-
-    
-    
-    
     eappService.deleteStoreProductImage = function(id)
     {
         var formData = new FormData();

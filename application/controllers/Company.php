@@ -59,7 +59,7 @@ class Company extends CI_Controller
     
     public function add_store_product() 
     {
-        if($this->user != null && $this->user->subscription >= COMPANY_SUBSCRIPTION && $this->user->company->is_valid)
+        if($this->user != null && $this->user->subscription >= COMPANY_SUBSCRIPTION)
         {
             $products_count = $this->company_model->get_company_products_count($this->user->company->chain->id);
             
@@ -232,7 +232,7 @@ class Company extends CI_Controller
     
     public function uploadExcelProducts($fileName, $replace) 
     {
-        if($this->user && $this->user->subscription >= COMPANY_SUBSCRIPTION && $this->user->company->is_valid)
+        if($this->user && $this->user->subscription >= COMPANY_SUBSCRIPTION)
         {
             if($replace)
             {
@@ -396,14 +396,6 @@ class Company extends CI_Controller
             $company_profile = json_decode($this->input->post('profile'), true);
             $company = json_decode($this->input->post('company'), true);
             
-            if(sizeof($this->company_model->get_where(COMPANY_TABLE, "*", array("neq" => $company["neq"]))) > 0)
-            {
-                $data["success"] = false;
-                $data["message"] = "Le NEQ fourni est déjà pris..";
-                echo json_encode($data);
-                return;
-            }
-            
             $user_account['password'] = md5($user_account['password']);	
             // Subscription of 10 is a company
             $user_account['subscription'] = 10;
@@ -490,7 +482,7 @@ class Company extends CI_Controller
                     
                     $this->send_registration_email();
                     
-                    $message = "Un nouveau compte d'entreprise a été créé pour l'entreprise: ".$company['name']." avec NEQ ".$company['neq'].". Veuillez vous rendre sur le panneau d'administration et valider le NEQ.";
+                    $message = "Un nouveau compte d'entreprise a été créé pour l'entreprise: ".$company['name'];
                     
                     //notify otiprix team
                     $this->send_generic_email("infos@otiprix.com", "administrateur", "Nouveau compte d'entreprise créé", $message);
@@ -550,19 +542,12 @@ class Company extends CI_Controller
         {
             $company = json_decode($this->input->post('company'), true);
             
-            if($this->user->company->is_valid == 1)
-            {
-                unset($company['neq']);
-            }
-            
             $company['id'] = $this->user->company->id;
             
             $company['is_new'] = 0;
             
             $this->company_model->create(COMPANY_TABLE, $company);
             
-            // update associated chain
-            //$this->company_model->update(CHAIN_TABLE, array("name" => $company["name"]), array("company_id" => $this->user->company->id));
         }
     }
     

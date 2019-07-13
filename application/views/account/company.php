@@ -29,15 +29,7 @@
                         
                         <div class="container">
                             <div class="row justify-content-center">
-                                <!-- NEQ -->
-                                <md-input-container class="md-block col-md-12" flex-gt-sm>
-                                    <label>NEQ</label>
-                                    <input required name="neq" ng-model="company.neq" />
-                                    <div ng-messages="signupForm.neq.$error">
-                                        <div ng-message="required">Vous devez entrer le NEQ de l'entreprise</div>
-                                    </div>
-                                </md-input-container>
-
+                                
                                 <!-- NOM DE L'ENTREPRISE -->
                                 <md-input-container class="md-block col-md-12" flex-gt-sm>
                                     <label>Nom de l'entreprise</label>

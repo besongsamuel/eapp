@@ -60,56 +60,7 @@ class Account extends CI_Controller
         }
     }
     
-    /**
-     * API call to activate or deactivate neq status
-     */
-    public function toggle_neq_state() 
-    {
-        if($this->user && $this->user->subscription == 2)
-        {
-            $id = $this->input->post("id");
-            
-            $is_valid = $this->input->post("is_valid");
-            
-            $this->account_model->create(COMPANY_TABLE, array("id" => $id, "is_valid" => $is_valid));
-            
-            // Get the company account
-            $company_account = $this->account_model->get(COMPANY_TABLE, $id);
-            
-            if($company_account)
-            {
-                // Get the account
-                $user_account = $this->account_model->get(USER_ACCOUNT_TABLE, $company_account->user_account_id);
-                
-                if($user_account)
-                {
-                    if($is_valid == 1)
-                    {
-                        $subject = "NEQ validé";
-                        $message = "Votre NEQ a été validé par l'équipe Otiprix. Commencez à utiliser toutes les fonctionnalités de votre compte entreprise.";
-                    }
-                    else
-                    {
-                        $subject = "NEQ révoqué";
-                        $message = "Votre NEQ a été révoqué par l'équipe Otiprix. N'hésitez pas à nous contacter pour en savoir plus.";
-                    }
-                    
-                    $this->send_generic_email($user_account->email, $company_account->name, $subject, $message);
-                }
-                
-            }
-            
-            
-            
-            echo json_encode(array("success" => true));
-        }
-        else
-        {
-            echo json_encode(array("success" => false));
-        }
-    }
-    
-      /**
+     /**
      * API call to activate or deactivate account
      */
     public function toggle_account_state() 

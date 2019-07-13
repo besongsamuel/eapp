@@ -643,10 +643,6 @@ $(document).ready(function()
                             Certains produits n'ont pas été mis à jour car votre abonnement ne prend en charge que {{maxItems}} produits. Vous pouvez modifier votre abonnement à partir de "Informations sur l'entreprise".
                         </div>
 
-                        <div ng-show="loggedUser.company.is_valid == 0" class="alert alert-danger" role="alert">      
-                            Vous ne pouvez pas encore ajouter de produits à votre compte. Nous validons toujours votre NEQ. Veuillez réessayer plus tard.
-                        </div>
-
                     </div>
 
                     <form method="get" action="<?php echo base_url("/assets/files/Formulaire de Produits.xlsx")?>">
@@ -666,7 +662,7 @@ $(document).ready(function()
 
                     <div class="container layout-padding" ng-controller="UploadController">
                         <div class="row justify-content-center">
-                            <md-button ng-disabled="loggedUser.company.is_valid == 0" ng-click="selectFile()" ng-click="uploadStoreProducts()" class="md-primary md-raised">
+                            <md-button ng-click="selectFile()" ng-click="uploadStoreProducts()" class="md-primary md-raised">
                                Téléverser vos produits
                             </md-button>
                         </div>
@@ -685,7 +681,7 @@ $(document).ready(function()
 
                     <md-divider></md-divider>
 
-                    <company-products ng-if="loggedUser.company.is_valid == 1"></company-products>  
+                    <company-products></company-products>  
 
                 </div>
 
@@ -711,16 +707,6 @@ $(document).ready(function()
                         <form name="companyForm" novalidate ng-submit="editCompany()" class="container">
 
                             <p class="subscription-header"><b>Votre Forfait : &nbsp;&nbsp;&nbsp;<span class='md-warn-color'>  {{loggedUser.company.subscription.name}}</span></b> &nbsp;|&nbsp; <a href='<?php echo site_url("account/select_subscription"); ?>'>Changer</a></p>
-
-                            <!-- NEQ -->
-                            <md-input-container ng-disabled="loggedUser.company.is_valid == 1" class="md-block">
-                                <label>NEQ</label>
-                                <!-- <input required name="neq" ng-model="company.neq" /> -->
-                                <input ng-disabled="true" required name="neq" ng-model="company.neq" />
-                                <div ng-messages="companyForm.neq.$error">
-                                    <div ng-message="required">Vous devez entrer le NEQ de l'entreprise</div>
-                                </div>
-                            </md-input-container>
 
                             <!-- NOM DE L'ENTREPRISE -->
                             <md-input-container class="md-block">

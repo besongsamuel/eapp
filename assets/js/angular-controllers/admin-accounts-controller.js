@@ -71,36 +71,6 @@ angular.module("eappApp").controller("UserAccountsController", function($scope, 
         
     };
     
-    $scope.validateNEQ = function(account, $event)
-    {
-        eapp.showConfirmDialog($event, "Valider le NEQ de l'entreprise").then(function()
-        {
-            eapp.ToggleNEQState(account.id, 1).then(function(response)
-            {
-                if(response.data.success)
-                {
-                    var index = $scope.accounts.map(function(acc){ return acc.id; }).indexOf(account.id);
-                    $scope.accounts[index].is_valid = 1;
-                }
-            });
-        });
-    };
-    
-    $scope.revokeNEQ = function(account, $event)
-    {
-        eapp.showConfirmDialog($event, "Révoquer le NEQ de l'entreprise").then(function()
-        {
-            eapp.ToggleNEQState(account.id, 0).then(function(response)
-            {
-                if(response.data.success)
-                {
-                    var index = $scope.accounts.map(function(acc){ return acc.id; }).indexOf(account.id);
-                    $scope.accounts[index].is_valid = 0;
-                }
-            });
-        });
-    };
-    
     $scope.activate = function(account, $event)
     {
         eapp.showConfirmDialog($event, "Activer le compte d'utilisateur?").then(function()

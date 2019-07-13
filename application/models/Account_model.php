@@ -34,7 +34,7 @@ class Account_model extends CI_Model
 
         $count = $q->num_rows();
         
-        $this->db->select("id, name, email, phone, neq, is_valid");
+        $this->db->select("id, name, email, phone");
         
         $this->db->limit($query->limit, $query->limit * ($query->page - 1));
         

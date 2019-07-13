@@ -12,7 +12,6 @@ angular.module('eappApp').controller('CompanyAccountController', function($scope
         {
             id : appService.loggedUser.company.id,
             name : appService.loggedUser.company.name,
-            neq : appService.loggedUser.company.neq,
             address : appService.loggedUser.company.address,
             phone : appService.loggedUser.company.phone,
             email : appService.loggedUser.company.email,
