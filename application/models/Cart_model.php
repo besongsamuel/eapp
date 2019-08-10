@@ -488,6 +488,18 @@ class Cart_model extends CI_Model
                 {
                     $stores[$department_store->chain_id] = $this->get(CHAIN_TABLE, $department_store->chain_id);
                     $stores[$department_store->chain_id]->department_store = $department_store;
+                    
+                    // If there is a company associated to this store, add it
+                    if($stores[$department_store->chain_id]->company_id != null)
+                    {
+                        $stores[$department_store->chain_id]->company = $this->get(COMPANY_TABLE, $stores[$department_store->chain_id]->company_id);
+                    }
+                    else
+                    {
+                        $empty_company = new stdClass();
+                        $empty_company->description = 'Pas de description';
+                        $stores[$department_store->chain_id]->company = $empty_company;
+                    }
                 }
                 
             }
